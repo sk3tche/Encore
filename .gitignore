@@ -1,0 +1,11 @@
+*.opensdf
+*.sdf
+*.suo
+*.user
+*ReSharper*
+*.user
+*.vs10x
+*.pdb
+*.tssettings
+*/bin/*
+*/obj/*
