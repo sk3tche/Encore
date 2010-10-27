@@ -28,8 +28,8 @@
     <CodeContractsRuntimeThrowOnFailure>False</CodeContractsRuntimeThrowOnFailure>
     <CodeContractsRuntimeCallSiteRequires>True</CodeContractsRuntimeCallSiteRequires>
     <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
-    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
-    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
     <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
     <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
     <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
@@ -66,7 +66,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientBoxLevel.cs" />
+    <Compile Include="ClientLocale.cs" />
+    <Compile Include="Defines.cs" />
+    <Compile Include="IO\ADBReader.cs" />
+    <Compile Include="IO\ClientDbException.cs" />
+    <Compile Include="IO\ClientDbReader.cs" />
+    <Compile Include="IO\DB2Reader.cs" />
+    <Compile Include="IO\DBCReader.cs" />
+    <Compile Include="IO\IClientDbRecord.cs" />
+    <Compile Include="IO\WDBReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trinity.Encore.Framework.Core\Trinity.Encore.Framework.Core.csproj">
+      <Project>{78BB9167-FD73-451C-B007-0718DBDF0E14}</Project>
+      <Name>Trinity.Encore.Framework.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
