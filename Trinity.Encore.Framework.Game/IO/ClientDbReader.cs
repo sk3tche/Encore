@@ -30,9 +30,19 @@ namespace Trinity.Encore.Framework.Game.IO
             Contract.Invariant(Entries != null);
         }
 
-        public abstract int HeaderMagic { get; }
+        public virtual StringReadMode StringReadMode
+        {
+            get { return StringReadMode.StringTable; }
+        }
+
+        public virtual int? HeaderMagic
+        {
+            get { return null; }
+        }
 
         public string FileName { get; private set; }
+
+        public int RecordCount { get; protected set; }
 
         public int StringTableSize { get; protected set; }
 
@@ -45,25 +55,28 @@ namespace Trinity.Encore.Framework.Game.IO
             var stream = File.Open(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             using (var reader = new BinaryReader(stream, Defines.Encoding))
             {
-                if (reader.ReadInt32() != HeaderMagic)
-                    throw new ClientDbException("Invalid client DB header magic number.");
+                if (HeaderMagic != null)
+                    if (reader.ReadInt32() != HeaderMagic)
+                        throw new ClientDbException("Invalid client DB header magic number.");
 
                 var data = ReadData(reader);
-                ReadStringTable(reader);
-                MapRecords(data, data.Length);
+
+                if (StringReadMode == StringReadMode.StringTable)
+                    ReadStringTable(reader);
+
+                MapRecords(data);
             }
         }
 
         protected abstract byte[] ReadData(BinaryReader reader);
 
-        private void MapRecords(byte[] data, int count)
+        private void MapRecords(byte[] data)
         {
             Contract.Requires(data != null);
-            Contract.Requires(count >= 0);
 
             using (var reader = new BinaryReader(new MemoryStream(data), Defines.Encoding))
             {
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < RecordCount; i++)
                 {
                     var obj = new T();
                     ReadValuesToClass(obj, reader);
@@ -121,7 +134,8 @@ namespace Trinity.Encore.Framework.Game.IO
                 case TypeCode.Single:
                     return reader.ReadSingle();
                 case TypeCode.String:
-                    var str = StringTable[reader.ReadInt32()];
+                    var str = StringReadMode == StringReadMode.StringTable ?
+                        StringTable[reader.ReadInt32()] : reader.ReadCString();
                     Contract.Assume(str != null);
                     return str;
             }

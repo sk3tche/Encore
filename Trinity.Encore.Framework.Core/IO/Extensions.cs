@@ -36,5 +36,12 @@ namespace Trinity.Encore.Framework.Core.IO
             var arr = list.ToArray();
             return encoding != null ? encoding.GetString(arr) : Encoding.ASCII.GetString(arr);
         }
+
+        public static bool IsRead(this Stream stream)
+        {
+            Contract.Requires(stream != null);
+
+            return stream.Position == stream.Length;
+        }
     }
 }

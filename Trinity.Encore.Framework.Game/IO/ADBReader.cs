@@ -12,8 +12,6 @@ namespace Trinity.Encore.Framework.Game.IO
         /// </summary>
         public const int HeaderMagicNumber = 0x32484357;
 
-        public int RecordCount { get; private set; }
-
         public int FieldCount { get; private set; }
 
         public int RecordSize { get; private set; }
@@ -38,7 +36,7 @@ namespace Trinity.Encore.Framework.Game.IO
             Contract.Requires(!string.IsNullOrEmpty(fileName));
         }
 
-        public override int HeaderMagic
+        public override int? HeaderMagic
         {
             get { return HeaderMagicNumber; }
         }

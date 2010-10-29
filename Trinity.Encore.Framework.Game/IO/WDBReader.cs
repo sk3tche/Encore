@@ -1,16 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using Trinity.Encore.Framework.Core.IO;
 
 namespace Trinity.Encore.Framework.Game.IO
 {
     public sealed class WDBReader<T> : ClientDbReader<T>
         where T : class, IClientDbRecord, new()
     {
-        /// <summary>
-        /// WDB file header magic number (WIDB).
-        /// </summary>
-        public const int HeaderMagicNumber = 0x57494442;
+        public int Magic { get; private set; }
 
         public int Build { get; private set; }
 
@@ -28,24 +27,39 @@ namespace Trinity.Encore.Framework.Game.IO
             Contract.Requires(!string.IsNullOrEmpty(fileName));
         }
 
-        public override int HeaderMagic
+        public override StringReadMode StringReadMode
         {
-            get { return HeaderMagicNumber; }
+            get { return StringReadMode.Direct; }
         }
 
         protected override byte[] ReadData(BinaryReader reader)
         {
-            if (reader.ReadInt32() != HeaderMagic)
-                throw new IOException("Invalid WDB file.");
-
+            Magic = reader.ReadInt32();
             Build = reader.ReadInt32();
             Locale = (ClientLocale)reader.ReadInt32();
             Unknown1 = reader.ReadInt32();
             Unknown2 = reader.ReadInt32();
             Version = reader.ReadInt32();
 
-            // TODO: Reading rows isn't as simple as with other formats...
-            throw new NotImplementedException();
+            var data = new List<byte>();
+            var count = 0;
+            while (!reader.BaseStream.IsRead())
+            {
+                var entry = reader.ReadInt32();
+                var size = reader.ReadInt32();
+
+                if (entry == 0 && size == 0)
+                    continue; // End of file.
+
+                Contract.Assume(size > 0);
+                var row = reader.ReadBytes(size);
+                data.AddRange(BitConverter.GetBytes(entry));
+                data.AddRange(row);
+                count++;
+            }
+
+            RecordCount = count;
+            return data.ToArray();
         }
     }
 }

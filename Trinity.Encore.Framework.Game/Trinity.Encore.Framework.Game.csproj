@@ -75,6 +75,7 @@
     <Compile Include="IO\DB2Reader.cs" />
     <Compile Include="IO\DBCReader.cs" />
     <Compile Include="IO\IClientDbRecord.cs" />
+    <Compile Include="IO\StringReadMode.cs" />
     <Compile Include="IO\WDBReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
