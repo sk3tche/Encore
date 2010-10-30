@@ -3,8 +3,10 @@ using Trinity.Encore.Framework.Game.Partitioning;
 
 namespace Trinity.Encore.Framework.Game.Entities
 {
-    public interface IEntity
+    public interface IWorldEntity : IEntity
     {
-        EntityGuid Guid { get; }
+        Vector3 Position { get; }
+
+        QuadTreeNode Node { get; set; }
     }
 }

@@ -75,6 +75,7 @@
     <Compile Include="Defines.cs" />
     <Compile Include="Entities\EntityGuid.cs" />
     <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\IWorldEntity.cs" />
     <Compile Include="Identification\IdGenerator.cs" />
     <Compile Include="IO\Formats\ADBReader.cs" />
     <Compile Include="IO\ClientDbException.cs" />

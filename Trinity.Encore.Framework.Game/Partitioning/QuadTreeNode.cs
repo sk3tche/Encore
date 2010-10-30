@@ -39,9 +39,9 @@ namespace Trinity.Encore.Framework.Game.Partitioning
 
         private QuadTreeNode[,] _children;
 
-        private ConcurrentDictionary<EntityGuid, IEntity> _entities;
+        private ConcurrentDictionary<EntityGuid, IWorldEntity> _entities;
 
-        public bool AddEntity(IEntity entity)
+        public bool AddEntity(IWorldEntity entity)
         {
             Contract.Requires(entity != null);
 
@@ -67,7 +67,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             return false;
         }
 
-        public bool RemoveEntity(IEntity entity)
+        public bool RemoveEntity(IWorldEntity entity)
         {
             Contract.Requires(entity != null);
 
@@ -132,7 +132,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                         _children[i, j].Partition(this, maxDepth, startDepth);
             }
             else
-                _entities = new ConcurrentDictionary<EntityGuid, IEntity>();
+                _entities = new ConcurrentDictionary<EntityGuid, IWorldEntity>();
         }
 
         public bool IsLeaf
