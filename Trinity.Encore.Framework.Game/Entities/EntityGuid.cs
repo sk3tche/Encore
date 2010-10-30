@@ -20,6 +20,7 @@ namespace Trinity.Encore.Framework.Game.Entities
 
         public bool Equals(EntityGuid other)
         {
+            return Full == other.Full;
         }
 
         public override bool Equals(object obj)
