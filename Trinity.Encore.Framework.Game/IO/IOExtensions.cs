@@ -8,11 +8,15 @@ namespace Trinity.Encore.Framework.Game.IO
     {
         public static EntityGuid ReadPackedGuid(this BinaryReader reader)
         {
+            Contract.Requires(reader != null);
+
             return new EntityGuid(ReadPackedUInt64(reader));
         }
 
         public static void WritePackedGuid(this BinaryWriter writer, EntityGuid guid)
         {
+            Contract.Requires(writer != null);
+
             WritePackedUInt64(writer, guid.Full);
         }
 

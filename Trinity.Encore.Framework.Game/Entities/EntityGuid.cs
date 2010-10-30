@@ -5,6 +5,8 @@ namespace Trinity.Encore.Framework.Game.Entities
     /// </summary>
     public struct EntityGuid
     {
+        public static readonly EntityGuid Zero = new EntityGuid(0);
+
         public readonly ulong Full;
 
         public EntityGuid(ulong full)
