@@ -1,0 +1,26 @@
+============================ Encore Thanks/Credits File ============================
+
+The Encore project gives its thanks to the following people who have contributed to
+the development of the source base in one way or another:
+
+ * click
+ * KingPin
+ * linencloth
+ * Machiavelli
+ * Malcrom
+ * manuel
+ * Nay
+ * Phazerz
+ * Rat
+ * runningnak3d
+ * Shauren
+ * Silinoron
+ * Spp
+ * Supabad
+ * TOM_RUS
+ * WolfgangSt
+ * Xanadu
+ * Zor
+
+ If you have contributed to the project and you are not on this list, please contact
+ a developer in order to have your name added.
