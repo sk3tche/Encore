@@ -120,7 +120,6 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
 
             RandomGenerator.GetBytes(buffer);
 
-            // HACK: Why do we even have this?
             if (buffer[0] == 0)
                 buffer[0] = 1;
 

@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using Trinity.Encore.Framework.Core.IO;
 
-namespace Trinity.Encore.Framework.Game.IO
+namespace Trinity.Encore.Framework.Game.IO.Formats
 {
     public sealed class WDBReader<T> : ClientDbReader<T>
         where T : class, IClientDbRecord, new()

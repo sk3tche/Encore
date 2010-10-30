@@ -1,8 +1,7 @@
-using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 
-namespace Trinity.Encore.Framework.Game.IO
+namespace Trinity.Encore.Framework.Game.IO.Formats
 {
     public sealed class ADBReader<T> : ClientDbReader<T>
         where T : class, IClientDbRecord, new()

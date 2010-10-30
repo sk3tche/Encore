@@ -63,7 +63,7 @@ namespace Trinity.Encore.Framework.Game.Mathematics
             Contract.Assume(segIndex < PointCount);
 
             t = segment - segIndex;
-            Contract.Assume(t <= MinUnitInterval);
+            Contract.Assert(t <= MinUnitInterval);
 
             return Interpolate(segIndex, t);
         }
