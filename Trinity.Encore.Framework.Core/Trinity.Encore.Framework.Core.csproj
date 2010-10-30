@@ -86,8 +86,17 @@
     <Compile Include="Configuration\ConfigurationVariableAttribute.cs" />
     <Compile Include="Dynamic\Bag.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Initialization\InitializationAttribute.cs" />
+    <Compile Include="Initialization\InitializationInfo.cs" />
+    <Compile Include="Initialization\InitializationManager.cs" />
+    <Compile Include="Initialization\InitializationPass.cs" />
     <Compile Include="InteropServices\UnionType.cs" />
     <Compile Include="IO\IOExtensions.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Loggers\ConsoleLogger.cs" />
+    <Compile Include="Logging\Loggers\EventLogger.cs" />
+    <Compile Include="Logging\LogManager.cs" />
+    <Compile Include="Logging\LogProxy.cs" />
     <Compile Include="Mathematics\FastMath.cs" />
     <Compile Include="Mathematics\FastRandom.cs" />
     <Compile Include="Mathematics\MathExtensions.cs" />
