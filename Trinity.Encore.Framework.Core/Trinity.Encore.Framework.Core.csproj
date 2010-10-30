@@ -84,6 +84,17 @@
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationInfo.cs" />
     <Compile Include="Configuration\ConfigurationVariableAttribute.cs" />
+    <Compile Include="Cryptography\BigInteger.cs" />
+    <Compile Include="Cryptography\CryptographicExtensions.cs" />
+    <Compile Include="Cryptography\HashDataBroker.cs" />
+    <Compile Include="Cryptography\SRP\Parameters\SHA1Parameters.cs" />
+    <Compile Include="Cryptography\SRP\Parameters\SHA256Parameters.cs" />
+    <Compile Include="Cryptography\SRP\SRPBase.cs" />
+    <Compile Include="Cryptography\SRP\SRPClient.cs" />
+    <Compile Include="Cryptography\SRP\SRPParameters.cs" />
+    <Compile Include="Cryptography\SRP\SRPServer.cs" />
+    <Compile Include="Cryptography\SRP\SRPValidator.cs" />
+    <Compile Include="Cryptography\SRP\SRPVersion.cs" />
     <Compile Include="Dynamic\Bag.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Initialization\InitializationAttribute.cs" />

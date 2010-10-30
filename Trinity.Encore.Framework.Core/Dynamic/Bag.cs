@@ -46,7 +46,10 @@ namespace Trinity.Encore.Framework.Core.Dynamic
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            result = _values.TryGet(binder.Name);
+            var name = binder.Name;
+            Contract.Assume(name != null);
+            result = _values.TryGet(name);
+
             return result != null;
         }
 

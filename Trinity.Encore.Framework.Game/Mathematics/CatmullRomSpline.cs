@@ -48,7 +48,7 @@ namespace Trinity.Encore.Framework.Game.Mathematics
         public Vector3 GetPoint(int index)
         {
             Contract.Requires(index >= 0);
-            Contract.Requires(index < _pointList.Count);
+            Contract.Requires(index < PointCount);
 
             return _pointList[index];
         }
@@ -60,7 +60,10 @@ namespace Trinity.Encore.Framework.Game.Mathematics
 
             var segment = t * _pointList.Count;
             var segIndex = (int)segment;
+            Contract.Assume(segIndex < PointCount);
+
             t = segment - segIndex;
+            Contract.Assume(t <= MinUnitInterval);
 
             return Interpolate(segIndex, t);
         }
@@ -68,7 +71,7 @@ namespace Trinity.Encore.Framework.Game.Mathematics
         public Vector3 Interpolate(int index, float t)
         {
             Contract.Requires(index >= 0);
-            Contract.Requires(index < _pointList.Count);
+            Contract.Requires(index < PointCount);
             Contract.Requires(t >= MinUnitInterval);
             Contract.Requires(t <= MaxUnitInterval);
 

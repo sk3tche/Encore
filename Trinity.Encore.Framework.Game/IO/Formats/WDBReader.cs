@@ -43,6 +43,7 @@ namespace Trinity.Encore.Framework.Game.IO
 
             var data = new List<byte>();
             var count = 0;
+
             while (!reader.BaseStream.IsRead())
             {
                 var entry = reader.ReadInt32();
