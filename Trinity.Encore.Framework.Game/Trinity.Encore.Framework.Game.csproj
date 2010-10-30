@@ -69,15 +69,17 @@
     <Compile Include="ClientBoxLevel.cs" />
     <Compile Include="ClientLocale.cs" />
     <Compile Include="Defines.cs" />
+    <Compile Include="Entities\EntityGuid.cs" />
     <Compile Include="Identification\IdGenerator.cs" />
-    <Compile Include="IO\ADBReader.cs" />
+    <Compile Include="IO\Formats\ADBReader.cs" />
     <Compile Include="IO\ClientDbException.cs" />
     <Compile Include="IO\ClientDbReader.cs" />
-    <Compile Include="IO\DB2Reader.cs" />
-    <Compile Include="IO\DBCReader.cs" />
+    <Compile Include="IO\Formats\DB2Reader.cs" />
+    <Compile Include="IO\Formats\DBCReader.cs" />
     <Compile Include="IO\IClientDbRecord.cs" />
+    <Compile Include="IO\IOExtensions.cs" />
     <Compile Include="IO\StringReadMode.cs" />
-    <Compile Include="IO\WDBReader.cs" />
+    <Compile Include="IO\Formats\WDBReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +88,7 @@
       <Name>Trinity.Encore.Framework.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

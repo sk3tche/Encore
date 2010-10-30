@@ -87,7 +87,7 @@
     <Compile Include="Dynamic\Bag.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="InteropServices\UnionType.cs" />
-    <Compile Include="IO\Extensions.cs" />
+    <Compile Include="IO\IOExtensions.cs" />
     <Compile Include="Mathematics\FastMath.cs" />
     <Compile Include="Mathematics\FastRandom.cs" />
     <Compile Include="Mathematics\MathExtensions.cs" />
