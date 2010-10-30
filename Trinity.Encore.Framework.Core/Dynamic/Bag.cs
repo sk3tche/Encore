@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Dynamic;
+using Trinity.Encore.Framework.Core.Collections;
 
 namespace Trinity.Encore.Framework.Core.Dynamic
 {
@@ -45,15 +46,8 @@ namespace Trinity.Encore.Framework.Core.Dynamic
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            var name = binder.Name;
-            if (!_values.ContainsKey(name))
-            {
-                result = null;
-                return false;
-            }
-
-            result = _values[name];
-            return true;
+            result = _values.TryGet(binder.Name);
+            return result != null;
         }
 
         public override bool TryDeleteMember(DeleteMemberBinder binder)
