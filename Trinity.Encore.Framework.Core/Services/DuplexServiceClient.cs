@@ -11,7 +11,7 @@ namespace Trinity.Encore.Framework.Core.Services
         where TCallback : class, new()
     {
         protected DuplexServiceClient(string uri)
-            : base(new TCallback(), new NetTcpBinding(SecurityMode.None), new EndpointAddress(uri))
+            : base(new TCallback(), new NetTcpBinding(SecurityMode.None, true), new EndpointAddress(uri))
         {
             Contract.Requires(!string.IsNullOrEmpty(uri));
         }

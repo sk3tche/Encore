@@ -69,6 +69,7 @@
     <Compile Include="ClientBoxLevel.cs" />
     <Compile Include="ClientLocale.cs" />
     <Compile Include="Defines.cs" />
+    <Compile Include="Identification\IdGenerator.cs" />
     <Compile Include="IO\ADBReader.cs" />
     <Compile Include="IO\ClientDbException.cs" />
     <Compile Include="IO\ClientDbReader.cs" />
