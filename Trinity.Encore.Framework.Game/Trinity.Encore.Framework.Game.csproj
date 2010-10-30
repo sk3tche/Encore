@@ -74,6 +74,7 @@
     <Compile Include="ClientLocale.cs" />
     <Compile Include="Defines.cs" />
     <Compile Include="Entities\EntityGuid.cs" />
+    <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Identification\IdGenerator.cs" />
     <Compile Include="IO\Formats\ADBReader.cs" />
     <Compile Include="IO\ClientDbException.cs" />
@@ -87,6 +88,8 @@
     <Compile Include="IO\Formats\WDBReader.cs" />
     <Compile Include="Mathematics\CatmullRomSpline.cs" />
     <Compile Include="Mathematics\MathExtensions.cs" />
+    <Compile Include="Partitioning\QuadTree.cs" />
+    <Compile Include="Partitioning\QuadTreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

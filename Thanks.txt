@@ -4,6 +4,7 @@ The Encore project gives its thanks to the following people who have contributed
 the development of the source base in one way or another:
 
  * click
+ * Domi
  * KingPin
  * linencloth
  * Machiavelli
