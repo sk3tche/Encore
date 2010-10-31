@@ -128,6 +128,7 @@
     <Compile Include="Services\ServiceClient.cs" />
     <Compile Include="Services\ServiceHost.cs" />
     <Compile Include="Threading\Actors\Actor.cs" />
+    <Compile Include="Threading\Actors\Agent.cs" />
     <Compile Include="Threading\ReadScopeGuard.cs" />
     <Compile Include="Threading\ReadWriteLock.cs" />
     <Compile Include="Threading\WriteScopeGuard.cs" />

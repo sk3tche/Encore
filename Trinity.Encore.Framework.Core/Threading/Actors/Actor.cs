@@ -33,8 +33,21 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             var options = new DataflowBlockOptions(TaskScheduler.Default, 1, DataflowBlockOptions.UnboundedMessagesPerTask,
                 CancellationToken); // DataflowBlockOptions is immutable, so we can safely pass it along to both blocks.
 
-            IncomingMessages = new ActionBlock<Action>(x => x() /* Just process the delegate. */, options);
-            OutgoingMessages = new BroadcastBlock<Action>(x => x /* Delegates are immutable. */, options);
+            IncomingMessages = new ActionBlock<Action>(x => HandleIncomingMessage(x), options);
+            OutgoingMessages = new BroadcastBlock<Action>(x => x /* Delegates are immutable; no real cloning needed. */, options);
+        }
+
+        private void HandleIncomingMessage(Action act)
+        {
+            try
+            {
+                act();
+            }
+            catch (Exception)
+            {
+                // TODO: Log the exception.
+                Dispose();
+            }
         }
 
         /// <summary>
