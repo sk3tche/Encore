@@ -66,10 +66,16 @@
     <Reference Include="JetBrains.Annotations">
       <HintPath>..\Dependencies\JetBrains.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="ParallelExtensionsExtras">
+      <HintPath>..\Dependencies\ParallelExtensionsExtras.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Dataflow">
+      <HintPath>..\Dependencies\System.Threading.Tasks.Dataflow.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -121,6 +127,7 @@
     <Compile Include="Services\DuplexServiceClient.cs" />
     <Compile Include="Services\ServiceClient.cs" />
     <Compile Include="Services\ServiceHost.cs" />
+    <Compile Include="Threading\Actors\Actor.cs" />
     <Compile Include="Threading\ReadScopeGuard.cs" />
     <Compile Include="Threading\ReadWriteLock.cs" />
     <Compile Include="Threading\WriteScopeGuard.cs" />
