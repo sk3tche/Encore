@@ -3,13 +3,17 @@ using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Trinity.Encore.Framework.Core.Exceptions;
 
 namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
     public abstract class Actor : IDisposable
     {
         /// <summary>
-        /// Used to post messages to run in this Actor's synchronization context.
+        /// Used to post messages to run in this Actor's synchronization context. This block always
+        /// accepts posted messages, unless the Actor is disposed.
+        /// 
+        /// Do not call DeclinePermanently on this block. This state is managed by the Actor itself.
         /// </summary>
         public ITargetBlock<Action> IncomingMessages { get; private set; }
 
@@ -69,9 +73,9 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             {
                 act();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: Log the exception.
+                ExceptionManager.RegisterException(ex, this);
                 Dispose();
             }
         }

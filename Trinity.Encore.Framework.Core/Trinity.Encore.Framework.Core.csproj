@@ -102,6 +102,9 @@
     <Compile Include="Cryptography\SRP\SRPValidator.cs" />
     <Compile Include="Cryptography\SRP\SRPVersion.cs" />
     <Compile Include="Dynamic\Bag.cs" />
+    <Compile Include="Exceptions\ExceptionEventArgs.cs" />
+    <Compile Include="Exceptions\ExceptionInfo.cs" />
+    <Compile Include="Exceptions\ExceptionManager.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Initialization\InitializationAttribute.cs" />
     <Compile Include="Initialization\InitializationInfo.cs" />
@@ -129,6 +132,7 @@
     <Compile Include="Services\ServiceHost.cs" />
     <Compile Include="Threading\Actors\Actor.cs" />
     <Compile Include="Threading\Actors\Agent.cs" />
+    <Compile Include="Threading\Actors\AgentState.cs" />
     <Compile Include="Threading\ReadScopeGuard.cs" />
     <Compile Include="Threading\ReadWriteLock.cs" />
     <Compile Include="Threading\WriteScopeGuard.cs" />
@@ -138,9 +142,7 @@
     <Compile Include="Time\TimeUtilities.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
