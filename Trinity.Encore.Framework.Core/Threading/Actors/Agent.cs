@@ -14,10 +14,21 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private DateTime _lastUpdate;
 
-        protected Agent()
+        private void Setup()
         {
             _lastUpdate = DateTime.Now;
             Task.Factory.StartNew(RunInternal, CancellationToken);
+        }
+
+        protected Agent(CancellationToken cancellationToken)
+            : base(cancellationToken)
+        {
+            Setup();
+        }
+
+        protected Agent()
+        {
+            Setup();
         }
 
         private void RunInternal()

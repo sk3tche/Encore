@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -21,14 +22,18 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         /// Gets a CancellationToken that can be used to link cancellation of source or target block
         /// to the cancellation of this Actor.
         /// </summary>
-        public CancellationToken CancellationToken
+        public CancellationToken CancellationToken { get; private set; }
+
+        private readonly CancellationTokenSource _cts;
+
+        [ContractInvariantMethod]
+        private void Invariant()
         {
-            get { return _cts.Token; }
+            Contract.Invariant(IncomingMessages != null);
+            Contract.Invariant(OutgoingMessages != null);
         }
 
-        private readonly CancellationTokenSource _cts = new CancellationTokenSource();
-
-        protected Actor()
+        private void Setup()
         {
             var options = new DataflowBlockOptions(TaskScheduler.Default, 1, DataflowBlockOptions.UnboundedMessagesPerTask,
                 CancellationToken); // DataflowBlockOptions is immutable, so we can safely pass it along to both blocks.
@@ -37,8 +42,29 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             OutgoingMessages = new BroadcastBlock<Action>(x => x /* Delegates are immutable; no real cloning needed. */, options);
         }
 
+        /// <summary>
+        /// Creates an Actor instance, linking its cancellation to a given token.
+        /// </summary>
+        /// <param name="cancellationToken">The CancellationToken to link to.</param>
+        protected Actor(CancellationToken cancellationToken)
+        {
+            CancellationToken = cancellationToken;
+
+            Setup();
+        }
+
+        protected Actor()
+        {
+            _cts = new CancellationTokenSource();
+            CancellationToken = _cts.Token;
+
+            Setup();
+        }
+
         private void HandleIncomingMessage(Action act)
         {
+            Contract.Requires(act != null);
+
             try
             {
                 act();
@@ -59,7 +85,9 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         /// <returns>An object that, when disposed, unlinks the other Actor from this Actor.</returns>
         public IDisposable LinkTo(Actor other, bool unlinkAfterOneMsg = false)
         {
-            OutgoingMessages.LinkTo(other.IncomingMessages, unlinkAfterOneMsg);
+            Contract.Requires(other != null);
+
+            return OutgoingMessages.LinkTo(other.IncomingMessages, unlinkAfterOneMsg);
         }
 
         /// <summary>
@@ -70,7 +98,17 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         /// </summary>
         public void Dispose()
         {
-            _cts.Cancel();
+            // If we have _cts set, it means we aren't linked to some CancellationToken handed to us from the
+            // outside, and that we can just cancel our CancellationTokenSource. By doing so, we also cancel
+            // anything linked to it (such as other Actor instances).
+            if (_cts != null)
+                _cts.Cancel();
+            else
+                IncomingMessages.DeclinePermanently(); // Manually stop the incoming messages block.
+
+            // Note that we do NOT set IncomingMessages and OutgoingMessages to null. This could cause problems
+            // in other areas, as, in an asynchronous architecture, all components cannot know when another
+            // has been canceled.
         }
     }
 }
