@@ -22,6 +22,13 @@ namespace Trinity.Encore.Framework.Game.Services
 
         private readonly Queue<Action<TService>> _msgQueue = new Queue<Action<TService>>();
 
+        [ContractInvariantMethod]
+        private void Invariant()
+        {
+            Contract.Invariant(_creator != null);
+            Contract.Invariant(_msgQueue != null);
+        }
+
         public IpcDevice(Func<DuplexServiceClient<TService, TCallback>> clientCreator)
         {
             Contract.Requires(clientCreator != null);
