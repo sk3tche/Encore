@@ -94,7 +94,6 @@
     <Compile Include="IO\Formats\MPQReader.cs" />
     <Compile Include="IO\Formats\PTCHReader.cs" />
     <Compile Include="IO\Formats\TEXReader.cs" />
-    <Compile Include="IO\Formats\TRSReader.cs" />
     <Compile Include="IO\Formats\WDLReader.cs" />
     <Compile Include="IO\Formats\WDTReader.cs" />
     <Compile Include="IO\Formats\WFXReader.cs" />
