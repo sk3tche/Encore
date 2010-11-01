@@ -11,5 +11,10 @@ namespace Trinity.Encore.Framework.Core.Services
         {
             Contract.Requires(!string.IsNullOrEmpty(uri));
         }
+
+        public TService ServiceChannel
+        {
+            get { return Channel; }
+        }
     }
 }

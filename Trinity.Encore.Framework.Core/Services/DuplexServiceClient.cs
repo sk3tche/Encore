@@ -10,10 +10,20 @@ namespace Trinity.Encore.Framework.Core.Services
         where TService : class
         where TCallback : class, new()
     {
-        protected DuplexServiceClient(string uri)
-            : base(new TCallback(), new NetTcpBinding(SecurityMode.None, true), new EndpointAddress(uri))
+        protected DuplexServiceClient(TCallback callback, string uri)
+            : base(callback, new NetTcpBinding(SecurityMode.None, true), new EndpointAddress(uri))
         {
+            Contract.Requires(callback != null);
             Contract.Requires(!string.IsNullOrEmpty(uri));
+
+            CallbackChannel = callback;
         }
+
+        public TService ServiceChannel
+        {
+            get { return Channel; }
+        }
+
+        public TCallback CallbackChannel { get; private set; }
     }
 }

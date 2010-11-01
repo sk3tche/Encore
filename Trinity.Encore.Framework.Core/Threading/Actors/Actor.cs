@@ -39,9 +39,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private void Setup()
         {
-            var options = new DataflowBlockOptions(TaskScheduler.Default, 1, DataflowBlockOptions.UnboundedMessagesPerTask,
-                CancellationToken); // DataflowBlockOptions is immutable, so we can safely pass it along to both blocks.
-
+            var options = GetDefaultOptions(CancellationToken);
             IncomingMessages = new ActionBlock<Action>(x => HandleIncomingMessage(x), options);
             OutgoingMessages = new BroadcastBlock<Action>(x => x /* Delegates are immutable; no real cloning needed. */, options);
         }
@@ -113,6 +111,18 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             // Note that we do NOT set IncomingMessages and OutgoingMessages to null. This could cause problems
             // in other areas, as, in an asynchronous architecture, all components cannot know when another
             // has been canceled.
+        }
+
+        /// <summary>
+        /// Used for any cleanup routines that will be executed when the Actor is disposed.
+        /// </summary>
+        protected virtual void Cleanup()
+        {
+        }
+
+        public static DataflowBlockOptions GetDefaultOptions(CancellationToken token)
+        {
+            return new DataflowBlockOptions(TaskScheduler.Default, 1, DataflowBlockOptions.UnboundedMessagesPerTask, token);
         }
     }
 }

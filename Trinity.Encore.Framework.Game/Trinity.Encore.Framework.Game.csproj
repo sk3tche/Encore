@@ -63,6 +63,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks.Dataflow">
+      <HintPath>..\Dependencies\System.Threading.Tasks.Dataflow.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,6 +96,8 @@
     <Compile Include="Partitioning\QuadTree.cs" />
     <Compile Include="Partitioning\QuadTreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IAuthenticatableService.cs" />
+    <Compile Include="Services\IpcDevice.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trinity.Encore.Framework.Core\Trinity.Encore.Framework.Core.csproj">
