@@ -8,14 +8,14 @@ using Trinity.Encore.Framework.Core.IO;
 namespace Trinity.Encore.Framework.Game.IO
 {
     [ContractClass(typeof(ClientDbReaderContracts<>))]
-    public abstract class ClientDbReader<T>
+    public abstract class ClientDbReader<T> : BinaryFileReader
         where T : class, IClientDbRecord, new()
     {
         protected ClientDbReader(string fileName)
+            : base(fileName, Defines.Encoding)
         {
             Contract.Requires(!string.IsNullOrEmpty(fileName));
 
-            FileName = fileName;
             StringTable = new Dictionary<int, string>();
             Entries = new Dictionary<int, T>();
 
@@ -25,7 +25,6 @@ namespace Trinity.Encore.Framework.Game.IO
         [ContractInvariantMethod]
         private void Invariant()
         {
-            Contract.Invariant(!string.IsNullOrEmpty(FileName));
             Contract.Invariant(StringTable != null);
             Contract.Invariant(Entries != null);
         }
@@ -40,8 +39,6 @@ namespace Trinity.Encore.Framework.Game.IO
             get { return null; }
         }
 
-        public string FileName { get; private set; }
-
         public int RecordCount { get; protected set; }
 
         public int StringTableSize { get; protected set; }
@@ -50,22 +47,18 @@ namespace Trinity.Encore.Framework.Game.IO
 
         public Dictionary<int, T> Entries { get; private set; }
 
-        private void ReadFile()
+        protected override void Read(BinaryReader reader)
         {
-            var stream = File.Open(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using (var reader = new BinaryReader(stream, Defines.Encoding))
-            {
-                if (HeaderMagic != null)
-                    if (reader.ReadInt32() != HeaderMagic)
-                        throw new ClientDbException("Invalid client DB header magic number.");
+            if (HeaderMagic != null)
+                if (reader.ReadInt32() != HeaderMagic)
+                    throw new ClientDbException("Invalid client DB header magic number.");
 
-                var data = ReadData(reader);
+            var data = ReadData(reader);
 
-                if (StringReadMode == StringReadMode.StringTable)
-                    ReadStringTable(reader);
+            if (StringReadMode == StringReadMode.StringTable)
+                ReadStringTable(reader);
 
-                MapRecords(data);
-            }
+            MapRecords(data);
         }
 
         protected abstract byte[] ReadData(BinaryReader reader);

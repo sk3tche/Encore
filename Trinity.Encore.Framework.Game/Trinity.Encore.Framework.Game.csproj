@@ -81,6 +81,7 @@
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\IWorldEntity.cs" />
     <Compile Include="Identification\IdGenerator.cs" />
+    <Compile Include="IO\BinaryFileReader.cs" />
     <Compile Include="IO\Formats\ADBReader.cs" />
     <Compile Include="IO\ClientDbException.cs" />
     <Compile Include="IO\ClientDbReader.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="IO\Formats\M2Reader.cs" />
     <Compile Include="IO\Formats\MPQReader.cs" />
     <Compile Include="IO\Formats\PTCHReader.cs" />
-    <Compile Include="IO\Formats\SBTReader.cs" />
     <Compile Include="IO\Formats\TEXReader.cs" />
     <Compile Include="IO\Formats\TRSReader.cs" />
     <Compile Include="IO\Formats\WDLReader.cs" />
