@@ -174,7 +174,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             Contract.Requires(tuple.Item2 != null);
 
             // We really just do the same as for multi-entity searches, but return a single (or no) result.
-            var result = RecursiveSearch(tuple.Item1, null).SingleOrDefault();
+            var result = RecursiveSearch(tuple.Item1, null).FirstOrDefault();
             tuple.Item2(result); // Call back with the found entity.
         }
 
