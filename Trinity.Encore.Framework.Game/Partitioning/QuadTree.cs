@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using Microsoft.Xna.Framework;
 using Trinity.Encore.Framework.Game.Entities;
 
@@ -7,10 +8,12 @@ namespace Trinity.Encore.Framework.Game.Partitioning
     {
         public const int DepthThreshold = 6;
 
-        public QuadTree(BoundingBox bounds)
+        public QuadTree(BoundingBox bounds, int depthThreshold = DepthThreshold)
             : base(bounds)
         {
-            Partition(null, DepthThreshold, 0);
+            Contract.Requires(depthThreshold > 0);
+
+            Partition(depthThreshold, 0);
         }
     }
 }

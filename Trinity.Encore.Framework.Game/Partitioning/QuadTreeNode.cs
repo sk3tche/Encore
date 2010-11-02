@@ -91,8 +91,11 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             return false;
         }
 
-        public void Partition(QuadTreeNode node, int maxDepth, int startDepth)
+        public void Partition(int maxDepth, int startDepth)
         {
+            Contract.Requires(maxDepth > 0);
+            Contract.Requires(startDepth >= 0);
+
             var width = Length / 2;
             var height = Width / 2;
 
@@ -129,7 +132,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
 
                 for (var i = 0; i < 2; i++)
                     for (var j = 0; j < 2; j++)
-                        _children[i, j].Partition(this, maxDepth, startDepth);
+                        _children[i, j].Partition(maxDepth, startDepth);
             }
             else
                 _entities = new ConcurrentDictionary<EntityGuid, IWorldEntity>();

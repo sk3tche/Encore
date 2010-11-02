@@ -97,9 +97,6 @@
     <Compile Include="IO\Formats\WDLReader.cs" />
     <Compile Include="IO\Formats\WDTReader.cs" />
     <Compile Include="IO\Formats\WFXReader.cs" />
-    <Compile Include="IO\Formats\WLMReader.cs" />
-    <Compile Include="IO\Formats\WLQReader.cs" />
-    <Compile Include="IO\Formats\WLWReader.cs" />
     <Compile Include="IO\Formats\WMOReader.cs" />
     <Compile Include="IO\Formats\ZMPReader.cs" />
     <Compile Include="IO\IClientDbRecord.cs" />
