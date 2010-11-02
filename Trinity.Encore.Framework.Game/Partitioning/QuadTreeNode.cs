@@ -33,7 +33,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             Contract.Assume(cpus > 0);
             var options = GetOptions(ct, cpus);
 
-            AddEntityChannel = new ActionBlock<Tuple<IWorldEntity, Action<bool>>>(new Action<Tuple<IWorldEntity, Action<bool>>>(AddEntity), options);
+            AddEntityChannel = new ActionBlock<Tuple<IWorldEntity, Action<bool>>>(new Action<Tuple<IWorldEntity,Action<bool>>>(AddEntity), options);
             RemoveEntityChannel = new ActionBlock<Tuple<IWorldEntity, Action<bool>>>(new Action<Tuple<IWorldEntity, Action<bool>>>(RemoveEntity), options);
             FindEntityChannel = new ActionBlock<Tuple<Func<IWorldEntity, bool>, Action<IWorldEntity>>>(new Action<Tuple<Func<IWorldEntity, bool>, Action<IWorldEntity>>>(FindEntity), options);
             FindEntitiesChannel = new ActionBlock<Tuple<Func<IWorldEntity, bool>, Action<IEnumerable<IWorldEntity>>>>(new Action<Tuple<Func<IWorldEntity, bool>, Action<IEnumerable<IWorldEntity>>>>(FindEntities), options);

@@ -40,7 +40,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         private void Setup()
         {
             var options = GetOptions(CancellationToken);
-            IncomingMessages = new ActionBlock<Action>(x => HandleIncomingMessage(x), options);
+            IncomingMessages = new ActionBlock<Action>(new Action<Action>(HandleIncomingMessage), options);
             OutgoingMessages = new BroadcastBlock<Action>(x => x /* Delegates are immutable; no real cloning needed. */, options);
         }
 

@@ -37,7 +37,8 @@ namespace Trinity.Encore.Framework.Game.Services
             _client = clientCreator();
             _client.Open();
 
-            ServiceCalls = new ActionBlock<Action<TService>>(x => HandleServiceCall(x), GetOptions(CancellationToken));
+            ServiceCalls = new ActionBlock<Action<TService>>(new Action<Action<TService>>(HandleServiceCall),
+                GetOptions(CancellationToken));
         }
 
         public ITargetBlock<Action<TService>> ServiceCalls { get; private set; }
