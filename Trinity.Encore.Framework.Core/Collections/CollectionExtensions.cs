@@ -125,5 +125,17 @@ namespace Trinity.Encore.Framework.Core.Collections
 
             return enumerable.Count() == 0;
         }
+
+        public static IEnumerable<T> With<T>(this IEnumerable<T> source, Action<T> act)
+        {
+            Contract.Requires(source != null);
+            Contract.Requires(act != null);
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
+            foreach (var item in source)
+                act(item);
+
+            return source; // Return the sequence directly, to avoid deferred execution in an iterator.
+        }
     }
 }
