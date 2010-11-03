@@ -79,6 +79,8 @@
   <ItemGroup>
     <Compile Include="ClientBoxLevel.cs" />
     <Compile Include="ClientLocale.cs" />
+    <Compile Include="Cryptography\WowAuthParameters.cs" />
+    <Compile Include="Cryptography\SC2AuthParameters.cs" />
     <Compile Include="Defines.cs" />
     <Compile Include="Entities\EntityGuid.cs" />
     <Compile Include="Entities\IEntity.cs" />

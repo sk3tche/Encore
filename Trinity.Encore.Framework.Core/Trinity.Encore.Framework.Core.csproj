@@ -93,8 +93,6 @@
     <Compile Include="Cryptography\BigInteger.cs" />
     <Compile Include="Cryptography\CryptographicExtensions.cs" />
     <Compile Include="Cryptography\HashDataBroker.cs" />
-    <Compile Include="Cryptography\SRP\Parameters\SHA1Parameters.cs" />
-    <Compile Include="Cryptography\SRP\Parameters\SHA256Parameters.cs" />
     <Compile Include="Cryptography\SRP\SRPBase.cs" />
     <Compile Include="Cryptography\SRP\SRPClient.cs" />
     <Compile Include="Cryptography\SRP\SRPParameters.cs" />

@@ -24,6 +24,15 @@ namespace Trinity.Encore.Framework.Game.Partitioning
 
         private const int South = 1;
 
+        [ContractInvariantMethod]
+        private void Invariant()
+        {
+            Contract.Invariant(AddEntityChannel != null);
+            Contract.Invariant(RemoveEntityChannel != null);
+            Contract.Invariant(FindEntityChannel != null);
+            Contract.Invariant(FindEntitiesChannel != null);
+        }
+
         public QuadTreeNode(BoundingBox bounds, CancellationToken ct)
             : base(ct)
         {

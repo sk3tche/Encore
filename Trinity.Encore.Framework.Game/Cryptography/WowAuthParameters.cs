@@ -1,12 +1,14 @@
 using System.Security.Cryptography;
+using Trinity.Encore.Framework.Core.Cryptography;
+using Trinity.Encore.Framework.Core.Cryptography.SRP;
 
-namespace Trinity.Encore.Framework.Core.Cryptography.SRP.Parameters
+namespace Trinity.Encore.Framework.Game.Cryptography
 {
-    public sealed class SHA1Parameters : SRPParameters
+    public sealed class WowAuthParameters : SRPParameters
     {
         public const int KeySize = 32;
 
-        public SHA1Parameters(SRPVersion version, bool caseSensitive)
+        public WowAuthParameters(SRPVersion version, bool caseSensitive)
             : base(version, caseSensitive)
         {
         }
@@ -18,9 +20,9 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP.Parameters
             Modulus = new BigInteger("B79B3E2A87823CAB8F5EBFBF8EB10108535006298B5BADBD5B53E1895E644B89");
         }
 
-        public static SHA1Parameters Default
+        public static WowAuthParameters Default
         {
-            get { return new SHA1Parameters(SRPVersion.SRP6A, true); }
+            get { return new WowAuthParameters(SRPVersion.SRP6, true); }
         }
 
         public override int KeyLength
