@@ -101,7 +101,6 @@
     <Compile Include="IO\Formats\TEXReader.cs" />
     <Compile Include="IO\Formats\WDLReader.cs" />
     <Compile Include="IO\Formats\WDTReader.cs" />
-    <Compile Include="IO\Formats\WFXReader.cs" />
     <Compile Include="IO\Formats\WMOReader.cs" />
     <Compile Include="IO\Formats\ZMPReader.cs" />
     <Compile Include="IO\IClientDbRecord.cs" />
