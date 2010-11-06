@@ -20,13 +20,10 @@ namespace Trinity.Encore.Framework.Game.Services
 
         private readonly Func<DuplexServiceClient<TService, TCallback>> _creator;
 
-        private readonly Queue<Action<TService>> _msgQueue = new Queue<Action<TService>>();
-
         [ContractInvariantMethod]
         private void Invariant()
         {
             Contract.Invariant(_creator != null);
-            Contract.Invariant(_msgQueue != null);
         }
 
         public IpcDevice(Func<DuplexServiceClient<TService, TCallback>> clientCreator)
@@ -37,22 +34,14 @@ namespace Trinity.Encore.Framework.Game.Services
             _client = clientCreator();
             _client.Open();
 
-            ServiceCalls = new ActionBlock<Action<TService>>(new Action<Action<TService>>(HandleServiceCall),
-                GetOptions(CancellationToken));
+            ServiceCalls = new TargetPort<Action<TService>>(new ActionBlock<Action<TService>>(new Action<Action<TService>>(HandleServiceCall), GetOptions(CancellationToken)));
         }
 
-        public ITargetBlock<Action<TService>> ServiceCalls { get; private set; }
+        public TargetPort<Action<TService>> ServiceCalls { get; private set; }
 
         private void HandleServiceCall(Action<TService> call)
         {
             Contract.Requires(call != null);
-
-            // Process any calls that previously failed.
-            while (!_msgQueue.IsEmpty())
-            {
-                var msg = _msgQueue.Dequeue();
-                msg(_client.ServiceChannel);
-            }
 
             try
             {
@@ -61,10 +50,7 @@ namespace Trinity.Encore.Framework.Game.Services
             catch (Exception ex)
             {
                 if (ex is CommunicationException)
-                {
-                    _msgQueue.Enqueue(call);
                     IncomingMessages.Post(Reconnect);
-                }
 
                 // Register, but ignore the exception.
                 ExceptionManager.RegisterException(ex, this);

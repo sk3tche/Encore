@@ -28,9 +28,11 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             Task.Factory.StartNew(RunInternal, CancellationToken);
         }
 
-        protected Agent(CancellationToken cancellationToken)
-            : base(cancellationToken)
+        protected Agent(CancellationTokenSource cancellationTokenSource)
+            : base(cancellationTokenSource)
         {
+            Contract.Requires(cancellationTokenSource != null);
+
             StartExecution();
         }
 

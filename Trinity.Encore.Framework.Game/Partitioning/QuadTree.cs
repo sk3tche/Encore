@@ -16,12 +16,9 @@ namespace Trinity.Encore.Framework.Game.Partitioning
         public const int DefaultDepthThreshold = 6;
 
         public QuadTree(BoundingBox bounds, int depthThreshold = DefaultDepthThreshold)
-            : base(bounds, new CancellationToken())
+            : base(bounds, new CancellationTokenSource())
         {
             Contract.Requires(depthThreshold > 0);
-
-            // We want to cancel all nodes in the tree when this instance is canceled.
-            CancellationTokenSource = CancellationToken.CreateLinkedSource();
 
             Partition(depthThreshold, 0);
         }
