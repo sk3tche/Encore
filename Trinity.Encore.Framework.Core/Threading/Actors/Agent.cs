@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using Trinity.Encore.Framework.Core.Exceptions;
+using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
@@ -78,6 +79,8 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         /// </summary>
         protected void ScheduleRun()
         {
+            this.ThrowIfDisposed();
+
             if (_state == (int)AgentState.Running)
                 throw new InvalidOperationException("The agent is already running.");
 

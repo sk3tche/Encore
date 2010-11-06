@@ -94,6 +94,8 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             Contract.Requires(other != null);
             Contract.Ensures(Contract.Result<IDisposable>() != null);
 
+            this.ThrowIfDisposed();
+
             return OutgoingMessages.Link(other.IncomingMessages, unlinkAfterOneMsg);
         }
 
