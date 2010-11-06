@@ -45,7 +45,10 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         private void RunInternal()
         {
             if (IsDisposed)
+            {
+                _state = (int)AgentState.Stopped;
                 return;
+            }
 
             var runAgain = false;
 
