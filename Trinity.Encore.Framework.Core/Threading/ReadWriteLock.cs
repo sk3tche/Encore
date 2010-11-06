@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Threading;
+using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Core.Threading
 {
@@ -24,17 +25,17 @@ namespace Trinity.Encore.Framework.Core.Threading
             Contract.Invariant(_writeGuard != null);
         }
 
-        public IDisposable GuardRead()
+        public IDisposableResource GuardRead()
         {
-            Contract.Ensures(Contract.Result<IDisposable>() != null);
+            Contract.Ensures(Contract.Result<IDisposableResource>() != null);
 
             _readGuard.Guard();
             return _readGuard;
         }
 
-        public IDisposable GuardWrite()
+        public IDisposableResource GuardWrite()
         {
-            Contract.Ensures(Contract.Result<IDisposable>() != null);
+            Contract.Ensures(Contract.Result<IDisposableResource>() != null);
 
             _writeGuard.Guard();
             return _writeGuard;

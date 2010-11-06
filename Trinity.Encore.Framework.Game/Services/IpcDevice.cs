@@ -77,10 +77,15 @@ namespace Trinity.Encore.Framework.Game.Services
             Connect();
         }
 
-        protected override void Cleanup()
+        protected override void Dispose(bool disposing)
         {
+            if (IsDisposed)
+                return;
+
             if (_client != null)
                 Disconnect();
+
+            base.Dispose(disposing);
         }
     }
 }

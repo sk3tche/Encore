@@ -4,10 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Trinity.Encore.Framework.Core.Exceptions;
+using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
-    public abstract class Actor : IDisposable
+    public abstract class Actor : IDisposableResource
     {
         /// <summary>
         /// Used to post messages to run in this Actor's synchronization context. This block always
@@ -61,6 +62,11 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         {
         }
 
+        ~Actor()
+        {
+            Dispose(false);
+        }
+
         private void HandleIncomingMessage(Action act)
         {
             Contract.Requires(act != null);
@@ -91,6 +97,15 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             return OutgoingMessages.Link(other.IncomingMessages, unlinkAfterOneMsg);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (IsDisposed)
+                return;
+
+            CancellationTokenSource.Cancel();
+            IsDisposed = true;
+        }
+
         /// <summary>
         /// Disposes of the Actor instance.
         /// 
@@ -99,22 +114,11 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         /// </summary>
         public void Dispose()
         {
-            CancellationTokenSource.Cancel();
-
-            // Note that we do NOT set IncomingMessages and OutgoingMessages to null. This could cause problems
-            // in other areas, as, in an asynchronous architecture, all components cannot know when another
-            // has been canceled.
-
-            // Run cleanup routines, if defined in a deriving class.
-            Cleanup();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Used for any cleanup routines that will be executed when the Actor is disposed.
-        /// </summary>
-        protected virtual void Cleanup()
-        {
-        }
+        public bool IsDisposed { get; private set; }
 
         public static DataflowBlockOptions GetOptions(CancellationToken token, int maxDegreeOfParallelism = 1,
             int maxMessagesPerTask = DataflowBlockOptions.UnboundedMessagesPerTask, TaskScheduler scheduler = null)

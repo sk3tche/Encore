@@ -122,6 +122,8 @@
     <Compile Include="Reflection\ReflectionException.cs" />
     <Compile Include="Reflection\ReflectionExtensions.cs" />
     <Compile Include="Reflection\ReflectionUtilities.cs" />
+    <Compile Include="Runtime\IDisposableResource.cs" />
+    <Compile Include="Runtime\RuntimeExtensions.cs" />
     <Compile Include="Security\IPermissible.cs" />
     <Compile Include="Security\Permission.cs" />
     <Compile Include="Security\RestrictedObject.cs" />

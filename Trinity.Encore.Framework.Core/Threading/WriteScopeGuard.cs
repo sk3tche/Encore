@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
+using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Core.Threading
 {
@@ -8,7 +9,7 @@ namespace Trinity.Encore.Framework.Core.Threading
     /// 
     /// Intended for use with the C# "using" statement.
     /// </summary>
-    internal sealed class WriteScopeGuard : IDisposable
+    internal sealed class WriteScopeGuard : IDisposableResource
     {
         private readonly ReadWriteLock _lock;
 
@@ -25,14 +26,33 @@ namespace Trinity.Encore.Framework.Core.Threading
             _lock = rwLock;
         }
 
+        ~WriteScopeGuard()
+        {
+            Dispose(false);
+        }
+
         public void Guard()
         {
+            this.ThrowIfDisposed();
+
             _lock.EnterWriteLock();
         }
 
         public void Dispose()
         {
-            _lock.ExitWriteLock();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        public void Dispose(bool disposing)
+        {
+            if (IsDisposed)
+                return;
+
+            _lock.ExitWriteLock();
+            IsDisposed = true;
+        }
+
+        public bool IsDisposed { get; private set; }
     }
 }

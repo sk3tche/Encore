@@ -5,7 +5,9 @@ using Trinity.Encore.Framework.Core.InteropServices;
 namespace Trinity.Encore.Framework.Game.Entities
 {
     /// <summary>
-    /// Rpresents the GUID of an object in the game world.
+    /// Represents the spawn ID of an object in the game world.
+    /// 
+    /// The ID may not always be world-unique, as some types of GUIDs are map-local.
     /// </summary>
     public struct EntityGuid : IEquatable<EntityGuid>
     {
