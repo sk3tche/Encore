@@ -44,6 +44,9 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private void RunInternal()
         {
+            if (IsDisposed)
+                return;
+
             var runAgain = false;
 
             try
