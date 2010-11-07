@@ -12,7 +12,7 @@ namespace Trinity.Encore.Framework.Game.IO
         where T : class, IClientDbRecord, new()
     {
         protected ClientDbReader(string fileName)
-            : base(fileName, Defines.Encoding)
+            : base(fileName, System.Text.Encoding.UTF8)
         {
             Contract.Requires(!string.IsNullOrEmpty(fileName));
 
@@ -67,7 +67,7 @@ namespace Trinity.Encore.Framework.Game.IO
         {
             Contract.Requires(data != null);
 
-            using (var reader = new BinaryReader(new MemoryStream(data), Defines.Encoding))
+            using (var reader = new BinaryReader(new MemoryStream(data), Encoding))
             {
                 for (var i = 0; i < RecordCount; i++)
                 {

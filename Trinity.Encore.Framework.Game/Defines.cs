@@ -5,13 +5,16 @@ namespace Trinity.Encore.Framework.Game
 {
     public static class Defines
     {
-        public static Encoding Encoding
+        public static class Protocol
         {
-            get
+            public static Encoding Encoding
             {
-                Contract.Ensures(Contract.Result<Encoding>() != null);
+                get
+                {
+                    Contract.Ensures(Contract.Result<Encoding>() != null);
 
-                return Encoding.UTF8;
+                    return Encoding.UTF8;
+                }
             }
         }
     }
