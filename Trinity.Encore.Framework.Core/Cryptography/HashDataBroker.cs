@@ -5,6 +5,7 @@ using Trinity.Encore.Framework.Core.Cryptography.SRP;
 
 namespace Trinity.Encore.Framework.Core.Cryptography
 {
+    [Serializable]
     public sealed class HashDataBroker : IEquatable<HashDataBroker>
     {
         public HashDataBroker(byte[] data)

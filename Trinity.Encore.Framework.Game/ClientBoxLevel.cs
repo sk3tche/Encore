@@ -1,8 +1,11 @@
+using System;
+
 namespace Trinity.Encore.Framework.Game
 {
     /// <summary>
     /// The expansion levels of the game.
     /// </summary>
+    [Serializable]
     public enum ClientBoxLevel
     {
         WorldOfWarcraft = 0,

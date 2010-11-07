@@ -9,6 +9,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
     /// This class is by magnitude faster than System.Random and is preferred.
     /// </summary>
     // This class was written by colgreen of the SharpNEAT project and is under GPL v2/LGPL.
+    [Serializable]
     public sealed class FastRandom
     {
         /// <summary>

@@ -1,5 +1,8 @@
+using System;
+
 namespace Trinity.Encore.Framework.Game
 {
+    [Serializable]
     public enum ClientLocale
     {
         English = 0,

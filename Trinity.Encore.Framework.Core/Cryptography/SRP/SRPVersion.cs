@@ -1,8 +1,11 @@
+using System;
+
 namespace Trinity.Encore.Framework.Core.Cryptography.SRP
 {
     /// <summary>
     /// SRP algorithm version.
     /// </summary>
+    [Serializable]
     public enum SRPVersion : byte
     {
         /// <summary>

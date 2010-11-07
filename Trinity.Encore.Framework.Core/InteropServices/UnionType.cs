@@ -6,6 +6,7 @@ namespace Trinity.Encore.Framework.Core.InteropServices
     /// <summary>
     /// A structure which can represent multiple data types simultaneously.
     /// </summary>
+    [Serializable]
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
     public struct UnionType : IComparable<UnionType>, IEquatable<UnionType>
     {

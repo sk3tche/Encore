@@ -9,6 +9,7 @@ namespace Trinity.Encore.Framework.Game.Entities
     /// 
     /// The ID may not always be world-unique, as some types of GUIDs are map-local.
     /// </summary>
+    [Serializable]
     public struct EntityGuid : IEquatable<EntityGuid>
     {
         public static readonly EntityGuid Zero = new EntityGuid(0);

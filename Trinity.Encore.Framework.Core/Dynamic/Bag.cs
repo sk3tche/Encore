@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Dynamic;
@@ -8,6 +9,7 @@ namespace Trinity.Encore.Framework.Core.Dynamic
     /// <summary>
     /// Represents a data bag to which properties can be dynamically added/retrieved/removed at runtime.
     /// </summary>
+    [Serializable]
     public sealed class Bag : DynamicObject
     {
         private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
