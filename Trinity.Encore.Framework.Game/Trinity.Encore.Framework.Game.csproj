@@ -113,6 +113,7 @@
     <Compile Include="Partitioning\QuadTree.cs" />
     <Compile Include="Partitioning\QuadTreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protocol\Opcode.cs" />
     <Compile Include="Services\IAuthenticatableService.cs" />
     <Compile Include="Services\IpcDevice.cs" />
   </ItemGroup>
