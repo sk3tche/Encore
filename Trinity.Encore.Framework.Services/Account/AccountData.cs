@@ -32,5 +32,8 @@ namespace Trinity.Encore.Framework.Services.Account
 
         [DataMember]
         public IPAddress LastIP { get; set; }
+
+        [DataMember]
+        public long Recruiter { get; set; }
     }
 }
