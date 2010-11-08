@@ -11,6 +11,6 @@ namespace Trinity.Encore.Framework.Game
         WorldOfWarcraft = 0,
         TheBurningCrusade = 1,
         WrathOfTheLichKing = 2,
-        Cataclysm = 3
+        Cataclysm = 3,
     }
 }

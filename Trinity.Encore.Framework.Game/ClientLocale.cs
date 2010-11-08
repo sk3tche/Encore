@@ -13,6 +13,6 @@ namespace Trinity.Encore.Framework.Game
         ChineseTraditional = 5,
         SpanishEspanol = 6,
         SpanishMexican = 7,
-        Russian = 8
+        Russian = 8,
     }
 }

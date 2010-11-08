@@ -15,6 +15,6 @@ namespace Trinity.Encore.Framework.Core.Initialization
         Seventh,
         Eighth,
         Ninth,
-        Tenth
+        Tenth,
     }
 }

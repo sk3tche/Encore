@@ -17,6 +17,6 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
         /// 
         /// It defines k = H(N, g) rather than k = 3.
         /// </summary>
-        SRP6A
+        SRP6A,
     }
 }
