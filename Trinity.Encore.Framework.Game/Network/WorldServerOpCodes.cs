@@ -371,6 +371,10 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_UPDATE_OBJECT.
         /// </summary>
         ServerObjectUpdate = 0x8BF0,
+        /// <summary>
+        /// SMSG_DESTROY_OBJECT.
+        /// </summary>
+        ServerObjectDestroy = 0xE310,
 
         // Movement:
         /// <summary>
@@ -455,16 +459,6 @@ namespace Trinity.Encore.Framework.Game.Network
         /// CMSG_ADD_FRIEND.
         /// </summary>
         ClientAddFriend = 0xCAB1,
-
-        // Object:
-        /// <summary>
-        /// SMSG_UPDATE_OBJECT.
-        /// </summary>
-        ServerObjectUpdate = 0x8BF0,
-        /// <summary>
-        /// SMSG_DESTROY_OBJECT.
-        /// </summary>
-        ServerObjectDestroy = 0xE310,
 
         // Spells:
         /// <summary>
