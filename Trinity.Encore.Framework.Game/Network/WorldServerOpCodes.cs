@@ -44,7 +44,11 @@ namespace Trinity.Encore.Framework.Game.Network
         /// <summary>
         /// CMSG_PING.
         /// </summary>
-        ServerConnectionPing = 0x1001,
+        ClientConnectionPing = 0x1001,
+        /// <summary>
+        /// SMSG_PONG.
+        /// </summary>
+        ServerConnectionPong = 0xC500,
         /// <summary>
         /// CMSG_REDIRECT_ERROR.
         /// </summary>

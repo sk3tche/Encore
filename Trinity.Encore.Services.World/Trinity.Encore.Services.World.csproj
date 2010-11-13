@@ -69,8 +69,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\ConnectionHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trinity.Encore.Framework.Core\Trinity.Encore.Framework.Core.csproj">
+      <Project>{78BB9167-FD73-451C-B007-0718DBDF0E14}</Project>
+      <Name>Trinity.Encore.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Encore.Framework.Game\Trinity.Encore.Framework.Game.csproj">
+      <Project>{75E460A8-17CF-4005-813A-E1C2E714BDEA}</Project>
+      <Name>Trinity.Encore.Framework.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Encore.Framework.Network\Trinity.Encore.Framework.Network.csproj">
+      <Project>{8D03D581-BE90-4714-AC46-50758EE1DD95}</Project>
+      <Name>Trinity.Encore.Framework.Network</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
