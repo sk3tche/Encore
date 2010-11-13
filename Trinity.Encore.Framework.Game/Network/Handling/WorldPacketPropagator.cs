@@ -8,19 +8,16 @@ using Trinity.Encore.Framework.Network.Handling;
 
 namespace Trinity.Encore.Framework.Game.Network.Handling
 {
-    public sealed class WorldPacketPropagator : PacketPropagatorBase<WorldPacketHandlerAttribute, IncomingWorldPacket>,
-        IPacketPropagator
+    public sealed class WorldPacketPropagator : PacketPropagatorBase<WorldPacketHandlerAttribute, IncomingWorldPacket>
     {
-        private static readonly LogProxy _log = new LogProxy("WorldPacketPropagator");
-
         public const int HeaderSize = 2 + 4; // Length and opcode.
 
-        public int HeaderLength
+        public override int HeaderLength
         {
             get { return HeaderSize;  }
         }
 
-        public PacketHeader HandleHeader(IClient client, byte[] header)
+        public override PacketHeader HandleHeader(IClient client, byte[] header)
         {
             Contract.Assume(header.Length == HeaderSize);
 
@@ -33,37 +30,9 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
             return new PacketHeader(length, opCode);
         }
 
-        public void HandlePayload(IClient client, int opCode, byte[] payload, int length)
+        protected override IncomingWorldPacket CreatePacket(int opCode, byte[] payload, int length)
         {
-            var handler = GetHandler(opCode);
-            if (handler == null)
-            {
-                client.Disconnect();
-                _log.Warn("Client {0} sent an unhandled opcode {1} - disconnected.", client, opCode.ToString("X8"));
-                return;
-            }
-
-            var permission = handler.Permission;
-            Contract.Assume(permission != null);
-
-            if (!client.HasPermission(permission))
-            {
-                client.Disconnect();
-                _log.Warn("Client {0} sent opcode {1} which requires permission {2} - disconnected.", client,
-                    opCode.ToString("X8"), permission.Name);
-                return;
-            }
-
-            try
-            {
-                var packet = new IncomingWorldPacket((WorldServerOpCodes)opCode, payload, length);
-                handler.Invoke(client, packet);
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.RegisterException(ex, client);
-                client.Disconnect();
-            }
+            return new IncomingWorldPacket((WorldServerOpCodes)opCode, payload, length);
         }
     }
 }

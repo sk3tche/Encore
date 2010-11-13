@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using Trinity.Encore.Framework.Core.Collections;
+using Trinity.Encore.Framework.Core.Exceptions;
+using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Core.Reflection;
+using Trinity.Encore.Framework.Game.Network.Transmission;
 using Trinity.Encore.Framework.Network.Connectivity;
 using Trinity.Encore.Framework.Network.Handling;
 using Trinity.Encore.Framework.Network.Security;
@@ -12,10 +15,13 @@ using Trinity.Encore.Framework.Network.Transmission;
 
 namespace Trinity.Encore.Framework.Game.Network.Handling
 {
-    public abstract class PacketPropagatorBase<TAttribute, TPacket>
+    [ContractClass(typeof(PacketPropagatorBaseContracts<,>))]
+    public abstract class PacketPropagatorBase<TAttribute, TPacket> : IPacketPropagator
         where TAttribute : PacketHandlerAttribute
         where TPacket : IncomingPacket
     {
+        private static readonly LogProxy _log = new LogProxy("PacketPropagatorBase");
+
         private readonly ConcurrentDictionary<int, PacketHandler<TPacket>> _handlers =
             new ConcurrentDictionary<int, PacketHandler<TPacket>>();
 
@@ -94,6 +100,62 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
             PacketHandler<TPacket> handler;
             _handlers.TryGetValue(opCode, out handler);
             return handler; // Can be null.
+        }
+
+        protected abstract TPacket CreatePacket(int opCode, byte[] payload, int length);
+
+        public void HandlePayload(IClient client, int opCode, byte[] payload, int length)
+        {
+            var handler = GetHandler(opCode);
+            if (handler == null)
+            {
+                client.Disconnect();
+                _log.Warn("Client {0} sent an unhandled opcode {1} - disconnected.", client, opCode.ToString("X8"));
+                return;
+            }
+
+            var permission = handler.Permission;
+            Contract.Assume(permission != null);
+
+            if (!client.HasPermission(permission))
+            {
+                client.Disconnect();
+                _log.Warn("Client {0} sent opcode {1} which requires permission {2} - disconnected.", client,
+                    opCode.ToString("X8"), permission.Name);
+                return;
+            }
+
+            try
+            {
+                var packet = CreatePacket(opCode, payload, length);
+                handler.Invoke(client, packet);
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.RegisterException(ex, client);
+                client.Disconnect();
+            }
+        }
+
+        public abstract int HeaderLength { get; }
+
+        public abstract PacketHeader HandleHeader(IClient client, byte[] header);
+    }
+
+    [ContractClassFor(typeof(PacketPropagatorBase<,>))]
+    public abstract class PacketPropagatorBaseContracts<TAttribute, TPacket> : PacketPropagatorBase<TAttribute, TPacket>
+        where TAttribute : PacketHandlerAttribute
+        where TPacket : IncomingPacket
+    {
+        protected override TPacket CreatePacket(int opCode, byte[] payload, int length)
+        {
+            Contract.Requires(opCode >= 0);
+            Contract.Requires(payload != null);
+            Contract.Requires(length >= 0);
+            Contract.Requires(length < payload.Length);
+            Contract.Ensures(Contract.Result<TPacket>() != null);
+
+            return null;
         }
     }
 }
