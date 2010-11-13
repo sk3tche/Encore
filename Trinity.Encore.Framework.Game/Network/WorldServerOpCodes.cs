@@ -39,6 +39,10 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_NEW_WORLD.
         /// </summary>
         ServerSessionNewWorld = 0x4A5D,
+        /// <summary>
+        /// SMSG_TIME_SYNC_REQ.
+        /// </summary>
+        ServerTimeSyncRequest = 0xA318,
 
         // Connection:
         /// <summary>
@@ -135,6 +139,54 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_CHAT_WRONG_FACTION.
         /// </summary>
         ServerChatWrongFaction = 0xE2D4,
+        /// <summary>
+        /// CMSG_CHAT_MSG_SAY.
+        /// </summary>
+        ClientChatSay = 0x5200,
+        /// <summary>
+        /// CMSG_CHAT_MSG_YELL.
+        /// </summary>
+        ClientChatYell = 0x7200,
+        /// <summary>
+        /// SMSG_MESSAGECHAT.
+        /// </summary>
+        ServerChatMessage = 0x0BD0,
+        /// <summary>
+        /// SMSG_CHANNEL_NOTIFY.
+        /// </summary>
+        ServerNotifyChannel = 0x6358,
+        /// <summary>
+        /// SMSG_CHANNEL_LIST.
+        /// </summary>
+        ServerListChannel = 0x0A5D,
+        /// <summary>
+        /// SMSG_CHANNEL_MEMBER_COUNT.
+        /// </summary>
+        ServerChannelMemberCount = 0xAAB1,
+        /// <summary>
+        /// SMSG_TEXT_EMOTE.
+        /// </summary>
+        ServerTextEmote = 0x83D8,
+        /// <summary>
+        /// SMSG_ZONE_UNDER_ATTACK.
+        /// </summary>
+        ServerAlertZoneUnderAttack = 0x6215,
+        /// <summary>
+        /// SMSG_DEFENSE_MESSAGE.
+        /// </summary>
+        ServerDefenseMessage = 0xA27C,
+        /// <summary>
+        /// SMSG_SERVER_MESSAGE.
+        /// </summary>
+        ServerServerMessage = 0x221C,
+        /// <summary>
+        /// SMSG_RAID_INSTANCE_MESSAGE.
+        /// </summary>
+        ServerRaidInstanceMessage = 0xEB78,
+        /// <summary>
+        /// SMSG_GM_MESSAGECHAT.
+        /// </summary>
+        ServerGMChatMessage = 0xE3B0,
 
         // Arena teams:
         /// <summary>
@@ -163,6 +215,30 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_TRIGGER_CINEMATIC.
         /// </summary>
         ServerCinematicTrigger = 0x6310,
+        /// <summary>
+        /// SMSG_PLAY_SOUND.
+        /// </summary>
+        ServerPlaySound = 0xA2D1,
+        /// <summary>
+        /// SMSG_ACTION_BUTTONS.
+        /// </summary>
+        ServerActionButtons = 0xEB74,
+        /// <summary>
+        /// CMSG_PLAYED_TIME.
+        /// </summary>
+        ClientPlayedTime = 0x8355,
+        /// <summary>
+        /// SMSG_PLAYED_TIME.
+        /// </summary>
+        ServerPlayedTime = 0x6BF8,
+        /// <summary>
+        /// SMSG_MOTD
+        /// </summary>
+        ServerMessageOfTheDay = 0x4394,
+        /// <summary>
+        /// SMSG_NOTIFICATION.
+        /// </summary>
+        ServerNotification = 0x0A31,
 
         // Cache:
         /// <summary>
@@ -170,9 +246,21 @@ namespace Trinity.Encore.Framework.Game.Network
         /// </summary>
         ServerCacheVersion = 0xE2B8,
         /// <summary>
+        /// CMSG_CREATURE_QUERY.
+        /// </summary>
+        ClientQueryCreature = 0xE3D5,
+        /// <summary>
         /// SMSG_CREATURE_QUERY_RESPONSE.
         /// </summary>
         ServerQueryCreatureResult = 0x83B8,
+        /// <summary>
+        /// CMSG_NAME_QUERY.
+        /// </summary>
+        ClientQueryName = 0x4354,
+        /// <summary>
+        /// SMSG_NAME_QUERY_RESPONSE.
+        /// </summary>
+        ServerQueryNameResponse = 0x0A14,
 
         // Realms:
         /// <summary>
@@ -227,6 +315,10 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_ACCOUNT_DATA_TIMES.
         /// </summary>
         ServerAccountDataTimesResult = 0x82B5,
+        /// <summary>
+        /// CMSG_UPDATE_ACCOUNT_DATA.
+        /// </summary>
+        ClientUpdateAccountData = 0xEB55,
 
         // Experience:
         /// <summary>
@@ -241,6 +333,10 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_LEVELUP_INFO.
         /// </summary>
         ServerExperienceLevelUpInfo = 0xCB15,
+        /// <summary>
+        /// SMSG_XP_GAIN.
+        /// </summary>
+        ServerXPGained = 0xC3BC,
 
         // Calendar:
         /// <summary>
@@ -280,6 +376,140 @@ namespace Trinity.Encore.Framework.Game.Network
         /// <summary>
         /// SMSG_MONSTER_MOVE_TRANSPORT.
         /// </summary>
-        MovementMonsterMoveTransport = 0x21C
+        MovementMonsterMoveTransport = 0x21C,
+        /// <summary>
+        /// MSG_MOVE_START_FORWARD.
+        /// </summary>
+        MovementStartForward = 0x0B31,
+        /// <summary>
+        /// MSG_MOVE_START_BACKWARD
+        /// </summary>
+        MovementStartBackwards = 0x0B50,
+        /// <summary>
+        /// MSG_MOVE_STOP.
+        /// </summary>
+        MovementStop = 0x433C,
+        /// <summary>
+        /// MSG_MOVE_START_STRAFE_LEFT.
+        /// </summary>
+        MovementStartLeftStrafe = 0xE395,
+        /// <summary>
+        /// MSG_MOVE_START_STRAFE_RIGHT.
+        /// </summary>
+        MovementStartRightStrafe = 0x6BF4,
+        /// <summary>
+        /// MSG_MOVE_STOP_STRAFE.
+        /// </summary>
+        MovementStopStrafe = 0xA31C,
+        /// <summary>
+        /// MSG_MOVE_JUMP.
+        /// </summary>
+        MovementJump = 0x0A39,
+        /// <summary>
+        /// MSG_MOVE_START_TURN_LEFT.
+        /// </summary>
+        MovementStartLeftTurn = 0xAA90,
+        /// <summary>
+        /// MSG_MOVE_START_TURN_RIGHT.
+        /// </summary>
+        MovementStartRightTurn = 0x4BFC,
+        /// <summary>
+        /// MSG_MOVE_STOP_TURN.
+        /// </summary>
+        MovementStopTurning = 0xC39D,
+        /// <summary>
+        /// MSG_MOVE_SET_RUN_MODE.
+        /// </summary>
+        MovementRunMode = 0xE339,
+        /// <summary>
+        /// MSG_MOVE_SET_WALK_MODE.
+        /// </summary>
+        MovementWalkMode = 0x8A74,
+        /// <summary>
+        /// MSG_MOVE_FALL_LAND.
+        /// </summary>
+        MovementFallLand = 0xAA58,
+        /// <summary>
+        /// MSG_MOVE_HEARTBEAT.
+        /// </summary>
+        MovementHeartbeat = 0x0B38,
+
+        // Social:
+        /// <summary>
+        /// CMSG_CONTACT_LIST.
+        /// </summary>
+        ClientContactList = 0x63D4,
+        /// <summary>
+        /// SMSG_CONTACT_LIST.
+        /// </summary>
+        ServerContactListResponse = 0x439C,
+        /// <summary>
+        /// SMSG_FRIEND_STATUS.
+        /// </summary>
+        ServerFriendStatus = 0xBF16,
+        /// <summary>
+        /// CMSG_ADD_FRIEND.
+        /// </summary>
+        ClientAddFriend = 0xCAB1,
+
+        // Object:
+        /// <summary>
+        /// SMSG_UPDATE_OBJECT.
+        /// </summary>
+        ServerObjectUpdate = 0x8BF0,
+        /// <summary>
+        /// SMSG_DESTROY_OBJECT.
+        /// </summary>
+        ServerObjectDestroy = 0xE310,
+
+        // Spells:
+        /// <summary>
+        /// SMSG_INITIAL_SPELLS.
+        /// </summary>
+        ServerInitialSpells = 0xC2B0,
+        /// <summary>
+        /// SMSG_LEARNED_SPELL.
+        /// </summary>
+        ServerLearnedSpell = 0xCAFC,
+
+        // LFG:
+        /// <summary>
+        /// SMSG_LFG_BOOT_PLAYER.
+        /// </summary>
+        ServerLFGBootPlayer = 0x8399,
+
+        // Instances:
+        /// <summary>
+        /// SMSG_INSTANCE_RESET.
+        /// </summary>
+        ServerResetInstance = 0x2B34,
+        /// <summary>
+        /// SMSG_INSTANCE_RESET_FAILED.
+        /// </summary>
+        ServerInstanceResetFailed = 0xCAB8,
+        /// <summary>
+        /// SMSG_UPDATE_LAST_INSTANCE.
+        /// </summary>
+        ServerUpdateLastInstance = 0x2B91,
+        /// <summary>
+        /// SMSG_UPDATE_INSTANCE_OWNERSHIP.
+        /// </summary>
+        ServerUpdateInstanceOwnership = 0xCB5D,
+        /// <summary>
+        /// SMSG_RESET_FAILED_NOTIFY.
+        /// </summary>
+        ServerResetFailedNotification = 0xA258,
+
+        // Titles:
+        /// <summary>
+        /// SMSG_TITLE_EARNED.
+        /// </summary>
+        ServerEarnedTitle = 0x0B91,
+
+        // Achievements:
+        /// <summary>
+        /// SMSG_SERVER_FIRST_ACHIEVEMENT.
+        /// </summary>
+        ServerAlertRealmFirstAchievement = 0xCA10,
     }
 }
