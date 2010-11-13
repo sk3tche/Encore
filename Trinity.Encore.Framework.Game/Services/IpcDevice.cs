@@ -53,7 +53,7 @@ namespace Trinity.Encore.Framework.Game.Services
                     IncomingMessages.Post(Reconnect);
 
                 // Register, but ignore the exception.
-                ExceptionManager.RegisterException(ex, this);
+                ExceptionManager.RegisterException(ex);
             }
         }
 

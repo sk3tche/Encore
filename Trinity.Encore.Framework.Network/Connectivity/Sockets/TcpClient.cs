@@ -252,7 +252,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
 
                 if (ex is SocketException)
                 {
-                    ExceptionManager.RegisterException(ex, this);
+                    ExceptionManager.RegisterException(ex);
                     return;
                 }
 

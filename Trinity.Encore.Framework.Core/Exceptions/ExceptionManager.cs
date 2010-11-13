@@ -24,16 +24,14 @@ namespace Trinity.Encore.Framework.Core.Exceptions
         /// Registers an exception that occurred.
         /// </summary>
         /// <param name="ex">The exception that occurred.</param>
-        /// <param name="actor">The actor the message occurred in, if any.</param>
-        public static void RegisterException(Exception ex, IActor actor = null)
+        public static void RegisterException(Exception ex)
         {
             Contract.Requires(ex != null);
 
-            var actorStr = actor == null ? " " : string.Format(" (actor: {0} ({1}))", actor, actor.GetType().Name);
-            _log.Error("{0} caught{1}:", ex.GetType().Name, actorStr);
+            _log.Error("{0} caught:", ex.GetType().Name);
             PrintException(ex);
 
-            var info = new ExceptionInfo(ex, actor);
+            var info = new ExceptionInfo(ex);
             _exceptionList.Add(info);
 
             var evnt = ExceptionOccurred;

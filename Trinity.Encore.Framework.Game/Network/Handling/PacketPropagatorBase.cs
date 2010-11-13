@@ -132,7 +132,7 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
             }
             catch (Exception ex)
             {
-                ExceptionManager.RegisterException(ex, client);
+                ExceptionManager.RegisterException(ex);
                 client.Disconnect();
             }
         }
