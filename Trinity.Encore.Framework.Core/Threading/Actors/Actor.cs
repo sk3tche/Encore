@@ -1,14 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Runtime;
+using Trinity.Encore.Framework.Core.Security;
 
 namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
-    public abstract class Actor : IDisposableResource
+    public abstract class Actor : RestrictedObject, IActor
     {
         /// <summary>
         /// Used to post messages to run in this Actor's synchronization context. This block always
@@ -40,6 +42,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             Contract.Invariant(IncomingMessages != null);
             Contract.Invariant(OutgoingMessages != null);
             Contract.Invariant(CancellationTokenSource != null);
+            Contract.Invariant(_links != null);
         }
 
         /// <summary>
@@ -91,19 +94,23 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         /// <returns>An object that, when disposed, unlinks the other Actor from this Actor.</returns>
         public IDisposable LinkTo(Actor other, bool unlinkAfterOneMsg = false)
         {
-            Contract.Requires(other != null);
-            Contract.Ensures(Contract.Result<IDisposable>() != null);
-
-            this.ThrowIfDisposed();
-
-            return OutgoingMessages.Link(other.IncomingMessages, unlinkAfterOneMsg);
+            var link = OutgoingMessages.Link(other.IncomingMessages, unlinkAfterOneMsg);
+            _links.Add(link);
+            return link;
         }
+
+        private readonly List<IDisposable> _links = new List<IDisposable>();
 
         protected virtual void Dispose(bool disposing)
         {
             if (IsDisposed)
                 return;
 
+            // Clear all links.
+            foreach (var link in _links)
+                link.Dispose();
+
+            _links.Clear();
             CancellationTokenSource.Cancel();
             IsDisposed = true;
         }

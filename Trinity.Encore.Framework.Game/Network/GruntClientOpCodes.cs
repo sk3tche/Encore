@@ -1,5 +1,8 @@
-namespace Trinity.Encore.Framework.Game.Network.Protocol
+using System;
+
+namespace Trinity.Encore.Framework.Game.Network
 {
+    [Serializable]
     public enum GruntClientOpCodes : byte
     {
         // Authentication:
@@ -30,13 +33,13 @@ namespace Trinity.Encore.Framework.Game.Network.Protocol
         /// <summary>
         /// CMD_XFER_INITIATE.
         /// 
-        /// Deprecated.
+        /// Deprecated, but still exists.
         /// </summary>
         TransferInitiate = 0x30,
         /// <summary>
         /// CMD_XFER_DATA.
         /// 
-        /// Deprecated.
+        /// Deprecated, but still exists.
         /// </summary>
         TransferData = 0x31,
     }
