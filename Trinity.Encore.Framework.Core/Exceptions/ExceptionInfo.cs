@@ -15,11 +15,6 @@ namespace Trinity.Encore.Framework.Core.Exceptions
         public Exception Exception { get; private set; }
 
         /// <summary>
-        /// The Actor instance the exception occurred in, if any.
-        /// </summary>
-        public IActor Actor { get; private set; }
-
-        /// <summary>
         /// The time of the exception.
         /// </summary>
         public DateTime OccurrenceTime { get; private set; }
@@ -30,12 +25,11 @@ namespace Trinity.Encore.Framework.Core.Exceptions
             Contract.Invariant(Exception != null);
         }
 
-        internal ExceptionInfo(Exception exception, IActor actor)
+        internal ExceptionInfo(Exception exception)
         {
             Contract.Requires(exception != null);
 
             Exception = exception;
-            Actor = actor;
             OccurrenceTime = DateTime.Now;
         }
     }

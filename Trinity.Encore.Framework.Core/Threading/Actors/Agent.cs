@@ -58,7 +58,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             }
             catch (Exception ex)
             {
-                ExceptionManager.RegisterException(ex, this);
+                ExceptionManager.RegisterException(ex);
                 Dispose();
             }
 
