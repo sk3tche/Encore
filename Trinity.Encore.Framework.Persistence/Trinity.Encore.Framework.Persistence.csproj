@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database Interaction\Database.cs" />
-    <Compile Include="Database Interaction\QueryResult.cs" />
+    <Compile Include="Database Interaction\QueryResultField.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
