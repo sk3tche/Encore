@@ -1,8 +1,11 @@
-﻿namespace Trinity.Encore.Framework.Game.Network.Protocol
+﻿using System;
+
+namespace Trinity.Encore.Framework.Game.Network
 {
     /// <summary>
     /// A list of packet opcodes gleaned from client version 4.0.1.13205.
     /// </summary>
+    [Serializable]
     public enum WorldServerOpCodes : uint
     {
         // Authentication:
@@ -42,6 +45,22 @@
         /// CMSG_PING.
         /// </summary>
         ServerConnectionPing = 0x1001,
+        /// <summary>
+        /// CMSG_REDIRECT_ERROR.
+        /// </summary>
+        ServerConnectionRedirectError = 0x1080,
+        /// <summary>
+        /// CMSG_REDIRECT_UNK.
+        /// </summary>
+        ClientConnectionRedirectUnknown1 = 0x1201,
+        /// <summary>
+        /// CMSG_REDIRECT_AUTH_PROOF.
+        /// </summary>
+        ClientConnectionRedirectAuthenticationProof = 0x3081,
+        /// <summary>
+        /// CMSG_REDIRECT_TOKEN_UNKNOWN.
+        /// </summary>
+        ClientConnectionRedirectUnknown2 = 0x3001,
 
         // Characters:
         /// <summary>
@@ -252,5 +271,15 @@
         /// SMSG_UPDATE_OBJECT.
         /// </summary>
         ServerObjectUpdate = 0x8BF0,
+
+        // Movement:
+        /// <summary>
+        /// SMSG_MONSTER_MOVE.
+        /// </summary>
+        MovementMonsterMove = 0x310,
+        /// <summary>
+        /// SMSG_MONSTER_MOVE_TRANSPORT.
+        /// </summary>
+        MovementMonsterMoveTransport = 0x21C
     }
 }

@@ -25,7 +25,7 @@ namespace Trinity.Encore.Framework.Core.Exceptions
         /// </summary>
         /// <param name="ex">The exception that occurred.</param>
         /// <param name="actor">The actor the message occurred in, if any.</param>
-        public static void RegisterException(Exception ex, Actor actor = null)
+        public static void RegisterException(Exception ex, IActor actor = null)
         {
             Contract.Requires(ex != null);
 

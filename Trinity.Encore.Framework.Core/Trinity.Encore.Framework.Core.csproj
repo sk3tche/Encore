@@ -133,6 +133,7 @@
     <Compile Include="Threading\Actors\Actor.cs" />
     <Compile Include="Threading\Actors\Agent.cs" />
     <Compile Include="Threading\Actors\AgentState.cs" />
+    <Compile Include="Threading\Actors\IActor.cs" />
     <Compile Include="Threading\Actors\SourcePort.cs" />
     <Compile Include="Threading\Actors\TargetPort.cs" />
     <Compile Include="Threading\ReadScopeGuard.cs" />

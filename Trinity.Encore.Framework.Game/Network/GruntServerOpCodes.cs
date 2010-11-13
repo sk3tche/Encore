@@ -1,5 +1,8 @@
-namespace Trinity.Encore.Framework.Game.Network.Protocol
+using System;
+
+namespace Trinity.Encore.Framework.Game.Network
 {
+    [Serializable]
     public enum GruntServerOpCodes : byte
     {
         // Authentication:

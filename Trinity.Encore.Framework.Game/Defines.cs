@@ -27,6 +27,8 @@ namespace Trinity.Encore.Framework.Game
                     return Encoding.UTF8;
                 }
             }
+
+            public const int LargePacketThreshold = 0x7fff;
         }
     }
 }

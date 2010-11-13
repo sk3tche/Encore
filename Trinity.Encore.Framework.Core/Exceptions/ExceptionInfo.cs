@@ -17,7 +17,7 @@ namespace Trinity.Encore.Framework.Core.Exceptions
         /// <summary>
         /// The Actor instance the exception occurred in, if any.
         /// </summary>
-        public Actor Actor { get; private set; }
+        public IActor Actor { get; private set; }
 
         /// <summary>
         /// The time of the exception.
@@ -30,7 +30,7 @@ namespace Trinity.Encore.Framework.Core.Exceptions
             Contract.Invariant(Exception != null);
         }
 
-        internal ExceptionInfo(Exception exception, Actor actor)
+        internal ExceptionInfo(Exception exception, IActor actor)
         {
             Contract.Requires(exception != null);
 

@@ -68,7 +68,9 @@ namespace Trinity.Encore.Framework.Game.Identification
         {
             Contract.Ensures(Contract.Result<IEnumerable<long>>() != null);
 
-            return _recycledIds;
+            var arr = _recycledIds.ToArray();
+            Contract.Assume(arr != null);
+            return arr;
         }
     }
 }

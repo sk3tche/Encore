@@ -57,9 +57,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=5.0.1659.36, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Microsoft.Xna.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\Dependencies\Mono.Security.dll</HintPath>
     </Reference>
     <Reference Include="ParallelExtensionsExtras, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\ParallelExtensionsExtras.dll</HintPath>
@@ -110,12 +114,25 @@
     <Compile Include="IO\Formats\WDBReader.cs" />
     <Compile Include="Mathematics\CatmullRomSpline.cs" />
     <Compile Include="Mathematics\MathExtensions.cs" />
-    <Compile Include="Network\Protocol\GruntClientOpCodes.cs" />
-    <Compile Include="Network\Protocol\GruntServerOpCodes.cs" />
+    <Compile Include="Network\Encryption\ARC4Crypt.cs" />
+    <Compile Include="Network\GruntClientOpCodes.cs" />
+    <Compile Include="Network\GruntServerOpCodes.cs" />
+    <Compile Include="Network\Handling\AuthPacketHandlerAttribute.cs" />
+    <Compile Include="Network\Handling\AuthPacketPropagator.cs" />
+    <Compile Include="Network\Handling\PacketHandler.cs" />
+    <Compile Include="Network\Handling\PacketHandlerAttribute.cs" />
+    <Compile Include="Network\Handling\PacketPropagatorBase.cs" />
+    <Compile Include="Network\Handling\WorldPacketHandlerAttribute.cs" />
+    <Compile Include="Network\Handling\WorldPacketPropagator.cs" />
+    <Compile Include="Network\Transmission\IncomingAuthPacket.cs" />
+    <Compile Include="Network\Transmission\IncomingWorldPacket.cs" />
+    <Compile Include="Network\Transmission\OutgoingAuthPacket.cs" />
+    <Compile Include="Network\Transmission\OutgoingWorldPacket.cs" />
     <Compile Include="Partitioning\QuadTree.cs" />
     <Compile Include="Partitioning\QuadTreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Network\Protocol\WorldServerOpCodes.cs" />
+    <Compile Include="Network\WorldServerOpCodes.cs" />
+    <Compile Include="Security\AuthenticatedPermission.cs" />
     <Compile Include="Services\IAuthenticatableService.cs" />
     <Compile Include="Services\IpcDevice.cs" />
   </ItemGroup>
@@ -123,6 +140,10 @@
     <ProjectReference Include="..\Trinity.Encore.Framework.Core\Trinity.Encore.Framework.Core.csproj">
       <Project>{78BB9167-FD73-451C-B007-0718DBDF0E14}</Project>
       <Name>Trinity.Encore.Framework.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Encore.Framework.Network\Trinity.Encore.Framework.Network.csproj">
+      <Project>{8D03D581-BE90-4714-AC46-50758EE1DD95}</Project>
+      <Name>Trinity.Encore.Framework.Network</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
