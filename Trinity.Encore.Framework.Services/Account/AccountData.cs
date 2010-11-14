@@ -3,18 +3,14 @@ using System.Net;
 using System.Runtime.Serialization;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;
-using Trinity.Encore.Framework.Persistence;
-using FluentNHibernate;
-using FluentNHibernate.Mapping;
-using NHibernate;
 
 namespace Trinity.Encore.Framework.Services.Account
 {
     [DataContract]
-    public sealed class AccountRecord 
+    public sealed class AccountData
     {
         [DataMember]
-        public long Id { get; private set; }
+        public long Id { get; set; }
 
         [DataMember]
         public string Name { get; set; }
@@ -41,18 +37,5 @@ namespace Trinity.Encore.Framework.Services.Account
         public long? RecruiterId { get; set; }
     }
 
-    public sealed class AccountMapping : MappableObject<AccountRecord>
-    {
-        public AccountMapping()
-        {
-            Id(c => c.Id).GeneratedBy.HiLo("Account");
-            Map(c => c.Name).Not.Nullable();
-            Map(c => c.EmailAddress).Not.Nullable();
-            Map(c => c.BoxLevel).Not.Nullable();
-            Map(c => c.Locale).Not.Nullable();
-            Map(c => c.LastLogin).Not.Nullable();
-            Map(c => c.LastIP).Not.Nullable();
-            Map(c => c.RecruiterId).Not.Nullable();
-        }
-    }
+    
 }

@@ -12,10 +12,10 @@ namespace Trinity.Encore.Framework.Services.Account
     public interface IAccountService : IAuthenticatableService
     {
         [OperationContract(IsInitiating = false)]
-        AccountRecord GetAccount(Func<AccountRecord, bool> predicate);
+        AccountData GetAccount(Func<AccountData, bool> predicate);
 
         [OperationContract(IsInitiating = false)]
-        List<AccountRecord> GetAccounts(Func<AccountRecord, bool> predicate);
+        List<AccountData> GetAccounts(Func<AccountData, bool> predicate);
 
         [OperationContract(IsInitiating = false)]
         void CreateAccount(string accountName, string password, string emailAddress, ClientLocale locale = ClientLocale.English,
