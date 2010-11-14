@@ -18,6 +18,11 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         /// </summary>
         public abstract TimeSpan RunInterval { get; }
 
+        public bool IsRunning
+        {
+            get { return (AgentState)_state == AgentState.Running; }
+        }
+
         private volatile int _state;
 
         private DateTime _lastUpdate;

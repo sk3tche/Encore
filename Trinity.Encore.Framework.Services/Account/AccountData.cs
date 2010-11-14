@@ -36,6 +36,4 @@ namespace Trinity.Encore.Framework.Services.Account
         [DataMember]
         public long? RecruiterId { get; set; }
     }
-
-    
 }
