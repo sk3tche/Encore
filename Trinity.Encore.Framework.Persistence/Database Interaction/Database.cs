@@ -46,7 +46,7 @@ namespace Trinity.Encore.Framework.Persistence
         /// </summary>
         public virtual void Reconnect()
         {
-            /// Todo: call a reconnect function on the lower layer if present instead
+            // TODO: call a reconnect function on the lower layer if present instead
             Disconnect();
             Connect();
         }

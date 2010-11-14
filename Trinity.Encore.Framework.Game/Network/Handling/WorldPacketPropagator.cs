@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
+using System.Net;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Game.Network.Transmission;
@@ -21,10 +22,10 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
         {
             Contract.Assume(header.Length == HeaderSize);
 
-            var length = BitConverter.ToInt16(header, 0);
+            var length = IPAddress.NetworkToHostOrder(unchecked((short)BitConverter.ToUInt16(header, 0)));
             Contract.Assume(length >= 0);
 
-            var opCode = BitConverter.ToInt32(header, 2);
+            var opCode = (int)BitConverter.ToUInt32(header, 2);
             Contract.Assume(opCode >= 0);
 
             return new PacketHeader(length, opCode);
