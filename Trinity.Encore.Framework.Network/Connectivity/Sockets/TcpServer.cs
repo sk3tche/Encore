@@ -17,7 +17,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
 
         private readonly List<TcpClient> _clients = new List<TcpClient>();
 
-        private readonly Socket _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        private Socket _socket;
 
         private readonly IPacketPropagator _propagator;
 
@@ -25,7 +25,6 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
         private void Invariant()
         {
             Contract.Invariant(_clients != null);
-            Contract.Invariant(_socket != null);
             Contract.Invariant(_propagator != null);
             Contract.Invariant(MaximumPendingConnections > 0);
         }
@@ -33,7 +32,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
         /// <summary>
         /// Maximum backlog for pending connections.
         /// </summary>
-        public int MaximumPendingConnections { get; private set; }
+        public int MaximumPendingConnections { get; set; }
 
         /// <summary>
         /// Indicates whether or not multiple connections from the same
@@ -43,11 +42,18 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
 
         /// <summary>
         /// Whether or not to use the Nagle algorithm.
+        /// 
+        /// Changes to this property come into effect once the server has been restarted.
         /// </summary>
-        public bool NoDelayAlgorithm { get; private set; }
+        public bool NoDelayAlgorithm { get; set; }
 
-        public TcpServer(IPacketPropagator propagator, int backlog, bool multipleConnections,
-            bool nagleAlgo)
+        /// <summary>
+        /// Whether or not to allow processing incomplete packets.
+        /// </summary>
+        public bool AllowPartialReceives { get; set; }
+
+        public TcpServer(IPacketPropagator propagator, int backlog = 5, bool multipleConnections = true,
+            bool nagleAlgo = true, bool partialReceives = false)
         {
             Contract.Requires(propagator != null);
             Contract.Requires(backlog > 0);
@@ -56,9 +62,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             MaximumPendingConnections = backlog;
             AllowMultipleConnections = multipleConnections;
             NoDelayAlgorithm = nagleAlgo;
-
-            // Start accepting incoming connections.
-            Accept(null);
+            AllowPartialReceives = partialReceives;
         }
 
         public IPEndPoint EndPoint
@@ -72,11 +76,15 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             Contract.Assume(ip != null);
             var ep = new IPEndPoint(ip, port);
 
+            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _socket.NoDelay = NoDelayAlgorithm;
             _socket.Bind(ep);
             _socket.Listen(MaximumPendingConnections);
 
             _log.Info("Socket bound to {0}.", ep);
+
+            // Start accepting incoming connections.
+            Accept(null);
         }
 
         public void Stop()
@@ -89,6 +97,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             _log.Info("Stopped listening at {0}.", EndPoint);
 
             _socket.Dispose();
+            _socket = null;
         }
 
         private void AddClient(TcpClient client)

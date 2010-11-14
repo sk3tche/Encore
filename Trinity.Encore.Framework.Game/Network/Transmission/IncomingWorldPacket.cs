@@ -12,7 +12,7 @@ namespace Trinity.Encore.Framework.Game.Network.Transmission
         {
             Contract.Requires(data != null);
             Contract.Requires(length >= 0);
-            Contract.Requires(length < data.Length);
+            Contract.Requires(length <= data.Length);
         }
 
         public new WorldServerOpCodes OpCode

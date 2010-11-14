@@ -152,7 +152,7 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
             Contract.Requires(opCode >= 0);
             Contract.Requires(payload != null);
             Contract.Requires(length >= 0);
-            Contract.Requires(length < payload.Length);
+            Contract.Requires(length <= payload.Length);
             Contract.Ensures(Contract.Result<TPacket>() != null);
 
             return null;

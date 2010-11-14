@@ -56,7 +56,9 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             Contract.Invariant(_receiveBuffer.Length >= InitialReceiveBufferSize);
             Contract.Invariant(_receiveOpCode >= 0);
             Contract.Invariant(_receiveLength >= 0);
-            Contract.Invariant(_receiveLength < _receiveBuffer.Length);
+            Contract.Invariant(_receiveLength <= _receiveBuffer.Length);
+            Contract.Invariant(_receivePosition >= 0);
+            Contract.Invariant(_receivePosition < _receiveBuffer.Length);
             Contract.Invariant(_propagator != null);
             Contract.Invariant(Server != null);
             Contract.Invariant((object)UserData != null);
@@ -124,6 +126,8 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             }
 
             var bytesTransferred = args.BytesTransferred;
+            Contract.Assume(bytesTransferred >= 0);
+
             if (bytesTransferred == 0)
             {
                 _log.Info("Client {0} disconnected gracefully.", this);
@@ -199,6 +203,8 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             {
                 _log.Warn("Client {0} sent an invalid packet length in a header ({1} bytes) - disconnected.", this, _receiveLength);
                 Disconnect();
+
+                Contract.Assume(_receivePosition >= 0); // Make the static checker shut up.
                 return;
             }
 
@@ -258,6 +264,8 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             }
 
             var bytesTransferred = args.BytesTransferred;
+            Contract.Assume(bytesTransferred >= 0);
+
             if (bytesTransferred == 0)
             {
                 _log.Info("Client {0} disconnected gracefully.", this);
@@ -268,6 +276,16 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             _receivePosition += bytesTransferred;
             if (_receivePosition != _receiveLength)
             {
+                // If we allow partial receives, just ignore the split, and process the packet immediately.
+                if (Server.AllowPartialReceives)
+                {
+                    _propagator.HandlePayload(this, _receiveOpCode, _receiveBuffer, _receivePosition);
+                    _receivePosition = 0;
+
+                    Contract.Assume(_headerBuffer.Length == _propagator.HeaderLength); // Make the static checker shut up.
+                    return;
+                }
+
                 // The payload was split (happens especially for large packets); continue receiving...
                 args.Completed += OnReceivePayload;
                 args.SetBuffer(_receiveBuffer, _receivePosition, _receiveLength - _receivePosition);
@@ -296,6 +314,9 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
                     throw;
                 }
             }
+
+            // We have the full payload; reset.
+            _receivePosition = 0;
 
             _propagator.HandlePayload(this, _receiveOpCode, _receiveBuffer, _receiveLength);
             Contract.Assume(_headerBuffer.Length == _propagator.HeaderLength); // Make the static checker shut up.

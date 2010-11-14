@@ -13,7 +13,7 @@ namespace Trinity.Encore.Framework.Network.Transmission
             Contract.Requires(opCode != null);
             Contract.Requires(data != null);
             Contract.Requires(length >= 0);
-            Contract.Requires(length < data.Length);
+            Contract.Requires(length <= data.Length);
             Contract.Requires(encoding != null);
 
             OpCode = opCode;
