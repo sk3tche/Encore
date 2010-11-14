@@ -20,7 +20,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
 
         public const int InitialReceiveBufferSize = ushort.MaxValue;
 
-        public const int MaxReceiveBufferSize = 0xFFFFFF; // 2 ^ 24 - 1 (24 bits, 3 bytes).
+        public const int MaxReceiveBufferSize = 0xffffff; // 2 ^ 24 - 1 (24 bits, 3 bytes).
 
         private readonly Socket _socket;
 
@@ -40,6 +40,8 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
         private int _receiveOpCode;
 
         private int _receiveLength;
+
+        private int _receivePosition;
 
         private readonly IPacketPropagator _propagator;
 
@@ -113,17 +115,65 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
         {
             args.Completed -= OnReceiveHeader;
 
-            var length = _propagator.HeaderLength;
+            var error = args.SocketError;
+            if (error != SocketError.Success)
+            {
+                _log.Warn("Client {0} triggered a socket error ({1}) when trying to fetch a header - disconnected.", this, error);
+                Disconnect();
+                return;
+            }
 
-            // Indicates a disconnection (and possibly, error).
             var bytesTransferred = args.BytesTransferred;
-            if (bytesTransferred != length)
+            if (bytesTransferred == 0)
+            {
+                _log.Info("Client {0} disconnected gracefully.", this);
+                Disconnect();
+                return;
+            }
+
+            var length = _propagator.HeaderLength;
+            if (bytesTransferred > length)
             {
                 _log.Warn("Client {0} sent an invalid-length header ({1} bytes, expected {2}) - disconnected.", this,
                     bytesTransferred, length);
                 Disconnect();
                 return;
             }
+
+            _receivePosition += bytesTransferred;
+            if (_receivePosition != length)
+            {
+                // The header was split; continue receiving...
+                args.Completed += OnReceiveHeader;
+                args.SetBuffer(_headerBuffer, _receivePosition, length - _receivePosition);
+
+                try
+                {
+                    if (!_socket.ReceiveAsync(args))
+                        OnReceiveHeader(this, args);
+                    else
+                        return; // Call back once the rest of the header arrives.
+                }
+                catch (Exception ex)
+                {
+                    args.Completed -= OnReceiveHeader;
+                    Disconnect();
+
+                    if (ex is ObjectDisposedException)
+                        return;
+
+                    if (ex is SocketException)
+                    {
+                        ExceptionManager.RegisterException(ex);
+                        return;
+                    }
+
+                    throw;
+                }
+            }
+
+            // We have the full header; reset.
+            _receivePosition = 0;
 
             // Decrypt if some sort of encryption scheme has been set.
             if (Crypt != null)
@@ -192,26 +242,63 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             }
 
             Contract.Assume(_receiveLength < _receiveBuffer.Length);
-            Contract.Assume(_headerBuffer.Length == _propagator.HeaderLength);
+            Contract.Assume(_headerBuffer.Length == _propagator.HeaderLength); // Make the static checker shut up.
         }
 
         private void OnReceivePayload(object sender, SocketAsyncEventArgs args)
         {
             args.Completed -= OnReceivePayload;
 
-            // Indicates a disconnection (and possibly, error).
-            var bytesTransferred = args.BytesTransferred;
-            if (bytesTransferred != _receiveLength)
+            var error = args.SocketError;
+            if (error != SocketError.Success)
             {
-                _log.Warn("Client {0} sent an invalid-length payload ({1} bytes, expected {2}) - disconnected.", this,
-                    bytesTransferred, _receiveLength);
+                _log.Warn("Client {0} triggered a socket error ({1}) when trying to fetch a payload - disconnected.", this, error);
                 Disconnect();
                 return;
             }
 
-            _propagator.HandlePayload(this, _receiveOpCode, _receiveBuffer, _receiveLength);
+            var bytesTransferred = args.BytesTransferred;
+            if (bytesTransferred == 0)
+            {
+                _log.Info("Client {0} disconnected gracefully.", this);
+                Disconnect();
+                return;
+            }
 
-            Contract.Assume(_headerBuffer.Length == _propagator.HeaderLength);
+            _receivePosition += bytesTransferred;
+            if (_receivePosition != _receiveLength)
+            {
+                // The payload was split (happens especially for large packets); continue receiving...
+                args.Completed += OnReceivePayload;
+                args.SetBuffer(_receiveBuffer, _receivePosition, _receiveLength - _receivePosition);
+
+                try
+                {
+                    if (!_socket.ReceiveAsync(args))
+                        OnReceivePayload(this, args);
+                    else
+                        return; // Call back once the rest of the payload arrives.
+                }
+                catch (Exception ex)
+                {
+                    args.Completed -= OnReceivePayload;
+                    Disconnect();
+
+                    if (ex is ObjectDisposedException)
+                        return;
+
+                    if (ex is SocketException)
+                    {
+                        ExceptionManager.RegisterException(ex);
+                        return;
+                    }
+
+                    throw;
+                }
+            }
+
+            _propagator.HandlePayload(this, _receiveOpCode, _receiveBuffer, _receiveLength);
+            Contract.Assume(_headerBuffer.Length == _propagator.HeaderLength); // Make the static checker shut up.
         }
 
         public void Send(OutgoingPacket packet)
@@ -276,7 +363,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             }
             catch (Exception)
             {
-                // Suck it up... If an exception occurs, it's already been disposed.
+                // Suck it up. If an exception occurs, it's already been disposed.
             }
 
             SocketAsyncEventArgsPool.Release(_eventArgs);
