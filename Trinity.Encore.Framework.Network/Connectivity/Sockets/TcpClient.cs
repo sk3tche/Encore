@@ -145,6 +145,8 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             }
 
             _receivePosition += bytesTransferred;
+            Contract.Assume(_receivePosition < _receiveBuffer.Length);
+
             if (_receivePosition != length)
             {
                 // The header was split; continue receiving...
@@ -272,6 +274,8 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             }
 
             _receivePosition += bytesTransferred;
+            Contract.Assume(_receivePosition < _receiveBuffer.Length);
+
             if (_receivePosition != _receiveLength)
             {
                 // If we allow partial receives, just ignore the split, and process the packet immediately.
