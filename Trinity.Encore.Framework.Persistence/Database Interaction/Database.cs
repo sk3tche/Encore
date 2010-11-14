@@ -16,7 +16,7 @@ namespace Trinity.Encore.Framework.Persistence
         /// Constructor of Database object. Parameters are taken from our configuration source,
         /// and should be verified before passed on here.
         /// </summary>
-        public virtual Database(string hostname, uint port, string username, string password, string schema)
+        public Database(string hostname, uint port, string username, string password, string schema)
         {
             _hostname = hostname;
             _port = port;

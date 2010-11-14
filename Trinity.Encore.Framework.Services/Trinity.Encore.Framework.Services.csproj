@@ -57,6 +57,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\Dependencies\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\Dependencies\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -96,6 +102,10 @@
     <ProjectReference Include="..\Trinity.Encore.Framework.Network\Trinity.Encore.Framework.Network.csproj">
       <Project>{8D03D581-BE90-4714-AC46-50758EE1DD95}</Project>
       <Name>Trinity.Encore.Framework.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Encore.Framework.Persistence\Trinity.Encore.Framework.Persistence.csproj">
+      <Project>{F119B4B3-4520-4ED5-ABEF-189D1A61C7C5}</Project>
+      <Name>Trinity.Encore.Framework.Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

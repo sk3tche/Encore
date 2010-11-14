@@ -57,6 +57,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\Dependencies\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\Dependencies\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -67,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database Interaction\Database.cs" />
+    <Compile Include="Database Interaction\MappableObject.cs" />
     <Compile Include="Database Interaction\QueryResultField.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
