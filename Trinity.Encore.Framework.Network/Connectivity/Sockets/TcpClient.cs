@@ -203,8 +203,6 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             {
                 _log.Warn("Client {0} sent an invalid packet length in a header ({1} bytes) - disconnected.", this, _receiveLength);
                 Disconnect();
-
-                Contract.Assume(_receivePosition >= 0); // Make the static checker shut up.
                 return;
             }
 
