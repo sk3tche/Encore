@@ -78,9 +78,7 @@ namespace Trinity.Encore.Framework.Network
 
         public static void PlatformDispose(this Socket socket)
         {
-#if MONO
-            socket.Dispose(true);
-#else
+#if !MONO
             socket.Dispose();
 #endif
         }
