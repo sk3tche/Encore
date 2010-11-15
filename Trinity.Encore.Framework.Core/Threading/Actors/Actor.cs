@@ -36,6 +36,8 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         public CancellationTokenSource CancellationTokenSource { get; private set; }
 
+        private readonly bool _isCancellationLinked;
+
         [ContractInvariantMethod]
         private void Invariant()
         {
@@ -54,6 +56,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             Contract.Requires(cancellationTokenSource != null);
 
             CancellationTokenSource = cancellationTokenSource;
+            _isCancellationLinked = true;
             CancellationToken.Register(Dispose); // Dispose this Actor when the other one is disposed.
 
             var options = GetOptions(CancellationToken);
@@ -95,6 +98,8 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         /// <returns>An object that, when disposed, unlinks the other Actor from this Actor.</returns>
         public IDisposable LinkTo(Actor other, bool unlinkAfterOneMsg = false)
         {
+            this.ThrowIfDisposed();
+
             var link = OutgoingMessages.Link(other.IncomingMessages, unlinkAfterOneMsg);
             _links.Add(link);
             return link;
@@ -112,7 +117,11 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
                 link.Dispose();
 
             _links.Clear();
-            CancellationTokenSource.Cancel();
+
+            // Only initiate cancellation if we weren't linked to someone else's CTS.
+            if (!_isCancellationLinked)
+                CancellationTokenSource.Cancel();
+
             IsDisposed = true;
         }
 
