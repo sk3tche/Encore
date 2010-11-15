@@ -9,11 +9,7 @@ using FluentNHibernate.Mapping;
 
 namespace Trinity.Encore.Framework.Persistence
 {
-    public static abstract class DatabaseFactory
-    {
-    }
-
-    public static class MySQLDatabaseFactory : DatabaseFactory
+    public static class MySqlDatabaseFactory
     {
         /// <summary>
         /// Creates a session factory for a MySQL Driver database
@@ -30,7 +26,7 @@ namespace Trinity.Encore.Framework.Persistence
         }
     }
 
-    public static class PostgreSQLDatabaseFactory : DatabaseFactory
+    public static class PostgreSqlDatabaseFactory
     {
         /// <summary>
         /// Creates a session factory for a PostgreSQL Driver database
@@ -46,6 +42,4 @@ namespace Trinity.Encore.Framework.Persistence
                 .BuildSessionFactory();
         }
     }
-
-  
 }

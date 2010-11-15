@@ -11,5 +11,4 @@ namespace Trinity.Encore.Framework.Persistence
     public abstract class MappableObject<TRecord> : ClassMap<TRecord>
     {
     }
-
 }

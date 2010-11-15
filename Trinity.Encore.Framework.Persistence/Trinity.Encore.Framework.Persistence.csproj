@@ -63,9 +63,6 @@
     <Reference Include="MySql.Data">
       <HintPath>..\Dependencies\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data.Entity">
-      <HintPath>..\Dependencies\MySql.Data.Entity.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\Dependencies\NHibernate.dll</HintPath>
     </Reference>
