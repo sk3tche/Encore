@@ -16,7 +16,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity
 
         IPacketCrypt Crypt { get; set; }
 
-        IPEndPoint EndPoint { get; }
+        EndPoint EndPoint { get; }
 
         dynamic UserData { get; }
     }
@@ -28,7 +28,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity
 
         public abstract IPacketCrypt Crypt { get; set; }
 
-        public abstract IPEndPoint EndPoint { get; }
+        public abstract EndPoint EndPoint { get; }
 
         public dynamic UserData
         {

@@ -78,6 +78,7 @@
     <Compile Include="Handling\PacketHeader.cs" />
     <Compile Include="IPAddressRange.cs" />
     <Compile Include="NetExtensions.cs" />
+    <Compile Include="NetworkApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\ConnectedPermission.cs" />
     <Compile Include="Transmission\IncomingPacket.cs" />

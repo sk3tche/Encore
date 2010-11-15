@@ -4,9 +4,9 @@ using System.Reflection;
 using Trinity.Encore.Framework.Core.Configuration;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Initialization;
-using Trinity.Encore.Framework.Core.Threading.Actors;
+using Trinity.Encore.Framework.Core.Runtime;
 
-namespace Trinity.Encore.Framework.Core.Threading
+namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
     public abstract class ActorApplication<T> : Agent
         where T : ActorApplication<T>
@@ -20,7 +20,7 @@ namespace Trinity.Encore.Framework.Core.Threading
             get { return _creator.Value; }
         }
 
-        public ApplicationConfiguration Configuration { get; private set; }
+        private ApplicationConfiguration _configuration;
 
         public override TimeSpan RunInterval
         {
@@ -49,9 +49,9 @@ namespace Trinity.Encore.Framework.Core.Threading
             var exeFile = Assembly.GetEntryAssembly().Location;
             if (!string.IsNullOrEmpty(exeFile))
             {
-                Configuration = new ApplicationConfiguration(exeFile);
-                Configuration.ScanAll();
-                Configuration.Open();
+                _configuration = new ApplicationConfiguration(exeFile);
+                _configuration.ScanAll();
+                _configuration.Open();
             }
 
             InitializationManager.InitializeAll();
@@ -81,8 +81,8 @@ namespace Trinity.Encore.Framework.Core.Threading
 
             InitializationManager.TeardownAll();
 
-            if (Configuration != null)
-                Configuration.Save();
+            if (_configuration != null)
+                _configuration.Save();
 
             GC.Collect();
 

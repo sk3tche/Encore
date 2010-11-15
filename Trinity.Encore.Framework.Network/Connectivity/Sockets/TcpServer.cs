@@ -65,17 +65,23 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             AllowPartialReceives = partialReceives;
         }
 
-        public IPEndPoint EndPoint
+        public EndPoint EndPoint
         {
             get { return _socket.LocalEndPoint.ToIPEndPoint(); }
         }
 
         public void Start(string address, int port)
         {
-            var ip = IPAddress.Parse(address);
-            Contract.Assume(ip != null);
-            var ep = new IPEndPoint(ip, port);
+            IPAddress ip;
+            if (!IPAddress.TryParse(address, out ip))
+                throw new ArgumentException("An invalid IP address was specified.");
 
+            var ep = new IPEndPoint(ip, port);
+            Start(ep);
+        }
+
+        public void Start(EndPoint ep)
+        {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _socket.NoDelay = NoDelayAlgorithm;
             _socket.Bind(ep);

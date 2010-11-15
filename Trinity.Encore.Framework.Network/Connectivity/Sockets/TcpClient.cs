@@ -394,7 +394,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
 
         public IPacketCrypt Crypt { get; set; }
 
-        public IPEndPoint EndPoint
+        public EndPoint EndPoint
         {
             get { return _socket.RemoteEndPoint.ToIPEndPoint(); }
         }

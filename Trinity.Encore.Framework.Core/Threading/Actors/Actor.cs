@@ -54,6 +54,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             Contract.Requires(cancellationTokenSource != null);
 
             CancellationTokenSource = cancellationTokenSource;
+            CancellationToken.Register(Dispose); // Dispose this Actor when the other one is disposed.
 
             var options = GetOptions(CancellationToken);
             IncomingMessages = new TargetPort<Action>(new ActionBlock<Action>(new Action<Action>(HandleIncomingMessage), options));
