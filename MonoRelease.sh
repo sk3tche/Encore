@@ -1,2 +1,6 @@
 #!/bin/sh
-xbuild /property:DocumentationFile="" /property:DefineConstants="MONO" Trinity.Encore.sln
+xbuild \
+  /p:DocumentationFile="" \
+  /p:DefineConstants="MONO" \
+  /p:Configuration="Release|AnyCPU" \
+  Trinity.Encore.sln

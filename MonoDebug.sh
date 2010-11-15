@@ -1,2 +1,6 @@
 #!/bin/sh
-xbuild /property:DocumentationFile="" /property:DefineConstants="TRACE;DEBUG;CONTRACTS_FULL;MONO" Trinity.Encore.sln
+xbuild \
+  /p:DocumentationFile="" \
+  /p:DefineConstants="MONO,TRACE,DEBUG,CONTRACTS_FULL" \
+  /p:Configuration="Debug|AnyCPU" \
+  Trinity.Encore.sln
