@@ -73,5 +73,18 @@ namespace Trinity.Encore.Framework.Network
         }
 
         #endregion
+
+        #region Sockets
+
+        public static void PlatformDispose(this Socket socket)
+        {
+#if MONO
+            socket.Dispose(true);
+#else
+            socket.Dispose();
+#endif
+        }
+
+        #endregion
     }
 }

@@ -380,9 +380,9 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
         {
             try
             {
-                _socket.Disconnect(false);
                 _socket.Shutdown(SocketShutdown.Both);
-                _socket.Dispose();
+                _socket.Disconnect(false);
+                _socket.PlatformDispose();
             }
             catch (Exception)
             {

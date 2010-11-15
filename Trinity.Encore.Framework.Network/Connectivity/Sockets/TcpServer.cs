@@ -102,7 +102,9 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
 
             _log.Info("Stopped listening at {0}.", EndPoint);
 
-            _socket.Dispose();
+            _socket.Shutdown(SocketShutdown.Both);
+            _socket.Disconnect(false);
+            _socket.PlatformDispose();
             _socket = null;
         }
 
@@ -196,7 +198,8 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
                     _log.Warn("Disconnecting client from {0}; already connected.", sock.RemoteEndPoint);
 
                     sock.Shutdown(SocketShutdown.Both);
-                    sock.Dispose();
+                    sock.Disconnect(false);
+                    sock.PlatformDispose();
                 }
                 else
                 {
