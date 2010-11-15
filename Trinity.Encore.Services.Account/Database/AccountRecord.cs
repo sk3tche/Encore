@@ -14,8 +14,12 @@ namespace Trinity.Encore.Services.Account.Database
         public long Id { get; private set; }
 
         public string Name { get; set; }
-        
-        public string PasswordHash { get; set; }
+
+        public string EmailAddress { get; set; }
+
+        public byte[] SHA1Password { get; set; }
+
+        public byte[] SHA256Password { get; set; }
         
         public ClientBoxLevel BoxLevel { get; set; }
         
@@ -27,6 +31,7 @@ namespace Trinity.Encore.Services.Account.Database
         
         public long? RecruiterId { get; set; }
 
+        public AccountBanRecord Ban { get; set; }
     }
     
     public sealed class AccountMapping : MappableObject<AccountRecord>
@@ -34,12 +39,16 @@ namespace Trinity.Encore.Services.Account.Database
         public AccountMapping()
         {
             Id(c => c.Id).GeneratedBy.HiLo("Account");
-            Map(c => c.Name).Not.Nullable();
-            Map(c => c.BoxLevel).Not.Nullable();
-            Map(c => c.Locale).Not.Nullable();
-            Map(c => c.LastLogin).Not.Nullable();
-            Map(c => c.LastIP).Not.Nullable();
-            Map(c => c.RecruiterId).Not.Nullable();
+            Map(c => c.Name).Not.Nullable().ReadOnly();
+            Map(c => c.EmailAddress).Not.Nullable().Update();
+            Map(c => c.SHA1Password).Not.Nullable().Update();
+            Map(c => c.SHA256Password).Not.Nullable().Update();
+            Map(c => c.BoxLevel).Not.Nullable().Update();
+            Map(c => c.Locale).Not.Nullable().Update();
+            Map(c => c.LastLogin).Nullable().Update();
+            Map(c => c.LastIP).Nullable().Update();
+            Map(c => c.RecruiterId).Nullable().Update();
+            HasOne(c => c.Ban).PropertyRef(c => c.Account).Cascade.SaveUpdate().LazyLoad(Laziness.Proxy);
         }
     }
  }
