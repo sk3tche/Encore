@@ -2,5 +2,6 @@
 xbuild \
   /p:DocumentationFile="" \
   /p:DefineConstants="MONO" \
-  /p:Configuration="Release|AnyCPU" \
+  /p:Configuration="Release" \
+  /p:Platform="Any CPU" \
   Trinity.Encore.sln
