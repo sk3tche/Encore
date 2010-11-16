@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Net;
 using Trinity.Encore.Framework.Core.Cryptography;
 using Trinity.Encore.Framework.Game;
@@ -13,6 +14,15 @@ namespace Trinity.Encore.Services.Account.Database
 {
     public sealed class AccountRecord
     {
+        [ContractInvariantMethod]
+        private void Invariant()
+        {
+            Contract.Invariant(Name != null);
+            Contract.Invariant(EmailAddress != null);
+            Contract.Invariant(SHA1Password != null);
+            Contract.Invariant(SHA256Password != null);
+        }
+
         public long Id { get; private set; }
 
         public string Name { get; set; }
@@ -29,7 +39,7 @@ namespace Trinity.Encore.Services.Account.Database
 
         public DateTime? LastLogin { get; set; }
 
-        public IPAddress LastIP { get; set; }
+        public byte[] LastIP { get; set; }
         
         public AccountRecord Recruiter { get; set; }
 
@@ -45,7 +55,7 @@ namespace Trinity.Encore.Services.Account.Database
                 BoxLevel = BoxLevel,
                 Locale = Locale,
                 LastLogin = LastLogin,
-                LastIP = LastIP,
+                LastIP = new IPAddress(LastIP),
                 RecruiterId = (Recruiter != null ? Recruiter.Id : 0),
             };
         }
@@ -55,7 +65,7 @@ namespace Trinity.Encore.Services.Account.Database
     {
         public AccountMapping()
         {
-            Id(c => c.Id).GeneratedBy.HiLo("Account");
+            Id(c => c.Id).Not.Nullable().GeneratedBy.Increment().Unique();
             Map(c => c.Name).Not.Nullable().ReadOnly();
             Map(c => c.EmailAddress).Not.Nullable().Update();
             Map(c => c.SHA1Password).Not.Nullable().Update();
