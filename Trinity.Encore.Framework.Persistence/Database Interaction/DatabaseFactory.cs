@@ -1,45 +1,59 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Data.SQLite;
+using System.Linq.Expressions;
+using System.Reflection;
 using NHibernate;
 using FluentNHibernate;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Mapping;
+using NHibernate.Cfg;
 
 namespace Trinity.Encore.Framework.Persistence
 {
-    public static class MySqlDatabaseFactory
+    /// <summary>
+    /// Creates instances of ISessionFactory.
+    /// </summary>
+    public static class DatabaseFactory
     {
         /// <summary>
-        /// Creates a session factory for a MySQL Driver database
+        /// Creates an ISessionFactory based on the given configuration information.
         /// </summary>
-        /// <param name="connectionString">http://www.connectionstrings.com</param>
+        /// <param name="dialect">The SQL dialect to use.</param>
+        /// <param name="driverClass">The fully-qualified name of the driver class to use.</param>
+        /// <param name="connString">The connection string to be used to establish a connection.</param>
         /// <returns></returns>
-        private static ISessionFactory CreateSessionFactory(string connectionString)
+        public static ISessionFactory CreateSessionFactory(string dialect, string driverClass, string connString)
         {
-            return
-                Fluently.Configure()
-                .Database(MySQLConfiguration.Standard.ConnectionString(connectionString))
-                /*.Mappings() */
-                .BuildSessionFactory();
-        }
-    }
+            Contract.Requires(!string.IsNullOrEmpty(dialect));
+            Contract.Requires(!string.IsNullOrEmpty(driverClass));
+            Contract.Requires(!string.IsNullOrEmpty(connString));
+            Contract.Ensures(Contract.Result<ISessionFactory>() != null);
 
-    public static class PostgreSqlDatabaseFactory
-    {
-        /// <summary>
-        /// Creates a session factory for a PostgreSQL Driver database
-        /// </summary>
-        /// <param name="connectionString">http://www.connectionstrings.com</param>
-        /// <returns></returns>
-        private static ISessionFactory CreateSessionFactory(string connectionString)
-        {
-            return
-                Fluently.Configure()
-                .Database(PostgreSQLConfiguration.Standard.ConnectionString(connectionString))
-                /*.Mappings() */
-                .BuildSessionFactory();
+            var cfg = new Configuration
+            {
+                Properties = new Dictionary<string, string>
+                {
+                    { "connection.provider", "NHibernate.Connection.DriverConnectionProvider" },
+                    { "dialect", dialect },
+                    { "connection.driver_class", driverClass },
+                    { "connection.connection_string", connString },
+                }
+            };
+
+            var fluent = Fluently.Configure(cfg);
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var asm1 = assembly;
+                fluent.Mappings(x => x.FluentMappings.AddFromAssembly(asm1));
+            }
+
+            var factory = fluent.BuildSessionFactory();
+            Contract.Assume(factory != null);
+            return factory;
         }
     }
 }
