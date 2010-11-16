@@ -9,9 +9,9 @@ namespace Trinity.Encore.Framework.Game.Mathematics
             return new Vector2(vector.X, vector.Y);
         }
 
-        public static Vector3 ToVector3(this Vector2 vector, bool max = true)
+        public static Vector3 ToVector3(this Vector2 vector, float z = 0.0f)
         {
-            return new Vector3(vector.X, vector.Y, max ? float.MaxValue : float.MinValue);
+            return new Vector3(vector.X, vector.Y, z);
         }
     }
 }
