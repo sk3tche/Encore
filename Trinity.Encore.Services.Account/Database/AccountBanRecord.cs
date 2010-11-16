@@ -17,7 +17,7 @@ namespace Trinity.Encore.Services.Account.Database
     {
         public AccountBanMapping()
         {
-            HasOne(c => c.Account).PropertyRef(c => c.Ban).Constrained().LazyLoad(Laziness.Proxy);
+            HasOne(c => c.Account).PropertyRef(c => c.Ban).Constrained().Cascade.SaveUpdate().LazyLoad(Laziness.Proxy);
             Map(c => c.Notes).Nullable().Update();
             Map(c => c.Expiry).Nullable().Update();
         }

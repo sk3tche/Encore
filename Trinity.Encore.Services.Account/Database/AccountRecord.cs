@@ -1,11 +1,13 @@
 using System;
 using System.Net;
+using Trinity.Encore.Framework.Core.Cryptography;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;
 using Trinity.Encore.Framework.Persistence;
 using FluentNHibernate;
 using FluentNHibernate.Mapping;
 using NHibernate;
+using Trinity.Encore.Framework.Services.Account;
 
 namespace Trinity.Encore.Services.Account.Database
 {
@@ -29,9 +31,24 @@ namespace Trinity.Encore.Services.Account.Database
 
         public IPAddress LastIP { get; set; }
         
-        public long? RecruiterId { get; set; }
+        public AccountRecord Recruiter { get; set; }
 
         public AccountBanRecord Ban { get; set; }
+
+        public AccountData Serialize()
+        {
+            return new AccountData
+            {
+                Id = Id,
+                Name = Name,
+                Password = new Password(SHA1Password, SHA256Password),
+                BoxLevel = BoxLevel,
+                Locale = Locale,
+                LastLogin = LastLogin,
+                LastIP = LastIP,
+                RecruiterId = (Recruiter != null ? Recruiter.Id : 0),
+            };
+        }
     }
     
     public sealed class AccountMapping : MappableObject<AccountRecord>
@@ -47,8 +64,9 @@ namespace Trinity.Encore.Services.Account.Database
             Map(c => c.Locale).Not.Nullable().Update();
             Map(c => c.LastLogin).Nullable().Update();
             Map(c => c.LastIP).Nullable().Update();
-            Map(c => c.RecruiterId).Nullable().Update();
-            HasOne(c => c.Ban).PropertyRef(c => c.Account).Cascade.SaveUpdate().LazyLoad(Laziness.Proxy);
+            Map(c => c.Recruiter).Nullable().Update();
+            References(x => x.Recruiter).Cascade.SaveUpdate().LazyLoad(Laziness.Proxy);
+            HasOne(c => c.Ban).PropertyRef(c => c.Account).Cascade.All().LazyLoad(Laziness.Proxy);
         }
     }
  }
