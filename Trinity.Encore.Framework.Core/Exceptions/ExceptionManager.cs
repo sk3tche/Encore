@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using Trinity.Encore.Framework.Core.Initialization;
 using Trinity.Encore.Framework.Core.Logging;
-using Trinity.Encore.Framework.Core.Threading.Actors;
 
 namespace Trinity.Encore.Framework.Core.Exceptions
 {

@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Core.Reflection;
-using Trinity.Encore.Framework.Game.Network.Transmission;
 using Trinity.Encore.Framework.Network.Connectivity;
 using Trinity.Encore.Framework.Network.Handling;
 using Trinity.Encore.Framework.Network.Security;

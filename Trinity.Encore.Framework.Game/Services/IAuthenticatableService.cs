@@ -1,10 +1,5 @@
-using System;
-using System.Collections.ObjectModel;
 using System.Net.Security;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
 using Trinity.Encore.Framework.Core.Cryptography;
 
 namespace Trinity.Encore.Framework.Game.Services

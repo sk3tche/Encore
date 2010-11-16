@@ -1,4 +1,3 @@
-using System;
 using Trinity.Encore.Framework.Game.Network.Transmission;
 using Trinity.Encore.Framework.Network.Connectivity;
 using Trinity.Encore.Framework.Network.Handling;

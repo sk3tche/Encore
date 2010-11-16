@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.ServiceModel;
 using System.Threading.Tasks.Dataflow;
-using Trinity.Encore.Framework.Core.Collections;
-using Trinity.Encore.Framework.Core.Configuration;
 using Trinity.Encore.Framework.Core.Exceptions;
-using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Core.Services;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 

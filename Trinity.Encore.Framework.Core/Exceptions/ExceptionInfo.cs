@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.Contracts;
-using Trinity.Encore.Framework.Core.Threading.Actors;
 
 namespace Trinity.Encore.Framework.Core.Exceptions
 {

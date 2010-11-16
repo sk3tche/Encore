@@ -1,12 +1,10 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using Trinity.Encore.Framework.Core.Dynamic;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Logging;
-using Trinity.Encore.Framework.Core.Security;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 using Trinity.Encore.Framework.Network.Encryption;
 using Trinity.Encore.Framework.Network.Handling;

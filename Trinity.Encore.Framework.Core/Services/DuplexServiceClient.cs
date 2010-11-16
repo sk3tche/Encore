@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.ServiceModel;
-using System.ServiceModel.Description;
 
 namespace Trinity.Encore.Framework.Core.Services
 {

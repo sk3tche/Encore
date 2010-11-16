@@ -1,5 +1,3 @@
-using System;
-using FluentNHibernate;
 using FluentNHibernate.Mapping;
 
 namespace Trinity.Encore.Framework.Persistence

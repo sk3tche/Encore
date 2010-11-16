@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics.Contracts;
 using Trinity.Encore.Framework.Network.Connectivity;
 

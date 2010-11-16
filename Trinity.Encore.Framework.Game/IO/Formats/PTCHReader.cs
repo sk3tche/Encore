@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Security.Cryptography;
 using Trinity.Encore.Framework.Core.IO;
 
 namespace Trinity.Encore.Framework.Game.IO.Formats

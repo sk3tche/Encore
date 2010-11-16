@@ -1,7 +1,5 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Net;
-using System.Text;
 using Trinity.Encore.Framework.Network.Transmission;
 
 namespace Trinity.Encore.Framework.Game.Network.Transmission

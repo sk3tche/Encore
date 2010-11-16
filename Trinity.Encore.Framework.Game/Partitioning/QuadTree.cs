@@ -1,7 +1,6 @@
 using System.Diagnostics.Contracts;
 using System.Threading;
 using Microsoft.Xna.Framework;
-using Trinity.Encore.Framework.Game.Entities;
 
 namespace Trinity.Encore.Framework.Game.Partitioning
 {

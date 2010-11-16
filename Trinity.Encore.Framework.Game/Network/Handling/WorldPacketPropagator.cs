@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Net;
-using Trinity.Encore.Framework.Core.Exceptions;
-using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Game.Network.Transmission;
 using Trinity.Encore.Framework.Network.Connectivity;
 using Trinity.Encore.Framework.Network.Handling;

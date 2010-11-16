@@ -1,14 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Data.SQLite;
-using System.Linq.Expressions;
-using System.Reflection;
-using NHibernate;
-using FluentNHibernate;
 using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.Mapping;
+using NHibernate;
 using NHibernate.Cfg;
 
 namespace Trinity.Encore.Framework.Persistence

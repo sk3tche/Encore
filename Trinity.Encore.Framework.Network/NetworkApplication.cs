@@ -1,10 +1,8 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Net;
-using Trinity.Encore.Framework.Core.Threading;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 using Trinity.Encore.Framework.Network.Connectivity;
-using Trinity.Encore.Framework.Network.Connectivity.Sockets;
 
 namespace Trinity.Encore.Framework.Network
 {
