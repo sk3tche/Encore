@@ -55,9 +55,8 @@ namespace Trinity.Encore.Framework.Game.Network.Encryption
             Contract.Invariant(_decrypt != null);
         }
 
-        public ARC4Crypt(byte[] sessionKey, HashAlgorithm hash, bool isServer)
+        public ARC4Crypt(HashAlgorithm hash, bool isServer)
         {
-            Contract.Requires(sessionKey != null);
             Contract.Requires(hash != null);
 
             var encKey = isServer ? _serverEncClientDec : _serverDecClientEnc;

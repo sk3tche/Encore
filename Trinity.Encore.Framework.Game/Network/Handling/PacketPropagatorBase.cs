@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Reflection;
 using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Exceptions;
@@ -42,42 +43,39 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
         {
             Contract.Requires(asm != null);
 
-            foreach (var type in asm.GetTypes())
+            foreach (var method in asm.GetTypes().SelectMany(type => type.GetMethods()))
             {
-                foreach (var method in type.GetMethods())
-                {
-                    Contract.Assume(method != null);
+                Contract.Assume(method != null);
 
-                    var attr = method.GetCustomAttribute<TAttribute>();
-                    if (attr == null)
-                        continue;
+                var attr = method.GetCustomAttribute<TAttribute>();
+                if (attr == null)
+                    continue;
 
-                    if (!method.IsPrivate)
-                        throw new ReflectionException("Packet handler methods must be private.");
+                if (!method.IsPrivate)
+                    throw new ReflectionException("Packet handler methods must be private.");
 
-                    if (!method.IsStatic)
-                        throw new ReflectionException("Packet handler methods must be static.");
+                if (!method.IsStatic)
+                    throw new ReflectionException("Packet handler methods must be static.");
 
-                    if (method.IsGenericMethodDefinition || method.IsGenericMethod)
-                        throw new ReflectionException("Packet handler methods must not be generic.");
+                if (method.IsGenericMethodDefinition || method.IsGenericMethod)
+                    throw new ReflectionException("Packet handler methods must not be generic.");
 
-                    if (method.ReturnType != typeof(void))
-                        throw new ReflectionException("Packet handler methods must not return a value.");
+                if (method.ReturnType != typeof(void))
+                    throw new ReflectionException("Packet handler methods must not return a value.");
 
-                    var parameters = method.GetParameters();
-                    if (parameters.Length != 2)
-                        throw new ReflectionException("Packet handler methods must only take 2 arguments.");
+                var parameters = method.GetParameters();
+                if (parameters.Length != 2)
+                    throw new ReflectionException("Packet handler methods must only take 2 arguments.");
 
-                    if (parameters[0].ParameterType != typeof(IClient))
-                        throw new ReflectionException("The first parameter on packet handler methods must be of type IClient.");
+                if (parameters[0].ParameterType != typeof(IClient))
+                    throw new ReflectionException("The first parameter on packet handler methods must be of type IClient.");
 
-                    if (parameters[1].ParameterType != typeof(TPacket))
-                        throw new ReflectionException("The second parameter on packet handler methods must be of type TPacket.");
+                if (parameters[1].ParameterType != typeof(TPacket))
+                    throw new ReflectionException("The second parameter on packet handler methods must be of type TPacket.");
 
-                    var opCode = attr.OpCode;
-                    var handler = new PacketHandler<TPacket>(opCode, method, attr.Permission ?? typeof(ConnectedPermission));
-                    AddHandler(((IConvertible)opCode).ToInt32(null), handler);
-                }
+                var opCode = attr.OpCode;
+                var handler = new PacketHandler<TPacket>(opCode, method, attr.Permission ?? typeof(ConnectedPermission));
+                AddHandler(((IConvertible)opCode).ToInt32(null), handler);
             }
         }
 
