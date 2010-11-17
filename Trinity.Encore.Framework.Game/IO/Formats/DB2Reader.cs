@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Trinity.Encore.Framework.Game.IO.Formats
 {
-    public sealed class DB2Reader<T> : ClientDbReader<T>
+    public class DB2Reader<T> : ClientDbReader<T>
         where T : class, IClientDbRecord, new()
     {
         /// <summary>
@@ -19,15 +19,20 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
 
         public int Build { get; private set; }
 
-        public int Unknown1 { get; private set; }
+        public int LastUpdated { get; private set; }
 
-        public int Unknown2 { get; private set; }
+        public int MinId { get; private set; }
 
-        public int Unknown3 { get; private set; }
+        public int MaxId { get; private set; }
 
         public ClientLocale Locale { get; private set; }
 
         public int Unknown4 { get; private set; }
+
+        public override StringReadMode StringReadMode
+        {
+            get { return StringReadMode.StringTable2; }
+        }
 
         public DB2Reader(string fileName)
             : base(fileName)
@@ -48,16 +53,16 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
             StringTableSize = reader.ReadInt32();
             TableHash = reader.ReadInt32();
             Build = reader.ReadInt32();
-            Unknown1 = reader.ReadInt32();
-            Unknown2 = reader.ReadInt32();
-            Unknown3 = reader.ReadInt32();
+            LastUpdated = reader.ReadInt32();
+            MinId = reader.ReadInt32();
+            MaxId = reader.ReadInt32();
             Locale = (ClientLocale)reader.ReadInt32();
             Unknown4 = reader.ReadInt32();
 
             // No idea what these are...
-            if (Unknown3 != 0)
+            if (MaxId != 0)
             {
-                var size = Unknown3 * 4 - 48;
+                var size = MaxId * 4 - 48;
                 Contract.Assume(size > 0);
 
                 reader.ReadBytes(size);

@@ -31,7 +31,7 @@ namespace Trinity.Encore.Framework.Game.IO
 
         public virtual StringReadMode StringReadMode
         {
-            get { return StringReadMode.StringTable; }
+            get { return StringReadMode.StringTable1; }
         }
 
         public virtual int? HeaderMagic
@@ -55,7 +55,7 @@ namespace Trinity.Encore.Framework.Game.IO
 
             var data = ReadData(reader);
 
-            if (StringReadMode == StringReadMode.StringTable)
+            if (StringReadMode != StringReadMode.Direct)
                 ReadStringTable(reader);
 
             MapRecords(data);
@@ -127,8 +127,8 @@ namespace Trinity.Encore.Framework.Game.IO
                 case TypeCode.Single:
                     return reader.ReadSingle();
                 case TypeCode.String:
-                    var str = StringReadMode == StringReadMode.StringTable ?
-                        StringTable[reader.ReadInt32()] : reader.ReadCString();
+                    var str = StringReadMode == StringReadMode.Direct ?
+                        reader.ReadCString() : StringTable[reader.ReadInt32()];
                     Contract.Assume(str != null);
                     return str;
             }
@@ -147,6 +147,10 @@ namespace Trinity.Encore.Framework.Game.IO
             while (stream.Position != stringTableEnd)
             {
                 var stringIndex = (int)(stream.Position - stringTableStart);
+
+                if (StringReadMode == StringReadMode.StringTable2)
+                    reader.ReadInt16(); // String length.
+
                 StringTable[stringIndex] = reader.ReadCString();
             }
         }

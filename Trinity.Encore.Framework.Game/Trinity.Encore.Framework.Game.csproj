@@ -111,6 +111,7 @@
     <Compile Include="IO\Formats\M2Reader.cs" />
     <Compile Include="IO\Formats\MPQReader.cs" />
     <Compile Include="IO\Formats\PTCHReader.cs" />
+    <Compile Include="IO\Formats\TBLReader.cs" />
     <Compile Include="IO\Formats\TEXReader.cs" />
     <Compile Include="IO\Formats\WDLReader.cs" />
     <Compile Include="IO\Formats\WDTReader.cs" />
