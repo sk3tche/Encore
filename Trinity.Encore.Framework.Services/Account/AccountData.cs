@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Net;
 using System.Runtime.Serialization;
 using Trinity.Encore.Framework.Game;
@@ -6,9 +7,17 @@ using Trinity.Encore.Framework.Game.Cryptography;
 
 namespace Trinity.Encore.Framework.Services.Account
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     public sealed class AccountData
     {
+        [ContractInvariantMethod]
+        private void Invariant()
+        {
+            Contract.Invariant(!string.IsNullOrEmpty(Name));
+            Contract.Invariant(!string.IsNullOrEmpty(EmailAddress));
+            Contract.Invariant(Password != null);
+        }
+
         [DataMember]
         public long Id { get; set; }
 
