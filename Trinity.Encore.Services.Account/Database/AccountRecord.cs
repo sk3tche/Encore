@@ -9,18 +9,46 @@ using Trinity.Encore.Framework.Services.Account;
 
 namespace Trinity.Encore.Services.Account.Database
 {
-    public sealed class AccountRecord
+    public class AccountRecord
     {
-        [ContractInvariantMethod]
-        private void Invariant()
+        /// <summary>
+        /// Constructs a new AccountRecord object.
+        /// 
+        /// This should be used only by the underlying database layer.
+        /// </summary>
+        protected AccountRecord()
         {
-            Contract.Invariant(Name != null);
-            Contract.Invariant(EmailAddress != null);
-            Contract.Invariant(SHA1Password != null);
-            Contract.Invariant(SHA256Password != null);
         }
 
-        public long Id { get; private set; }
+        /// <summary>
+        /// Constructs a new AccountRecord object.
+        /// 
+        /// Should be inserted into the database.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="email"></param>
+        /// <param name="sha1"></param>
+        /// <param name="sha256"></param>
+        /// <param name="boxLevel"></param>
+        /// <param name="locale"></param>
+        public AccountRecord(string name, string email, byte[] sha1, byte[] sha256,
+            ClientBoxLevel boxLevel = ClientBoxLevel.Cataclysm,
+            ClientLocale locale = ClientLocale.English)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(name));
+            Contract.Requires(!string.IsNullOrEmpty(email));
+            Contract.Requires(sha1 != null);
+            Contract.Requires(sha256 != null);
+
+            Name = name;
+            EmailAddress = email;
+            SHA1Password = sha1;
+            SHA256Password = sha256;
+            BoxLevel = boxLevel;
+            Locale = locale;
+        }
+
+        public long Id { get; set; }
 
         public string Name { get; set; }
 
@@ -44,6 +72,11 @@ namespace Trinity.Encore.Services.Account.Database
 
         public AccountData Serialize()
         {
+            Contract.Assume(SHA1Password != null);
+            Contract.Assume(SHA1Password.Length == 20);
+            Contract.Assume(SHA256Password != null);
+            Contract.Assume(SHA256Password.Length == 32);
+
             return new AccountData
             {
                 Id = Id,
@@ -52,8 +85,8 @@ namespace Trinity.Encore.Services.Account.Database
                 BoxLevel = BoxLevel,
                 Locale = Locale,
                 LastLogin = LastLogin,
-                LastIP = new IPAddress(LastIP),
-                RecruiterId = (Recruiter != null ? Recruiter.Id : 0),
+                LastIP = LastIP != null ? new IPAddress(LastIP) : null,
+                RecruiterId = Recruiter != null ? Recruiter.Id : 0,
             };
         }
     }

@@ -8,12 +8,6 @@ namespace Trinity.Encore.Framework.Services.Account
     [DataContract(IsReference = true)]
     public sealed class IPBanData
     {
-        [ContractInvariantMethod]
-        private void Invariant()
-        {
-            Contract.Invariant(Address != null);
-        }
-
         [DataMember]
         public IPAddress Address { get; set; }
 

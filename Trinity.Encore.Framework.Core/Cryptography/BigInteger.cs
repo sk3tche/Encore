@@ -160,6 +160,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
         public BigInteger(byte[] inData)
         {
             Contract.Requires(inData != null);
+            Contract.Ensures(ByteLength == inData.Length);
 
             inData = (byte[])inData.Clone();
             inData.Reverse();
@@ -195,6 +196,8 @@ namespace Trinity.Encore.Framework.Core.Cryptography
 
             while (DataLength > 1 && _data[DataLength - 1] == 0)
                 DataLength--;
+
+            Contract.Assume(ByteLength == inData.Length);
         }
 
         public BigInteger(uint[] inData)
@@ -215,6 +218,8 @@ namespace Trinity.Encore.Framework.Core.Cryptography
 
         public BigInteger(FastRandom rand, int bitLength)
         {
+            Contract.Requires(bitLength > 0);
+
             if (rand == null)
                 rand = new FastRandom();
 
@@ -256,6 +261,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
         {
             Contract.Requires(value != null);
             Contract.Ensures(Contract.Result<BigInteger>() != null);
+            Contract.Ensures(Contract.Result<BigInteger>().ByteLength == value.Length);
 
             return new BigInteger(value);
         }

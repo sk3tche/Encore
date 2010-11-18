@@ -10,14 +10,6 @@ namespace Trinity.Encore.Framework.Services.Account
     [DataContract(IsReference = true)]
     public sealed class AccountData
     {
-        [ContractInvariantMethod]
-        private void Invariant()
-        {
-            Contract.Invariant(!string.IsNullOrEmpty(Name));
-            Contract.Invariant(!string.IsNullOrEmpty(EmailAddress));
-            Contract.Invariant(Password != null);
-        }
-
         [DataMember]
         public long Id { get; set; }
 

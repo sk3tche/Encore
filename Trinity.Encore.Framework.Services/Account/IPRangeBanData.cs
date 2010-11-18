@@ -8,12 +8,6 @@ namespace Trinity.Encore.Framework.Services.Account
     [DataContract(IsReference = true)]
     public sealed class IPRangeBanData
     {
-        [ContractInvariantMethod]
-        private void Invariant()
-        {
-            Contract.Invariant(Range != null);
-        }
-
         [DataMember]
         public IPAddressRange Range { get; set; }
 
