@@ -71,15 +71,14 @@
     <Compile Include="Authentication\AuthenticationData.cs" />
     <Compile Include="Account\IAccountService.cs" />
     <Compile Include="Authentication\IAuthenticationService.cs" />
+    <Compile Include="Map\IMapService.cs" />
+    <Compile Include="Patch\IPatchService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Social\ISocialService.cs" />
+    <Compile Include="Terrain\ITerrainService.cs" />
+    <Compile Include="World\IWorldService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Map\" />
-    <Folder Include="Patch\" />
-    <Folder Include="Social\" />
-    <Folder Include="Terrain\" />
-    <Folder Include="World\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Trinity.Encore.Framework.Core\Trinity.Encore.Framework.Core.csproj">
       <Project>{78BB9167-FD73-451C-B007-0718DBDF0E14}</Project>
