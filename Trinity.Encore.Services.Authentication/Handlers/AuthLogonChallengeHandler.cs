@@ -7,6 +7,7 @@ using Trinity.Encore.Framework.Game.IO;
 using Trinity.Encore.Framework.Core.IO;
 using Trinity.Encore.Services.Authentication.Enums;
 using System.Text;
+using System.Numerics;
 
 namespace Trinity.Encore.Services.Authentication.Handlers
 {
@@ -49,18 +50,13 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             }
         }
 
-        public static void SendAuthenticationChallengeSuccess(IClient client, byte[] publicEphemeral, byte generator, byte[] modulus, byte[] salt, byte[] rand)
+        public static void SendAuthenticationChallengeSuccess(IClient client, BigInteger publicEphemeral, byte generator, BigInteger modulus, BigInteger salt, BigInteger rand)
         {
-            // TODO Fix this method by adding a BigInteger writing extension to BinaryWriter
             Contract.Requires(client != null);
             Contract.Requires(publicEphemeral != null);
             Contract.Requires(modulus != null);
             Contract.Requires(salt != null);
             Contract.Requires(rand != null);
-            Contract.Requires(publicEphemeral.Length == 32);
-            Contract.Requires(modulus.Length == 32);
-            Contract.Requires(salt.Length == 32);
-            Contract.Requires(rand.Length == 16);
 
             using (var packet = new OutgoingAuthPacket(GruntServerOpCodes.AuthenticationChallenge, 118))
             {
@@ -69,8 +65,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
                 packet.Write(publicEphemeral);
                 packet.Write((byte)1); // size of g in bytes
                 packet.Write(generator);
-                packet.Write((byte)modulus.Length);
-                packet.Write(modulus);
+                packet.Write(modulus, true);
                 packet.Write(salt);
                 packet.Write(rand);
 
