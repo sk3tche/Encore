@@ -69,6 +69,7 @@
     <Compile Include="Enums\AuthResult.cs" />
     <Compile Include="Enums\ExtraSecurityFlags.cs" />
     <Compile Include="Handlers\AuthLogonChallengeHandler.cs" />
+    <Compile Include="Handlers\AuthLogonProofHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
