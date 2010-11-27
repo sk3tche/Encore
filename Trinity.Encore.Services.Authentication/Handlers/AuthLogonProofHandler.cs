@@ -30,7 +30,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             public readonly int unk2;
             public readonly byte[] unk3;
             public readonly byte[] shaHash;
-        };
+        }
 
         [AuthPacketHandler(GruntClientOpCodes.AuthenticationLogonProof)]
         public static void HandleAuthLogonProof(IClient client, IncomingAuthPacket packet)
