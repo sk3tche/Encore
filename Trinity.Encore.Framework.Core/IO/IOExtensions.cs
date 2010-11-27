@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Numerics;
+using Trinity.Encore.Framework.Core.Cryptography;
 
 namespace Trinity.Encore.Framework.Core.IO
 {
@@ -178,20 +178,20 @@ namespace Trinity.Encore.Framework.Core.IO
             return new BinaryWriter(new MemoryStream(data), encoding ?? Encoding.UTF8);
         }
 
-        public static void Write(this BinaryWriter writer, BigInteger bigInt)
+        public static void Write(this BinaryWriter writer, BigInteger bigInt, byte numBytes)
         {
-            writer.Write(bigInt, false);
+            writer.Write(bigInt, numBytes, false);
         }
 
-        public static void Write(this BinaryWriter writer, BigInteger bigInt, bool prefix)
+        public static void Write(this BinaryWriter writer, BigInteger bigInt, byte numBytes, bool prefix)
         {
             Contract.Requires(writer != null);
             Contract.Requires(bigInt != null);
 
-            byte[] data = bigInt.ToByteArray();
+            byte[] data = bigInt.GetBytes(numBytes);
 
             if (prefix)
-                writer.Write((byte)data.Length);
+                writer.Write(numBytes);
 
             writer.Write(data);
         }

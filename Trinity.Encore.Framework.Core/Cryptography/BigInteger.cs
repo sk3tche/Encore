@@ -1799,7 +1799,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
 
         public byte[] GetBytes(int numBytes)
         {
-            Contract.Requires(numBytes <= ByteLength);
+            Contract.Requires(numBytes >= 0);
             Contract.Ensures(Contract.Result<byte[]>() != null);
 
             var result = new byte[numBytes];

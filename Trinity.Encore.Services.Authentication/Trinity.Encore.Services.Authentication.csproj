@@ -63,13 +63,11 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\AuthResult.cs" />
     <Compile Include="Enums\ExtraSecurityFlags.cs" />
-    <Compile Include="Handlers\AuthLogonChallengeHandler.cs" />
-    <Compile Include="Handlers\AuthLogonProofHandler.cs" />
+    <Compile Include="Handlers\AuthenticationHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
