@@ -196,7 +196,6 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             if (success)
             {
                 SendAuthenticationLogonProofSuccess(client, srpData.Validator.ServerSessionKeyProof);
-                // TODO now we need to update the database
                 client.AddPermission(new AuthenticatedPermission());
             }
             else
@@ -318,7 +317,6 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             if (hash == r2)
             {
                 SendReconnectProofSuccess(client);
-                // TODO now we need to update the database
                 client.AddPermission(new AuthenticatedPermission());
             }
             else

@@ -68,8 +68,11 @@
     <Compile Include="Enums\AuthResult.cs" />
     <Compile Include="Enums\ExtraSecurityFlags.cs" />
     <Compile Include="Handlers\AuthenticationHandler.cs" />
+    <Compile Include="Handlers\RealmlistHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Realms\Realm.cs" />
+    <Compile Include="Realms\RealmList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trinity.Encore.Framework.Core\Trinity.Encore.Framework.Core.csproj">
@@ -85,6 +88,7 @@
       <Name>Trinity.Encore.Framework.Network</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
