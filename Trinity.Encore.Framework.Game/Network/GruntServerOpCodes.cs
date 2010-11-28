@@ -13,7 +13,9 @@ namespace Trinity.Encore.Framework.Game.Network
         /// <summary>
         /// CMD_GRUNT_AUTH_VERIFY.
         /// </summary>
-        AuthenticationVerification = 0x02,
+        AuthenticationProof = 0x01,
+        ReconnectChallenge = 0x02,
+        ReconnectProof = 0x03,
 
         // Connection:
         /// <summary>
