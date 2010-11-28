@@ -113,6 +113,8 @@ namespace Trinity.Encore.Framework.Persistence
 
         /// <summary>
         /// Saves an object and its persistent children.
+        /// <param name="item">The item to save.</param>
+        /// <typeparam name="T">The type of the item.</typeparam>
         /// </summary>
         public void Save<T>(T item)
         {
@@ -122,6 +124,26 @@ namespace Trinity.Encore.Framework.Persistence
                 {
                     session.SaveOrUpdate(item);
                     session.Transaction.Commit();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves a list of objects and their persistent children.
+        /// <param name="itemsToSave">The items to save.</param>
+        /// <typeparam name="T">The type of the items.</typeparam>
+        /// </summary>
+        public void Save<T>(IList<T> itemsToSave)
+        {
+            using (ISession session = Session)
+            {
+                foreach (T item in itemsToSave)
+                {
+                    using (session.BeginTransaction())
+                    {
+                        session.SaveOrUpdate(item);
+                        session.Transaction.Commit();
+                    }
                 }
             }
         }
