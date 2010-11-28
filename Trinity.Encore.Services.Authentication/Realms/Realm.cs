@@ -3,6 +3,9 @@
 namespace Trinity.Encore.Services.Authentication.Realms
 {
     // TODO add a way for the authserver to communicate with this particular realm
+    /// <summary>
+    /// Manages all data and communication that is specific to a single Realm - Auth-service connection.
+    /// </summary>
     public sealed class Realm
     {
         #region Properties
