@@ -110,7 +110,6 @@
     <Compile Include="Mathematics\MathExtensions.cs" />
     <Compile Include="Network\Encryption\ARC4Crypt.cs" />
     <Compile Include="Network\GruntClientOpCodes.cs" />
-    <Compile Include="Network\GruntServerOpCodes.cs" />
     <Compile Include="Network\Handling\AuthPacketHandlerAttribute.cs" />
     <Compile Include="Network\Handling\AuthPacketPropagator.cs" />
     <Compile Include="Network\Handling\PacketHandler.cs" />

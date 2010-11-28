@@ -5,7 +5,7 @@ namespace Trinity.Encore.Framework.Game.Network.Transmission
 {
     public sealed class IncomingAuthPacket : IncomingPacket
     {
-        public IncomingAuthPacket(GruntClientOpCodes opCode, byte[] data, int length)
+        public IncomingAuthPacket(GruntOpCodes opCode, byte[] data, int length)
             : base(opCode, data, length, Defines.Protocol.Encoding)
         {
             Contract.Requires(data != null);
@@ -13,9 +13,9 @@ namespace Trinity.Encore.Framework.Game.Network.Transmission
             Contract.Requires(length <= data.Length);
         }
 
-        public new GruntClientOpCodes OpCode
+        public new GruntOpCodes OpCode
         {
-            get { return (GruntClientOpCodes)base.OpCode; }
+            get { return (GruntOpCodes)base.OpCode; }
         }
     }
 }

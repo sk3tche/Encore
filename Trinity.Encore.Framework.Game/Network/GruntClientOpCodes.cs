@@ -3,7 +3,7 @@ using System;
 namespace Trinity.Encore.Framework.Game.Network
 {
     [Serializable]
-    public enum GruntClientOpCodes : byte
+    public enum GruntOpCodes : byte
     {
         // Authentication:
         /// <summary>

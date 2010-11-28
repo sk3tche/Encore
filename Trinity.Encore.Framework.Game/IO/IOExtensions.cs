@@ -1,5 +1,6 @@
 using System.Diagnostics.Contracts;
 using System.IO;
+using Trinity.Encore.Framework.Core.Cryptography;
 using Trinity.Encore.Framework.Game.Entities;
 
 namespace Trinity.Encore.Framework.Game.IO
@@ -61,6 +62,40 @@ namespace Trinity.Encore.Framework.Game.IO
             }
 
             writer.Write(packedGuid);
+        }
+
+        public static void Write(this BinaryWriter writer, BigInteger bigInt, int numBytes, bool prefix = false)
+        {
+            Contract.Requires(writer != null);
+            Contract.Requires(bigInt != null);
+            Contract.Requires(numBytes >= 0);
+
+            var data = bigInt.GetBytes(numBytes);
+
+            if (prefix)
+                writer.Write((byte)numBytes);
+
+            writer.Write(data);
+        }
+
+        public static BigInteger ReadBigInteger(this BinaryReader reader)
+        {
+            Contract.Requires(reader != null);
+
+            var length = reader.ReadByte();
+            var data = reader.ReadBytes(length);
+
+            return new BigInteger(data);
+        }
+
+        public static BigInteger ReadBigInteger(this BinaryReader reader, int length)
+        {
+            Contract.Requires(reader != null);
+            Contract.Requires(length >= 0);
+
+            var data = reader.ReadBytes(length);
+
+            return new BigInteger(data);
         }
     }
 }

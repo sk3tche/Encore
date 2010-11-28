@@ -18,7 +18,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
 {
     public static class AuthenticationHandler
     {
-        [AuthPacketHandler(GruntClientOpCodes.AuthenticationLogonChallenge)]
+        [AuthPacketHandler(GruntOpCodes.AuthenticationLogonChallenge)]
         public static void HandleAuthLogonChallenge(IClient client, IncomingAuthPacket packet)
         {
             Contract.Requires(client != null);
@@ -85,7 +85,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             Contract.Requires(client != null);
             Contract.Requires(result != AuthResult.Success);
 
-            using (var packet = new OutgoingAuthPacket(GruntServerOpCodes.AuthenticationChallenge, 2))
+            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonChallenge, 2))
             {
                 packet.Write((byte)0x00);
                 packet.Write((byte)result);
@@ -105,7 +105,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             Contract.Requires(rand != null);
             Contract.Requires(rand.ByteLength == 16);
 
-            using (var packet = new OutgoingAuthPacket(GruntServerOpCodes.AuthenticationChallenge, 118))
+            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonChallenge, 118))
             {
                 packet.Write((byte)0x00);
                 packet.Write((byte)AuthResult.Success);
@@ -160,14 +160,14 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             public readonly byte[] shaHash;
         }
 
-        [AuthPacketHandler(GruntClientOpCodes.AuthenticationLogonProof)]
+        [AuthPacketHandler(GruntOpCodes.AuthenticationLogonProof)]
         public static void HandleAuthLogonProof(IClient client, IncomingAuthPacket packet)
         {
             Contract.Requires(client != null);
             Contract.Requires(packet != null);
 
             var clientPublicEphemeralBytes = packet.ReadBytes(32);
-            var clientResultBytes = packet.ReadBytes(32);
+            var clientResultBytes = packet.ReadBytes(20);
             var crcHashBytes = packet.ReadBytes(20); // these can safely be ignored
 
             // the client tends to send 0, but just in case it's safer to implement this.
@@ -208,7 +208,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             Contract.Requires(client != null);
             Contract.Requires(serverResult != null);
 
-            using (var packet = new OutgoingAuthPacket(GruntServerOpCodes.AuthenticationProof, 31))
+            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonProof, 31))
             {
                 packet.Write((byte)AuthResult.Success);
                 packet.Write(serverResult, 20);
@@ -223,7 +223,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
         {
             Contract.Requires(client != null);
 
-            using (var packet = new OutgoingAuthPacket(GruntServerOpCodes.AuthenticationProof, 3))
+            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonProof, 3))
             {
                 packet.Write((byte)result);
                 packet.Write((byte)3);
@@ -232,7 +232,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             }
         }
 
-        [AuthPacketHandler(GruntClientOpCodes.AuthenticationReconnectChallenge)]
+        [AuthPacketHandler(GruntOpCodes.AuthenticationReconnectChallenge)]
         public static void HandleReconnectChallenge(IClient client, IncomingAuthPacket packet)
         {
             // structure is the same as AuthenticationLogonChallenge
@@ -274,7 +274,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             Contract.Requires(rand != null);
             Contract.Requires(rand.ByteLength == 16);
 
-            using (var packet = new OutgoingAuthPacket(GruntServerOpCodes.ReconnectChallenge, 34))
+            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationReconnectChallenge, 34))
             {
                 packet.Write((byte)AuthResult.Success);
                 packet.Write(rand, 16);
@@ -285,7 +285,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             }
         }
 
-        [AuthPacketHandler(GruntClientOpCodes.AuthenticationReconnectProof)]
+        [AuthPacketHandler(GruntOpCodes.AuthenticationReconnectProof)]
         public static void HandleReconnectProof(IClient client, IncomingAuthPacket packet)
         {
             var r1Data = packet.ReadBytes(16);
@@ -329,7 +329,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
 
         private static void SendReconnectProofSuccess(IClient client)
         {
-            using (var packet = new OutgoingAuthPacket(GruntServerOpCodes.ReconnectProof, 3))
+            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationReconnectProof, 3))
             {
                 packet.Write((byte)AuthResult.Success);
                 packet.Write((short)0); // two unknown bytes

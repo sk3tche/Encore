@@ -1801,6 +1801,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
         {
             Contract.Requires(numBytes >= 0);
             Contract.Ensures(Contract.Result<byte[]>() != null);
+            Contract.Ensures(Contract.Result<byte[]>().Length == numBytes);
 
             var result = new byte[numBytes];
             var numBits = BitCount;
