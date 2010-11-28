@@ -71,9 +71,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Threading.Tasks.Dataflow">
-      <HintPath>..\Dependencies\System.Threading.Tasks.Dataflow.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Tao.DevIl, Version=1.6.8.3, Culture=neutral, PublicKeyToken=7ec4053013524957, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\Tao.DevIl.dll</HintPath>
@@ -133,6 +130,7 @@
     <Compile Include="Network\Handling\PacketPropagatorBase.cs" />
     <Compile Include="Network\Handling\WorldPacketHandlerAttribute.cs" />
     <Compile Include="Network\Handling\WorldPacketPropagator.cs" />
+    <Compile Include="Network\NetworkApplication.cs" />
     <Compile Include="Network\Transmission\IncomingAuthPacket.cs" />
     <Compile Include="Network\Transmission\IncomingWorldPacket.cs" />
     <Compile Include="Network\Transmission\OutgoingAuthPacket.cs" />
@@ -144,6 +142,7 @@
     <Compile Include="Security\AuthenticatedPermission.cs" />
     <Compile Include="Services\IAuthenticatableService.cs" />
     <Compile Include="Services\IpcDevice.cs" />
+    <Compile Include="Threading\ActorApplication.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trinity.Encore.Framework.Core\Trinity.Encore.Framework.Core.csproj">

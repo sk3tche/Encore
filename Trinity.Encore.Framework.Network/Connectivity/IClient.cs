@@ -52,14 +52,8 @@ namespace Trinity.Encore.Framework.Network.Connectivity
 
         public abstract bool IsDisposed { get; }
 
-        public abstract TargetPort<Action> IncomingMessages { get; }
+        public abstract void Join();
 
-        public abstract SourcePort<Action> OutgoingMessages { get; }
-
-        public abstract CancellationToken CancellationToken { get; }
-
-        public abstract CancellationTokenSource CancellationTokenSource { get; }
-
-        public abstract IDisposable LinkTo(Actor other, bool unlinkAfterOneMsg);
+        public abstract void Post(Action msg);
     }
 }

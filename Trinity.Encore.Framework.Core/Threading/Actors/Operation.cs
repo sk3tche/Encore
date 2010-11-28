@@ -3,9 +3,10 @@ using System;
 namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
     [Serializable]
-    internal enum AgentState : byte
+    public enum Operation : byte
     {
-        Running,
-        Stopped,
+        None,
+        Continue,
+        Dispose,
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 namespace Trinity.Encore.Framework.Game.Partitioning
 {
     /// <summary>
-    /// Represents a quad tree data structure. This class is fully parallelized.
+    /// Represents a quad tree data structure.
     /// </summary>
     public sealed class QuadTree : QuadTreeNode
     {
@@ -14,8 +14,10 @@ namespace Trinity.Encore.Framework.Game.Partitioning
         /// </summary>
         public const int DefaultDepthThreshold = 6;
 
+        public const int NoMaxCount = -1;
+
         public QuadTree(BoundingBox bounds, int depthThreshold = DefaultDepthThreshold)
-            : base(bounds, new CancellationTokenSource())
+            : base(bounds)
         {
             Contract.Requires(depthThreshold > 0);
 

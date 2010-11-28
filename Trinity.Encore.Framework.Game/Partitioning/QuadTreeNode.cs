@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks.Dataflow;
 using Microsoft.Xna.Framework;
 using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Threading.Actors;
@@ -12,41 +11,9 @@ using Trinity.Encore.Framework.Game.Entities;
 
 namespace Trinity.Encore.Framework.Game.Partitioning
 {
-    public sealed class AddEntityArguments : Tuple<IWorldEntity, Action<bool>>
-    {
-        public AddEntityArguments(IWorldEntity entity, Action<bool> callback)
-            : base(entity, callback)
-        {
-        }
-    }
-
-    public sealed class RemoveEntityArguments : Tuple<IWorldEntity, Action<bool>>
-    {
-        public RemoveEntityArguments(IWorldEntity entity, Action<bool> callback)
-            : base(entity, callback)
-        {
-        }
-    }
-
-    public sealed class FindEntityArguments : Tuple<Func<IWorldEntity, bool>, Action<IWorldEntity>>
-    {
-        public FindEntityArguments(Func<IWorldEntity, bool> predicate, Action<IWorldEntity> callback)
-            : base(predicate, callback)
-        {
-        }
-    }
-
-    public sealed class FindEntitiesArguments : Tuple<Func<IWorldEntity, bool>, int, Action<IEnumerable<IWorldEntity>>>
-    {
-        public FindEntitiesArguments(Func<IWorldEntity, bool> predicate, int maxCount, Action<IEnumerable<IWorldEntity>> callback)
-            : base(predicate, maxCount, callback)
-        {
-        }
-    }
-
     public class QuadTreeNode : Actor
     {
-        public const float MinNodeLength = 250.0f;
+        public const float MinNodeLength = 333.0f;
 
         private const int West = 0;
 
@@ -56,55 +23,10 @@ namespace Trinity.Encore.Framework.Game.Partitioning
 
         private const int South = 1;
 
-        [ContractInvariantMethod]
-        private void Invariant()
+        public QuadTreeNode(BoundingBox bounds)
         {
-            Contract.Invariant(AddEntityChannel != null);
-            Contract.Invariant(RemoveEntityChannel != null);
-            Contract.Invariant(FindEntityChannel != null);
-            Contract.Invariant(FindEntitiesChannel != null);
-        }
-
-        public QuadTreeNode(BoundingBox bounds, CancellationTokenSource cts)
-            : base(cts)
-        {
-            Contract.Requires(cts != null);
-
             Bounds = bounds;
-
-            var cpus = Environment.ProcessorCount;
-            Contract.Assume(cpus > 0);
-            var options = GetOptions(cts.Token, cpus);
-
-            AddEntityChannel = new TargetPort<AddEntityArguments>(new ActionBlock<AddEntityArguments>(new Action<AddEntityArguments>(AddEntity), options));
-            RemoveEntityChannel = new TargetPort<RemoveEntityArguments>(new ActionBlock<RemoveEntityArguments>(new Action<RemoveEntityArguments>(RemoveEntity), options));
-            FindEntityChannel = new TargetPort<FindEntityArguments>(new ActionBlock<FindEntityArguments>(new Action<FindEntityArguments>(FindEntity), options));
-            FindEntitiesChannel = new TargetPort<FindEntitiesArguments>(new ActionBlock<FindEntitiesArguments>(new Action<FindEntitiesArguments>(FindEntities), options));
         }
-
-        /// <summary>
-        /// Sends a message instructing the QuadTreeNode to add an IWorldEntity.
-        /// </summary>
-        public TargetPort<AddEntityArguments> AddEntityChannel { get; private set; }
-
-        /// <summary>
-        /// Sends a message instructing the QuadTreeNode to remove an IWorldEntity.
-        /// </summary>
-        public TargetPort<RemoveEntityArguments> RemoveEntityChannel { get; private set; }
-
-        /// <summary>
-        /// Sends a message instructing the QuadTreeNode to find a specific IWorldEntity and call back once done.
-        /// 
-        /// The returned IWorldEntity may be null (if it was not found).
-        /// </summary>
-        public TargetPort<FindEntityArguments> FindEntityChannel { get; private set; }
-
-        /// <summary>
-        /// Sends a message instructing the QuadTreeNode to find a list of IWorldEntity instances and call back once done.
-        /// 
-        /// The returned sequence may be empty (but not null) if no results were found.
-        /// </summary>
-        public TargetPort<FindEntitiesArguments> FindEntitiesChannel { get; private set; }
 
         public BoundingBox Bounds { get; private set; }
 
@@ -126,15 +48,11 @@ namespace Trinity.Encore.Framework.Game.Partitioning
         /// <summary>
         /// Contained entities (if IsLeaf == true; otherwise, null).
         /// </summary>
-        private ConcurrentDictionary<EntityGuid, IWorldEntity> _entities;
+        private Dictionary<EntityGuid, IWorldEntity> _entities;
 
-        private void AddEntity(AddEntityArguments args)
+        public bool AddEntity(IWorldEntity entity)
         {
-            Contract.Requires(args != null);
-            Contract.Requires(args.Item1 != null);
-
-            var entity = args.Item1;
-            var callback = args.Item2;
+            Contract.Requires(entity != null);
 
             if (IsLeaf)
             {
@@ -142,8 +60,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                 _entities.Add(entity.Guid, entity);
                 entity.Node = this;
 
-                if (callback != null)
-                    callback(true);
+                return true;
             }
 
             var pos = entity.Position;
@@ -155,22 +72,16 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                     if (node.Bounds.Contains(pos) != ContainmentType.Contains)
                         continue;
 
-                    Contract.Assume(args.Item1 != null);
-                    node.AddEntity(args);
+                    return node.AddEntity(entity);
                 }
             }
 
-            if (callback != null)
-                callback(false);
+            return false;
         }
 
-        private void RemoveEntity(RemoveEntityArguments args)
+        public bool RemoveEntity(IWorldEntity entity)
         {
-            Contract.Requires(args != null);
-            Contract.Requires(args.Item1 != null);
-
-            var entity = args.Item1;
-            var callback = args.Item2;
+            Contract.Requires(entity != null);
 
             if (IsLeaf)
             {
@@ -178,8 +89,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                 _entities.Remove(entity.Guid);
                 entity.Node = null;
 
-                if (callback != null)
-                    callback(true);
+                return true;
             }
 
             var pos = entity.Position;
@@ -191,42 +101,70 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                     if (node.Bounds.Contains(pos) != ContainmentType.Contains)
                         continue;
 
-                    Contract.Assume(args.Item1 != null);
-                    node.RemoveEntity(args);
+                    return node.RemoveEntity(entity);
                 }
             }
 
-            if (callback != null)
-                callback(false);
+            return false;
         }
 
-        private void FindEntities(FindEntitiesArguments args)
+        public IEnumerable<IWorldEntity> FindEntities(Func<IWorldEntity, bool> criteria, BoundingBox searchArea,
+            int maxCount = QuadTree.NoMaxCount)
         {
-            Contract.Requires(args != null);
-            Contract.Requires(args.Item1 != null);
-            Contract.Requires(args.Item2 >= 0);
-            Contract.Requires(args.Item3 != null);
+            Contract.Requires(criteria != null);
+            Contract.Requires(maxCount >= QuadTree.NoMaxCount);
+            Contract.Ensures(Contract.Result<IEnumerable<IWorldEntity>>() != null);
 
-            var results = RecursiveSearch(args.Item1, null, args.Item2);
-            args.Item3(results); // Call back with the found entities.
+            return RecursiveSearch(criteria, null, maxCount, x => searchArea.Contains(x.Bounds) == ContainmentType.Contains);
         }
 
-        private void FindEntity(FindEntityArguments args)
+        public IEnumerable<IWorldEntity> FindEntities(Func<IWorldEntity, bool> criteria, BoundingSphere searchArea,
+            int maxCount = QuadTree.NoMaxCount)
         {
-            Contract.Requires(args != null);
-            Contract.Requires(args.Item1 != null);
-            Contract.Requires(args.Item2 != null);
+            Contract.Requires(criteria != null);
+            Contract.Requires(maxCount >= QuadTree.NoMaxCount);
+            Contract.Ensures(Contract.Result<IEnumerable<IWorldEntity>>() != null);
 
-            // We really just do the same as for multi-entity searches, but return a single (or no) result.
-            var result = RecursiveSearch(args.Item1, null, 1).FirstOrDefault();
-            args.Item2(result); // Call back with the found entity.
+            return RecursiveSearch(criteria, null, maxCount, x => searchArea.Contains(x.Bounds) == ContainmentType.Contains);
+        }
+
+        public IEnumerable<IWorldEntity> FindEntities(Func<IWorldEntity, bool> criteria, int maxCount = QuadTree.NoMaxCount)
+        {
+            Contract.Requires(criteria != null);
+            Contract.Requires(maxCount >= QuadTree.NoMaxCount);
+            Contract.Ensures(Contract.Result<IEnumerable<IWorldEntity>>() != null);
+
+            return RecursiveSearch(criteria, null, maxCount);
+        }
+
+        public IWorldEntity FindEntity(Func<IWorldEntity, bool> criteria, BoundingBox searchArea)
+        {
+            Contract.Requires(criteria != null);
+
+            return RecursiveSearch(criteria, null, 1, x => searchArea.Contains(x.Bounds) ==
+                ContainmentType.Contains).SingleOrDefault();
+        }
+
+        public IWorldEntity FindEntity(Func<IWorldEntity, bool> criteria, BoundingSphere searchArea)
+        {
+            Contract.Requires(criteria != null);
+
+            return RecursiveSearch(criteria, null, 1, x => searchArea.Contains(x.Bounds) ==
+                ContainmentType.Contains).SingleOrDefault();
+        }
+
+        public IWorldEntity FindEntity(Func<IWorldEntity, bool> criteria)
+        {
+            Contract.Requires(criteria != null);
+
+            return FindEntities(criteria, 1).SingleOrDefault();
         }
 
         private IEnumerable<IWorldEntity> RecursiveSearch(Func<IWorldEntity, bool> criteria, ICollection<IWorldEntity> results,
-            int maxCount)
+            int maxCount, Func<QuadTreeNode, bool> nodeInclusionFunc = null)
         {
             Contract.Requires(criteria != null);
-            Contract.Requires(maxCount >= 0);
+            Contract.Requires(maxCount >= QuadTree.NoMaxCount);
             Contract.Ensures(Contract.Result<IEnumerable<IWorldEntity>>() != null);
 
             if (results == null)
@@ -244,10 +182,13 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                 for (var j = 0; j < 2; j++)
                 {
                     // Break out early if we've hit the max amount of results.
-                    if (maxCount > 0 && results.Count >= maxCount)
+                    if (maxCount != QuadTree.NoMaxCount && results.Count >= maxCount)
                         return results;
 
                     var node = _children[i, j];
+                    if (nodeInclusionFunc != null && !nodeInclusionFunc(node))
+                        continue;
+
                     node.RecursiveSearch(criteria, results, maxCount);
                 }
             }
@@ -280,19 +221,17 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                 var minXWidth = minX + width;
                 var minYHeight = minY + height;
 
-                var cts = CancellationTokenSource;
-
                 _children[South, West] = new QuadTreeNode(new BoundingBox(new Vector3(minX, minY, minZ),
-                    new Vector3(minXWidth, minYHeight, maxZ)), cts);
+                    new Vector3(minXWidth, minYHeight, maxZ)));
 
                 _children[North, West] = new QuadTreeNode(new BoundingBox(new Vector3(minX, minYHeight, minZ),
-                    new Vector3(minXWidth, maxY, maxZ)), cts);
+                    new Vector3(minXWidth, maxY, maxZ)));
 
                 _children[South, East] = new QuadTreeNode(new BoundingBox(new Vector3(minXWidth, minY, minZ),
-                    new Vector3(maxX, minYHeight, maxZ)), cts);
+                    new Vector3(maxX, minYHeight, maxZ)));
 
                 _children[North, East] = new QuadTreeNode(new BoundingBox(new Vector3(minXWidth, minYHeight, minZ),
-                    new Vector3(maxX, maxY, maxZ)), cts);
+                    new Vector3(maxX, maxY, maxZ)));
 
                 startDepth++;
 
@@ -301,7 +240,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                         _children[i, j].Partition(maxDepth, startDepth);
             }
             else
-                _entities = new ConcurrentDictionary<EntityGuid, IWorldEntity>();
+                _entities = new Dictionary<EntityGuid, IWorldEntity>();
         }
 
         public bool IsLeaf
@@ -311,7 +250,14 @@ namespace Trinity.Encore.Framework.Game.Partitioning
 
         public bool IsEmpty
         {
-            get { return IsLeaf && _entities.Count == 0; }
+            get
+            {
+                if (!IsLeaf)
+                    throw new InvalidOperationException("This node is not a leaf.");
+
+                Contract.Assume(_entities != null);
+                return _entities.IsEmpty();
+            }
         }
     }
 }

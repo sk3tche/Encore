@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Runtime;
 using Trinity.Encore.Framework.Core.Security;
@@ -12,61 +12,47 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
     public abstract class Actor : RestrictedObject, IActor
     {
-        /// <summary>
-        /// Used to post messages to run in this Actor's synchronization context. This block always
-        /// accepts posted messages, unless the Actor is disposed.
-        /// 
-        /// Do not call DeclinePermanently on this block. This state is managed by the Actor itself.
-        /// </summary>
-        public TargetPort<Action> IncomingMessages { get; private set; }
+        private Thread _schedulingThread;
 
-        /// <summary>
-        /// Used to pull messages broadcasted by this Actor.
-        /// </summary>
-        public SourcePort<Action> OutgoingMessages { get; private set; }
+        private IEnumerator<Operation> _msgIterator;
 
-        /// <summary>
-        /// Gets a CancellationToken that can be used to link cancellation of source or target block
-        /// to the cancellation of this Actor.
-        /// </summary>
-        public CancellationToken CancellationToken
-        {
-            get { return CancellationTokenSource.Token; }
-        }
+        private IEnumerator<Operation> _mainIterator;
 
-        public CancellationTokenSource CancellationTokenSource { get; private set; }
+        private readonly ConcurrentQueue<Action> _msgQueue = new ConcurrentQueue<Action>();
 
-        private readonly bool _isCancellationLinked;
+        private AutoResetEvent _disposeEvent;
+
+        public bool IsDisposed { get; private set; }
+
+        internal bool IsActive { get; set; }
+
+        internal Scheduler Scheduler { get; set; }
 
         [ContractInvariantMethod]
         private void Invariant()
         {
-            Contract.Invariant(IncomingMessages != null);
-            Contract.Invariant(OutgoingMessages != null);
-            Contract.Invariant(CancellationTokenSource != null);
-            Contract.Invariant(_links != null);
+            Contract.Invariant(_msgQueue != null);
+            Contract.Invariant(_disposeEvent != null);
         }
 
-        /// <summary>
-        /// Creates an Actor instance, linking its cancellation to a given token.
-        /// </summary>
-        /// <param name="cancellationTokenSource">The CancellationToken to link to.</param>
-        protected Actor(CancellationTokenSource cancellationTokenSource)
+        private void Setup()
         {
-            Contract.Requires(cancellationTokenSource != null);
+            _disposeEvent = new AutoResetEvent(false);
+            Start();
+        }
 
-            CancellationTokenSource = cancellationTokenSource;
-            _isCancellationLinked = true;
-            CancellationToken.Register(Dispose); // Dispose this Actor when the other one is disposed.
+        internal Actor(Scheduler scheduler)
+        {
+            Contract.Requires(scheduler != null);
 
-            var options = GetOptions(CancellationToken);
-            IncomingMessages = new TargetPort<Action>(new ActionBlock<Action>(new Action<Action>(HandleIncomingMessage), options));
-            OutgoingMessages = new SourcePort<Action>(new BroadcastBlock<Action>(x => x, options));
+            Scheduler = scheduler;
+
+            Setup();
         }
 
         protected Actor()
-            : this(new CancellationTokenSource())
         {
+            Setup();
         }
 
         ~Actor()
@@ -74,82 +60,124 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             Dispose(false);
         }
 
-        private void HandleIncomingMessage(Action act)
+        public void Join()
         {
-            Contract.Requires(act != null);
-
-            try
-            {
-                act();
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.RegisterException(ex);
-                Dispose();
-            }
+            _disposeEvent.WaitOne();
         }
 
-        /// <summary>
-        /// Links this Actor instance with the given Actor, so that messages published on this Actor's
-        /// OutgoingMessages block will be pipelined to the other Actor's IncomingMessages block.
-        /// </summary>
-        /// <param name="other">The Actor to link to.</param>
-        /// <param name="unlinkAfterOneMsg">Whether or not to unlink after receiving a single message.</param>
-        /// <returns>An object that, when disposed, unlinks the other Actor from this Actor.</returns>
-        public IDisposable LinkTo(Actor other, bool unlinkAfterOneMsg = false)
+        public void Dispose()
         {
-            this.ThrowIfDisposed();
-
-            var link = OutgoingMessages.Link(other.IncomingMessages, unlinkAfterOneMsg);
-            _links.Add(link);
-            return link;
+            Post(InternalDispose);
         }
 
-        private readonly List<IDisposable> _links = new List<IDisposable>();
-
-        protected virtual void Dispose(bool disposing)
+        private void InternalDispose()
         {
             if (IsDisposed)
                 return;
 
-            // Clear all links.
-            foreach (var link in _links)
-                link.Dispose();
-
-            _links.Clear();
-
-            // Only initiate cancellation if we weren't linked to someone else's CTS.
-            if (!_isCancellationLinked)
-                CancellationTokenSource.Cancel();
-
-            IsDisposed = true;
-        }
-
-        /// <summary>
-        /// Disposes of the Actor instance.
-        /// 
-        /// This method cancels all source and target blocks linked to this Actor's CancellationTokenSource (including
-        /// this Actor's IncomingMessages and OutgoingMessages blocks).
-        /// </summary>
-        public void Dispose()
-        {
             Dispose(true);
+            IsDisposed = true;
             GC.SuppressFinalize(this);
+
+            _disposeEvent.Set();
         }
 
-        public bool IsDisposed { get; private set; }
-
-        public static DataflowBlockOptions GetOptions(CancellationToken token, int maxDegreeOfParallelism = 1,
-            int maxMessagesPerTask = DataflowBlockOptions.UnboundedMessagesPerTask, TaskScheduler scheduler = null)
+        protected virtual void Dispose(bool disposing)
         {
-            Contract.Requires(maxDegreeOfParallelism > 0 || maxDegreeOfParallelism == -1);
-            Contract.Requires(maxMessagesPerTask > 0 || maxMessagesPerTask == -1);
-            Contract.Ensures(Contract.Result<DataflowBlockOptions>() != null);
+        }
 
-            if (scheduler == null)
-                scheduler = TaskScheduler.Default;
+        private void Start()
+        {
+            var currentThread = Thread.CurrentThread;
+            var oldThread = Interlocked.Exchange(ref _schedulingThread, currentThread);
 
-            return new DataflowBlockOptions(scheduler, maxDegreeOfParallelism, maxMessagesPerTask, token);
+            if (oldThread != null && oldThread != currentThread)
+                throw new InvalidOperationException("An actor cannot be rescheduled within a different scheduler/thread.");
+
+            if (_msgIterator != null)
+                _msgIterator.Dispose();
+
+            _msgIterator = EnumerateMessages();
+
+            if (_mainIterator != null)
+                _mainIterator.Dispose();
+
+            _mainIterator = Main();
+
+            if (Scheduler == null)
+                Scheduler = ActorManager.RegisterActor(this);
+        }
+
+        internal bool ProcessMessages()
+        {
+            _msgIterator.MoveNext();
+
+            return _msgQueue.Count > 0;
+        }
+
+        internal bool ProcessMain()
+        {
+            var result = _mainIterator.MoveNext();
+
+            // Happens if a yield break occurs.
+            if (!result)
+                return false;
+
+            var operation = _mainIterator.Current;
+
+            if (operation == Operation.Dispose)
+                Dispose();
+
+            return operation == Operation.Continue;
+        }
+
+        public void Post(Action msg)
+        {
+            _msgQueue.Enqueue(msg);
+
+            Action tmp;
+            while (!_msgQueue.TryPeek(out tmp))
+                if (_msgQueue.Count == 0)
+                    return; // The message was processed immediately, and we can just return.
+
+            if (msg == tmp)
+                Scheduler.AddActor(this); // The message was sent while the actor was idle; restart it to continue processing.
+        }
+
+        protected virtual IEnumerator<Operation> Main()
+        {
+            yield break; // No main by default.
+        }
+
+        private IEnumerator<Operation> EnumerateMessages()
+        {
+            while (true)
+            {
+                Action msg;
+                if (_msgQueue.TryDequeue(out msg))
+                {
+                    var op = OnMessage(msg);
+                    if (op != null)
+                        yield return op.Value;
+                }
+
+                yield return Operation.Continue;
+            }
+        }
+
+        protected virtual Operation? OnMessage(Action msg)
+        {
+            try
+            {
+                msg();
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.RegisterException(ex);
+                return Operation.Dispose;
+            }
+
+            return null;
         }
     }
 }

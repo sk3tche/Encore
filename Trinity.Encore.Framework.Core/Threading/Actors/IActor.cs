@@ -9,63 +9,24 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
     [ContractClass(typeof(ActorContracts))]
     public interface IActor : IDisposableResource, IPermissible
     {
-        TargetPort<Action> IncomingMessages { get; }
+        void Join();
 
-        SourcePort<Action> OutgoingMessages { get; }
-
-        CancellationToken CancellationToken { get; }
-
-        CancellationTokenSource CancellationTokenSource { get; }
-
-        IDisposable LinkTo(Actor other, bool unlinkAfterOneMsg = false);
+        void Post(Action msg);
     }
 
     [ContractClassFor(typeof(IActor))]
     public abstract class ActorContracts : IActor
     {
+        public void Post(Action msg)
+        {
+            Contract.Requires(msg != null);
+        }
+
+        public abstract void Join();
+
         public abstract void Dispose();
 
         public abstract bool IsDisposed { get; }
-
-        public TargetPort<Action> IncomingMessages
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<TargetPort<Action>>() != null);
-
-                return null;
-            }
-        }
-
-        public SourcePort<Action> OutgoingMessages
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<SourcePort<Action>>() != null);
-
-                return null;
-            }
-        }
-
-        public abstract CancellationToken CancellationToken { get; }
-
-        public CancellationTokenSource CancellationTokenSource
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<CancellationTokenSource>() != null);
-
-                return null;
-            }
-        }
-
-        public IDisposable LinkTo(Actor other, bool unlinkAfterOneMsg)
-        {
-            Contract.Requires(other != null);
-            Contract.Ensures(Contract.Result<IDisposable>() != null);
-
-            return null;
-        }
 
         public abstract void AddPermission(Permission perm);
 

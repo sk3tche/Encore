@@ -121,16 +121,8 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
                 return;
             }
 
-            try
-            {
-                var packet = CreatePacket(opCode, payload, length);
-                handler.Invoke(client, packet);
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.RegisterException(ex);
-                client.Disconnect();
-            }
+            var packet = CreatePacket(opCode, payload, length);
+            client.Post(() => handler.Invoke(client, packet));
         }
 
         public abstract int HeaderLength { get; }

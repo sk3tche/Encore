@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.ServiceModel;
-using System.Threading.Tasks.Dataflow;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Services;
 using Trinity.Encore.Framework.Core.Threading.Actors;
@@ -29,13 +28,9 @@ namespace Trinity.Encore.Framework.Game.Services
             _creator = clientCreator;
             _client = clientCreator();
             _client.Open();
-
-            ServiceCalls = new TargetPort<Action<TService>>(new ActionBlock<Action<TService>>(new Action<Action<TService>>(HandleServiceCall), GetOptions(CancellationToken)));
         }
 
-        public TargetPort<Action<TService>> ServiceCalls { get; private set; }
-
-        private void HandleServiceCall(Action<TService> call)
+        public void Call(Action<TService> call)
         {
             Contract.Requires(call != null);
 
@@ -46,7 +41,7 @@ namespace Trinity.Encore.Framework.Game.Services
             catch (Exception ex)
             {
                 if (ex is CommunicationException)
-                    IncomingMessages.Post(Reconnect);
+                    Post(Reconnect);
 
                 // Register, but ignore the exception.
                 ExceptionManager.RegisterException(ex);
@@ -61,7 +56,8 @@ namespace Trinity.Encore.Framework.Game.Services
 
         private void Disconnect()
         {
-            if (_client.State != CommunicationState.Closed)
+            var state = _client.State;
+            if (state != CommunicationState.Closing && state != CommunicationState.Closed)
                 _client.Close();
 
             _client = null;
@@ -69,6 +65,10 @@ namespace Trinity.Encore.Framework.Game.Services
 
         private void Reconnect()
         {
+            var state = _client.State;
+            if (state == CommunicationState.Opening || state == CommunicationState.Opened)
+                return;
+
             Disconnect();
             Connect();
         }

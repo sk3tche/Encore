@@ -73,9 +73,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Threading.Tasks.Dataflow">
-      <HintPath>..\Dependencies\System.Threading.Tasks.Dataflow.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -127,13 +124,12 @@
     <Compile Include="Services\DuplexServiceClient.cs" />
     <Compile Include="Services\ServiceClient.cs" />
     <Compile Include="Services\ServiceHost.cs" />
-    <Compile Include="Threading\Actors\ActorApplication.cs" />
     <Compile Include="Threading\Actors\Actor.cs" />
-    <Compile Include="Threading\Actors\Agent.cs" />
-    <Compile Include="Threading\Actors\AgentState.cs" />
+    <Compile Include="Threading\Actors\ActorManager.cs" />
+    <Compile Include="Threading\Actors\ActorTimer.cs" />
     <Compile Include="Threading\Actors\IActor.cs" />
-    <Compile Include="Threading\Actors\SourcePort.cs" />
-    <Compile Include="Threading\Actors\TargetPort.cs" />
+    <Compile Include="Threading\Actors\Operation.cs" />
+    <Compile Include="Threading\Actors\Scheduler.cs" />
     <Compile Include="Threading\ReadScopeGuard.cs" />
     <Compile Include="Threading\ReadWriteLock.cs" />
     <Compile Include="Threading\WriteScopeGuard.cs" />

@@ -1,18 +1,26 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Reflection;
+using System.Threading;
 using Trinity.Encore.Framework.Core.Configuration;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Initialization;
+using Trinity.Encore.Framework.Core.Threading.Actors;
 
-namespace Trinity.Encore.Framework.Core.Threading.Actors
+namespace Trinity.Encore.Framework.Game.Threading
 {
-    public abstract class ActorApplication<T> : Agent
+    public abstract class ActorApplication<T> : Actor
         where T : ActorApplication<T>
     {
+        public const int UpdateDelay = 50;
+
+        private readonly ActorTimer _updateTimer;
+
         private readonly Lazy<T> _creator;
 
-        private volatile bool _shouldStop;
+        private DateTime _lastUpdate;
+
+        private bool _shouldStop;
 
         public T Instance
         {
@@ -21,15 +29,11 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private ApplicationConfiguration _configuration;
 
-        public override TimeSpan RunInterval
-        {
-            get { return TimeSpan.FromMilliseconds(50); }
-        }
-
         [ContractInvariantMethod]
         private void Invariant()
         {
             Contract.Invariant(_creator != null);
+            Contract.Invariant(_updateTimer != null);
         }
 
         protected ActorApplication(Func<T> creator)
@@ -37,6 +41,8 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             Contract.Requires(creator != null);
 
             _creator = new Lazy<T>(creator);
+            _updateTimer = new ActorTimer(this, UpdateCallback, TimeSpan.FromMilliseconds(UpdateDelay), UpdateDelay);
+            _lastUpdate = DateTime.Now;
         }
 
         public void Start(string[] args)
@@ -63,8 +69,6 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             {
                 ExceptionManager.RegisterException(ex);
             }
-
-            ScheduleRun();
         }
 
         public void Stop()
@@ -97,13 +101,19 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         {
         }
 
-        protected override bool Run(TimeSpan diff)
+        private void UpdateCallback()
         {
             if (_shouldStop)
-                return false;
+            {
+                _updateTimer.Change(TimeSpan.FromMilliseconds(Timeout.Infinite));
+                return;
+            }
+
+            var now = DateTime.Now;
+            var diff = now - _lastUpdate;
+            _lastUpdate = now;
 
             OnUpdate(diff);
-            return true;
         }
 
         protected virtual void OnUpdate(TimeSpan diff)

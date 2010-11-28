@@ -2,9 +2,10 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Net;
 using Trinity.Encore.Framework.Core.Threading.Actors;
+using Trinity.Encore.Framework.Game.Threading;
 using Trinity.Encore.Framework.Network.Connectivity;
 
-namespace Trinity.Encore.Framework.Network
+namespace Trinity.Encore.Framework.Game.Network
 {
     [ContractClass(typeof(NetworkApplicationContracts<>))]
     public abstract class NetworkApplication<T> : ActorApplication<T>
