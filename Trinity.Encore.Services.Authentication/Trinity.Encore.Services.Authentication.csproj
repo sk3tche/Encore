@@ -68,6 +68,8 @@
     <Compile Include="Enums\AuthResult.cs" />
     <Compile Include="Enums\ExtraSecurityFlags.cs" />
     <Compile Include="Handlers\AuthenticationHandler.cs" />
+    <Compile Include="Handlers\PatchHandler.cs" />
+    <Compile Include="Handlers\RealmListHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
