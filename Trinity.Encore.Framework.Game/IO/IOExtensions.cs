@@ -83,6 +83,7 @@ namespace Trinity.Encore.Framework.Game.IO
             Contract.Requires(reader != null);
 
             var length = reader.ReadByte();
+            Contract.Assume(length >= 0);
             var data = reader.ReadBytes(length);
 
             return new BigInteger(data);

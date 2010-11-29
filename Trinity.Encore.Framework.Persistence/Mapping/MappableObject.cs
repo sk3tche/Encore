@@ -1,6 +1,6 @@
 using FluentNHibernate.Mapping;
 
-namespace Trinity.Encore.Framework.Persistence
+namespace Trinity.Encore.Framework.Persistence.Mapping
 {
     /// <summary>
     /// Wrapper/abstraction class that covers FluentNHibernate.Mapping.ClassMap

@@ -5,6 +5,7 @@ using FluentNHibernate.Mapping;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;
 using Trinity.Encore.Framework.Persistence;
+using Trinity.Encore.Framework.Persistence.Mapping;
 using Trinity.Encore.Framework.Services.Account;
 
 namespace Trinity.Encore.Services.Account.Database
