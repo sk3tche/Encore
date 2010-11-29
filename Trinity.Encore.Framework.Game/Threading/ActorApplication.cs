@@ -9,40 +9,40 @@ using Trinity.Encore.Framework.Core.Threading.Actors;
 
 namespace Trinity.Encore.Framework.Game.Threading
 {
-    public abstract class ActorApplication<T> : Actor
+    public abstract class ActorApplication<T> : SingletonActor<T>
         where T : ActorApplication<T>
     {
         public const int UpdateDelay = 50;
 
-        private readonly ActorTimer _updateTimer;
-
-        private readonly Lazy<T> _creator;
+        private ActorTimer _updateTimer;
 
         private DateTime _lastUpdate;
 
         private bool _shouldStop;
-
-        public T Instance
-        {
-            get { return _creator.Value; }
-        }
 
         private ApplicationConfiguration _configuration;
 
         [ContractInvariantMethod]
         private void Invariant()
         {
-            Contract.Invariant(_creator != null);
             Contract.Invariant(_updateTimer != null);
         }
 
         protected ActorApplication(Func<T> creator)
+            : base(creator)
         {
             Contract.Requires(creator != null);
 
-            _creator = new Lazy<T>(creator);
             _updateTimer = new ActorTimer(this, UpdateCallback, TimeSpan.FromMilliseconds(UpdateDelay), UpdateDelay);
             _lastUpdate = DateTime.Now;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _updateTimer.Dispose();
+            _updateTimer = null;
+
+            base.Dispose(disposing);
         }
 
         public void Start(string[] args)

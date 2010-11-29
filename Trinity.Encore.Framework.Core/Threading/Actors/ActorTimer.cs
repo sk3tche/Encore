@@ -7,7 +7,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
     public sealed class ActorTimer : IDisposableResource
     {
-        private readonly Timer _timer;
+        private Timer _timer;
 
         public Actor TargetActor { get; private set; }
 
@@ -42,6 +42,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         private void Dispose(bool disposing)
         {
             _timer.Dispose();
+            _timer = null;
         }
 
         public void Dispose()

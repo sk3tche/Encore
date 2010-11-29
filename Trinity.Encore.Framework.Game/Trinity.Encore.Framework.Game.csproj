@@ -130,6 +130,7 @@
     <Compile Include="Services\IAuthenticatableService.cs" />
     <Compile Include="Services\IpcDevice.cs" />
     <Compile Include="Threading\ActorApplication.cs" />
+    <Compile Include="Threading\SingletonActor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trinity.Encore.Framework.Core\Trinity.Encore.Framework.Core.csproj">
