@@ -19,11 +19,8 @@ namespace Trinity.Encore.Framework.Game.Network
             Contract.Invariant(Server != null);
         }
 
-        protected NetworkApplication(Func<T> creator)
-            : base(creator)
+        protected NetworkApplication()
         {
-            Contract.Requires(creator != null);
-
             Server = CreateServer();
             Server.ClientConnected += OnClientConnected;
             Server.ClientDisconnected += OnClientDisconnected;
@@ -71,11 +68,6 @@ namespace Trinity.Encore.Framework.Game.Network
     public abstract class NetworkApplicationContracts<T> : NetworkApplication<T>
         where T : NetworkApplicationContracts<T>
     {
-        protected NetworkApplicationContracts(Func<T> creator)
-            : base(creator)
-        {
-        }
-
         protected override IServer CreateServer()
         {
             Contract.Ensures(Contract.Result<IServer>() != null);

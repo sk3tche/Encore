@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
+using System.Reflection;
+using Trinity.Encore.Framework.Core.Reflection;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 
 namespace Trinity.Encore.Framework.Game.Threading
@@ -7,14 +9,32 @@ namespace Trinity.Encore.Framework.Game.Threading
     public abstract class SingletonActor<T> : Actor
         where T : SingletonActor<T>
     {
-        protected SingletonActor(Func<T> creator)
+        static SingletonActor()
         {
-            Contract.Requires(creator != null);
+            _lazy = new Lazy<T>(() =>
+            {
+                var type = typeof(T);
 
-            _lazy = new Lazy<T>(creator);
+                if (!type.IsSealed)
+                    throw new ReflectionException(string.Format("Type {0} cannot be a singleton, as it is inheritable.", type));
+
+                var ctors = type.GetConstructors();
+
+                if (ctors.Length > 0)
+                    throw new ReflectionException(string.Format("Type {0} cannot be a singleton, as it has public constructors.",
+                        type));
+
+                var ctor = type.GetConstructor(BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+
+                if (ctor == null || !ctor.IsPrivate)
+                    throw new ReflectionException(string.Format("Type {0} cannot be a singleton, as it has no private constructor.",
+                        type));
+
+                return (T)ctor.Invoke(null);
+            });
         }
 
-        private static Lazy<T> _lazy;
+        private static readonly Lazy<T> _lazy;
 
         public static T Instance
         {

@@ -28,11 +28,8 @@ namespace Trinity.Encore.Framework.Game.Threading
             Contract.Invariant(_updateTimer != null);
         }
 
-        protected ActorApplication(Func<T> creator)
-            : base(creator)
+        protected ActorApplication()
         {
-            Contract.Requires(creator != null);
-
             _updateTimer = new ActorTimer(this, UpdateCallback, TimeSpan.FromMilliseconds(UpdateDelay), UpdateDelay);
             _lastUpdate = DateTime.Now;
         }
