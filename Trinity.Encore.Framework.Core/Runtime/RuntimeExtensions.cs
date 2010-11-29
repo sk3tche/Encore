@@ -18,17 +18,6 @@ namespace Trinity.Encore.Framework.Core.Runtime
                 throw new ObjectDisposedException(resource.ToString(), "An attempt was made to use a disposed object.");
         }
 
-        public static Task DeferDispose(this IDisposable resource, int delayMilliseconds = 0)
-        {
-            Contract.Requires(resource != null);
-            Contract.Requires(delayMilliseconds >= 0);
-            Contract.Ensures(Contract.Result<Task>() != null);
-
-            var task = Task.Factory.StartNewDelayed(delayMilliseconds, resource.Dispose);
-            Contract.Assume(task != null);
-            return task;
-        }
-
         public static byte[] ToBinary(this object obj)
         {
             Contract.Requires(obj != null);
