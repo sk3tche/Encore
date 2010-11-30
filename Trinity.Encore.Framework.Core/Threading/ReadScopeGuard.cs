@@ -40,15 +40,15 @@ namespace Trinity.Encore.Framework.Core.Threading
 
         public void Dispose(bool disposing)
         {
-            if (IsDisposed)
-                return;
-
             _lock.ExitReadLock();
-            IsDisposed = true;
         }
 
         public void Dispose()
         {
+            if (IsDisposed)
+                return;
+
+            IsDisposed = true;
             Dispose(true);
             GC.SuppressFinalize(this);
         }

@@ -1,71 +1,189 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using FluentNHibernate;
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
+using FluentNHibernate.Mapping;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Criterion;
 using NHibernate.Linq;
 using Trinity.Encore.Framework.Core.Reflection;
+using Trinity.Encore.Framework.Core.Runtime;
 using Trinity.Encore.Framework.Persistence.Schema;
 
 namespace Trinity.Encore.Framework.Persistence
 {
-    public class DatabaseContext
+    [ContractClass(typeof(DatabaseContextContracts))]
+    public abstract class DatabaseContext : IDisposableResource
     {
         [ContractInvariantMethod]
         private void Invariant()
         {
-            Contract.Invariant(Config != null);
             Contract.Invariant(SessionFactory != null);
             Contract.Invariant(Schema != null);
+            Contract.Invariant(Configuration != null);
         }
 
-        public DatabaseContext(string dialect, string driverClass, string connString)
+        protected DatabaseContext(DatabaseType type, string dialect, string driverClass, string connString)
         {
             Contract.Requires(!string.IsNullOrEmpty(dialect));
             Contract.Requires(!string.IsNullOrEmpty(driverClass));
             Contract.Requires(!string.IsNullOrEmpty(connString));
 
-            Configure(dialect, driverClass, connString);
+            Configure(type, dialect, driverClass, connString);
         }
 
+        ~DatabaseContext()
+        {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            SessionFactory.Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (IsDisposed)
+                return;
+
+            IsDisposed = true;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public bool IsDisposed { get; private set; }
+
         #region Private methods
+
+        private static IPersistenceConfigurer CreateConfiguration(DatabaseType type, string connString)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(connString));
+            Contract.Ensures(Contract.Result<IPersistenceConfigurer>() != null);
+
+            IPersistenceConfigurer config;
+
+            switch (type)
+            {
+                case DatabaseType.DB2:
+                    config = DB2Configuration.Standard.ConnectionString(connString);
+                    break;
+                case DatabaseType.Firebird:
+                    config = new FirebirdConfiguration().ConnectionString(connString);
+                    break;
+                case DatabaseType.IfxDrda:
+                    config = IfxDRDAConfiguration.Informix.ConnectionString(connString);
+                    break;
+                case DatabaseType.IfxDrda0940:
+                    config = IfxDRDAConfiguration.Informix0940.ConnectionString(connString);
+                    break;
+                case DatabaseType.IfxDrda1000:
+                    config = IfxDRDAConfiguration.Informix1000.ConnectionString(connString);
+                    break;
+                case DatabaseType.IfxOdbc:
+                    config = IfxOdbcConfiguration.Informix.ConnectionString(connString);
+                    break;
+                case DatabaseType.IfxOdbc0940:
+                    config = IfxOdbcConfiguration.Informix0940.ConnectionString(connString);
+                    break;
+                case DatabaseType.IfxOdbc1000:
+                    config = IfxOdbcConfiguration.Informix1000.ConnectionString(connString);
+                    break;
+                case DatabaseType.IfxSqli:
+                    config = IfxSQLIConfiguration.Informix.ConnectionString(connString);
+                    break;
+                case DatabaseType.IfxSqli0940:
+                    config = IfxSQLIConfiguration.Informix0940.ConnectionString(connString);
+                    break;
+                case DatabaseType.IfxSqli1000:
+                    config = IfxSQLIConfiguration.Informix1000.ConnectionString(connString);
+                    break;
+                case DatabaseType.JetDriver:
+                    config = JetDriverConfiguration.Standard.ConnectionString(connString);
+                    break;
+                case DatabaseType.MsSql7:
+                    config = MsSqlConfiguration.MsSql7.ConnectionString(connString);
+                    break;
+                case DatabaseType.MsSql2000:
+                    config = MsSqlConfiguration.MsSql2000.ConnectionString(connString);
+                    break;
+                case DatabaseType.MsSql2005:
+                    config = MsSqlConfiguration.MsSql2005.ConnectionString(connString);
+                    break;
+                case DatabaseType.MsSql2008:
+                    config = MsSqlConfiguration.MsSql2008.ConnectionString(connString);
+                    break;
+                case DatabaseType.MsSqlCe:
+                    config = MsSqlCeConfiguration.Standard.ConnectionString(connString);
+                    break;
+                case DatabaseType.MySql:
+                    config = MySQLConfiguration.Standard.ConnectionString(connString);
+                    break;
+                case DatabaseType.Oracle9:
+                    config = OracleClientConfiguration.Oracle9.ConnectionString(connString);
+                    break;
+                case DatabaseType.Oracle10:
+                    config = OracleClientConfiguration.Oracle10.ConnectionString(connString);
+                    break;
+                case DatabaseType.OracleData9:
+                    config = OracleDataClientConfiguration.Oracle9.ConnectionString(connString);
+                    break;
+                case DatabaseType.OracleData10:
+                    config = OracleDataClientConfiguration.Oracle10.ConnectionString(connString);
+                    break;
+                case DatabaseType.PostgreSql:
+                    config = PostgreSQLConfiguration.Standard.ConnectionString(connString);
+                    break;
+                case DatabaseType.PostgreSql81:
+                    config = PostgreSQLConfiguration.PostgreSQL81.ConnectionString(connString);
+                    break;
+                case DatabaseType.PostgreSql82:
+                    config = PostgreSQLConfiguration.PostgreSQL82.ConnectionString(connString);
+                    break;
+                case DatabaseType.SQLite:
+                    config = SQLiteConfiguration.Standard.ConnectionString(connString);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("type");
+            }
+
+            Contract.Assume(config != null);
+            return config;
+        }
 
         /// <summary>
         /// Configures the DatabaseContext.
         /// </summary>
+        /// <param name="type">The type of SQL server to connect to.</param>
         /// <param name="dialect">The SQL dialect to use.</param>
         /// <param name="driverClass">The fully-qualified name of the driver class to use.</param>
         /// <param name="connString">The connection string to be used to establish a connection.</param>
-        private void Configure(string dialect, string driverClass, string connString)
+        private void Configure(DatabaseType type, string dialect, string driverClass, string connString)
         {
             Contract.Requires(!string.IsNullOrEmpty(dialect));
             Contract.Requires(!string.IsNullOrEmpty(driverClass));
             Contract.Requires(!string.IsNullOrEmpty(connString));
-            Contract.Ensures(Config != null);
             Contract.Ensures(SessionFactory != null);
             Contract.Ensures(Schema != null);
+            Contract.Ensures(Configuration != null);
 
-            Config = new Configuration
+            var fluent = Fluently.Configure();
+            fluent.Database(CreateConfiguration(type, connString));
+
+            foreach (var mapping in CreateMappings())
             {
-                Properties = new Dictionary<string, string>
-                {
-                    { "connection.provider", "NHibernate.Connection.DriverConnectionProvider" },
-                    { "dialect", dialect },
-                    { "connection.driver_class", driverClass },
-                    { "connection.connection_string", connString },
-                }
-            };
-
-            var fluent = Fluently.Configure(Config);
-
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                var asm = assembly;
-                fluent.Mappings(x => x.FluentMappings.AddFromAssembly(asm));
+                var mappingType = mapping.GetType();
+                fluent.Mappings(x => x.FluentMappings.Add(mappingType));
             }
+
+            var config = fluent.BuildConfiguration();
+            Contract.Assume(config != null);
+            Configuration = config;
 
             var factory = fluent.BuildSessionFactory();
             Contract.Assume(factory != null);
@@ -77,6 +195,8 @@ namespace Trinity.Encore.Framework.Persistence
         #endregion
 
         #region Protected methods
+
+        protected abstract IEnumerable<IMappingProvider> CreateMappings();
 
         /// <summary>
         /// Creates a disposable database session.
@@ -251,10 +371,26 @@ namespace Trinity.Encore.Framework.Persistence
 
         #region Protected properties
 
-        protected internal Configuration Config { get; private set; }
+        protected internal Configuration Configuration { get; private set; }
 
         protected ISessionFactory SessionFactory { get; private set; }
 
         #endregion
+    }
+
+    [ContractClassFor(typeof(DatabaseContext))]
+    public abstract class DatabaseContextContracts : DatabaseContext
+    {
+        protected DatabaseContextContracts(DatabaseType type, string dialect, string driverClass, string connString)
+            : base(type, dialect, driverClass, connString)
+        {
+        }
+
+        protected override IEnumerable<IMappingProvider> CreateMappings()
+        {
+            Contract.Ensures(Contract.Result<IEnumerable<IMappingProvider>>() != null);
+
+            return null;
+        }
     }
 }

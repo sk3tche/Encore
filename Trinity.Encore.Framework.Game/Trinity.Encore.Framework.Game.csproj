@@ -58,9 +58,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JetBrains.Annotations, Version=5.0.1659.36, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=1c633ed318da3899, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Microsoft.Xna.Framework.dll</HintPath>
+    <Reference Include="Microsoft.Xna.Framework.Lite">
+      <HintPath>..\Dependencies\Microsoft.Xna.Framework.Lite.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security">
       <HintPath>..\Dependencies\Mono.Security.dll</HintPath>

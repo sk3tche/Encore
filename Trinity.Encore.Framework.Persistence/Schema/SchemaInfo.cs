@@ -18,7 +18,7 @@ namespace Trinity.Encore.Framework.Persistence.Schema
         {
             Contract.Requires(ctx != null);
 
-            _schema = new SchemaExport(ctx.Config);
+            _schema = new SchemaExport(ctx.Configuration);
         }
 
         public void Create()

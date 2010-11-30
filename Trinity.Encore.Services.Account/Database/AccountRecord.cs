@@ -49,29 +49,29 @@ namespace Trinity.Encore.Services.Account.Database
             Locale = locale;
         }
 
-        public long Id { get; set; }
+        public virtual long Id { get; protected set; }
 
-        public string Name { get; set; }
+        public virtual string Name { get; protected set; }
 
-        public string EmailAddress { get; set; }
+        public virtual string EmailAddress { get; set; }
 
-        public byte[] SHA1Password { get; set; }
+        public virtual byte[] SHA1Password { get; set; }
 
-        public byte[] SHA256Password { get; set; }
+        public virtual byte[] SHA256Password { get; set; }
         
-        public ClientBoxLevel BoxLevel { get; set; }
-        
-        public ClientLocale Locale { get; set; }
+        public virtual ClientBoxLevel BoxLevel { get; set; }
 
-        public DateTime? LastLogin { get; set; }
+        public virtual ClientLocale Locale { get; set; }
 
-        public byte[] LastIP { get; set; }
-        
-        public AccountRecord Recruiter { get; set; }
+        public virtual DateTime? LastLogin { get; set; }
 
-        public AccountBanRecord Ban { get; set; }
+        public virtual byte[] LastIP { get; set; }
 
-        public AccountData Serialize()
+        public virtual AccountRecord Recruiter { get; set; }
+
+        public virtual AccountBanRecord Ban { get; set; }
+
+        public virtual AccountData Serialize()
         {
             Contract.Assume(SHA1Password != null);
             Contract.Assume(SHA1Password.Length == 20);
@@ -105,9 +105,8 @@ namespace Trinity.Encore.Services.Account.Database
             Map(c => c.Locale).Not.Nullable().Update();
             Map(c => c.LastLogin).Nullable().Update();
             Map(c => c.LastIP).Nullable().Update();
-            Map(c => c.Recruiter).Nullable().Update();
-            References(x => x.Recruiter).Cascade.SaveUpdate().LazyLoad(Laziness.Proxy);
-            HasOne(c => c.Ban).PropertyRef(c => c.Account).Cascade.All().LazyLoad(Laziness.Proxy);
+            References(x => x.Recruiter).Nullable().Cascade.SaveUpdate().LazyLoad(Laziness.Proxy);
+            HasOne(c => c.Ban).Cascade.All().LazyLoad(Laziness.Proxy);
         }
     }
  }

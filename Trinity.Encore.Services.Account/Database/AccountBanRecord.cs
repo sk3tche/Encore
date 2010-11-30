@@ -31,13 +31,15 @@ namespace Trinity.Encore.Services.Account.Database
             Account = account;
         }
 
-        public AccountRecord Account { get; private set; }
+        public virtual long Id { get; protected set; }
 
-        public string Notes { get; set; }
+        public virtual AccountRecord Account { get; protected set; }
 
-        public DateTime? Expiry { get; set; }
+        public virtual string Notes { get; set; }
 
-        public AccountBanData Serialize()
+        public virtual DateTime? Expiry { get; set; }
+
+        public virtual AccountBanData Serialize()
         {
             return new AccountBanData
             {
@@ -52,6 +54,7 @@ namespace Trinity.Encore.Services.Account.Database
     {
         public AccountBanMapping()
         {
+            Id(c => c.Id).Not.Nullable().GeneratedBy.Increment().Unique();
             HasOne(c => c.Account).PropertyRef(c => c.Ban).Constrained().Cascade.SaveUpdate().LazyLoad(Laziness.Proxy);
             Map(c => c.Notes).Nullable().Update();
             Map(c => c.Expiry).Nullable().Update();

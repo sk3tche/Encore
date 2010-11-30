@@ -24,7 +24,7 @@ namespace Trinity.Encore.Framework.Game.Threading
                     throw new ReflectionException(string.Format("Type {0} cannot be a singleton, as it has public constructors.",
                         type));
 
-                var ctor = type.GetConstructor(BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+                var ctor = type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
 
                 if (ctor == null || !ctor.IsPrivate)
                     throw new ReflectionException(string.Format("Type {0} cannot be a singleton, as it has no private constructor.",
