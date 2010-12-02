@@ -104,10 +104,12 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             Contract.Requires(salt.ByteLength == 32);
             Contract.Requires(rand != null);
             Contract.Requires(rand.ByteLength == 16);
+            Contract.Requires(generator != null);
+            Contract.Requires(generator.ByteLength == 1);
 
             using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonChallenge, 118))
             {
-                packet.Write((byte)0x00);
+                packet.Write((byte)0x00); // If this is > 0, the client fails immediately
                 packet.Write((byte)AuthResult.Success);
                 packet.Write(publicEphemeral, 32);
                 packet.Write(generator, 1, true);
@@ -115,11 +117,11 @@ namespace Trinity.Encore.Services.Authentication.Handlers
                 packet.Write(salt, 32);
                 packet.Write(rand, 16);
 
-                var extraSecurityFlags = (ExtraSecurityFlags)0x00;
+                var extraSecurityFlags = ExtraSecurityFlags.None;
                 packet.Write((byte)extraSecurityFlags);
                 if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.PIN))
                 {
-                    packet.Write((int)0);
+                    packet.Write(0); // Used as the factor for determining PIN order
 
                     // this is supposed to be an array of 16 bytes but there's no purpose in initializing it now
                     packet.Write((long)0);
@@ -128,13 +130,22 @@ namespace Trinity.Encore.Services.Authentication.Handlers
 
                 if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.Matrix))
                 {
-                    for (int i = 0; i < 4; i++)
-                        packet.Write((byte)0);
-                    packet.Write((long)0);
+                    packet.Write((byte) 0); // height
+                    packet.Write((byte) 0); // width
+                    packet.Write((byte) 0); // minDigits
+                    packet.Write((byte) 0); // maxDigits
+                    packet.Write((long) 0); // seed for md5
+
+                    // Client MD5's the seed + sessionkey, and uses it as the seed to an HMAC-SHA1
+                    // Client then uses the MD5 as a seed to an RC4 context
+                    // On every keypress, the client processes the entered value with the RC4, then updates the HMAC with that value
+                    // The HMAC result is sent in the auth proof
                 }
 
                 if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
-                    packet.Write((byte)0);
+                {
+                    packet.Write((byte) 0);
+                }
 
                 client.Send(packet);
             }
@@ -166,9 +177,12 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             Contract.Requires(client != null);
             Contract.Requires(packet != null);
 
-            var clientPublicEphemeralBytes = packet.ReadBytes(32);
-            var clientResultBytes = packet.ReadBytes(20);
-            var crcHashBytes = packet.ReadBytes(20); // these can safely be ignored
+            var clientPublicEphemeralA = packet.ReadBigInteger(32);
+            // Client Proof.
+            // SHA1 of { SHA1(Modulus) ^ SHA1(Generator), SHA1(USERNAME), salt, PublicA, PublicB, SessionKey }
+            var clientResult = packet.ReadBigInteger(20);
+            // SHA1 hash of the PublicA and HMACSHA1 of the contents of WoW.exe and unicows.dll. HMAC seed is the 16 bytes at the end of the challenge sent by the server.
+            var clientFileHash = packet.ReadBytes(20); // these can safely be ignored
 
             // the client tends to send 0, but just in case it's safer to implement this.
             var numKeys = packet.ReadByte();
@@ -181,17 +195,33 @@ namespace Trinity.Encore.Services.Authentication.Handlers
                     var unk1 = packet.ReadInt16();
                     var unk2 = packet.ReadInt32();
                     var unk3 = packet.ReadBytes(4);
+                    // SHA of { PublicA, PublicB, byte[20] unknown data }
                     var shaHash = packet.ReadBytes(20);
+                    Contract.Assume(unk3.Length == 4);
+                    Contract.Assume(shaHash.Length == 20);
                     keys[key] = new AuthLogonKey(unk1, unk2, unk3, shaHash);
                 }
             }
 
-            var securityFlags = packet.ReadByte(); // can be safely ignored
+            var securityFlags = (ExtraSecurityFlags)packet.ReadByte(); // can be safely ignored
 
-            BigInteger clientPublicEphemeral = new BigInteger(clientPublicEphemeralBytes);
-            BigInteger clientResult = new BigInteger(clientResultBytes);
+            if (securityFlags.HasFlag(ExtraSecurityFlags.PIN))
+            {
+                var pinRandom = packet.ReadBytes(16);
+                var pinSHA = packet.ReadBytes(20);
+            }
+            if (securityFlags.HasFlag(ExtraSecurityFlags.Matrix))
+            {
+                var matrixHMACResult = packet.ReadBytes(20);
+            }
+            if (securityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
+            {
+                var tokenLength = packet.ReadByte();
+                var token = packet.ReadBytes(tokenLength);
+            }
+
             SRPServer srpData = client.UserData.SRP;
-            srpData.PublicEphemeralValueA = clientPublicEphemeral;
+            srpData.PublicEphemeralValueA = clientPublicEphemeralA;
             var success = srpData.Validator.IsClientProofValid(clientResult);
             if (success)
             {
@@ -211,8 +241,14 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             {
                 packet.Write((byte)AuthResult.Success);
                 packet.Write(serverResult, 20);
-                packet.Write((int)0x00800000);
-                packet.Write((int)0x00);
+                // Flags. Only These are checked
+                // 0x1 = ?
+                // 0x8 = Trial Account
+                // 0x800000 = ?
+                packet.Write(0x00800000);
+                // If 1, the client will do a hardware survey
+                packet.Write(0x00);
+                // If 1, client will fire EVENT_ACCOUNT_MESSAGES_AVAILABLE
                 packet.Write((short)0x00);
                 client.Send(packet);
             }
@@ -225,8 +261,11 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonProof, 3))
             {
                 packet.Write((byte)result);
-                packet.Write((byte)3);
-                packet.Write((byte)0);
+                if (result == AuthResult.FailUnknownAccount)
+                {
+                    // This is only read if the result == 4, and even then its not used. But it does need this to be here, as it does a length check before reading
+                    packet.Write((short) 0);
+                }
                 client.Send(packet);
             }
         }
