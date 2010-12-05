@@ -394,7 +394,7 @@ namespace Trinity.Encore.Framework.Game.Network
         /// <summary>
         /// SMSG_QUEST_QUERY_RESPONSE.
         /// </summary>
-        ServerQueryQuestResponse = 0x720B,
+        ServerQueryQuestResponse = 0x765F,
         /// <summary>
         /// CMSG_PAGE_TEXT_QUERY.
         /// </summary>
