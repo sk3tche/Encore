@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Trinity.Encore.Framework.Game.IO
 {
+    // TODO : Add support for reflecting into enums rather than just ints
     [ContractClass(typeof(BinaryFileReaderContracts))]
     public abstract class BinaryFileReader
     {
