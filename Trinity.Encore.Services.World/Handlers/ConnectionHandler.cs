@@ -8,7 +8,7 @@ namespace Trinity.Encore.Services.World.Handlers
 {
     public static class ConnectionHandler
     {
-        [WorldPacketHandler(WorldServerOpCodes.ClientConnectionPing)]
+        [WorldPacketHandler(WorldOpCodes.ClientConnectionPing)]
         public static void HandlePing(IClient client, IncomingWorldPacket packet)
         {
             Contract.Requires(client != null);
@@ -24,7 +24,7 @@ namespace Trinity.Encore.Services.World.Handlers
         {
             Contract.Requires(client != null);
 
-            using (var packet = new OutgoingWorldPacket(WorldServerOpCodes.ServerConnectionPong, 4))
+            using (var packet = new OutgoingWorldPacket(WorldOpCodes.ServerConnectionPong, 4))
             {
                 packet.Write(sequence);
 

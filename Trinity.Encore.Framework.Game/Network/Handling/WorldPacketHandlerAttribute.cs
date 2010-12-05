@@ -2,7 +2,7 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
 {
     public sealed class WorldPacketHandlerAttribute : PacketHandlerAttribute
     {
-        public WorldPacketHandlerAttribute(WorldServerOpCodes opCode)
+        public WorldPacketHandlerAttribute(WorldOpCodes opCode)
             : base(opCode)
         {
         }

@@ -6,7 +6,7 @@ namespace Trinity.Encore.Framework.Game.Network
     /// A list of packet opcodes gleaned from client version 4.0.1.13205.
     /// </summary>
     [Serializable]
-    public enum WorldServerOpCodes : uint
+    public enum WorldOpCodes : uint
     {
         // Authentication:
         /// <summary>
