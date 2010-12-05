@@ -24,7 +24,10 @@ namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
         /// <returns>The appropriate cast time in milliseconds for his level.</returns>
         public int GetCastTimeForLevel(int level)
         {
-            return (CastMin + ((CastMax - CastMin) / (CastDiv - 1)) * (level - 1));
+            int castTime = (CastMin + ((CastMax - CastMin) / (CastDiv - 1)) * (level - 1));
+            if (castTime > CastMax)
+                castTime = CastMax;
+            return castTime;
         }
     }
 
