@@ -97,6 +97,17 @@
     <Compile Include="IO\Formats\BLSReader.cs" />
     <Compile Include="IO\Formats\DB2Reader.cs" />
     <Compile Include="IO\Formats\DBCReader.cs" />
+    <Compile Include="IO\Formats\DBC\AchievementCategoryRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AchievementCriteriaRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AchievementRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AreaGroupRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AreaTableRecord.cs" />
+    <Compile Include="IO\Formats\DBC\GTSpellScalingRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellCastTimeRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellEffectRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellLevelRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellScalingRecord.cs" />
     <Compile Include="IO\Formats\M2Reader.cs" />
     <Compile Include="IO\Formats\MPQReader.cs" />
     <Compile Include="IO\Formats\PTCHReader.cs" />
@@ -148,7 +159,6 @@
   <ItemGroup>
     <Folder Include="IO\Formats\ADB\" />
     <Folder Include="IO\Formats\DB2\" />
-    <Folder Include="IO\Formats\DBC\" />
     <Folder Include="IO\Formats\WDB\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

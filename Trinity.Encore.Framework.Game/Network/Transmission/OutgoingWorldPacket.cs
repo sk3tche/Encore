@@ -6,15 +6,15 @@ namespace Trinity.Encore.Framework.Game.Network.Transmission
 {
     public sealed class OutgoingWorldPacket : OutgoingPacket
     {
-        public OutgoingWorldPacket(WorldServerOpCodes opCode, int capacity = 0)
+        public OutgoingWorldPacket(WorldOpCodes opCode, int capacity = 0)
             : base(opCode, Defines.Protocol.Encoding, capacity)
         {
             Contract.Requires(capacity >= 0);
         }
 
-        public new WorldServerOpCodes OpCode
+        public new WorldOpCodes OpCode
         {
-            get { return (WorldServerOpCodes)base.OpCode; }
+            get { return (WorldOpCodes)base.OpCode; }
         }
 
         public override int HeaderLength
