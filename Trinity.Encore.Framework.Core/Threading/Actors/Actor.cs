@@ -20,7 +20,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private readonly ConcurrentQueue<Action> _msgQueue = new ConcurrentQueue<Action>();
 
-        private AutoResetEvent _disposeEvent;
+        private readonly AutoResetEvent _disposeEvent;
 
         public bool IsDisposed { get; private set; }
 
@@ -33,26 +33,14 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         {
             Contract.Invariant(_msgQueue != null);
             Contract.Invariant(_disposeEvent != null);
-        }
-
-        private void Setup()
-        {
-            _disposeEvent = new AutoResetEvent(false);
-            Start();
-        }
-
-        internal Actor(Scheduler scheduler)
-        {
-            Contract.Requires(scheduler != null);
-
-            Scheduler = scheduler;
-
-            Setup();
+            // Don't add IsDisposed here. It would cause major cancellation issues in an asynchronous environment.
         }
 
         protected Actor()
         {
-            Setup();
+            _disposeEvent = new AutoResetEvent(false);
+
+            Start();
         }
 
         ~Actor()
@@ -88,6 +76,9 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private void Start()
         {
+            Contract.Ensures(_msgIterator != null);
+            Contract.Ensures(_mainIterator != null);
+
             var currentThread = Thread.CurrentThread;
             var oldThread = Interlocked.Exchange(ref _schedulingThread, currentThread);
 
@@ -103,9 +94,12 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
                 _mainIterator.Dispose();
 
             _mainIterator = Main();
+            Contract.Assume(_mainIterator != null);
 
             if (Scheduler == null)
                 Scheduler = ActorManager.RegisterActor(this);
+
+            Contract.Assume(_msgIterator != null);
         }
 
         internal bool ProcessMessages()
@@ -146,11 +140,15 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         protected virtual IEnumerator<Operation> Main()
         {
+            Contract.Ensures(Contract.Result<IEnumerator<Operation>>() != null);
+
             yield break; // No main by default.
         }
 
         private IEnumerator<Operation> EnumerateMessages()
         {
+            Contract.Ensures(Contract.Result<IEnumerator<Operation>>() != null);
+
             while (true)
             {
                 Action msg;
@@ -178,6 +176,15 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             }
 
             return null;
+        }
+    }
+
+    public abstract class Actor<TThis> : Actor, IActor<TThis>
+        where TThis : Actor<TThis>
+    {
+        public void Post(Action<TThis> msg)
+        {
+            Post(() => msg((TThis)this));
         }
     }
 }

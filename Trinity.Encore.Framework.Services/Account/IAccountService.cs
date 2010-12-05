@@ -1,51 +1,88 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Net;
 using System.Net.Security;
 using System.ServiceModel;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Services;
+using Trinity.Encore.Framework.Network;
 
 namespace Trinity.Encore.Framework.Services.Account
 {
+    [ContractClass(typeof(AccountServiceContracts))]
     [ServiceContract(ProtectionLevel = ProtectionLevel.None, SessionMode = SessionMode.Required)]
-    public interface IAccountService : IAuthenticatableService
+    public interface IAccountService
     {
-        [OperationContract(IsInitiating = false)]
-        AccountData GetAccount(Func<AccountData, bool> predicate);
+        AccountData GetAccount(string username);
 
-        [OperationContract(IsInitiating = false)]
-        List<AccountData> GetAccounts(Func<AccountData, bool> predicate);
-
-        [OperationContract(IsInitiating = false)]
         void CreateAccount(string accountName, string password, string emailAddress, ClientLocale locale = ClientLocale.English,
             ClientBoxLevel boxLevel = ClientBoxLevel.Cataclysm);
 
-        [OperationContract(IsInitiating = false)]
-        AccountBanData GetAccountBan(Func<AccountBanData, bool> predicate);
+        AccountBanData GetAccountBan(string username);
 
-        [OperationContract(IsInitiating = false)]
-        List<AccountBanData> GetAccountBans(Func<AccountBanData, bool> predicate);
+        void CreateAccountBan(string accountName, string notes = null, DateTime? expiry = null);
 
-        [OperationContract(IsInitiating = false)]
-        void CreateAccountBan(string accountName, string notes, DateTime? expiry);
+        IPBanData GetIPBan(IPAddress address);
 
-        [OperationContract(IsInitiating = false)]
-        IPBanData GetIPBan(Func<IPBanData, bool> predicate);
-
-        [OperationContract(IsInitiating = false)]
-        List<IPBanData> GetIPBans(Func<IPBanData, bool> predicate);
-
-        [OperationContract(IsInitiating = false)]
-        void CreateIPBan(IPAddress address, string notes, DateTime? expiry);
+        void CreateIPBan(IPAddress address, string notes = null, DateTime? expiry = null);
         
-        [OperationContract(IsInitiating = false)]
-        IPRangeBanData GetIPRangeBan(Func<IPRangeBanData, bool> predicate);
+        IPRangeBanData GetIPRangeBan(IPAddress address);
 
-        [OperationContract(IsInitiating = false)]
-        List<IPRangeBanData> GetIPRangeBans(Func<IPRangeBanData, bool> predicate);
+        void CreateIPRangeBan(IPAddressRange range, string notes = null, DateTime? expiry = null);
+    }
 
-        [OperationContract(IsInitiating = false)]
-        void CreateIPRangeBan(IPAddress address, string notes, DateTime? expiry);
+    [ContractClassFor(typeof(IAccountService))]
+    public abstract class AccountServiceContracts : IAccountService
+    {
+        public AccountData GetAccount(string username)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(username));
+
+            return null;
+        }
+
+        public void CreateAccount(string accountName, string password, string emailAddress, ClientLocale locale, ClientBoxLevel boxLevel)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(accountName));
+            Contract.Requires(!string.IsNullOrEmpty(password));
+            Contract.Requires(!string.IsNullOrEmpty(emailAddress));
+        }
+
+        public AccountBanData GetAccountBan(string username)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(username));
+
+            return null;
+        }
+
+        public void CreateAccountBan(string accountName, string notes, DateTime? expiry)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(accountName));
+        }
+
+        public IPBanData GetIPBan(IPAddress address)
+        {
+            Contract.Requires(address != null);
+
+            return null;
+        }
+
+        public void CreateIPBan(IPAddress address, string notes, DateTime? expiry)
+        {
+            Contract.Requires(address != null);
+        }
+
+        public IPRangeBanData GetIPRangeBan(IPAddress address)
+        {
+            Contract.Requires(address != null);
+
+            return null;
+        }
+
+        public void CreateIPRangeBan(IPAddressRange range, string notes, DateTime? expiry)
+        {
+            Contract.Requires(range != null);
+        }
     }
 }

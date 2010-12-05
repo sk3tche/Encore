@@ -7,7 +7,7 @@ using Trinity.Encore.Framework.Core.Threading.Actors;
 
 namespace Trinity.Encore.Framework.Game.Services
 {
-    public sealed class IpcDevice<TService, TCallback> : Actor
+    public sealed class IpcDevice<TService, TCallback> : Actor<IpcDevice<TService, TCallback>>
         where TService : class
         where TCallback : class, new()
     {

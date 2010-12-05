@@ -11,7 +11,7 @@ using Trinity.Encore.Framework.Game.Entities;
 
 namespace Trinity.Encore.Framework.Game.Partitioning
 {
-    public class QuadTreeNode : Actor
+    public class QuadTreeNode : Actor<QuadTreeNode>
     {
         public const float MinNodeLength = 333.0f;
 
@@ -58,7 +58,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             {
                 Contract.Assume(_entities != null);
                 _entities.Add(entity.Guid, entity);
-                entity.Node = this;
+                entity.Post(() => entity.Node = this);
 
                 return true;
             }
@@ -87,7 +87,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             {
                 Contract.Assume(_entities != null);
                 _entities.Remove(entity.Guid);
-                entity.Node = null;
+                entity.Post(() => entity.Node = null);
 
                 return true;
             }

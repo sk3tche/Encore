@@ -13,12 +13,13 @@ using NHibernate.Criterion;
 using NHibernate.Linq;
 using Trinity.Encore.Framework.Core.Reflection;
 using Trinity.Encore.Framework.Core.Runtime;
+using Trinity.Encore.Framework.Core.Threading.Actors;
 using Trinity.Encore.Framework.Persistence.Schema;
 
 namespace Trinity.Encore.Framework.Persistence
 {
     [ContractClass(typeof(DatabaseContextContracts))]
-    public abstract class DatabaseContext : IDisposableResource
+    public abstract class DatabaseContext : Actor<DatabaseContext>
     {
         [ContractInvariantMethod]
         private void Invariant()
@@ -37,27 +38,10 @@ namespace Trinity.Encore.Framework.Persistence
             Configure(type, dialect, driverClass, connString);
         }
 
-        ~DatabaseContext()
-        {
-            Dispose(false);
-        }
-
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             SessionFactory.Dispose();
         }
-
-        public void Dispose()
-        {
-            if (IsDisposed)
-                return;
-
-            IsDisposed = true;
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public bool IsDisposed { get; private set; }
 
         #region Private methods
 

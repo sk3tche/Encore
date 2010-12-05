@@ -1,5 +1,6 @@
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Trinity.Encore.Framework.Core.Cryptography.SRP
 {
@@ -176,29 +177,6 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
 
                 return data;
             }
-        }
-
-        /// <summary>
-        /// Generates a hash for an account's credentials (username:password).
-        /// </summary>
-        /// <param name="parameters">The parameters to use in calculations.</param>
-        /// <param name="username">The username.</param>
-        /// <param name="password">The password.</param>
-        /// <param name="caseSensitive">Whether or not username/password should
-        /// be case-sensitive.</param>
-        public static byte[] GenerateCredentialsHash(SRPParameters parameters, string username, string password,
-            bool caseSensitive = true)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(username));
-            Contract.Requires(!string.IsNullOrEmpty(password));
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-
-            // Just use 6a here; it makes no difference during account creation.
-            var user = caseSensitive ? username : username.ToUpper();
-            var pass = caseSensitive ? password : password.ToUpper();
-            var str = string.Format("{0}:{1}", user, pass);
-
-            return parameters.Hash.ComputeHash(SRPParameters.StringEncoding.GetBytes(str));
         }
     }
 

@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Trinity.Encore.Framework.Core;
 
 namespace Trinity.Encore.Framework.Network
 {
@@ -28,7 +30,7 @@ namespace Trinity.Encore.Framework.Network
         public IPAddressRange(IPAddress lower, IPAddress upper)
         {
             Contract.Requires(lower.AddressFamily == upper.AddressFamily);
-            Contract.Requires(lower.GetAddressBytes().Length == upper.GetAddressBytes().Length);
+            Contract.Requires(lower.GetLength() == upper.GetLength());
 
             Family = lower.AddressFamily;
             LowerBoundary = lower.GetAddressBytes();
@@ -41,7 +43,7 @@ namespace Trinity.Encore.Framework.Network
         public bool IsInRange(IPAddress address)
         {
             // Some people just have to be like that...
-            if (address.AddressFamily != Family || address.GetAddressBytes().Length != LowerBoundary.Length)
+            if (address.AddressFamily != Family || address.GetLength() != LowerBoundary.Length)
                 return false;
 
             var bytes = address.GetAddressBytes();
@@ -63,6 +65,25 @@ namespace Trinity.Encore.Framework.Network
             }
 
             return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as IPAddressRange);
+        }
+
+        public bool Equals(IPAddressRange other)
+        {
+            if (other == null)
+                return false;
+
+            return other.Family == Family && other.LowerBoundary.SequenceEqual(LowerBoundary) && other.UpperBoundary.SequenceEqual(UpperBoundary);
+        }
+
+        public override int GetHashCode()
+        {
+            return unchecked(Family.GetHashCode() + UpperBoundary.Aggregate(0, (acc, b) => acc + Utilities.GetHashCode(b)) +
+                LowerBoundary.Aggregate(0, (acc, b) => acc + Utilities.GetHashCode(b)));
         }
     }
 }

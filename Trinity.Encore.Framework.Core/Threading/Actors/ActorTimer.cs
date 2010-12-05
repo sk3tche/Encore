@@ -7,9 +7,9 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
     public sealed class ActorTimer : IDisposableResource
     {
-        private Timer _timer;
+        private readonly Timer _timer;
 
-        public Actor TargetActor { get; private set; }
+        public IActor TargetActor { get; private set; }
 
         public Action Callback { get; private set; }
 
@@ -23,7 +23,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             Contract.Invariant(Callback != null);
         }
 
-        public ActorTimer(Actor target, Action callback, TimeSpan delay, int period = Timeout.Infinite)
+        public ActorTimer(IActor target, Action callback, TimeSpan delay, int period = Timeout.Infinite)
         {
             Contract.Requires(target != null);
             Contract.Requires(callback != null);

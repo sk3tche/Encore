@@ -1,78 +1,78 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using Trinity.Encore.Framework.Core.Configuration;
 using Trinity.Encore.Framework.Core.Cryptography;
 using Trinity.Encore.Framework.Game;
+using Trinity.Encore.Framework.Network;
 using Trinity.Encore.Framework.Services.Account;
+using Trinity.Encore.Services.Account.Accounts;
+using Trinity.Encore.Services.Account.Bans;
 
 namespace Trinity.Encore.Services.Account.Services
 {
     public sealed class AccountService : IAccountService
     {
-        public void Authenticate(string username, BigInteger password)
+        public AccountData GetAccount(string username)
         {
-            throw new NotImplementedException();
+            var acc = AccountManager.Instance.FindAccount(x => x.Name == username);
+            return acc != null ? acc.Serialize() : null;
         }
 
-        public AccountData GetAccount(Func<AccountData, bool> predicate)
+        public void CreateAccount(string accountName, string password, string emailAddress, ClientLocale locale, ClientBoxLevel boxLevel)
         {
-            throw new NotImplementedException();
+            if (accountName.Length < AccountManager.MinNameLength || accountName.Length > AccountManager.MaxNameLength)
+                throw new ArgumentException();
+
+            if (password.Length < AccountManager.MinPasswordLength || password.Length > AccountManager.MaxPasswordLength)
+                throw new ArgumentException();
+
+            AccountManager.Instance.CreateAccount(accountName, password, emailAddress, boxLevel, locale);
         }
 
-        public List<AccountData> GetAccounts(Func<AccountData, bool> predicate)
+        public AccountBanData GetAccountBan(string username)
         {
-            throw new NotImplementedException();
-        }
-
-        public void CreateAccount(string accountName, string password, string emailAddress,
-            ClientLocale locale = ClientLocale.English, ClientBoxLevel boxLevel = ClientBoxLevel.Cataclysm)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AccountBanData GetAccountBan(Func<AccountBanData, bool> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<AccountBanData> GetAccountBans(Func<AccountBanData, bool> predicate)
-        {
-            throw new NotImplementedException();
+            var ban = BanManager.Instance.FindAccountBan(x => x.Account.Name == username);
+            return ban != null ? ban.Serialize() : null;
         }
 
         public void CreateAccountBan(string accountName, string notes, DateTime? expiry)
         {
-            throw new NotImplementedException();
+            var acc = AccountManager.Instance.FindAccount(x => x.Name == accountName);
+            if (acc == null || acc.Ban != null)
+                throw new ArgumentException();
+
+            BanManager.Instance.CreateAccountBan(acc, notes, expiry);
         }
 
-        public IPBanData GetIPBan(Func<IPBanData, bool> predicate)
+        public IPBanData GetIPBan(IPAddress address)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<IPBanData> GetIPBans(Func<IPBanData, bool> predicate)
-        {
-            throw new NotImplementedException();
+            var ban = BanManager.Instance.FindIPBan(x => x.Address.Equals(address));
+            return ban != null ? ban.Serialize() : null;
         }
 
         public void CreateIPBan(IPAddress address, string notes, DateTime? expiry)
         {
-            throw new NotImplementedException();
+            var ban = BanManager.Instance.FindIPBan(x => x.Equals(address));
+            if (ban != null)
+                throw new ArgumentException();
+
+            BanManager.Instance.CreateIPBan(address, notes, expiry);
         }
 
-        public IPRangeBanData GetIPRangeBan(Func<IPRangeBanData, bool> predicate)
+        public IPRangeBanData GetIPRangeBan(IPAddress address)
         {
-            throw new NotImplementedException();
+            var ban = BanManager.Instance.FindIPRangeBan(x => x.Range.IsInRange(address));
+            return ban != null ? ban.Serialize() : null;
         }
 
-        public List<IPRangeBanData> GetIPRangeBans(Func<IPRangeBanData, bool> predicate)
+        public void CreateIPRangeBan(IPAddressRange range, string notes, DateTime? expiry)
         {
-            throw new NotImplementedException();
-        }
+            var ban = BanManager.Instance.FindIPRangeBan(x => x.Range.Equals(range));
+            if (ban != null)
+                throw new ArgumentException();
 
-        public void CreateIPRangeBan(IPAddress address, string notes, DateTime? expiry)
-        {
-            throw new NotImplementedException();
+            BanManager.Instance.CreateIPRangeBan(range, notes, expiry);
         }
     }
 }

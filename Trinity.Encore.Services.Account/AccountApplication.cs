@@ -3,6 +3,7 @@ using System.Diagnostics;
 using FluentNHibernate.Cfg;
 using Trinity.Encore.Framework.Game.Threading;
 using Trinity.Encore.Services.Account.Database;
+using Trinity.Encore.Services.Account.Database.Implementation;
 
 namespace Trinity.Encore.Services.Account
 {
@@ -12,17 +13,16 @@ namespace Trinity.Encore.Services.Account
         {
         }
 
-        public static AccountDatabaseContext DbContext { get; private set; }
+        public AccountDatabaseContext AccountDbContext { get; private set; }
 
         protected override void OnStart(string[] args)
         {
-            DbContext = new AccountDatabaseContext();
+            AccountDbContext = new AccountDatabaseContext();
         }
 
         protected override void OnStop()
         {
-            DbContext.Dispose();
-            DbContext = null;
+            AccountDbContext.Dispose();
         }
     }
 }

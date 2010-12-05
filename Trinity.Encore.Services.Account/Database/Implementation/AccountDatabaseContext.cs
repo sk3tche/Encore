@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using FluentNHibernate;
 using Trinity.Encore.Framework.Core.Configuration;
 using Trinity.Encore.Framework.Persistence;
 
-namespace Trinity.Encore.Services.Account.Database
+namespace Trinity.Encore.Services.Account.Database.Implementation
 {
     public sealed class AccountDatabaseContext : DatabaseContext
     {
@@ -33,6 +31,8 @@ namespace Trinity.Encore.Services.Account.Database
         {
             yield return new AccountMapping();
             yield return new AccountBanMapping();
+            yield return new IPBanMapping();
+            yield return new IPRangeBanMapping();
         }
     }
 }

@@ -33,7 +33,6 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             arg.SocketError = 0;
             arg.SocketFlags = 0;
             arg.UserToken = null;
-            arg.Completed += null;
 
             _objectPool.PutObject(arg);
         }

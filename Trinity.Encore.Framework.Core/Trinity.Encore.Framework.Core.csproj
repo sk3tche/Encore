@@ -127,6 +127,7 @@
     <Compile Include="Threading\Actors\Actor.cs" />
     <Compile Include="Threading\Actors\ActorManager.cs" />
     <Compile Include="Threading\Actors\ActorTimer.cs" />
+    <Compile Include="Threading\Actors\ChildActor.cs" />
     <Compile Include="Threading\Actors\IActor.cs" />
     <Compile Include="Threading\Actors\Operation.cs" />
     <Compile Include="Threading\Actors\Scheduler.cs" />

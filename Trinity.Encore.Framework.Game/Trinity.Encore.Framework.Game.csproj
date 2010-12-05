@@ -75,6 +75,11 @@
   <ItemGroup>
     <Compile Include="ClientBoxLevel.cs" />
     <Compile Include="ClientLocale.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandArguments.cs" />
+    <Compile Include="Commands\CommandAttribute.cs" />
+    <Compile Include="Commands\CommandConsole.cs" />
+    <Compile Include="Commands\CommandManager.cs" />
     <Compile Include="Cryptography\Password.cs" />
     <Compile Include="Cryptography\WowAuthParameters.cs" />
     <Compile Include="Cryptography\SC2AuthParameters.cs" />
@@ -126,7 +131,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Network\WorldServerOpCodes.cs" />
     <Compile Include="Security\AuthenticatedPermission.cs" />
-    <Compile Include="Services\IAuthenticatableService.cs" />
     <Compile Include="Services\IpcDevice.cs" />
     <Compile Include="Threading\ActorApplication.cs" />
     <Compile Include="Threading\SingletonActor.cs" />

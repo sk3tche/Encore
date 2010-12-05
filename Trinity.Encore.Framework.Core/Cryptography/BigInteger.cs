@@ -1793,8 +1793,11 @@ namespace Trinity.Encore.Framework.Core.Cryptography
         public byte[] GetBytes()
         {
             Contract.Ensures(Contract.Result<byte[]>() != null);
+            Contract.Ensures(Contract.Result<byte[]>().Length == ByteLength);
 
-            return GetBytes(ByteLength);
+            var bytes = GetBytes(ByteLength);
+            Contract.Assume(bytes.Length == ByteLength);
+            return bytes;
         }
 
         public byte[] GetBytes(int numBytes)

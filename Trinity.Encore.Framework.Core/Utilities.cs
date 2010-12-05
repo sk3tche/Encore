@@ -82,11 +82,11 @@ namespace Trinity.Encore.Framework.Core
 
             unchecked
             {
-                return fields.Aggregate(HashPrime1, (hash, field) =>
+                return fields.Aggregate(HashPrime1, (acc, field) =>
                 {
                     // Do not try to simplify this line. It has to be like this to avoid boxing.
                     var fieldHash = field.Equals(default(T)) ? 0.GetHashCode() : field.GetHashCode();
-                    return HashPrime2 * hash + fieldHash;
+                    return HashPrime2 * acc + fieldHash;
                 });
             }
         }

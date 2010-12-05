@@ -6,7 +6,7 @@ using Trinity.Encore.Framework.Core.Threading.Actors;
 
 namespace Trinity.Encore.Framework.Game.Threading
 {
-    public abstract class SingletonActor<T> : Actor
+    public abstract class SingletonActor<T> : Actor<T>
         where T : SingletonActor<T>
     {
         static SingletonActor()

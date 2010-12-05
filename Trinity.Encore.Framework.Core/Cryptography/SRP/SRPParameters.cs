@@ -31,19 +31,6 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
         }
 
         /// <summary>
-        /// Gets the encoding used for username/password strings.
-        /// </summary>
-        public static Encoding StringEncoding
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<Encoding>() != null);
-
-                return Encoding.UTF8;
-            }
-        }
-
-        /// <summary>
         /// Random number generator for this instance.
         /// </summary>
         public RandomNumberGenerator RandomGenerator { get; private set; }

@@ -12,7 +12,7 @@ using Trinity.Encore.Framework.Network.Transmission;
 
 namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
 {
-    public sealed class TcpClient : Actor, IClient
+    public sealed class TcpClient : Actor<TcpClient>, IClient
     {
         private static readonly LogProxy _log = new LogProxy("TcpClient");
 

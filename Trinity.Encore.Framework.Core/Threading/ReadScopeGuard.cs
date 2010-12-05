@@ -33,8 +33,6 @@ namespace Trinity.Encore.Framework.Core.Threading
 
         public void Guard()
         {
-            this.ThrowIfDisposed();
-
             _lock.EnterReadLock();
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Text;
 using Trinity.Encore.Framework.Core.Cryptography.SRP;
 
 namespace Trinity.Encore.Framework.Core.Cryptography
@@ -55,7 +56,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             Contract.Requires(str != null);
             Contract.Ensures(Contract.Result<HashDataBroker>() != null);
 
-            return new HashDataBroker(SRPParameters.StringEncoding.GetBytes(str));
+            return new HashDataBroker(Encoding.UTF8.GetBytes(str));
         }
 
         public override bool Equals(object obj)
@@ -70,7 +71,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
 
         public override int GetHashCode()
         {
-            return RawData.Aggregate(0, (hash, b) => Utilities.GetHashCode(b));
+            return unchecked(RawData.Aggregate(0, (acc, b) => acc + Utilities.GetHashCode(b)));
         }
 
         public static bool operator ==(HashDataBroker a, HashDataBroker b)

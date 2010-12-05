@@ -73,11 +73,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountApplication.cs" />
+    <Compile Include="Accounts\Account.cs" />
+    <Compile Include="Bans\AccountBan.cs" />
     <Compile Include="Accounts\AccountManager.cs" />
     <Compile Include="Bans\BanManager.cs" />
+    <Compile Include="Bans\IPBan.cs" />
+    <Compile Include="Bans\IPRangeBan.cs" />
+    <Compile Include="Database\Implementation\AccountDatabaseRecord.cs" />
     <Compile Include="Database\AccountBanRecord.cs" />
-    <Compile Include="Database\AccountDatabaseContext.cs" />
+    <Compile Include="Database\Implementation\AccountDatabaseContext.cs" />
     <Compile Include="Database\AccountRecord.cs" />
+    <Compile Include="Database\IPBanRecord.cs" />
+    <Compile Include="Database\IPRangeBanRecord.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
@@ -90,6 +97,10 @@
     <ProjectReference Include="..\Trinity.Encore.Framework.Game\Trinity.Encore.Framework.Game.csproj">
       <Project>{75E460A8-17CF-4005-813A-E1C2E714BDEA}</Project>
       <Name>Trinity.Encore.Framework.Game</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Encore.Framework.Network\Trinity.Encore.Framework.Network.csproj">
+      <Project>{8D03D581-BE90-4714-AC46-50758EE1DD95}</Project>
+      <Name>Trinity.Encore.Framework.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trinity.Encore.Framework.Persistence\Trinity.Encore.Framework.Persistence.csproj">
       <Project>{F119B4B3-4520-4ED5-ABEF-189D1A61C7C5}</Project>

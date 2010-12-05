@@ -14,6 +14,8 @@ namespace Trinity.Encore.Framework.Game.Threading
     {
         public const int UpdateDelay = 50;
 
+        public event EventHandler Shutdown;
+
         private ActorTimer _updateTimer;
 
         private DateTime _lastUpdate;
@@ -48,13 +50,11 @@ namespace Trinity.Encore.Framework.Game.Threading
 
             GC.Collect();
 
-            var exeFile = Assembly.GetEntryAssembly().Location;
-            if (!string.IsNullOrEmpty(exeFile))
-            {
-                _configuration = new ApplicationConfiguration(exeFile);
-                _configuration.ScanAll();
-                _configuration.Open();
-            }
+            var asmPath = Assembly.GetEntryAssembly().Location;
+            Contract.Assume(!string.IsNullOrEmpty(asmPath));
+            _configuration = new ApplicationConfiguration(asmPath);
+            _configuration.ScanAll();
+            _configuration.Open();
 
             InitializationManager.InitializeAll();
 
@@ -72,6 +72,17 @@ namespace Trinity.Encore.Framework.Game.Threading
         {
             try
             {
+                var shutdownEvent = Shutdown;
+                if (shutdownEvent != null)
+                    shutdownEvent(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.RegisterException(ex);
+            }
+
+            try
+            {
                 OnStop();
             }
             catch (Exception ex)
@@ -81,8 +92,7 @@ namespace Trinity.Encore.Framework.Game.Threading
 
             InitializationManager.TeardownAll();
 
-            if (_configuration != null)
-                _configuration.Save();
+            _configuration.Save();
 
             GC.Collect();
 

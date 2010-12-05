@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseType.cs" />
+    <Compile Include="Entities\IActiveRecord.cs" />
     <Compile Include="Mapping\MappableObject.cs" />
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
