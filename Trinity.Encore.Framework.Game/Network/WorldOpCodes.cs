@@ -868,7 +868,7 @@ namespace Trinity.Encore.Framework.Game.Network
         /// <summary>
         /// SMSG_TUTORIAL_FLAGS.
         /// </summary>
-        ServerTutorialFlags = 0x8203,
+        ServerTutorialFlags = 0x8203, // maybe 0x8657?
         #endregion
 
         #region Gossip
