@@ -8,7 +8,7 @@ namespace Trinity.Encore.Framework.Game.Network
     [Serializable]
     public enum WorldOpCodes : uint
     {
-        // Authentication:
+        #region Authentication
         /// <summary>
         /// SMSG_AUTH_CHALLENGE.
         /// </summary>
@@ -21,8 +21,13 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_AUTH_RESPONSE.
         /// </summary>
         ServerAuthenticationResult = 0x1454,
+        /// <summary>
+        /// SMSG_SEND_QUEUED_PACKETS
+        /// </summary>
+        ServerSendQueuedPackets = 0x1400,
+        #endregion
 
-        // Session:
+        #region Session
         /// <summary>
         /// SMSG_LOGOUT_RESPONSE
         /// </summary>
@@ -44,8 +49,9 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_TIME_SYNC_REQ.
         /// </summary>
         ServerTimeSyncRequest = 0x6F5E,
+        #endregion
 
-        // Connection:
+        #region Connection
         /// <summary>
         /// CMSG_PING.
         /// </summary>
@@ -54,6 +60,10 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_PONG.
         /// </summary>
         ServerConnectionPong = 0xB000,
+        /// <summary>
+        /// SMSG_REDIRECT_CLIENT.
+        /// </summary>
+        ServerRedirectClient = 0x9000,
         /// <summary>
         /// CMSG_REDIRECT_ERROR.
         /// </summary>
@@ -71,8 +81,29 @@ namespace Trinity.Encore.Framework.Game.Network
         ///// CMSG_REDIRECT_TOKEN_UNKNOWN.
         ///// </summary>
         //ClientConnectionRedirectUnknown2 = 0x3001,
+        /// <summary>
+        /// SMSG_TRANSFER_PENDING.
+        /// </summary>
+        ServerTransferPending = 0x502B,
+        /// <summary>
+        /// SMSG_TRANSFER_ABORTED.
+        /// </summary>
+        ServerTransferAborted = 0x0A2A,
+        /// <summary>
+        /// SMSG_KICK_REASON.
+        /// </summary>
+        ServerKickReason = 0x3320,
+        /// <summary>
+        /// CMSG_TIME_SYNC_RESP.
+        /// </summary>
+        ClientTimeSyncResponse = 0x0D57,
+        /// <summary>
+        /// CMSG_LOGOUT_REQUEST.
+        /// </summary>
+        ClientLogoutRequest = 0x8E56,
+        #endregion
 
-        // Characters:
+        #region Characters
         /// <summary>
         /// CMSG_CHAR_CUSTOMIZE.
         /// </summary>
@@ -117,8 +148,17 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_CHARACTER_LOGIN_FAILED.
         /// </summary>
         ServerCharacterLoginFailed = 0x2C56,
+        /// <summary>
+        /// SMSG_FACTION_CHANGE.
+        /// </summary>
+        ServerCharacterFactionChange = 0xC822,
+        /// <summary>
+        /// CMSG_PLAYER_LOGIN.
+        /// </summary>
+        ClientPlayerLogin = 0x05A1,
+        #endregion
 
-        // Reports:
+        #region Reports
         /// <summary>
         /// SMSG_COMPLAIN_RESULT.
         /// </summary>
@@ -131,8 +171,9 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_GMTICKET_SYSTEMSTATUS.
         /// </summary>
         ServerReportTicketSystemStatus = 0x7C57,
+        #endregion
 
-        // Chat:
+        #region Chat
         /// <summary>
         /// SMSG_CHAT_RESTRICTED.
         /// </summary>
@@ -154,6 +195,26 @@ namespace Trinity.Encore.Framework.Game.Network
         /// </summary>
         ClientChatYell = 0x3A10,
         /// <summary>
+        /// CMSG_CHAT_MSG_CHANNEL_SAY.
+        /// </summary>
+        ClientChannelSay = 0x3A88,
+        /// <summary>
+        /// CMSG_CHAT_MSG_GUILD.
+        /// </summary>
+        ClientGuildSay = 0x2A88,
+        /// <summary>
+        /// CMSG_CHAT_MSG_WHISPER.
+        /// </summary>
+        ClientWhisper = 0x5A80,
+        /// <summary>
+        /// CMSG_CHAT_MSG_AFK.
+        /// </summary>
+        ClientAFKMessage = 0x6A88,
+        /// <summary>
+        /// CMSG_CHAT_MSG_DND.
+        /// </summary>
+        ClientDNDMessage = 0x3A00,
+        /// <summary>
         /// SMSG_MESSAGECHAT.
         /// </summary>
         ServerChatMessage = 0x867F,
@@ -169,6 +230,18 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_CHANNEL_MEMBER_COUNT.
         /// </summary>
         ServerChannelMemberCount = 0x0823,
+        /// <summary>
+        /// CMSG_JOIN_CHANNEL.
+        /// </summary>
+        ClientJoinChannel = 0x3A98,
+        /// <summary>
+        /// CMSG_EMOTE.
+        /// </summary>
+        ClientEmote = 0x7F5C,
+        /// <summary>
+        /// CMSG_TEXT_EMOTE.
+        /// </summary>
+        ClientTextEmote= 0x4A90,
         /// <summary>
         /// SMSG_TEXT_EMOTE.
         /// </summary>
@@ -193,14 +266,32 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_GM_MESSAGECHAT.
         /// </summary>
         ServerGMChatMessage = 0x2902,
+        #endregion
 
-        // Arena teams:
+        #region Arena Teams
         /// <summary>
         /// SMSG_ARENA_TEAM_CHANGE_FAILED_QUEUED.
         /// </summary>
         ServerArenaTeamChangeFailedQueued = 0xBF5C,
+        /// <summary>
+        /// SMSG_ARENA_TEAM_ROSTER.
+        /// </summary>
+        ServerArenaTeamRoster = 0xA80A,
+        /// <summary>
+        /// SMSG_ARENA_TEAM_STATS.
+        /// </summary>
+        ServerArenaTeamStats = 0x9B0B,
+        /// <summary>
+        /// MSG_INSPECT_ARENA_TEAMS.
+        /// </summary>
+        InspectArenaTeams = 0x6108,
+        /// <summary>
+        /// SMSG_ARENA_OPPONENT_UPDATE.
+        /// </summary>
+        ServerArenaOpponentUpdate = 0x5B29,
+        #endregion
 
-        // Miscellaneous:
+        #region Miscellaneous
         /// <summary>
         /// SMSG_ADDON_INFO.
         /// </summary>
@@ -230,6 +321,10 @@ namespace Trinity.Encore.Framework.Game.Network
         /// </summary>
         ServerActionButtons = 0x4120, // maybe 0x4574
         /// <summary>
+        /// CMSG_SET_ACTION_BUTTON.
+        /// </summary>
+        ClientSetActionButton = 0x355C,
+        /// <summary>
         /// CMSG_PLAYED_TIME.
         /// </summary>
         ClientPlayedTime = 0x7E5E,
@@ -245,8 +340,29 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_NOTIFICATION.
         /// </summary>
         ServerNotification = 0x620A,
+        /// <summary>
+        /// SMSG_INVALIDATE_PLAYER.
+        /// </summary>
+        ServerInvalidatePlayer = 0xFB0A,
+        /// <summary>
+        /// SMSG_EXPECTED_SPAM_RECORDS.
+        /// </summary>
+        ServerExpectedSpamRecords = 0xA108,
+        /// <summary>
+        /// SMSG_DURABILITY_DAMAGE_DEATH.
+        /// </summary>
+        ServerDurabilityDamageDeath = 0xE328,
+        /// <summary>
+        /// CMSG_SET_SELECTION.
+        /// </summary>
+        ClientSetSelection = 0x5577,
+        /// <summary>
+        /// CMSG_ZONEUPDATE.
+        /// </summary>
+        ClientZoneUpdate = 0x5C7D,
+        #endregion
 
-        // Cache:
+        #region Cache
         /// <summary>
         /// SMSG_CLIENTCACHE_VERSION.
         /// </summary>
@@ -267,8 +383,61 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_NAME_QUERY_RESPONSE.
         /// </summary>
         ServerQueryNameResponse = 0x4D5E,
+        /// <summary>
+        /// CMSG_NPC_TEXT_QUERY.
+        /// </summary>
+        ClientQueryNPCText = 0x5654,
+        /// <summary>
+        /// SMSG_NPC_TEXT_RESPONSE.
+        /// </summary>
+        ServerNPCTextResponse = 0x320A,
+        /// <summary>
+        /// SMSG_QUEST_QUERY_RESPONSE.
+        /// </summary>
+        ServerQueryQuestResponse = 0x720B,
+        /// <summary>
+        /// CMSG_PAGE_TEXT_QUERY.
+        /// </summary>
+        ClientQueryPageText = 0x2C75,
+        /// <summary>
+        /// SMSG_PAGE_TEXT_QUERY_RESPONSE.
+        /// </summary>
+        ServerQueryPageTextResponse = 0x730B,
+        /// <summary>
+        /// SMSG_PET_NAME_QUERY_RESPONSE.
+        /// </summary>
+        ServerQueryPetNameResponse = 0xE20A,
+        /// <summary>
+        /// SMSG_PETITION_QUERY_RESPONSE.
+        /// </summary>
+        ServerQueryPetitionResponse = 0x7301,
+        /// <summary>
+        /// SMSG_ITEM_TEXT_QUERY_RESPONSE.
+        /// </summary>
+        ServerQueryItemTextResponse = 0xA929,
+        /// <summary>
+        /// SMSG_ARENA_TEAM_QUERY_RESPONSE.
+        /// </summary>
+        ServerQueryArenaTeamResponse = 0xC02B,
+        /// <summary>
+        /// SMSG_DANCE_QUERY_RESPONSE.
+        /// </summary>
+        ServerQueryDanceResponse = 0x7800,
+        /// <summary>
+        /// SMSG_GUILD_QUERY_RESPONSE.
+        /// </summary>
+        ServerQueryGuildResponse = 0x365C,
+        /// <summary>
+        /// CMSG_GAMEOBJECT_QUERY.
+        /// </summary>
+        ClientGameobjectQuery = 0x0455,
+        /// <summary>
+        /// SMSG_GAMEOBJECT_QUERY_RESPONSE.
+        /// </summary>
+        ServerGameobjectQueryResponse = 0x0577,
+        #endregion
 
-        // Realms:
+        #region Realms
         /// <summary>
         /// CMSG_REALM_SPLIT.
         /// </summary>
@@ -277,8 +446,9 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_REALM_SPLIT.
         /// </summary>
         ServerRealmSplitResult = 0x3454, // unsure
+        #endregion
 
-        // Pets:
+        #region Pets
         /// <summary>
         /// SMSG_PET_NAME_INVALID.
         /// </summary>
@@ -287,8 +457,45 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_PETGODMODE.
         /// </summary>
         ServerPetGodMode = 0x2C54,
+        /// <summary>
+        /// SMSG_PET_SPELLS.
+        /// </summary>
+        ServerPetSpells = 0x5928,
+        /// <summary>
+        /// SMSG_PET_MODE.
+        /// </summary>
+        ServerPetMode = 0xFA0B,
+        /// <summary>
+        /// SMSG_PET_ACTION_FEEDBACK.
+        /// </summary>
+        ServerPetActionFeedback = 0xA800,
+        /// <summary>
+        /// SMSG_PET_BROKEN.
+        /// </summary>
+        ServerPetBroken = 0xE92B,
+        /// <summary>
+        /// SMSG_PET_RENAMEABLE.
+        /// </summary>
+        ServerPetRenameable = 0x520A,
+        /// <summary>
+        /// SMSG_PET_UPDATE_COMBO_POINTS.
+        /// </summary>
+        ServerPetUpdateComboPoints = 0xD20B,
+        /// <summary>
+        /// SMSG_PET_GUIDS.
+        /// </summary>
+        ServerPetGUIDs = 0xFA08,
+        /// <summary>
+        /// MSG_LIST_STABLED_PETS.
+        /// </summary>
+        ListStabledPets = 0x5A09,
+        /// <summary>
+        /// SMSG_STABLE_RESULT.
+        /// </summary>
+        ServerStableResult = 0xE300,
+        #endregion
 
-        // Fishing:
+        #region Fishing
         /// <summary>
         /// SMSG_FISH_NOT_HOOKED.
         /// </summary>
@@ -297,8 +504,9 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_FISH_ESCAPED.
         /// </summary>
         ServerFishEscaped = 0x1F77,
+        #endregion
 
-        // Homebinds:
+        #region Homebinds
         /// <summary>
         /// SMSG_PLAYERBOUND.
         /// </summary>
@@ -311,8 +519,9 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_PLAYERBINDERROR.
         /// </summary>
         ServerHomebindError = 0x765C,
+        #endregion
 
-        // Account data:
+        #region Account Data
         /// <summary>
         /// CMSG_READY_FOR_ACCOUNT_DATA_TIMES.
         /// </summary>
@@ -325,8 +534,9 @@ namespace Trinity.Encore.Framework.Game.Network
         /// CMSG_UPDATE_ACCOUNT_DATA.
         /// </summary>
         ClientUpdateAccountData = 0xFF7E,
+        #endregion
 
-        // Experience:
+        #region Experience
         /// <summary>
         /// SMSG_TOGGLE_XP_GAIN.
         /// </summary>
@@ -343,32 +553,41 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_LOG_XPGAIN.
         /// </summary>
         ServerXPGained = 0x7202,
+        #endregion
 
-        // Calendar:
+        #region Calendar
         /// <summary>
         /// SMSG_CALENDAR_EVENT_INVITE.
         /// </summary>
         ServerCalendarEventInvite = 0xF803, // maybe 0xFC57
+        #endregion
 
-        // Taxis:
+        #region Taxis
         /// <summary>
         /// SMSG_NEW_TAXI_PATH.
         /// </summary>
         ServerTaxiNewPath = 0xAE5E,
+        #endregion
 
-        // Items:
+        #region Items
         /// <summary>
         /// SMSG_ITEM_PUSH_RESULT.
         /// </summary>
         ServerItemPushResult = 0xDB00,
+        #endregion
 
-        // Loot:
+        #region Loot
         /// <summary>
         /// MSG_RANDOM_ROLL.
         /// </summary>
         LootRollRandom = 0xE001, // maybe 0xE455
+        /// <summary>
+        /// CMSG_LOOT.
+        /// </summary>
+        ClientLoot = 0xBD77,
+        #endregion
 
-        // Objects:
+        #region Objects
         /// <summary>
         /// SMSG_UPDATE_OBJECT.
         /// </summary>
@@ -381,8 +600,9 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_COMPRESSED_UPDATE_OBJECT.
         /// </summary>
         ServerCompressedObjectUpdate = 0x6C7D,
+        #endregion
 
-        // Movement:
+        #region Movement
         /// <summary>
         /// SMSG_MONSTER_MOVE.
         /// </summary>
@@ -511,8 +731,9 @@ namespace Trinity.Encore.Framework.Game.Network
         /// MSG_MOVE_STOP_SWIM_CHEAT.
         /// </summary>
         MovementStopSwimCheat = 0x3D54,
+        #endregion
 
-        // Social:
+        #region Social
         /// <summary>
         /// CMSG_CONTACT_LIST.
         /// </summary>
@@ -529,8 +750,21 @@ namespace Trinity.Encore.Framework.Game.Network
         /// CMSG_ADD_FRIEND.
         /// </summary>
         ClientAddFriend = 0x6E5F,
+        /// <summary>
+        /// SMSG_WHO.
+        /// </summary>
+        ServerWho = 0xCB28,
+        /// <summary>
+        /// SMSG_WHOIS.
+        /// </summary>
+        ServerWhois = 0x3328,
+        /// <summary>
+        /// SMSG_RWHOIS.
+        /// </summary>
+        ServerRWhois = 0x3228,
+        #endregion
 
-        // Spells:
+        #region Spells
         /// <summary>
         /// SMSG_INITIAL_SPELLS.
         /// </summary>
@@ -539,14 +773,31 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_LEARNED_SPELL.
         /// </summary>
         ServerLearnedSpell = 0x9004,
+        /// <summary>
+        /// CMSG_CAST_SPELL.
+        /// </summary>
+        ClientCastSpell = 0x4C56,
+        /// <summary>
+        /// CMSG_CANCEL_CHANNELLING.
+        /// </summary>
+        ClientCancelChannelling = 0x957C,
+        #endregion
 
-        // LFG:
+        #region Auras
+        /// <summary>
+        /// CMSG_CANCEL_AURA.
+        /// </summary>
+        ClientCancelAura = 0x545E,
+        #endregion
+
+        #region LFG
         /// <summary>
         /// SMSG_LFG_BOOT_PLAYER.
         /// </summary>
         ServerLFGBootPlayer = 0xC802, // maybe 0xCC56
+        #endregion
 
-        // Instances:
+        #region Instances
         /// <summary>
         /// SMSG_INSTANCE_RESET.
         /// </summary>
@@ -567,17 +818,246 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_RESET_FAILED_NOTIFY.
         /// </summary>
         ServerResetFailedNotification = 0xB908,
+        #endregion
 
-        // Titles:
+        #region Titles
         /// <summary>
         /// SMSG_TITLE_EARNED.
         /// </summary>
         ServerEarnedTitle = 0x420B,
+        #endregion
 
-        // Achievements:
+        #region Achievements
         /// <summary>
         /// SMSG_SERVER_FIRST_ACHIEVEMENT.
         /// </summary>
         ServerAlertRealmFirstAchievement = 0xA92A,
+        #endregion
+
+        #region Dances
+        /// <summary>
+        /// SMSG_INVALIDATE_DANCE.
+        /// </summary>
+        ServerInvalidateDance = 0x9229,
+        /// <summary>
+        /// SMSG_PLAY_DANCE.
+        /// </summary>
+        ServerPlayDance = 0xC203,
+        /// <summary>
+        /// SMSG_STOP_DANCE.
+        /// </summary>
+        ServerStopDance = 0x4002,
+        /// <summary>
+        /// SMSG_NOTIFY_DANCE.
+        /// </summary>
+        ServerNotifyDance = 0xE308,
+        /// <summary>
+        /// SMSG_LEARNED_DANCE_MOVES.
+        /// </summary>
+        ServerLearnedDanceMoves = 0xF209,
+        #endregion
+
+        #region Warden
+        /// <summary>
+        /// SMSG_WARDEN_DATA.
+        /// </summary>
+        ServerWardenData = 0x212B,
+        #endregion
+
+        #region Tutorials
+        /// <summary>
+        /// SMSG_TUTORIAL_FLAGS.
+        /// </summary>
+        ServerTutorialFlags = 0x8203,
+        #endregion
+
+        #region Gossip
+        /// <summary>
+        /// SMSG_GOSSIP_MESSAGE.
+        /// </summary>
+        ServerGossipMessage = 0xD12A,
+        /// <summary>
+        /// SMSG_GOSSIP_COMPLETE.
+        /// </summary>
+        ServerGossipComplete = 0x430B,
+        /// <summary>
+        /// SMSG_GOSSIP_POI.
+        /// </summary>
+        ServerGossipPointOfInterest = 0x1002,
+        #endregion
+
+        #region Duels
+        /// <summary>
+        /// SMSG_DUEL_REQUESTED
+        /// </summary>
+        ServerDuelRequested = 0x530A,
+        /// <summary>
+        /// SMSG_DUEL_OUTOFBOUNDS.
+        /// </summary>
+        ServerDuelOutOfBounds = 0xB829,
+        /// <summary>
+        /// SMSG_DUEL_INBOUNDS.
+        /// </summary>
+        ServerDuelInbounds = 0x9B00,
+        /// <summary>
+        /// SMSG_DUEL_COUNTDOWN.
+        /// </summary>
+        ServerDuelCountdown = 0x8A21,
+        /// <summary>
+        /// SMSG_DUEL_COMPLETE.
+        /// </summary>
+        ServerDuelComplete = 0xE323,
+        /// <summary>
+        /// SMSG_DUEL_WINNER.
+        /// </summary>
+        ServerDuelWinner = 0x2329,
+        #endregion
+
+        #region Minigame
+        /// <summary>
+        /// SMSG_MINIGAME_SETUP.
+        /// </summary>
+        ServerMinigameSetup = 0x1824,
+        /// <summary>
+        /// SMSG_MINIGAME_STATE.
+        /// </summary>
+        ServerMinigameState = 0x482B,
+        #endregion
+
+        #region Guild Bank
+        /// <summary>
+        /// SMSG_GUILD_BANK_LIST.
+        /// </summary>
+        ServerGuildBankList = 0xB822,
+        /// <summary>
+        /// MSG_GUILD_BANK_LOG_QUERY.
+        /// </summary>
+        GuildBankLogQuery = 0x6308,
+        /// <summary>
+        /// MSG_GUILD_BANK_MONEY_WITHDRAWN.
+        /// </summary>
+        GuildBankMoneyWithdraw = 0x302A,
+        /// <summary>
+        /// MSG_QUERY_GUILD_BANK_TEXT.
+        /// </summary>
+        QueryGuildBankText = 0x2322,
+        #endregion
+
+        #region Auctions
+        /// <summary>
+        /// MSG_AUCTION_HELLO.
+        /// </summary>
+        ActionHello = 0xD120,
+        /// <summary>
+        /// SMSG_AUCTION_COMMAND_RESULT.
+        /// </summary>
+        ServerAuctionCommandResult = 0xEB22,
+        /// <summary>
+        /// SMSG_AUCTION_BIDDER_LIST_RESULT.
+        /// </summary>
+        ServerAuctionBidderListResult = 0xEA0A,
+        /// <summary>
+        /// SMSG_AUCTION_OWNER_LIST_RESULT.
+        /// </summary>
+        ServerAuctionOwnerListResult = 0xDA22,
+        /// <summary>
+        /// SMSG_AUCTION_LIST_RESULT.
+        /// </summary>
+        ServerAuctionListResult = 0xAB03,
+        /// <summary>
+        /// SMSG_AUCTION_BIDDER_NOTIFICATION.
+        /// </summary>
+        ServerActionBidderNotification = 0x3021,
+        /// <summary>
+        /// SMSG_AUCTION_OWNER_NOTIFICATION.
+        /// </summary>
+        ServerAuctionOwnerNotification = 0xC009,
+        /// <summary>
+        /// SMSG_AUCTION_REMOVED_NOTIFICATION.
+        /// </summary>
+        ServerAuctionRemovedNotification = 0x0A0A,
+        /// <summary>
+        /// SMSG_AUCTION_LIST_PENDING_SALES.
+        /// </summary>
+        ServerAuctionListPendingSales = 0xDB29,
+        #endregion
+
+        #region Mail
+        /// <summary>
+        /// SMSG_SEND_MAIL_RESULT.
+        /// </summary>
+        ServerSendMailResult = 0x8B23,
+        /// <summary>
+        /// SMSG_MAIL_LIST_RESULT.
+        /// </summary>
+        ServerMailListResult = 0x3804,
+        /// <summary>
+        /// MSG_QUERY_NEXT_MAIL_TIME.
+        /// </summary>
+        QueryNextMailTime = 0x7003,
+        /// <summary>
+        /// SMSG_RECEIVED_MAIL.
+        /// </summary>
+        ServerReceivedMail = 0x2122,
+        #endregion
+
+        #region Groups and Raid Groups
+        /// <summary>
+        /// MSG_RAID_TARGET_UPDATE.
+        /// </summary>
+        RaidTargetUpdate = 0x380B,
+        /// <summary>
+        /// MSG_RAID_READY_CHECK.
+        /// </summary>
+        RaidReadyCheck = 0x8B22,
+        /// <summary>
+        /// MSG_RAID_READY_CHECK_CONFIRM.
+        /// </summary>
+        RaidReadyCheckConfirm = 0xB123,
+        /// <summary>
+        /// SMSG_RAID_READY_CHECK_FINISHED.
+        /// </summary>
+        ServerRaidReadyCheckFinished = 0xF821,
+        /// <summary>
+        /// SMSG_RAID_READY_CHECK_ERROR.
+        /// </summary>
+        ServerRaidReadyCheckError = 0x502A,
+        /// <summary>
+        /// MSG_NOTIFY_PARTY_SQUELCH.
+        /// </summary>
+        NotifyPartySquelch = 0xE120,
+        /// <summary>
+        /// SMSG_ECHO_PARTY_SQUELCH.
+        /// </summary>
+        ServerEchoPartySquelch = 0x1303,
+        #endregion
+
+        #region Guilds
+        /// <summary>
+        /// MSG_GUILD_PERMISSIONS.
+        /// </summary>
+        GuildPermissions = 0x2A00,
+        /// <summary>
+        /// MSG_GUILD_EVENT_LOG_QUERY.
+        /// </summary>
+        GuildEventLogQuery = 0xF90A,
+        #endregion
+
+        #region Battlegrounds
+        #endregion
+
+        #region Battlefields
+        /// <summary>
+        /// SMSG_BATTLEFIELD_LIST.
+        /// </summary>
+        ServerBattlefieldList = 0x3858,
+        #endregion
+
+        #region Trade
+        /// <summary>
+        /// CMSG_CANCEL_TRADE.
+        /// </summary>
+        ClientCancelTrade = 0x0C2A,
+        #endregion
     }
 }
