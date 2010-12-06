@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Trinity.Encore.Framework.Core.IO;
+using Trinity.Encore.Framework.Core.Reflection;
 
 namespace Trinity.Encore.Framework.Game.IO
 {
@@ -87,18 +89,60 @@ namespace Trinity.Encore.Framework.Game.IO
             {
                 Contract.Assume(prop != null);
 
-                var value = ReadValueToField(prop, reader);
+                if (prop.GetCustomAttribute<SkipPropertyAttribute>() != null)
+                    continue; // Skip this property.
+
+                var value = ReadValueToProperty(prop, reader);
                 prop.SetValue(obj, value, null);
             }
         }
 
-        private object ReadValueToField(PropertyInfo prop, BinaryReader reader)
+        private object ReadValueToProperty(PropertyInfo prop, BinaryReader reader)
         {
             Contract.Requires(prop != null);
             Contract.Requires(reader != null);
             Contract.Ensures(Contract.Result<object>() != null);
 
             var type = prop.PropertyType;
+
+            if (type.IsEnum)
+            {
+                object value;
+                var enumUnderlying = type.GetEnumUnderlyingType();
+
+                switch (Type.GetTypeCode(enumUnderlying))
+                {
+                    case TypeCode.SByte:
+                        value = Enum.ToObject(type, reader.ReadSByte());
+                        break;
+                    case TypeCode.Byte:
+                        value = Enum.ToObject(type, reader.ReadByte());
+                        break;
+                    case TypeCode.Int16:
+                        value = Enum.ToObject(type, reader.ReadInt16());
+                        break;
+                    case TypeCode.UInt16:
+                        value = Enum.ToObject(type, reader.ReadUInt16());
+                        break;
+                    case TypeCode.Int32:
+                        value = Enum.ToObject(type, reader.ReadInt32());
+                        break;
+                    case TypeCode.UInt32:
+                        value = Enum.ToObject(type, reader.ReadUInt32());
+                        break;
+                    case TypeCode.Int64:
+                        value = Enum.ToObject(type, reader.ReadInt64());
+                        break;
+                    case TypeCode.UInt64:
+                        value = Enum.ToObject(type, reader.ReadUInt64());
+                        break;
+                    default:
+                        throw new ClientDbException(string.Format("Bad underlying enum type {0} encountered.", enumUnderlying));
+                }
+
+                Contract.Assume(value != null);
+                return value;
+            }
 
             switch (Type.GetTypeCode(type))
             {
@@ -133,7 +177,7 @@ namespace Trinity.Encore.Framework.Game.IO
                     return str;
             }
 
-            throw new ClientDbException(string.Format("Unsupported client database field type {0}.", type));
+            throw new ClientDbException(string.Format("Unsupported field type {0} encountered.", type));
         }
 
         protected void ReadStringTable(BinaryReader reader)

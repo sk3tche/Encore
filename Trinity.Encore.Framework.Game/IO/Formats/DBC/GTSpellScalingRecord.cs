@@ -3,6 +3,7 @@
     public sealed class GTSpellScalingRecord : IClientDbRecord
     {
         public int Id { get; set; }
+
         public float Coefficient { get; set; }
     }
 }

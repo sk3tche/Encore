@@ -8,7 +8,7 @@ using Trinity.Encore.Services.Account.Database.Implementation;
 
 namespace Trinity.Encore.Services.Account.Database
 {
-    public class IPRangeBanRecord : AccountDatabaseRecord
+    public class IPRangeBanRecord : AccountDatabaseRecord<IPRangeBanRecord>
     {
         /// <summary>
         /// Constructs a new IPRangeBanRecord object.

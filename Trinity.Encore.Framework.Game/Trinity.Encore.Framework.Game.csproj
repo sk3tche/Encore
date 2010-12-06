@@ -73,6 +73,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Achievements\AchievementFaction.cs" />
+    <Compile Include="Achievements\AchievementFlags.cs" />
     <Compile Include="ClientBoxLevel.cs" />
     <Compile Include="ClientLocale.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="IO\Formats\ZMPReader.cs" />
     <Compile Include="IO\IClientDbRecord.cs" />
     <Compile Include="IO\IOExtensions.cs" />
+    <Compile Include="IO\SkipPropertyAttribute.cs" />
     <Compile Include="IO\StringReadMode.cs" />
     <Compile Include="IO\Formats\WDBReader.cs" />
     <Compile Include="Mathematics\CatmullRomSpline.cs" />
@@ -143,6 +146,7 @@
     <Compile Include="Network\WorldOpCodes.cs" />
     <Compile Include="Security\AuthenticatedPermission.cs" />
     <Compile Include="Services\IpcDevice.cs" />
+    <Compile Include="Terrain\AreaFlags.cs" />
     <Compile Include="Threading\ActorApplication.cs" />
     <Compile Include="Threading\SingletonActor.cs" />
   </ItemGroup>
