@@ -2,6 +2,7 @@
 
 namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
 {
+    [ContractVerification(false)]
     public sealed class SpellEffectRecord : IClientDbRecord
     {
         public int Id { get; set; }

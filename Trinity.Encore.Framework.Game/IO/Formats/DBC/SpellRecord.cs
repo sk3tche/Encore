@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
 {
+    [ContractVerification(false)]
     public sealed class SpellRecord : IClientDbRecord
     {
         public int Id { get; set; }

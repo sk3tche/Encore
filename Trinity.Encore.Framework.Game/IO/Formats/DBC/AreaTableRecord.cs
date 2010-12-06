@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using Trinity.Encore.Framework.Game.Terrain;
 
 namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
 {
+    [ContractVerification(false)]
     public sealed class AreaTableRecord : IClientDbRecord
     {
         public int Id { get; set; }

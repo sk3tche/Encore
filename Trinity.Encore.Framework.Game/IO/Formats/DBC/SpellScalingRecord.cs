@@ -2,6 +2,7 @@
 
 namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
 {
+    [ContractVerification(false)]
     public sealed class SpellScalingRecord : IClientDbRecord
     {
         public int Id { get; set; }
@@ -32,7 +33,11 @@ namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
         /// <returns>The appropriate cast time in milliseconds for the given level.</returns>
         public int GetCastTimeForLevel(int level)
         {
-            return CastMin + ((CastMax - CastMin) / (CastDiv - 1)) * (level - 1);
+            var castTime = (CastMin + ((CastMax - CastMin) / (CastDiv - 1)) * (level - 1));
+            if (castTime > CastMax)
+                castTime = CastMax;
+
+            return castTime;
         }
 
         public sealed class SpellScalingData

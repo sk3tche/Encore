@@ -2,6 +2,7 @@
 
 namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
 {
+    [ContractVerification(false)]
     public sealed class AreaGroupRecord : IClientDbRecord
     {
         public int Id { get; set; }

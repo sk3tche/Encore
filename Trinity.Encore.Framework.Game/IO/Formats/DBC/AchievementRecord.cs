@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using Trinity.Encore.Framework.Game.Achievements;
 
 namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
 {
+    [ContractVerification(false)]
     public sealed class AchievementRecord : IClientDbRecord
     {
         public int Id { get; set; }

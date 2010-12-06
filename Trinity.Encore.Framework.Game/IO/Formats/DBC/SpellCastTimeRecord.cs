@@ -1,5 +1,8 @@
-﻿namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
+﻿using System.Diagnostics.Contracts;
+
+namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
 {
+    [ContractVerification(false)]
     public sealed class SpellCastTimeRecord : IClientDbRecord
     {
         public int Id { get; set; }
