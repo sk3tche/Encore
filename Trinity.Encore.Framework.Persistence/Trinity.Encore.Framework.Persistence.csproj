@@ -93,11 +93,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="DatabaseType.cs" />
     <Compile Include="Entities\IActiveRecord.cs" />
     <Compile Include="Mapping\MappableObject.cs" />
     <Compile Include="DatabaseContext.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\SchemaInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +108,7 @@
       <Name>Trinity.Encore.Framework.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

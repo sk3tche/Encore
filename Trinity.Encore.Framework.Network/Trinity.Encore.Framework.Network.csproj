@@ -66,6 +66,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Connectivity\ConnectionEventArgs.cs" />
     <Compile Include="Connectivity\IClient.cs" />
     <Compile Include="Connectivity\IPacketReceiver.cs" />
@@ -78,7 +81,6 @@
     <Compile Include="Handling\PacketHeader.cs" />
     <Compile Include="IPAddressRange.cs" />
     <Compile Include="NetExtensions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\ConnectedPermission.cs" />
     <Compile Include="Transmission\IncomingPacket.cs" />
     <Compile Include="Transmission\IPacket.cs" />

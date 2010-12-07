@@ -73,6 +73,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Achievements\AchievementFaction.cs" />
     <Compile Include="Achievements\AchievementFlags.cs" />
     <Compile Include="ClientBoxLevel.cs" />
@@ -144,7 +147,6 @@
     <Compile Include="Network\Transmission\OutgoingWorldPacket.cs" />
     <Compile Include="Partitioning\QuadTree.cs" />
     <Compile Include="Partitioning\QuadTreeNode.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Network\WorldOpCodes.cs" />
     <Compile Include="Security\AuthenticatedPermission.cs" />
     <Compile Include="Security\ConsolePermission.cs" />

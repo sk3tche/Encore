@@ -72,6 +72,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="AccountApplication.cs" />
     <Compile Include="Accounts\Account.cs" />
     <Compile Include="Bans\AccountBan.cs" />
@@ -89,7 +92,6 @@
     <Compile Include="Database\IPBanRecord.cs" />
     <Compile Include="Database\IPRangeBanRecord.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
   </ItemGroup>
   <ItemGroup>
