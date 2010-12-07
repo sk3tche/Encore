@@ -26,11 +26,17 @@ namespace Trinity.Encore.Framework.Game.Commands
             get { return false; }
         }
 
+        public virtual string Description
+        {
+            get { return string.Empty; }
+        }
+
         /// <summary>
         /// Executes the command.
         /// </summary>
         /// <param name="args">The arguments to the command.</param>
         /// <param name="sender">The sender of the command (may be null in the case of the console).</param>
-        public abstract void Execute(string[] args, IPermissible sender);
+        /// <returns>Whether or not arguments were valid.</returns>
+        public abstract bool Execute(CommandArguments args, IPermissible sender);
     }
 }

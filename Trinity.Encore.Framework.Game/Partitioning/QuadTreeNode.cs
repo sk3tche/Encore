@@ -256,7 +256,7 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                     throw new InvalidOperationException("This node is not a leaf.");
 
                 Contract.Assume(_entities != null);
-                return _entities.IsEmpty();
+                return !_entities.Any();
             }
         }
     }

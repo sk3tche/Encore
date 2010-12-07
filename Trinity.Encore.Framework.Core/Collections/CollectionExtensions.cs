@@ -119,13 +119,6 @@ namespace Trinity.Encore.Framework.Core.Collections
                 col.Add(cur);
         }
 
-        public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
-        {
-            Contract.Requires(enumerable != null);
-
-            return enumerable.Count() == 0;
-        }
-
         public static IEnumerable<T> With<T>(this IEnumerable<T> source, Action<T> act)
         {
             Contract.Requires(source != null);

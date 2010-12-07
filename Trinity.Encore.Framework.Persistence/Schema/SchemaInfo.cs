@@ -30,5 +30,13 @@ namespace Trinity.Encore.Framework.Persistence.Schema
         {
             _schema.Drop(false, true);
         }
+
+        public void Export(string file)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(file));
+
+            _schema.SetOutputFile(file);
+            _schema.Create(true, false);
+        }
     }
 }

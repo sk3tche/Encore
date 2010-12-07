@@ -79,6 +79,9 @@
     <Compile Include="Bans\BanManager.cs" />
     <Compile Include="Bans\IPBan.cs" />
     <Compile Include="Bans\IPRangeBan.cs" />
+    <Compile Include="Commands\Database\CreateDatabaseCommand.cs" />
+    <Compile Include="Commands\Database\DropDatabaseCommand.cs" />
+    <Compile Include="Commands\Database\ExportSchemaCommand.cs" />
     <Compile Include="Database\Implementation\AccountDatabaseRecord.cs" />
     <Compile Include="Database\AccountBanRecord.cs" />
     <Compile Include="Database\Implementation\AccountDatabaseContext.cs" />

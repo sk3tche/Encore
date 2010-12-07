@@ -42,7 +42,7 @@ namespace Trinity.Encore.Services.Account.Accounts
                 Locale = Locale,
                 LastLogin = LastLogin,
                 LastIP = LastIP,
-                RecruiterId = Record.Recruiter != null ? Record.Recruiter.Id : 0, // TODO: Use Account.Recruiter.
+                RecruiterId = Recruiter != null ? Recruiter.Id : (long?)null,
             };
         }
 

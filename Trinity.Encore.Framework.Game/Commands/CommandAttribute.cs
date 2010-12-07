@@ -10,19 +10,17 @@ namespace Trinity.Encore.Framework.Game.Commands
         private void Invariant()
         {
             Contract.Invariant(Triggers != null);
-            Contract.Invariant(Triggers.Length >= 1);
+            Contract.Invariant(Triggers.Length > 0);
         }
 
         public CommandAttribute(params string[] triggers)
         {
             Contract.Requires(triggers != null);
-            Contract.Requires(triggers.Length >= 1);
+            Contract.Requires(triggers.Length > 0);
 
             Triggers = triggers;
         }
 
         public string[] Triggers { get; private set; }
-
-        public string Description { get; set; }
     }
 }

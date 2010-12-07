@@ -8,12 +8,11 @@ namespace Trinity.Encore.Framework.Game.Commands
 {
     public sealed class CommandArguments
     {
-        public CommandArguments(ICollection<string> fullLine)
+        public CommandArguments(IEnumerable<string> args)
         {
-            Contract.Requires(fullLine != null);
-            Contract.Requires(fullLine.Count >= 1);
+            Contract.Requires(args != null);
 
-            _args = fullLine.Skip(0).ToList().AsReadOnly();
+            _args = args;
             _enum = _args.GetEnumerator();
         }
 

@@ -57,7 +57,7 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
                 if (!method.IsStatic)
                     throw new ReflectionException("Packet handler methods must be static.");
 
-                if (method.IsGenericMethodDefinition || method.IsGenericMethod)
+                if (method.IsGenericMethod)
                     throw new ReflectionException("Packet handler methods must not be generic.");
 
                 if (method.ReturnType != typeof(void))

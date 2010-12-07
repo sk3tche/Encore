@@ -1,4 +1,5 @@
 using System;
+using Trinity.Encore.Framework.Game.Commands;
 
 namespace Trinity.Encore.Services.Account
 {
@@ -7,7 +8,7 @@ namespace Trinity.Encore.Services.Account
         private static void Main(string[] args)
         {
             AccountApplication.Instance.Start(args);
-            Console.ReadKey(); // TODO: Write an actual command console (Zor).
+            CommandConsole.Run();
             AccountApplication.Instance.Stop();
         }
     }
