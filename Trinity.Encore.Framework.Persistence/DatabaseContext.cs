@@ -1,18 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using FluentNHibernate;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.Mapping;
 using NHibernate;
 using NHibernate.Cfg;
-using NHibernate.Criterion;
 using NHibernate.Linq;
-using Trinity.Encore.Framework.Core.Reflection;
-using Trinity.Encore.Framework.Core.Runtime;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 using Trinity.Encore.Framework.Persistence.Schema;
 
@@ -29,13 +24,11 @@ namespace Trinity.Encore.Framework.Persistence
             Contract.Invariant(Configuration != null);
         }
 
-        protected DatabaseContext(DatabaseType type, string dialect, string driverClass, string connString)
+        protected DatabaseContext(DatabaseType type, string connString)
         {
-            Contract.Requires(!string.IsNullOrEmpty(dialect));
-            Contract.Requires(!string.IsNullOrEmpty(driverClass));
             Contract.Requires(!string.IsNullOrEmpty(connString));
 
-            Configure(type, dialect, driverClass, connString);
+            Configure(type, connString);
         }
 
         protected override void Dispose(bool disposing)
@@ -144,13 +137,9 @@ namespace Trinity.Encore.Framework.Persistence
         /// Configures the DatabaseContext.
         /// </summary>
         /// <param name="type">The type of SQL server to connect to.</param>
-        /// <param name="dialect">The SQL dialect to use.</param>
-        /// <param name="driverClass">The fully-qualified name of the driver class to use.</param>
         /// <param name="connString">The connection string to be used to establish a connection.</param>
-        private void Configure(DatabaseType type, string dialect, string driverClass, string connString)
+        private void Configure(DatabaseType type, string connString)
         {
-            Contract.Requires(!string.IsNullOrEmpty(dialect));
-            Contract.Requires(!string.IsNullOrEmpty(driverClass));
             Contract.Requires(!string.IsNullOrEmpty(connString));
             Contract.Ensures(SessionFactory != null);
             Contract.Ensures(Schema != null);
@@ -365,8 +354,8 @@ namespace Trinity.Encore.Framework.Persistence
     [ContractClassFor(typeof(DatabaseContext))]
     public abstract class DatabaseContextContracts : DatabaseContext
     {
-        protected DatabaseContextContracts(DatabaseType type, string dialect, string driverClass, string connString)
-            : base(type, dialect, driverClass, connString)
+        protected DatabaseContextContracts(DatabaseType type, string connString)
+            : base(type, connString)
         {
         }
 

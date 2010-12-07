@@ -9,7 +9,7 @@ using Trinity.Encore.Services.Account.Database.Implementation;
 
 namespace Trinity.Encore.Services.Account.Database
 {
-    public class IPBanRecord : AccountDatabaseRecord<IPBanRecord>
+    public class IPBanRecord : AccountDatabaseRecord
     {
         /// <summary>
         /// Constructs a new IPBanRecord object.

@@ -20,6 +20,12 @@ namespace Trinity.Encore.Services.Account.Commands.Database
 
         public override bool Execute(CommandArguments args, IPermissible sender)
         {
+            var fileName = args.NextString();
+            if (string.IsNullOrEmpty(fileName))
+                return false;
+
+            AccountApplication.Instance.AccountDbContext.Post(x => x.Schema.Export(fileName));
+
             return true;
         }
     }

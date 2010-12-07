@@ -4,8 +4,7 @@ using Trinity.Encore.Framework.Persistence.Entities;
 
 namespace Trinity.Encore.Services.Account.Database.Implementation
 {
-    public abstract class AccountDatabaseRecord<TRecord>
-        where TRecord : AccountDatabaseRecord<TRecord>
+    public abstract class AccountDatabaseRecord
     {
         public virtual void Create()
         {

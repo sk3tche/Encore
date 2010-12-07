@@ -1,4 +1,6 @@
+using System;
 using System.Diagnostics.Contracts;
+using System.IO;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 
@@ -35,8 +37,13 @@ namespace Trinity.Encore.Framework.Persistence.Schema
         {
             Contract.Requires(!string.IsNullOrEmpty(file));
 
+            var oldOut = Console.Out;
+            Console.SetOut(TextWriter.Null); // HACK: How do we make NHibernate not throw the SQL to the console?
+
             _schema.SetOutputFile(file);
             _schema.Create(true, false);
+
+            Console.SetOut(oldOut);
         }
     }
 }

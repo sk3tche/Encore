@@ -12,7 +12,7 @@ using Trinity.Encore.Services.Account.Database.Implementation;
 
 namespace Trinity.Encore.Services.Account.Database
 {
-    public class AccountRecord : AccountDatabaseRecord<AccountRecord>
+    public class AccountRecord : AccountDatabaseRecord
     {
         /// <summary>
         /// Constructs a new AccountRecord object.
