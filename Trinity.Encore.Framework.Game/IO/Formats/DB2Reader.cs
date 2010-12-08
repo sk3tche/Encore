@@ -54,19 +54,23 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
             TableHash = reader.ReadInt32();
             Build = reader.ReadInt32();
             LastUpdated = reader.ReadInt32();
-            MinId = reader.ReadInt32();
-            MaxId = reader.ReadInt32();
-            Locale = (ClientLocale)reader.ReadInt32();
-            Unknown4 = reader.ReadInt32();
 
-            // No idea what these are...
-            if (MaxId != 0)
+            if (Build > 12880)
             {
-                var size = MaxId * 4 - 48;
-                Contract.Assume(size > 0);
+                MinId = reader.ReadInt32();
+                MaxId = reader.ReadInt32();
+                Locale = (ClientLocale)reader.ReadInt32();
+                Unknown4 = reader.ReadInt32();
 
-                reader.ReadBytes(size);
-                reader.ReadBytes(size * 2);
+                // No idea what these are...
+                if (MaxId != 0)
+                {
+                    var size = MaxId * 4 - 48;
+                    Contract.Assume(size > 0);
+
+                    reader.ReadBytes(size);
+                    reader.ReadBytes(size * 2);
+                }
             }
 
             // Read in all the records.
