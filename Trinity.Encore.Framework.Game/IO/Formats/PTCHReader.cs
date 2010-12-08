@@ -26,8 +26,6 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
 
         public COPYChunk COPY { get; private set; }
 
-        public string Type { get; private set; }
-
         [ContractInvariantMethod]
         private void Invariant()
         {
@@ -48,8 +46,6 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
             Contract.Ensures(PTCH != null);
             Contract.Ensures(MD5 != null);
             Contract.Ensures(XFRM != null);
-            Contract.Ensures(!string.IsNullOrEmpty(Type));
-            Contract.Ensures(Type.Length == 4);
 
             var stream = File.Open(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             using (var reader = new BinaryReader(stream))
@@ -57,9 +53,8 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
                 PTCH = new PTCHChunk(reader);
                 MD5 = new MD5Chunk(reader);
                 XFRM = new XFRMChunk(reader);
-                Type = reader.ReadFourCC();
 
-                switch (Type)
+                switch (XFRM.Type)
                 {
                     case BSD0ChunkName:
                         BSD0 = new BSD0Chunk(reader);
@@ -74,13 +69,11 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
             Contract.Assume(PTCH != null);
             Contract.Assume(MD5 != null);
             Contract.Assume(XFRM != null);
-            Contract.Assume(!string.IsNullOrEmpty(Type));
-            Contract.Assume(Type.Length == 4);
         }
 
         public void Apply(string newFileName)
         {
-            if (Type == COPYChunkName)
+            if (XFRM.Type == COPYChunkName)
             {
                 File.WriteAllBytes(newFileName, COPY.FullData);
                 return;
@@ -220,8 +213,11 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
 
                 Magic = reader.ReadFourCC();
                 BlockSize = reader.ReadInt32();
+                Type = reader.ReadFourCC();
 
                 Contract.Assert(BlockSize >= 0);
+                Contract.Assert(!string.IsNullOrEmpty(Type));
+                Contract.Assert(Type.Length == 4);
             }
 
             [ContractInvariantMethod]
@@ -230,11 +226,15 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
                 Contract.Invariant(Magic != null);
                 Contract.Invariant(Magic.Length == 4);
                 Contract.Invariant(BlockSize >= 0);
+                Contract.Invariant(!string.IsNullOrEmpty(Type));
+                Contract.Invariant(Type.Length == 4);
             }
 
             public string Magic { get; private set; }
 
             public int BlockSize { get; private set; }
+
+            public string Type { get; private set; }
         }
 
         public sealed class BSDIFF40Chunk
@@ -313,11 +313,12 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
                 {
                     var list = new List<byte>();
 
-                    byte b;
-                    while ((b = reader.ReadByte()) != 0)
+                    while (!reader.BaseStream.IsRead())
+                    {
+                        var b = reader.ReadByte();
                         list.AddRange((b & 0x80) != 0 ? reader.ReadBytes((b & 0x7f) + 1) : new byte[b + 1]);
+                    }
 
-                    list.Add(0);
                     return new BSDIFF40Chunk(list.ToArray());
                 }
             }
