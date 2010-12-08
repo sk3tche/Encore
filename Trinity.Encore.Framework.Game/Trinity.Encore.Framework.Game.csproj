@@ -126,6 +126,7 @@
     <Compile Include="IO\Formats\ZMPReader.cs" />
     <Compile Include="IO\IClientDbRecord.cs" />
     <Compile Include="IO\IOExtensions.cs" />
+    <Compile Include="IO\PatternScanner.cs" />
     <Compile Include="IO\SkipPropertyAttribute.cs" />
     <Compile Include="IO\StringReadMode.cs" />
     <Compile Include="IO\Formats\WDBReader.cs" />
