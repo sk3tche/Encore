@@ -26,8 +26,6 @@ namespace Trinity.Encore.Services.Account.Database
         /// </summary>
         /// <param name="lowerAddress"></param>
         /// <param name="upperAddress"></param>
-        /// <param name="notes"></param>
-        /// <param name="expiry"></param>
         public IPRangeBanRecord(byte[] lowerAddress, byte[] upperAddress)
         {
             Contract.Requires(lowerAddress != null);
