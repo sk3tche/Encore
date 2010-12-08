@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Trinity.Encore.Services.Authentication.Realms
+﻿namespace Trinity.Encore.Services.Authentication.Realms
 {
     // TODO add a way for the authserver to communicate with this particular realm
     /// <summary>

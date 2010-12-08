@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
-using Trinity.Encore.Framework.Core.Cryptography.SRP;
 
 namespace Trinity.Encore.Framework.Core.Cryptography
 {

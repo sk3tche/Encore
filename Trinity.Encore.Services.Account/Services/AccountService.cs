@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
-using Trinity.Encore.Framework.Core.Configuration;
-using Trinity.Encore.Framework.Core.Cryptography;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Network;
 using Trinity.Encore.Framework.Services.Account;

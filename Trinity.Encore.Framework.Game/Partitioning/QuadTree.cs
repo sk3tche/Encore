@@ -1,5 +1,4 @@
 using System.Diagnostics.Contracts;
-using System.Threading;
 using Microsoft.Xna.Framework;
 
 namespace Trinity.Encore.Framework.Game.Partitioning

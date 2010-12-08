@@ -1,12 +1,9 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Net;
 using FluentNHibernate.Mapping;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;
-using Trinity.Encore.Framework.Persistence;
 using Trinity.Encore.Framework.Persistence.Mapping;
-using Trinity.Encore.Framework.Services.Account;
 using Trinity.Encore.Services.Account.Accounts;
 using Trinity.Encore.Services.Account.Database.Implementation;
 

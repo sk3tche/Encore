@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using Trinity.Encore.Framework.Game.Threading;
 using Trinity.Encore.Framework.Network;
 using Trinity.Encore.Services.Account.Database;

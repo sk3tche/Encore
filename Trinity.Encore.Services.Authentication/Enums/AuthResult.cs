@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Trinity.Encore.Services.Authentication.Enums
+﻿namespace Trinity.Encore.Services.Authentication.Enums
 {
     public enum AuthResult : byte
     {

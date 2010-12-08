@@ -1,5 +1,4 @@
 using System.Diagnostics.Contracts;
-using System.IO;
 
 namespace Trinity.Encore.Framework.Game.IO.Formats
 {

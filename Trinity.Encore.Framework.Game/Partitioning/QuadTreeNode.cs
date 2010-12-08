@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Threading;
 using Microsoft.Xna.Framework;
 using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Threading.Actors;

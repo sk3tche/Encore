@@ -3,7 +3,6 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace Trinity.Encore.Framework.Core.Runtime

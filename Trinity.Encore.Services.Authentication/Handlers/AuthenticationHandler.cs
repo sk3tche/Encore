@@ -1,18 +1,17 @@
 ﻿using System.Diagnostics.Contracts;
+using System.Text;
+using Trinity.Encore.Framework.Core.Cryptography;
+using Trinity.Encore.Framework.Core.Cryptography.SRP;
+using Trinity.Encore.Framework.Core.IO;
+using Trinity.Encore.Framework.Core.Mathematics;
+using Trinity.Encore.Framework.Game.Cryptography;
+using Trinity.Encore.Framework.Game.IO;
 using Trinity.Encore.Framework.Game.Network;
 using Trinity.Encore.Framework.Game.Network.Handling;
 using Trinity.Encore.Framework.Game.Network.Transmission;
-using Trinity.Encore.Framework.Network.Connectivity;
-using Trinity.Encore.Framework.Game.IO;
-using Trinity.Encore.Framework.Core.IO;
-using Trinity.Encore.Services.Authentication.Enums;
-using System.Text;
-using Trinity.Encore.Framework.Core.Cryptography;
-using Trinity.Encore.Framework.Game.Cryptography;
-using Trinity.Encore.Framework.Core.Cryptography.SRP;
-using Trinity.Encore.Framework.Core.Mathematics;
-using System.Security.Cryptography;
 using Trinity.Encore.Framework.Game.Security;
+using Trinity.Encore.Framework.Network.Connectivity;
+using Trinity.Encore.Services.Authentication.Enums;
 
 namespace Trinity.Encore.Services.Authentication.Handlers
 {

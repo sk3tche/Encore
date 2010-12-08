@@ -1,7 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using Trinity.Encore.Framework.Core.Threading.Actors;
-using Trinity.Encore.Framework.Persistence.Entities;
-
 namespace Trinity.Encore.Services.Account.Database.Implementation
 {
     public abstract class AccountDatabaseRecord

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Trinity.Encore.Framework.Core.IO;
 using Trinity.Encore.Framework.Core.Reflection;
 

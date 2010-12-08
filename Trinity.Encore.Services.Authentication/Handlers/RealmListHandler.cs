@@ -1,12 +1,11 @@
-using System.Diagnostics.Contracts;
 using System.Collections.Generic;
-using Trinity.Encore.Services.Authentication.Realms;
+using System.Diagnostics.Contracts;
+using Trinity.Encore.Framework.Core.IO;
 using Trinity.Encore.Framework.Game.Network;
 using Trinity.Encore.Framework.Game.Network.Handling;
 using Trinity.Encore.Framework.Game.Network.Transmission;
 using Trinity.Encore.Framework.Network.Connectivity;
-using Trinity.Encore.Framework.Game.IO;
-using Trinity.Encore.Framework.Core.IO;
+using Trinity.Encore.Services.Authentication.Realms;
 
 namespace Trinity.Encore.Services.Authentication.Handlers
 {

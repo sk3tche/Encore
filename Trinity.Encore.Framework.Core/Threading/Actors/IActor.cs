@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Threading;
 using Trinity.Encore.Framework.Core.Runtime;
 using Trinity.Encore.Framework.Core.Security;
 

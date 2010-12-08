@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Net;
-using System.Threading;
 using Trinity.Encore.Framework.Core.Security;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 using Trinity.Encore.Framework.Network.Encryption;

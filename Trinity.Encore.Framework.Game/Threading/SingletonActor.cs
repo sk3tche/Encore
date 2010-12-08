@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.Contracts;
 using System.Reflection;
 using Trinity.Encore.Framework.Core.Reflection;
 using Trinity.Encore.Framework.Core.Threading.Actors;

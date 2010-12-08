@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
 using Trinity.Encore.Framework.Core.Collections;
 
 namespace Trinity.Encore.Tools.Patcher

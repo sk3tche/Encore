@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using Trinity.Encore.Framework.Core.Collections;
-using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Core.Reflection;
 using Trinity.Encore.Framework.Network.Connectivity;

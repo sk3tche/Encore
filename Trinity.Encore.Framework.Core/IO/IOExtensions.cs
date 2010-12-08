@@ -3,7 +3,6 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
 using System.Text;
-using Trinity.Encore.Framework.Core.Cryptography;
 
 namespace Trinity.Encore.Framework.Core.IO
 {

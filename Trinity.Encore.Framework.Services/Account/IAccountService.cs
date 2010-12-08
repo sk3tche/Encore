@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Net;
 using System.Net.Security;
 using System.ServiceModel;
 using Trinity.Encore.Framework.Game;
-using Trinity.Encore.Framework.Game.Services;
 using Trinity.Encore.Framework.Network;
 
 namespace Trinity.Encore.Framework.Services.Account

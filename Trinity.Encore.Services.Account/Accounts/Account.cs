@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Net;
-using System.Security.Cryptography;
-using Trinity.Encore.Framework.Core.Cryptography;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;
 using Trinity.Encore.Framework.Services.Account;

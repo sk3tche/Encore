@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Reflection;
 using Trinity.Encore.Framework.Core.Collections;
 

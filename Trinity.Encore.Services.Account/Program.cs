@@ -1,4 +1,3 @@
-using System;
 using Trinity.Encore.Framework.Game.Commands;
 
 namespace Trinity.Encore.Services.Account

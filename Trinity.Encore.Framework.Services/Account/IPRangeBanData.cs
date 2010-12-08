@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using Trinity.Encore.Framework.Network;
 

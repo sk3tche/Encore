@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.IO;
-using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 
 namespace Trinity.Encore.Framework.Persistence.Schema

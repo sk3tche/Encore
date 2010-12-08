@@ -3,7 +3,6 @@ using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using System.Text;
 using Trinity.Encore.Framework.Core.Cryptography;
-using Trinity.Encore.Framework.Core.Cryptography.SRP;
 
 namespace Trinity.Encore.Framework.Game.Cryptography
 {

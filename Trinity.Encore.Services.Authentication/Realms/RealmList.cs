@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.Contracts;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Trinity.Encore.Services.Authentication.Realms

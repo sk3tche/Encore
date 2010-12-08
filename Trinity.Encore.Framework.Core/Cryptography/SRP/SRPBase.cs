@@ -1,6 +1,5 @@
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace Trinity.Encore.Framework.Core.Cryptography.SRP
 {
