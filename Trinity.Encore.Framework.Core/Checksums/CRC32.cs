@@ -3,6 +3,9 @@ using ICSharpCode.SharpZipLib.Checksums;
 
 namespace Trinity.Encore.Framework.Core.Checksums
 {
+    /// <summary>
+    /// Implements the CRC32-IEEE 802.3 checksum algorithm.
+    /// </summary>
     public sealed class CRC32 : IChecksum
     {
         private readonly Crc32 _crc = new Crc32();

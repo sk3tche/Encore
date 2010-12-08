@@ -9,6 +9,7 @@
 *.pidb
 *.tssettings
 *.userprefs
+bin/*
 */bin/*
 */obj/*
 *.orig

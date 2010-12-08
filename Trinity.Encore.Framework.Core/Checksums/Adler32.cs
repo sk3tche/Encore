@@ -2,6 +2,9 @@ using System.Diagnostics.Contracts;
 
 namespace Trinity.Encore.Framework.Core.Checksums
 {
+    /// <summary>
+    /// Implements the Adler 32 checksum algorithm.
+    /// </summary>
     public sealed class Adler32 : IChecksum
     {
         private readonly ICSharpCode.SharpZipLib.Checksums.Adler32 _adler = new ICSharpCode.SharpZipLib.Checksums.Adler32();

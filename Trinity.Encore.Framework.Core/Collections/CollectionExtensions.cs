@@ -8,6 +8,15 @@ namespace Trinity.Encore.Framework.Core.Collections
 {
     public static class CollectionExtensions
     {
+        /// <summary>
+        /// Adds a value to a ConcurrentDictionary.
+        /// </summary>
+        /// <typeparam name="TKey">The key type.</typeparam>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="dict">The dictionary to operate on.</param>
+        /// <param name="key">The key of the element to add.</param>
+        /// <param name="value">The element to add.</param>
+        /// <exception cref="InvalidOperationException">The key already exists.</exception>
         public static void Add<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dict, TKey key, TValue value)
         {
             Contract.Requires(dict != null);
@@ -17,6 +26,15 @@ namespace Trinity.Encore.Framework.Core.Collections
                 throw new InvalidOperationException("The operation failed; the key likely exists already.");
         }
 
+        /// <summary>
+        /// Removes a value from a ConcurrentDictionary.
+        /// </summary>
+        /// <typeparam name="TKey">The key type.</typeparam>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="dict">The dictionary to operate on.</param>
+        /// <param name="key">The key of the element to remove.</param>
+        /// <exception cref="InvalidOperationException">The key doesn't exist.</exception>
+        /// <returns>The value that was removed (if any).</returns>
         public static TValue Remove<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dict, TKey key)
         {
             Contract.Requires(dict != null);
@@ -30,10 +48,12 @@ namespace Trinity.Encore.Framework.Core.Collections
         }
 
         /// <summary>
-        /// Returns the entry in this list at the given index, or null if index is out of bounds.
+        /// Returns the entry in this list at the given index, or the default value of the element
+        /// type if the index was out of bounds.
         /// </summary>
         /// <param name="list">The list to retrieve from.</param>
         /// <param name="index">The index to try to retrieve at.</param>
+        /// <returns>The value, or the default value of the element type.</returns>
         public static T TryGet<T>(this IList<T> list, int index)
         {
             Contract.Requires(list != null);
@@ -43,7 +63,8 @@ namespace Trinity.Encore.Framework.Core.Collections
         }
 
         /// <summary>
-        /// Returns the entry in this dictionary at the given key, or null if index is out of bounds.
+        /// Returns the entry in this dictionary at the given key, or the default value of the key
+        /// if none.
         /// </summary>
         public static TValue TryGet<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
         {
