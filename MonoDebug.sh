@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+
 xbuild \
   /p:DocumentationFile="" \
   /p:DefineConstants="MONO,TRACE,DEBUG,CONTRACTS_FULL" \
