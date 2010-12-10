@@ -15,6 +15,11 @@ namespace Trinity.Encore.Framework.Core.Checksums
             Contract.Invariant(_adler != null);
         }
 
+        /// <summary>
+        /// Calculates the Adler 32 checksum of a given input.
+        /// </summary>
+        /// <param name="input">The input to calculate a checksum for.</param>
+        /// <returns>The checksum for the given input.</returns>
         public long Calculate(byte[] input)
         {
             _adler.Reset();
@@ -23,6 +28,12 @@ namespace Trinity.Encore.Framework.Core.Checksums
             return _adler.Value;
         }
 
+        /// <summary>
+        /// Checks if two inputs have matching Adler 32 checksums.
+        /// </summary>
+        /// <param name="input1">The first input.</param>
+        /// <param name="input2">The second input.</param>
+        /// <returns>Whether or not the two inputs have matching checksums.</returns>
         public bool Matches(byte[] input1, byte[] input2)
         {
             // Let's optimize it a bit.

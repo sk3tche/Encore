@@ -154,7 +154,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
                 {
                     var op = OnMessage(msg);
                     if (op != null)
-                        yield return op.Value;
+                        yield return (Operation)op;
                 }
 
                 yield return Operation.Continue;

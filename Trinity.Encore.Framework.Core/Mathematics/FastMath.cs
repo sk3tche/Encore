@@ -28,6 +28,22 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         /// </summary>
         public const float E = (float)Math.E;
 
+        public static byte MinMax(byte value, byte min, byte max)
+        {
+            if (value > max)
+                return max;
+
+            return value < min ? min : value;
+        }
+
+        public static sbyte MinMax(sbyte value, sbyte min, sbyte max)
+        {
+            if (value > max)
+                return max;
+
+            return value < min ? min : value;
+        }
+
         public static short MinMax(short value, short min, short max)
         {
             if (value > max)

@@ -151,5 +151,22 @@ namespace Trinity.Encore.Framework.Core.Collections
 
             return source; // Return the sequence directly, to avoid deferred execution in an iterator.
         }
+
+        /// <summary>
+        /// Forces execution of a deferred iterator.
+        /// </summary>
+        /// <typeparam name="T">The type of the items in the sequence.</typeparam>
+        /// <param name="source">The sequence to process.</param>
+        /// <returns>The original sequence passed to this method.</returns>
+        public static IEnumerable<T> Force<T>(this IEnumerable<T> source)
+        {
+            Contract.Requires(source != null);
+
+            var enumer = source.GetEnumerator();
+            while (enumer.MoveNext())
+            {
+                // Just force execution of the iterator.
+            }
+        }
     }
 }
