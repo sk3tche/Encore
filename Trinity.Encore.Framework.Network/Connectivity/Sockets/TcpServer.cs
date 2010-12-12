@@ -104,7 +104,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
 
             _socket.Shutdown(SocketShutdown.Both);
             _socket.Disconnect(false);
-            _socket.PlatformDispose();
+            _socket.Close();
             _socket = null;
         }
 
@@ -199,7 +199,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
 
                     sock.Shutdown(SocketShutdown.Both);
                     sock.Disconnect(false);
-                    sock.PlatformDispose();
+                    sock.Close();
                 }
                 else
                 {
