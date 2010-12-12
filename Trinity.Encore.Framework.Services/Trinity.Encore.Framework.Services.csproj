@@ -76,6 +76,8 @@
     <Compile Include="Authentication\AuthenticationData.cs" />
     <Compile Include="Account\IAccountService.cs" />
     <Compile Include="Authentication\IAuthenticationService.cs" />
+    <Compile Include="EmptyCallbackService.cs" />
+    <Compile Include="IEmptyCallbackService.cs" />
     <Compile Include="Map\IMapService.cs" />
     <Compile Include="Patch\IPatchService.cs" />
     <Compile Include="Social\ISocialService.cs" />

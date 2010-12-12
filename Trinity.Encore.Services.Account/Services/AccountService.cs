@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Net;
+using Trinity.Encore.Framework.Core.Configuration;
+using Trinity.Encore.Framework.Core.Services;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Network;
 using Trinity.Encore.Framework.Services.Account;
@@ -10,6 +13,9 @@ namespace Trinity.Encore.Services.Account.Services
 {
     public sealed class AccountService : IAccountService
     {
+        [ConfigurationVariable("ipcUri", "net.tcp://127.0.0.1:9501/Encore.AccountService", Static = true)]
+        public static string IpcUri { get; set; }
+
         public AccountData GetAccount(string username)
         {
             var acc = AccountManager.Instance.FindAccount(x => x.Name == username);

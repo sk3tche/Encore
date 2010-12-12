@@ -59,6 +59,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate, Version=1.1.0.685, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+      <HintPath>..\Dependencies\FluentNHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=5.0.1659.36, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Lite">
       <HintPath>..\Dependencies\Microsoft.Xna.Framework.Lite.dll</HintPath>
@@ -66,8 +69,8 @@
     <Reference Include="Mono.Security">
       <HintPath>..\Dependencies\Mono.Security.dll</HintPath>
     </Reference>
-    <Reference Include="ParallelExtensionsExtras, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Dependencies\ParallelExtensionsExtras.dll</HintPath>
+    <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\Dependencies\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -92,6 +95,17 @@
     <Compile Include="Cryptography\Password.cs" />
     <Compile Include="Cryptography\WowAuthParameters.cs" />
     <Compile Include="Cryptography\SC2AuthParameters.cs" />
+    <Compile Include="Database\Conventions\Properties\PropertyNullableConvention.cs" />
+    <Compile Include="Database\Conventions\Properties\PropertyUpdateConvention.cs" />
+    <Compile Include="Database\Conventions\Relationships\RelationshipCascadeConvention.cs" />
+    <Compile Include="Database\Conventions\Relationships\RelationshipFetchConvention.cs" />
+    <Compile Include="Database\Conventions\Identity\IdGenerationConvention.cs" />
+    <Compile Include="Database\Conventions\Naming\ClassNameConvention.cs" />
+    <Compile Include="Database\Conventions\Naming\ForeignKeyNameConvention.cs" />
+    <Compile Include="Database\Conventions\Identity\IdConvention.cs" />
+    <Compile Include="Database\Conventions\Relationships\ReferenceConvention.cs" />
+    <Compile Include="Database\Conventions\Relationships\RelationshipLazyLoadConvention.cs" />
+    <Compile Include="Database\GameDatabaseContext.cs" />
     <Compile Include="Defines.cs" />
     <Compile Include="Entities\EntityGuid.cs" />
     <Compile Include="Entities\IEntity.cs" />
@@ -167,6 +181,10 @@
     <ProjectReference Include="..\Trinity.Encore.Framework.Network\Trinity.Encore.Framework.Network.csproj">
       <Project>{8D03D581-BE90-4714-AC46-50758EE1DD95}</Project>
       <Name>Trinity.Encore.Framework.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Encore.Framework.Persistence\Trinity.Encore.Framework.Persistence.csproj">
+      <Project>{F119B4B3-4520-4ED5-ABEF-189D1A61C7C5}</Project>
+      <Name>Trinity.Encore.Framework.Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

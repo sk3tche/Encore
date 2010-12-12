@@ -50,11 +50,11 @@ namespace Trinity.Encore.Services.Account.Database
     {
         public IPRangeBanMapping()
         {
-            Id(c => c.Id).Not.Nullable().GeneratedBy.Increment().Unique();
-            Map(c => c.LowerAddress).Not.Nullable().Length(IPAddress.Loopback.GetLength());
-            Map(c => c.UpperAddress).Not.Nullable().Length(IPAddress.Loopback.GetLength());
-            Map(c => c.Notes).Nullable().Update().Length(BanManager.MaxNotesLength); ;
-            Map(c => c.Expiry).Nullable().Update();
+            Id(c => c.Id);
+            Map(c => c.LowerAddress).Length(IPAddress.Loopback.GetLength());
+            Map(c => c.UpperAddress).Length(IPAddress.Loopback.GetLength());
+            Map(c => c.Notes).Nullable().Length(BanManager.MaxNotesLength);
+            Map(c => c.Expiry).Nullable();
         }
     }
 }

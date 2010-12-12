@@ -167,6 +167,8 @@ namespace Trinity.Encore.Framework.Core.Collections
             {
                 // Just force execution of the iterator.
             }
+
+            return source;
         }
     }
 }

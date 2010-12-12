@@ -4,10 +4,10 @@ using System.ServiceModel;
 
 namespace Trinity.Encore.Framework.Core.Services
 {
-    public abstract class ServiceHost<TService> : ServiceHost
+    public sealed class ServiceHost<TService> : ServiceHost
         where TService : class
     {
-        protected ServiceHost(TService instance, string uri)
+        public ServiceHost(TService instance, string uri)
             : base(instance, new Uri(uri))
         {
             Contract.Requires(instance != null);

@@ -73,6 +73,8 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
 
         public void Apply(string newFileName)
         {
+            Contract.Requires(!string.IsNullOrEmpty(newFileName));
+
             if (XFRM.Type == COPYChunkName)
             {
                 File.WriteAllBytes(newFileName, COPY.FullData);

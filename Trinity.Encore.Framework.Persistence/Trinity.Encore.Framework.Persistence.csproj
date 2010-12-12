@@ -70,6 +70,7 @@
     </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\Dependencies\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\Dependencies\NHibernate.dll</HintPath>

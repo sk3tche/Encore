@@ -39,7 +39,6 @@ namespace Trinity.Encore.Tools.Patcher
 
             _fileName = fileName;
             var data = File.ReadAllBytes(fileName);
-            Contract.Assume(data != null);
             _scanner = new PatternScanner(data);
         }
 

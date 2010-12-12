@@ -78,17 +78,17 @@ namespace Trinity.Encore.Services.Account.Database
     {
         public AccountMapping()
         {
-            Id(c => c.Id).Not.Nullable().GeneratedBy.Increment().Unique();
-            Map(c => c.Name).Not.Nullable().ReadOnly().Length(AccountManager.MaxNameLength);
-            Map(c => c.EmailAddress).Not.Nullable().Update();
-            Map(c => c.SHA1Password).Not.Nullable().Update().Length(Password.SHA1Length);
-            Map(c => c.SHA256Password).Not.Nullable().Update().Length(Password.SHA256Length);
-            Map(c => c.BoxLevel).Not.Nullable().Update();
-            Map(c => c.Locale).Not.Nullable().Update();
-            Map(c => c.LastLogin).Nullable().Update();
-            Map(c => c.LastIP).Nullable().Update();
-            References(x => x.Recruiter).Nullable().Cascade.SaveUpdate().LazyLoad(Laziness.Proxy);
-            HasOne(c => c.Ban).Cascade.All().LazyLoad(Laziness.Proxy);
+            Id(c => c.Id);
+            Map(c => c.Name).ReadOnly().Length(AccountManager.MaxNameLength);
+            Map(c => c.EmailAddress);
+            Map(c => c.SHA1Password).Length(Password.SHA1Length);
+            Map(c => c.SHA256Password).Length(Password.SHA256Length);
+            Map(c => c.BoxLevel);
+            Map(c => c.Locale);
+            Map(c => c.LastLogin).Nullable();
+            Map(c => c.LastIP).Nullable();
+            References(x => x.Recruiter).Nullable();
+            HasOne(c => c.Ban).Cascade.All();
         }
     }
  }

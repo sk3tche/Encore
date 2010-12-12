@@ -22,9 +22,7 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
 
             var length = IPAddress.NetworkToHostOrder(unchecked((short)BitConverter.ToUInt16(header, 0)));
             Contract.Assume(length >= 0);
-
             var opCode = (int)BitConverter.ToUInt32(header, 2);
-            Contract.Assume(opCode >= 0);
 
             return new PacketHeader(length, opCode);
         }

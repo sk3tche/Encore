@@ -44,10 +44,10 @@ namespace Trinity.Encore.Services.Account.Database
     {
         public AccountBanMapping()
         {
-            Id(c => c.Id).Not.Nullable().GeneratedBy.Increment().Unique();
-            HasOne(c => c.Account).PropertyRef(c => c.Ban).Constrained().Cascade.SaveUpdate().LazyLoad(Laziness.Proxy);
-            Map(c => c.Notes).Nullable().Update().Length(BanManager.MaxNotesLength); ;
-            Map(c => c.Expiry).Nullable().Update();
+            Id(c => c.Id);
+            HasOne(c => c.Account).Constrained();
+            Map(c => c.Notes).Nullable().Length(BanManager.MaxNotesLength);
+            Map(c => c.Expiry).Nullable();
         }
     }
 }

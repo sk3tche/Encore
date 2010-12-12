@@ -7,6 +7,7 @@ using Trinity.Encore.Framework.Core.Mathematics;
 namespace Trinity.Encore.Framework.Core.Cryptography
 {
     // This class was written by Chew Keong TAN.
+    [ContractVerification(false)]
     [Serializable]
     public sealed class BigInteger : IEquatable<BigInteger>, IComparable<BigInteger>
     {
@@ -34,7 +35,6 @@ namespace Trinity.Encore.Framework.Core.Cryptography
                 if ((numBits & 0x7) != 0)
                     numBytes++;
 
-                Contract.Assume(numBytes > 0);
                 return numBytes;
             }
         }
@@ -673,7 +673,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             while (j > 0)
             {
                 var dividend = ((ulong)remainder[pos] << 32) + remainder[pos - 1];
-                Contract.Assert(firstDivisorByte > 0);
+                Contract.Assume(firstDivisorByte > 0);
                 var q_hat = dividend / firstDivisorByte;
                 var r_hat = dividend % firstDivisorByte;
                 var done = false;

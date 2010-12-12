@@ -5,6 +5,7 @@ using System.Linq;
 using FluentNHibernate;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using FluentNHibernate.Conventions;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Linq;
@@ -136,9 +137,9 @@ namespace Trinity.Encore.Framework.Persistence
         /// <summary>
         /// Configures the DatabaseContext.
         /// </summary>
-        /// <param name="type">The type of SQL server to connect to.</param>
+        /// <param name="dbType">The type of SQL server to connect to.</param>
         /// <param name="connString">The connection string to be used to establish a connection.</param>
-        private void Configure(DatabaseType type, string connString)
+        private void Configure(DatabaseType dbType, string connString)
         {
             Contract.Requires(!string.IsNullOrEmpty(connString));
             Contract.Ensures(SessionFactory != null);
@@ -146,12 +147,18 @@ namespace Trinity.Encore.Framework.Persistence
             Contract.Ensures(Configuration != null);
 
             var fluent = Fluently.Configure();
-            fluent.Database(CreateConfiguration(type, connString));
+            fluent.Database(CreateConfiguration(dbType, connString));
 
-            foreach (var mapping in CreateMappings())
+            foreach (var mappingType in CreateMappings().Select(mapping => mapping.GetType()))
             {
-                var mappingType = mapping.GetType();
-                fluent.Mappings(x => x.FluentMappings.Add(mappingType));
+                var type = mappingType;
+                fluent.Mappings(x => x.FluentMappings.Add(type));
+            }
+
+            foreach (var convention in CreateConventions())
+            {
+                var conv = convention;
+                fluent.Mappings(x => x.FluentMappings.Conventions.Add(conv));
             }
 
             var config = fluent.BuildConfiguration();
@@ -170,6 +177,13 @@ namespace Trinity.Encore.Framework.Persistence
         #region Protected methods
 
         protected abstract IEnumerable<IMappingProvider> CreateMappings();
+
+        protected virtual IEnumerable<IConvention> CreateConventions()
+        {
+            Contract.Ensures(Contract.Result<IEnumerable<IConvention>>() != null);
+
+            yield break;
+        }
 
         /// <summary>
         /// Creates a disposable database session.

@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using FluentNHibernate;
+using FluentNHibernate.Conventions;
 using Trinity.Encore.Framework.Core.Configuration;
+using Trinity.Encore.Framework.Game.Database;
+using Trinity.Encore.Framework.Game.Database.Conventions;
 using Trinity.Encore.Framework.Persistence;
 
 namespace Trinity.Encore.Services.Account.Database.Implementation
 {
-    public sealed class AccountDatabaseContext : DatabaseContext
+    public sealed class AccountDatabaseContext : GameDatabaseContext
     {
         [ConfigurationVariable("sqlType", DatabaseType.MySql, Static = true)]
         public static DatabaseType DatabaseType { get; set; }
