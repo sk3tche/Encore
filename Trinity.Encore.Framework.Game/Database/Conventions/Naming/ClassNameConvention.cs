@@ -4,7 +4,7 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace Trinity.Encore.Framework.Game.Database.Conventions.Naming
 {
-    public sealed class ClassNameConvention : IClassConvention
+    internal sealed class ClassNameConvention : IClassConvention
     {
         public const string Record = "Record";
 

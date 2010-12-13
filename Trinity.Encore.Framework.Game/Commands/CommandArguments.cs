@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
@@ -60,6 +61,7 @@ namespace Trinity.Encore.Framework.Game.Commands
             return null;
         }
 
+        [CLSCompliant(false)]
         public sbyte? NextSByte()
         {
             if (!_enum.MoveNext())
@@ -72,6 +74,7 @@ namespace Trinity.Encore.Framework.Game.Commands
             return null;
         }
 
+        [CLSCompliant(false)]
         public ushort? NextUInt16()
         {
             if (!_enum.MoveNext())
@@ -95,7 +98,8 @@ namespace Trinity.Encore.Framework.Game.Commands
 
             return null;
         }
-
+        
+        [CLSCompliant(false)]
         public uint? NextUInt32()
         {
             if (!_enum.MoveNext())
@@ -120,6 +124,7 @@ namespace Trinity.Encore.Framework.Game.Commands
             return null;
         }
 
+        [CLSCompliant(false)]
         public ulong? NextUInt64()
         {
             if (!_enum.MoveNext())

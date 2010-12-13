@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -74,6 +75,7 @@ namespace Trinity.Encore.Framework.Core.IO
             }
         }
 
+        [CLSCompliant(false)]
         public static void WriteBigEndian(this BinaryWriter writer, ushort value)
         {
             unchecked
@@ -82,6 +84,7 @@ namespace Trinity.Encore.Framework.Core.IO
             }
         }
 
+        [CLSCompliant(false)]
         public static ushort ReadUInt16BigEndian(this BinaryReader reader)
         {
             unchecked
@@ -106,6 +109,7 @@ namespace Trinity.Encore.Framework.Core.IO
             }
         }
 
+        [CLSCompliant(false)]
         public static void WriteBigEndian(this BinaryWriter writer, uint value)
         {
             unchecked
@@ -114,6 +118,7 @@ namespace Trinity.Encore.Framework.Core.IO
             }
         }
 
+        [CLSCompliant(false)]
         public static uint ReadUInt32BigEndian(this BinaryReader reader)
         {
             unchecked
@@ -138,6 +143,7 @@ namespace Trinity.Encore.Framework.Core.IO
             }
         }
 
+        [CLSCompliant(false)]
         public static void WriteBigEndian(this BinaryWriter writer, ulong value)
         {
             unchecked
@@ -146,6 +152,7 @@ namespace Trinity.Encore.Framework.Core.IO
             }
         }
 
+        [CLSCompliant(false)]
         public static ulong ReadUInt64BigEndian(this BinaryReader reader)
         {
             unchecked

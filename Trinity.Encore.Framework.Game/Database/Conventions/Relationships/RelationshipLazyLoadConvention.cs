@@ -7,7 +7,7 @@ using FluentNHibernate.Mapping;
 
 namespace Trinity.Encore.Framework.Game.Database.Conventions.Relationships
 {
-    public sealed class RelationshipLazyLoadConvention : IHasManyConvention, IHasManyConventionAcceptance, IHasManyToManyConvention,
+    internal sealed class RelationshipLazyLoadConvention : IHasManyConvention, IHasManyConventionAcceptance, IHasManyToManyConvention,
         IHasManyToManyConventionAcceptance, IHasOneConvention, IHasOneConventionAcceptance, IReferenceConvention, IReferenceConventionAcceptance
     {
         public void Apply(IOneToManyCollectionInstance instance)

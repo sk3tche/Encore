@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Trinity.Encore.Framework.Core.InteropServices
+namespace Trinity.Encore.Framework.Core.Runtime.InteropServices
 {
     /// <summary>
     /// A structure which can represent multiple data types simultaneously.
@@ -14,21 +14,25 @@ namespace Trinity.Encore.Framework.Core.InteropServices
         public byte Byte;
 
         [FieldOffset(0)]
+        [CLSCompliant(false)]
         public sbyte SByte;
 
         [FieldOffset(0)]
+        [CLSCompliant(false)]
         public ushort UInt16;
 
         [FieldOffset(0)]
         public short Int16;
 
         [FieldOffset(0)]
+        [CLSCompliant(false)]
         public uint UInt32;
 
         [FieldOffset(0)]
         public int Int32;
 
         [FieldOffset(0)]
+        [CLSCompliant(false)]
         public ulong UInt64;
 
         [FieldOffset(0)]

@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using Trinity.Encore.Framework.Core.Cryptography;
@@ -21,6 +22,7 @@ namespace Trinity.Encore.Framework.Game.IO
             WritePackedUInt64(writer, guid.Full);
         }
 
+        [CLSCompliant(false)]
         public static ulong ReadPackedUInt64(this BinaryReader reader)
         {
             Contract.Requires(reader != null);
@@ -40,6 +42,7 @@ namespace Trinity.Encore.Framework.Game.IO
             return guid;
         }
 
+        [CLSCompliant(false)]
         public static void WritePackedUInt64(this BinaryWriter writer, ulong value)
         {
             Contract.Requires(writer != null);

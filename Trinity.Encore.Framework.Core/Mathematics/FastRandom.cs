@@ -210,6 +210,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         /// random number generator algorithm generates 32 random bits that can be cast directly to 
         /// a uint.
         /// </summary>
+        [CLSCompliant(false)]
         public uint NextUInt32()
         {
             var t = (_x ^ (_x << 11));

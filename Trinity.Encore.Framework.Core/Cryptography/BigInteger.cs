@@ -77,6 +77,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
                 DataLength = 1;
         }
 
+        [CLSCompliant(false)]
         public BigInteger(ulong value)
         {
             DataLength = 0;
@@ -200,6 +201,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             Contract.Assume(ByteLength == inData.Length);
         }
 
+        [CLSCompliant(false)]
         public BigInteger(uint[] inData)
         {
             Contract.Requires(inData != null);
@@ -236,6 +238,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return new BigInteger(value);
         }
 
+        [CLSCompliant(false)]
         public static explicit operator BigInteger(ulong value)
         {
             Contract.Ensures(Contract.Result<BigInteger>() != null);
@@ -250,6 +253,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return new BigInteger(value);
         }
 
+        [CLSCompliant(false)]
         public static explicit operator BigInteger(uint value)
         {
             Contract.Ensures(Contract.Result<BigInteger>() != null);
@@ -308,6 +312,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 + (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator +(BigInteger bi1, ulong bi2)
         {
             Contract.Requires(bi1 != null);
@@ -324,6 +329,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 + (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator +(BigInteger bi1, uint bi2)
         {
             Contract.Requires(bi1 != null);
@@ -448,6 +454,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 - (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator -(BigInteger bi1, ulong bi2)
         {
             Contract.Requires(bi1 != null);
@@ -464,6 +471,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 - (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator -(BigInteger bi1, uint bi2)
         {
             Contract.Requires(bi1 != null);
@@ -606,6 +614,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 * (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator *(BigInteger bi1, ulong bi2)
         {
             Contract.Requires(bi1 != null);
@@ -622,6 +631,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 * (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator *(BigInteger bi1, uint bi2)
         {
             Contract.Requires(bi1 != null);
@@ -857,6 +867,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 / (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator /(BigInteger bi1, ulong bi2)
         {
             Contract.Requires(bi1 != null);
@@ -873,6 +884,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 / (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator /(BigInteger bi1, uint bi2)
         {
             Contract.Requires(bi1 != null);
@@ -923,6 +935,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 % (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator %(BigInteger bi1, ulong bi2)
         {
             Contract.Requires(bi1 != null);
@@ -939,6 +952,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 % (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator %(BigInteger bi1, uint bi2)
         {
             Contract.Requires(bi1 != null);
@@ -955,6 +969,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return (BigInteger)bi1 % bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator %(ulong bi1, BigInteger bi2)
         {
             Contract.Requires(bi2 != null);
@@ -971,6 +986,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return (BigInteger)bi1 % bi2;
         }
 
+        [CLSCompliant(false)]
         public static BigInteger operator %(uint bi1, BigInteger bi2)
         {
             Contract.Requires(bi2 != null);
@@ -1200,6 +1216,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1.Equals(bi2);
         }
 
+        [CLSCompliant(false)]
         public static bool operator ==(BigInteger bi1, uint bi2)
         {
             return bi1 == (BigInteger)bi2;
@@ -1215,6 +1232,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 == (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator ==(BigInteger bi1, ulong bi2)
         {
             return bi1 == (BigInteger)bi2;
@@ -1225,6 +1243,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return !(bi1 == bi2);
         }
 
+        [CLSCompliant(false)]
         public static bool operator !=(BigInteger bi1, uint bi2)
         {
             return bi1 != (BigInteger)bi2;
@@ -1240,6 +1259,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 != (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator !=(BigInteger bi1, ulong bi2)
         {
             return bi1 != (BigInteger)bi2;
@@ -1276,6 +1296,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 > (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator >(BigInteger bi1, ulong bi2)
         {
             Contract.Requires(bi1 != null);
@@ -1290,6 +1311,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 > (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator >(BigInteger bi1, uint bi2)
         {
             Contract.Requires(bi1 != null);
@@ -1328,6 +1350,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 < (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator <(BigInteger bi1, ulong bi2)
         {
             Contract.Requires(bi1 != null);
@@ -1342,6 +1365,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 < (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator <(BigInteger bi1, uint bi2)
         {
             Contract.Requires(bi1 != null);
@@ -1364,6 +1388,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 >= (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator >=(BigInteger bi1, ulong bi2)
         {
             Contract.Requires(bi1 != null);
@@ -1378,6 +1403,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 >= (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator >=(BigInteger bi1, uint bi2)
         {
             Contract.Requires(bi1 != null);
@@ -1400,6 +1426,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 <= (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator <=(BigInteger bi1, ulong bi2)
         {
             Contract.Requires(bi1 != null);
@@ -1414,6 +1441,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return bi1 <= (BigInteger)bi2;
         }
 
+        [CLSCompliant(false)]
         public static bool operator <=(BigInteger bi1, uint bi2)
         {
             Contract.Requires(bi1 != null);
@@ -1703,14 +1731,32 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             get { return (byte)_data[0]; }
         }
 
-        public int Int16Value
+        [CLSCompliant(false)]
+        public sbyte SByteValue
+        {
+            get { return (sbyte)_data[0]; }
+        }
+
+        public short Int16Value
         {
             get { return (short)_data[0]; }
+        }
+
+        [CLSCompliant(false)]
+        public ushort UInt16Value
+        {
+            get { return (ushort)_data[0]; }
         }
 
         public int Int32Value
         {
             get { return (int)_data[0]; }
+        }
+
+        [CLSCompliant(false)]
+        public uint UInt32Value
+        {
+            get { return _data[0]; }
         }
 
         public long Int64Value
@@ -1731,6 +1777,12 @@ namespace Trinity.Encore.Framework.Core.Cryptography
 
                 return val;
             }
+        }
+
+        [CLSCompliant(false)]
+        public ulong UInt64Value
+        {
+            get { return unchecked((ulong)Int64Value); }
         }
 
         public BigInteger ModInverse(BigInteger modulus)
@@ -1827,7 +1879,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return result;
         }
 
-        public void SetBit(uint bitNum)
+        public void SetBit(int bitNum)
         {
             Contract.Requires(bitNum >= 0);
 
@@ -1838,10 +1890,10 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             _data[bytePos] |= mask;
 
             if (bytePos >= DataLength)
-                DataLength = (int)bytePos + 1;
+                DataLength = bytePos + 1;
         }
 
-        public void UnsetBit(uint bitNum)
+        public void UnsetBit(int bitNum)
         {
             Contract.Requires(bitNum >= 0);
 

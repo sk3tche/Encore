@@ -1,9 +1,10 @@
 using System;
 using FluentNHibernate;
+using FluentNHibernate.Conventions;
 
 namespace Trinity.Encore.Framework.Game.Database.Conventions.Naming
 {
-    public sealed class ForeignKeyNameConvention : FluentNHibernate.Conventions.ForeignKeyConvention
+    internal sealed class ForeignKeyNameConvention : ForeignKeyConvention
     {
         public const string Id = "Id";
 

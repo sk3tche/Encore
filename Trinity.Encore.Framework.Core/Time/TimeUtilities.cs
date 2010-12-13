@@ -14,9 +14,9 @@ namespace Trinity.Encore.Framework.Core.Time
             return UnixEpochStart.AddSeconds(unixTime);
         }
 
-        public static uint GetUnixTimeFromDateTime(DateTime timeValue)
+        public static long GetUnixTimeFromDateTime(DateTime timeValue)
         {
-            return (uint)(timeValue - UnixEpochStart).TotalSeconds;
+            return (long)(timeValue - UnixEpochStart).TotalSeconds;
         }
 
         /// <summary>

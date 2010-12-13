@@ -36,6 +36,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
             return value < min ? min : value;
         }
 
+        [CLSCompliant(false)]
         public static sbyte MinMax(sbyte value, sbyte min, sbyte max)
         {
             if (value > max)
@@ -52,6 +53,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
             return value < min ? min : value;
         }
 
+        [CLSCompliant(false)]
         public static ushort MinMax(ushort value, ushort min, ushort max)
         {
             if (value > max)
@@ -68,6 +70,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
             return value < min ? min : value;
         }
 
+        [CLSCompliant(false)]
         public static uint MinMax(uint value, uint min, uint max)
         {
             if (value > max)
@@ -84,6 +87,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
             return value < min ? min : value;
         }
 
+        [CLSCompliant(false)]
         public static ulong MinMax(ulong value, ulong min, ulong max)
         {
             if (value > max)

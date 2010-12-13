@@ -106,6 +106,7 @@ namespace Trinity.Encore.Framework.Core
         /// Checks if an UIntPtr object is null (0).
         /// </summary>
         /// <param name="ptr">The IntPtr object.</param>
+        [CLSCompliant(false)]
         public static bool Null(this UIntPtr ptr)
         {
             return ptr == UIntPtr.Zero;

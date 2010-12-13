@@ -46,7 +46,7 @@
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <NoWarn>1591</NoWarn>
+    <NoWarn>1591,3009,3016,3015</NoWarn>
     <DocumentationFile>..\bin\Debug\Trinity.Encore.Scripts.Battlegrounds.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -57,6 +57,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>3009,3016,3015</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

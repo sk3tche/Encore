@@ -5,7 +5,7 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace Trinity.Encore.Framework.Game.Database.Conventions.Identity
 {
-    public sealed class IdGenerationConvention : IIdConvention, IIdConventionAcceptance
+    internal sealed class IdGenerationConvention : IIdConvention, IIdConventionAcceptance
     {
         public void Apply(IIdentityInstance instance)
         {

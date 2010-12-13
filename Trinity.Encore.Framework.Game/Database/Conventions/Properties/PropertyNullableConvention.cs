@@ -6,7 +6,7 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace Trinity.Encore.Framework.Game.Database.Conventions.Properties
 {
-    public sealed class PropertyNullableConvention : IPropertyConvention, IPropertyConventionAcceptance
+    internal sealed class PropertyNullableConvention : IPropertyConvention, IPropertyConventionAcceptance
     {
         public void Apply(IPropertyInstance instance)
         {

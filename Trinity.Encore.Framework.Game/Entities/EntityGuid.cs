@@ -13,8 +13,10 @@ namespace Trinity.Encore.Framework.Game.Entities
     {
         public static readonly EntityGuid Zero = new EntityGuid(0);
 
+        [CLSCompliant(false)]
         public readonly ulong Full;
 
+        [CLSCompliant(false)]
         public EntityGuid(ulong full)
         {
             Full = full;
