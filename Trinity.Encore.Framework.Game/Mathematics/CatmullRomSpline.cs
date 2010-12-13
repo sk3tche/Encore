@@ -31,7 +31,6 @@ namespace Trinity.Encore.Framework.Game.Mathematics
             get { return _pointList.Count; }
         }
 
-        [CLSCompliant(false)]
         public void AddPoint(Vector3 point)
         {
             _pointList.Add(point);
@@ -46,7 +45,6 @@ namespace Trinity.Encore.Framework.Game.Mathematics
             _tangentList.Clear();
         }
 
-        [CLSCompliant(false)]
         public Vector3 GetPoint(int index)
         {
             Contract.Requires(index >= 0);
@@ -55,7 +53,6 @@ namespace Trinity.Encore.Framework.Game.Mathematics
             return _pointList[index];
         }
 
-        [CLSCompliant(false)]
         public Vector3 Interpolate(float t)
         {
             Contract.Requires(t >= MinUnitInterval);
@@ -71,7 +68,6 @@ namespace Trinity.Encore.Framework.Game.Mathematics
             return Interpolate(segIndex, t);
         }
 
-        [CLSCompliant(false)]
         public Vector3 Interpolate(int index, float t)
         {
             Contract.Requires(index >= 0);

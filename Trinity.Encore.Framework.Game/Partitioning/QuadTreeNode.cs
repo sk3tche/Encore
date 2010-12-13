@@ -21,13 +21,11 @@ namespace Trinity.Encore.Framework.Game.Partitioning
 
         private const int South = 1;
 
-        [CLSCompliant(false)]
         public QuadTreeNode(BoundingBox bounds)
         {
             Bounds = bounds;
         }
 
-        [CLSCompliant(false)]
         public BoundingBox Bounds { get; private set; }
 
         public float Length
@@ -50,7 +48,6 @@ namespace Trinity.Encore.Framework.Game.Partitioning
         /// </summary>
         private Dictionary<EntityGuid, IWorldEntity> _entities;
 
-        [CLSCompliant(false)]
         public bool AddEntity(IWorldEntity entity)
         {
             Contract.Requires(entity != null);
@@ -80,7 +77,6 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             return false;
         }
 
-        [CLSCompliant(false)]
         public bool RemoveEntity(IWorldEntity entity)
         {
             Contract.Requires(entity != null);
@@ -110,7 +106,6 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             return false;
         }
 
-        [CLSCompliant(false)]
         public IEnumerable<IWorldEntity> FindEntities(Func<IWorldEntity, bool> criteria, BoundingBox searchArea,
             int maxCount = QuadTree.NoMaxCount)
         {
@@ -121,7 +116,6 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             return RecursiveSearch(criteria, null, maxCount, x => searchArea.Contains(x.Bounds) == ContainmentType.Contains);
         }
 
-        [CLSCompliant(false)]
         public IEnumerable<IWorldEntity> FindEntities(Func<IWorldEntity, bool> criteria, BoundingSphere searchArea,
             int maxCount = QuadTree.NoMaxCount)
         {
@@ -141,7 +135,6 @@ namespace Trinity.Encore.Framework.Game.Partitioning
             return RecursiveSearch(criteria, null, maxCount);
         }
 
-        [CLSCompliant(false)]
         public IWorldEntity FindEntity(Func<IWorldEntity, bool> criteria, BoundingBox searchArea)
         {
             Contract.Requires(criteria != null);
@@ -150,7 +143,6 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                 ContainmentType.Contains).SingleOrDefault();
         }
 
-        [CLSCompliant(false)]
         public IWorldEntity FindEntity(Func<IWorldEntity, bool> criteria, BoundingSphere searchArea)
         {
             Contract.Requires(criteria != null);
@@ -159,7 +151,6 @@ namespace Trinity.Encore.Framework.Game.Partitioning
                 ContainmentType.Contains).SingleOrDefault();
         }
 
-        [CLSCompliant(false)]
         public IWorldEntity FindEntity(Func<IWorldEntity, bool> criteria)
         {
             Contract.Requires(criteria != null);

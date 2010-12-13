@@ -16,7 +16,6 @@ namespace Trinity.Encore.Framework.Game.Partitioning
 
         public const int NoMaxCount = -1;
 
-        [CLSCompliant(false)]
         public QuadTree(BoundingBox bounds, int depthThreshold = DefaultDepthThreshold)
             : base(bounds)
         {
