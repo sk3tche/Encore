@@ -59,12 +59,19 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>3009,3016,3015</NoWarn>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Shared\Trinity.Encore.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentNHibernate, Version=1.1.0.685, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=5.0.1659.36, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Xna.Framework.Lite">
+    <Reference Include="Microsoft.Xna.Framework.Lite, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c1443ffbbbe66e55, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Microsoft.Xna.Framework.Lite.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security">
@@ -192,6 +199,11 @@
     <Folder Include="IO\Formats\ADB\" />
     <Folder Include="IO\Formats\DB2\" />
     <Folder Include="IO\Formats\WDB\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Shared\Trinity.Encore.snk">
+      <Link>Trinity.Encore.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
