@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Mathematics;
 
@@ -9,20 +10,32 @@ namespace Trinity.Encore.Framework.Core.Cryptography
     // This class was written by Chew Keong TAN.
     [ContractVerification(false)]
     [Serializable]
-    public sealed class BigInteger : IEquatable<BigInteger>, IComparable<BigInteger>
+    public sealed class BigInteger : IEquatable<BigInteger>, IComparable<BigInteger>, IComparable
     {
         /// <summary>
-        /// Maximum length of the BigInteger in Int32 (bits).
+        /// Maximum length of the BigInteger. The actual in-memory size is 4 * MaxLength.
         /// </summary>
-        private const int MaxLength = 512;
+        public const int MaxLength = 512;
 
         /// <summary>
         /// Holds bytes from the BigInteger.
         /// </summary>
         private readonly uint[] _data;
 
+        /// <summary>
+        /// The length of the BigInteger in 4-byte intervals.
+        /// </summary>
+        /// <remarks>
+        /// For example, a DataLength of 3 means 12 bytes (three Int32 values).
+        /// 
+        /// Note that this property does not indicate the in-memory size of the BigInteger. All BigInteger instances
+        /// are always <see cref="MaxLength">MaxLength</see> * 4 in size.
+        /// </remarks>
         public int DataLength { get; private set; }
 
+        /// <summary>
+        /// Gets the number of bytes that are actually used in the BigInteger.
+        /// </summary>
         public int ByteLength
         {
             get
@@ -79,6 +92,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
 
         [CLSCompliant(false)]
         public BigInteger(ulong value)
+            : this()
         {
             DataLength = 0;
 
@@ -573,9 +587,6 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             }
 
             result.DataLength = bi1.DataLength + bi2.DataLength;
-
-            if (result.DataLength > MaxLength)
-                result.DataLength = MaxLength;
 
             while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
                 result.DataLength--;
@@ -1980,6 +1991,11 @@ namespace Trinity.Encore.Framework.Core.Cryptography
                     return false;
 
             return true;
+        }
+
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as BigInteger);
         }
 
         public int CompareTo(BigInteger other)

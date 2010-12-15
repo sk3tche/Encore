@@ -63,15 +63,12 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
         public SRPVersion AlgorithmVersion { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not usernames and
-        /// passwords are case-sensitive.
+        /// Gets a value indicating whether or not usernames and passwords are case-sensitive.
         /// </summary>
         public bool CaseSensitive { get; private set; }
 
         /// <summary>
         /// H in the specification. Hashing function for the instance.
-        /// 
-        /// This is SHA 1.
         /// </summary>
         public HashAlgorithm Hash { get; protected set; }
 

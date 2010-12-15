@@ -10,6 +10,7 @@
 *.tssettings
 *.userprefs
 bin/*
+TestResults/*
 */bin/*
 */obj/*
 *.orig

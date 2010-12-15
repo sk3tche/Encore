@@ -89,19 +89,6 @@ namespace Trinity.Encore.Framework.Core.Collections
             self[index2] = temp;
         }
 
-        public static void Reverse<T>(this IList<T> buffer)
-        {
-            Contract.Requires(buffer != null);
-
-            var length = buffer.Count;
-            for (var i = 0; i < length / 2; i++)
-            {
-                var temp = buffer[i];
-                buffer[i] = buffer[length - i - 1];
-                buffer[length - i - 1] = temp;
-            }
-        }
-
         public static Queue<T> ToQueue<T>(this IEnumerable<T> self)
         {
             Contract.Requires(self != null);
@@ -122,6 +109,9 @@ namespace Trinity.Encore.Framework.Core.Collections
         {
             Contract.Requires(self != null);
             Contract.Ensures(Contract.Result<C5.IPriorityQueue<T>>() != null);
+
+            if (cmp == null)
+                cmp = Comparer<T>.Default;
 
             var queue = new C5.IntervalHeap<T>(self.Count(), cmp);
 

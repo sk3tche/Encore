@@ -72,7 +72,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
         {
             // TODO this needs to be fetched from the database
             BigInteger credentials = null ?? new BigInteger(0);
-            SRPServer srpData = new SRPServer(username, credentials, WowAuthParameters.Default);
+            SRPServer srpData = new SRPServer(username, credentials, new WowAuthParameters());
             BigInteger g = srpData.Parameters.Generator;
             BigInteger n = srpData.Parameters.Modulus;
             srpData.Salt = new BigInteger(new FastRandom(), 32 * 8);

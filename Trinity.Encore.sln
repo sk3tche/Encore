@@ -51,6 +51,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Tools.Patcher", "Trinity.Encore.Tools.Patcher\Trinity.Encore.Tools.Patcher.csproj", "{E3B4759B-433D-4FA3-83C3-87B3EA440BBB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8259BA72-9BFD-4C57-9277-FAF6778A3ECC}"
+	ProjectSection(SolutionItems) = preProject
+		Full.testsettings = Full.testsettings
+		Trinity.Encore.vsmdi = Trinity.Encore.vsmdi
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Tests.Core", "Trinity.Encore.Tests.Core\Trinity.Encore.Tests.Core.csproj", "{47B1A1FC-D54C-42F7-912F-9A436579EC11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Tests.Game", "Trinity.Encore.Tests.Game\Trinity.Encore.Tests.Game.csproj", "{B5B67A17-FC8F-487C-9081-35B38B910AA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Tests.Services", "Trinity.Encore.Tests.Services\Trinity.Encore.Tests.Services.csproj", "{9C184482-3032-46C9-90E8-1EABBF690126}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +145,18 @@ Global
 		{E3B4759B-433D-4FA3-83C3-87B3EA440BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3B4759B-433D-4FA3-83C3-87B3EA440BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3B4759B-433D-4FA3-83C3-87B3EA440BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47B1A1FC-D54C-42F7-912F-9A436579EC11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47B1A1FC-D54C-42F7-912F-9A436579EC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47B1A1FC-D54C-42F7-912F-9A436579EC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47B1A1FC-D54C-42F7-912F-9A436579EC11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5B67A17-FC8F-487C-9081-35B38B910AA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5B67A17-FC8F-487C-9081-35B38B910AA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5B67A17-FC8F-487C-9081-35B38B910AA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5B67A17-FC8F-487C-9081-35B38B910AA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C184482-3032-46C9-90E8-1EABBF690126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C184482-3032-46C9-90E8-1EABBF690126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C184482-3032-46C9-90E8-1EABBF690126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C184482-3032-46C9-90E8-1EABBF690126}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,5 +181,8 @@ Global
 		{CE9BBC11-5796-4487-A75A-21CCA2B90E5B} = {4754B58F-A620-41AE-84EC-3CC5DF2B8C26}
 		{646951C7-ED95-4EE5-BF93-50E4CE19C592} = {4754B58F-A620-41AE-84EC-3CC5DF2B8C26}
 		{B7F09167-0C20-4890-87F9-9CEA3A7282B5} = {4754B58F-A620-41AE-84EC-3CC5DF2B8C26}
+		{47B1A1FC-D54C-42F7-912F-9A436579EC11} = {8259BA72-9BFD-4C57-9277-FAF6778A3ECC}
+		{B5B67A17-FC8F-487C-9081-35B38B910AA0} = {8259BA72-9BFD-4C57-9277-FAF6778A3ECC}
+		{9C184482-3032-46C9-90E8-1EABBF690126} = {8259BA72-9BFD-4C57-9277-FAF6778A3ECC}
 	EndGlobalSection
 EndGlobal

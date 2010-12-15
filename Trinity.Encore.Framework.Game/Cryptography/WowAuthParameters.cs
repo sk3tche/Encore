@@ -8,7 +8,7 @@ namespace Trinity.Encore.Framework.Game.Cryptography
     {
         public const int KeySize = 32;
 
-        public WowAuthParameters(SRPVersion version, bool caseSensitive)
+        public WowAuthParameters(SRPVersion version = SRPVersion.SRP6, bool caseSensitive = false)
             : base(version, caseSensitive)
         {
         }
@@ -18,11 +18,6 @@ namespace Trinity.Encore.Framework.Game.Cryptography
             Hash = new SHA1Managed();
             Generator = new BigInteger(7);
             Modulus = new BigInteger("B79B3E2A87823CAB8F5EBFBF8EB10108535006298B5BADBD5B53E1895E644B89");
-        }
-
-        public static WowAuthParameters Default
-        {
-            get { return new WowAuthParameters(SRPVersion.SRP6, true); }
         }
 
         public override int KeyLength
