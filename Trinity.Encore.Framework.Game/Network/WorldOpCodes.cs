@@ -32,7 +32,6 @@ namespace Trinity.Encore.Framework.Game.Network
         /// SMSG_LOGOUT_RESPONSE
         /// </summary>
         ServerSessionLogoutResult = 0xE75D,
-        // haven't found this in 4.0.3 yet
         /// <summary>
         /// SMSG_LOGOUT_COMPLETE.
         /// </summary>

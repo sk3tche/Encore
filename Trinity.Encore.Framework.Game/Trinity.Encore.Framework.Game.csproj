@@ -132,7 +132,15 @@
     <Compile Include="IO\Formats\DBC\AchievementCriteriaRecord.cs" />
     <Compile Include="IO\Formats\DBC\AchievementRecord.cs" />
     <Compile Include="IO\Formats\DBC\AreaGroupRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AreaPOIRecord.cs" />
     <Compile Include="IO\Formats\DBC\AreaTableRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AreaTriggerRecord.cs" />
+    <Compile Include="IO\Formats\DBC\ArmorLocationRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AuctionHouseRecord.cs" />
+    <Compile Include="IO\Formats\DBC\BankBagSlotPricesRecord.cs" />
+    <Compile Include="IO\Formats\DBC\BarberShopStyleRecord.cs" />
+    <Compile Include="IO\Formats\DBC\BattlemasterListRecord.cs" />
+    <Compile Include="IO\Formats\DBC\CharacterStartOutfitRecord.cs" />
     <Compile Include="IO\Formats\DBC\GTSpellScalingRecord.cs" />
     <Compile Include="IO\Formats\DBC\SpellCastTimeRecord.cs" />
     <Compile Include="IO\Formats\DBC\SpellEffectRecord.cs" />

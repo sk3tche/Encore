@@ -40,6 +40,7 @@ namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
             return castTime;
         }
 
+        // shouldn't these be floats?
         public sealed class SpellScalingData
         {
             public int Part1 { get; set; }
