@@ -53,8 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Tools.Patche
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8259BA72-9BFD-4C57-9277-FAF6778A3ECC}"
 	ProjectSection(SolutionItems) = preProject
-		Full.testsettings = Full.testsettings
-		Trinity.Encore.vsmdi = Trinity.Encore.vsmdi
+		Tests\Full.testsettings = Tests\Full.testsettings
+		Tests\Trinity.Encore.vsmdi = Tests\Trinity.Encore.vsmdi
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Tests.Core", "Trinity.Encore.Tests.Core\Trinity.Encore.Tests.Core.csproj", "{47B1A1FC-D54C-42F7-912F-9A436579EC11}"
