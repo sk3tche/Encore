@@ -13,7 +13,7 @@ namespace Trinity.Encore.Tests.Core.Cryptography
             var value = new BigInteger(-50);
             var absolute = value.Abs();
 
-            Assert.AreEqual(absolute, new BigInteger(50));
+            Assert.AreEqual(new BigInteger(50), absolute);
         }
 
         [TestMethod]
@@ -22,7 +22,7 @@ namespace Trinity.Encore.Tests.Core.Cryptography
             var value = new BigInteger(50);
             var result = value.ModPow(new BigInteger(2), new BigInteger(3));
 
-            Assert.AreEqual(result, new BigInteger(1));
+            Assert.AreEqual(new BigInteger(1), result);
         }
 
         [TestMethod]
@@ -32,7 +32,7 @@ namespace Trinity.Encore.Tests.Core.Cryptography
             var value2 = new BigInteger(20);
             var gcd = value1.GreatestCommonDivisor(value2);
 
-            Assert.AreEqual(gcd, new BigInteger(10));
+            Assert.AreEqual(new BigInteger(10), gcd);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace Trinity.Encore.Tests.Core.Cryptography
             var modulus = new BigInteger(5);
             var result = value.ModInverse(modulus);
 
-            Assert.AreEqual(result, new BigInteger(4));
+            Assert.AreEqual(new BigInteger(4), result);
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace Trinity.Encore.Tests.Core.Cryptography
             var value = new BigInteger(100);
             var sqrt = value.Sqrt();
 
-            Assert.AreEqual(sqrt, new BigInteger(10));
+            Assert.AreEqual(new BigInteger(10), sqrt);
         }
 
         [TestMethod]
@@ -98,6 +98,75 @@ namespace Trinity.Encore.Tests.Core.Cryptography
             Assert.AreEqual(sizeof(ulong), value5.ByteLength);
             Assert.AreEqual(sizeof(ulong) / 4, value5.DataLength);
             Assert.AreEqual(sizeof(ulong) * 8, value5.BitCount);
+        }
+
+        [TestMethod]
+        public void TestAddition()
+        {
+            var value1 = new BigInteger(10);
+            var value2 = new BigInteger(20);
+            var sum1 = value1 + value2;
+            var sum2 = value2 + 30;
+            var sum3 = value2 + -50;
+
+            Assert.AreEqual(new BigInteger(30), sum1);
+            Assert.AreEqual(new BigInteger(50), sum2);
+            Assert.AreEqual(new BigInteger(-30), sum3);
+        }
+
+        [TestMethod]
+        public void TestSubtraction()
+        {
+            var value1 = new BigInteger(80);
+            var value2 = new BigInteger(35);
+            var result1 = value1 - value2;
+            var result2 = value2 - 10;
+            var result3 = value2 - -50;
+
+            Assert.AreEqual(new BigInteger(45), result1);
+            Assert.AreEqual(new BigInteger(25), result2);
+            Assert.AreEqual(new BigInteger(85), result3);
+        }
+
+        [TestMethod]
+        public void TestBitwiseOr()
+        {
+            var value1 = new BigInteger(0x20);
+            var value2 = new BigInteger(0x40);
+            var result = value1 | value2;
+
+            Assert.AreEqual(new BigInteger(0x60), result);
+        }
+
+        [TestMethod]
+        public void TestBitwiseAnd()
+        {
+            var value = new BigInteger(0x60);
+            var result1 = value & new BigInteger(0x20);
+            var result2 = value & new BigInteger(0x60);
+            var result3 = value & new BigInteger(0x100);
+
+            Assert.AreEqual(new BigInteger(0x20), result1);
+            Assert.AreEqual(new BigInteger(0x60), result2);
+            Assert.AreEqual(new BigInteger(0x00), result3);
+        }
+
+        [TestMethod]
+        public void TestUnaryOperators()
+        {
+            var value1 = new BigInteger(1);
+            value1++;
+            var value2 = new BigInteger(2);
+            value2--;
+            var value3 = new BigInteger(-1);
+            ++value3;
+            var value4 = new BigInteger(0);
+            --value4;
+
+            Assert.AreEqual(new BigInteger(2), value1);
+            Assert.AreEqual(new BigInteger(1), value2);
+            Assert.AreEqual(new BigInteger(0), value3);
+            Assert.AreEqual(new BigInteger(-1), value4);
         }
     }
 }
