@@ -27,9 +27,9 @@ namespace Trinity.Encore.Tests.Core.Collections
             var o3 = list.TryGet(2);
             var o4 = list.TryGet(3);
 
-            Assert.AreEqual(obj1, o1);
+            Assert.AreSame(obj1, o1);
             Assert.IsNull(o2);
-            Assert.AreEqual(obj3, o3);
+            Assert.AreSame(obj3, o3);
             Assert.IsNull(o4);
         }
 
@@ -53,8 +53,8 @@ namespace Trinity.Encore.Tests.Core.Collections
 
             list.Swap(2, 6);
 
-            Assert.AreEqual(obj1, list[6]);
-            Assert.AreEqual(obj2, list[2]);
+            Assert.AreSame(obj1, list[6]);
+            Assert.AreSame(obj2, list[2]);
         }
     }
 }

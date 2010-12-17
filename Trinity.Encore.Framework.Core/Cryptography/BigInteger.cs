@@ -232,12 +232,12 @@ namespace Trinity.Encore.Framework.Core.Cryptography
                 DataLength--;
         }
 
-        public BigInteger(FastRandom rand, int bitLength)
+        public BigInteger(Random rand, int bitLength)
         {
             Contract.Requires(bitLength > 0);
 
             if (rand == null)
-                rand = new FastRandom();
+                rand = new FastRandom(); // Default to our own RNG.
 
             _data = new uint[MaxLength];
             DataLength = 1;
@@ -1670,10 +1670,10 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return g;
         }
 
-        public void GenerateRandomBits(int bits, FastRandom rand)
+        public void GenerateRandomBits(int bits, Random rand)
         {
             if (rand == null)
-                rand = new FastRandom();
+                rand = new FastRandom(); // Default to our own RNG.
 
             var dwords = bits >> 5;
             var remBits = bits & 0x1f;

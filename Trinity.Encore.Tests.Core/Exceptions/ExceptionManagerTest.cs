@@ -37,9 +37,9 @@ namespace Trinity.Encore.Tests.Core.Exceptions
 
             var exceptions = ExceptionManager.GetExceptions();
 
-            Assert.AreEqual(ex1, exceptions[0].Exception);
-            Assert.AreEqual(ex2, exceptions[1].Exception);
-            Assert.AreEqual(ex3, exceptions[2].Exception);
+            Assert.AreSame(ex1, exceptions[0].Exception);
+            Assert.AreSame(ex2, exceptions[1].Exception);
+            Assert.AreSame(ex3, exceptions[2].Exception);
         }
     }
 }

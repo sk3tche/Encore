@@ -36,9 +36,9 @@ namespace Trinity.Encore.Tests.Core.Dynamic
             var retObj2 = bag.Object2;
             var retObj3 = bag.Object3;
 
-            Assert.AreEqual(obj1, retObj1);
-            Assert.AreEqual(obj2, retObj2);
-            Assert.AreEqual(obj3, retObj3);
+            Assert.AreSame(obj1, retObj1);
+            Assert.AreSame(obj2, retObj2);
+            Assert.AreSame(obj3, retObj3);
         }
     }
 }

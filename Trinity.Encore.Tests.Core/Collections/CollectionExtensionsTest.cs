@@ -26,9 +26,9 @@ namespace Trinity.Encore.Tests.Core.Collections
             newCol.AddRange(col);
             var list = newCol.ToList();
 
-            Assert.AreEqual(obj1, list[0]);
-            Assert.AreEqual(obj2, list[1]);
-            Assert.AreEqual(obj3, list[2]);
+            Assert.AreSame(obj1, list[0]);
+            Assert.AreSame(obj2, list[1]);
+            Assert.AreSame(obj3, list[2]);
         }
     }
 }
