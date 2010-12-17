@@ -64,6 +64,11 @@
     <Compile Include="Collections\ListExtensionsTest.cs" />
     <Compile Include="Cryptography\BigIntegerTest.cs" />
     <Compile Include="Cryptography\SRPTest.cs" />
+    <Compile Include="Dynamic\BagTest.cs" />
+    <Compile Include="Exceptions\ExceptionManagerTest.cs" />
+    <Compile Include="Mathematics\FastMathTest.cs" />
+    <Compile Include="Mathematics\FastRandomTest.cs" />
+    <Compile Include="Mathematics\MathExtensionsTest.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

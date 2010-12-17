@@ -11,10 +11,10 @@ namespace Trinity.Encore.Services.Account.Database.Implementation
 {
     public sealed class AccountDatabaseContext : GameDatabaseContext
     {
-        [ConfigurationVariable("sqlType", DatabaseType.MySql, Static = true)]
+        [ConfigurationVariable("SqlType", DatabaseType.MySql, Static = true)]
         public static DatabaseType DatabaseType { get; set; }
 
-        [ConfigurationVariable("sqlConnectionString", "Server=127.0.0.1;Database=Encore.Account;User ID=Encore;Password=Encore",
+        [ConfigurationVariable("SqlConnectionString", "Server=127.0.0.1;Database=Encore.Account;User ID=Encore;Password=Encore",
             Static = true)]
         public static string ConnectionString { get; set; }
 

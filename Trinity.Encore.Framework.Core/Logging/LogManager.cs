@@ -34,33 +34,9 @@ namespace Trinity.Encore.Framework.Core.Logging
         [ConfigurationVariable("ConsoleLogTimestamp", true)]
         public static bool UseConsoleTimestamp { get; set; }
 
-        /// <summary>
-        /// The log source to file event log entries under.
-        /// </summary>
-        [ConfigurationVariable("EventLogSource", "Encore", Static = true)]
-        public static string EventLogSource { get; set; }
-
-        /// <summary>
-        /// If true, uses the event log for logging.
-        /// </summary>
-        [ConfigurationVariable("EventLogEnabled", false, Static = true)]
-        public static bool UseEventLog { get; set; }
-
         static LogManager()
         {
             AddLogger(new ConsoleLogger());
-        }
-
-        [Initializable("LogManager", InitializationPass.Framework)]
-        public static void ChangeState(bool init)
-        {
-            if (init)
-            {
-                if (UseEventLog)
-                    AddLogger(new EventLogger());
-            }
-            else
-                _loggers.Clear();
         }
 
         public static void AddLogger(ILogger logger)

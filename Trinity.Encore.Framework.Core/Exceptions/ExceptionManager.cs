@@ -64,12 +64,5 @@ namespace Trinity.Encore.Framework.Core.Exceptions
         {
             _exceptionList.Clear();
         }
-
-        [Initializable("ExceptionManager", InitializationPass.Framework)]
-        public static void ChangeState(bool init)
-        {
-            if (!init)
-                ClearExceptions();
-        }
     }
 }

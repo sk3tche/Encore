@@ -115,7 +115,6 @@
     <Compile Include="IO\IOExtensions.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Loggers\ConsoleLogger.cs" />
-    <Compile Include="Logging\Loggers\EventLogger.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Logging\LogProxy.cs" />
     <Compile Include="Mathematics\FastMath.cs" />

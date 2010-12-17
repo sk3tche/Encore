@@ -10,7 +10,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
     /// </summary>
     // This class was written by colgreen of the SharpNEAT project and is under GPL v2/LGPL.
     [Serializable]
-    public sealed class FastRandom
+    public sealed class FastRandom : Random
     {
         /// <summary>
         /// Gets a FastRandom instance for the current thread.
@@ -39,6 +39,11 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         private uint _bitBuffer;
 
         private uint _bitMask = 1;
+
+        protected override double Sample()
+        {
+            throw new NotSupportedException();
+        }
 
         /// <summary>
         /// Initialises a new instance using a time-dependent seed.
@@ -71,7 +76,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         /// <summary>
         /// Generates a random int over the range 0 to int.MaxValue - 1.
         /// </summary>
-        public int Next()
+        public override int Next()
         {
             var t = (_x ^ (_x << 11));
             _x = _y;
@@ -91,11 +96,9 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         /// <summary>
         /// Generates a random int over the range 0 to upperBound - 1, and not including upperBound.
         /// </summary>
-        /// <param name="upperBound">The upper bound.</param>
-        public int Next(int upperBound)
+        /// <param name="maxValue">The upper bound.</param>
+        public override int Next(int maxValue)
         {
-            Contract.Requires(upperBound > 0);
-
             var t = (_x ^ (_x << 11));
             _x = _y;
             _y = _z;
@@ -103,7 +106,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
 
             // The explicit int cast before the first multiplication gives better performance.
             return (int)((RealUnitInt32 * (int)(0x7fffffff & (_w = (_w ^ (_w >> 19)) ^
-                (t ^ (t >> 8))))) * upperBound);
+                (t ^ (t >> 8))))) * maxValue);
         }
 
         /// <summary>
@@ -113,10 +116,8 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         /// </summary>
         /// <param name="lowerBound">The lower bound.</param>
         /// <param name="upperBound">The upper bound.</param>
-        public int Next(int lowerBound, int upperBound)
+        public override int Next(int lowerBound, int upperBound)
         {
-            Contract.Requires(upperBound >= lowerBound);
-
             var t = (_x ^ (_x << 11));
             _x = _y;
             _y = _z;
@@ -143,7 +144,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         /// <summary>
         /// Generates a random double. Values returned are from 0.0 up to, but not including, 1.0.
         /// </summary>
-        public double NextDouble()
+        public override double NextDouble()
         {
             var t = (_x ^ (_x << 11));
             _x = _y;
@@ -165,10 +166,10 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         /// This method is functionally equivalent to System.Random.NextBytes. 
         /// </summary>
         /// <param name="buffer">Buffer to fill.</param>
-        public unsafe void NextBytes(byte[] buffer)
+        public override unsafe void NextBytes(byte[] buffer)
         {
-            Contract.Requires(buffer != null);
-            Contract.Requires(buffer.Length % 8 == 0);
+            if (buffer.Length % 8 != 0)
+                throw new ArgumentException();
 
             var x = _x;
             var y = _y;
@@ -258,14 +259,6 @@ namespace Trinity.Encore.Framework.Core.Mathematics
             }
 
             return (_bitBuffer & (_bitMask >>= 1)) == 0;
-        }
-
-        /// <summary>
-        /// Generates a random single-precision floating point number.
-        /// </summary>
-        public float NextSingle()
-        {
-            return (float)NextDouble();
         }
     }
 }
