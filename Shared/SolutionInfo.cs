@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("Trinity/Encore Team")]
 [assembly: AssemblyProduct("Encore World of Warcraft Emulator")]
@@ -8,3 +9,4 @@ using System.Reflection;
 [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyFileVersion("1.0")]
 [assembly: CLSCompliant(true)]
+[assembly: ComVisible(false)]

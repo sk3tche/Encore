@@ -46,7 +46,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Services.Wor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{E570C6F6-1116-40E2-AA0F-993BC03496AB}"
 	ProjectSection(SolutionItems) = preProject
-		Thanks.txt = Thanks.txt
+		Documents\Thanks.txt = Documents\Thanks.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Tools.Patcher", "Trinity.Encore.Tools.Patcher\Trinity.Encore.Tools.Patcher.csproj", "{E3B4759B-433D-4FA3-83C3-87B3EA440BBB}"
@@ -98,6 +98,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		Documentation\MonoDoc.sh = Documentation\MonoDoc.sh
 		Documentation\Style.Dark.xsl = Documentation\Style.Dark.xsl
 		Documentation\Style.Light.xsl = Documentation\Style.Light.xsl
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analysis", "Analysis", "{80639DD3-AA1F-4BC9-8BC8-CC4F64DE8F28}"
+	ProjectSection(SolutionItems) = preProject
+		Analysis\Relaxed.ruleset = Analysis\Relaxed.ruleset
+		Analysis\Strict.ruleset = Analysis\Strict.ruleset
 	EndProjectSection
 EndProject
 Global
