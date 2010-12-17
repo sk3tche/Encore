@@ -42,11 +42,11 @@ namespace Trinity.Encore.Framework.Game.IO.Formats.DBC
 
         public sealed class SpellScalingData
         {
-            public int Part1 { get; set; }
+            public float Part1 { get; set; }
 
-            public int Part2 { get; set; }
+            public float Part2 { get; set; }
 
-            public int Part3 { get; set; }
+            public float Part3 { get; set; }
         }
     }
 }
