@@ -32,25 +32,25 @@ namespace Trinity.Encore.Framework.Core.Reflection
         }
 
         [Pure]
-        public static T[] GetCustomAttributes<T>(this Assembly member)
+        public static T[] GetCustomAttributes<T>(this Assembly assembly)
             where T : Attribute
         {
-            Contract.Requires(member != null);
+            Contract.Requires(assembly != null);
             Contract.Ensures(Contract.Result<T[]>() != null);
 
-            var attribs = member.GetCustomAttributes(typeof(T), false) as T[];
+            var attribs = assembly.GetCustomAttributes(typeof(T), false) as T[];
             Contract.Assume(attribs != null);
             return attribs;
         }
 
         [Pure]
-        public static T[] GetCustomAttributes<T>(this Module member)
+        public static T[] GetCustomAttributes<T>(this Module module)
             where T : Attribute
         {
-            Contract.Requires(member != null);
+            Contract.Requires(module != null);
             Contract.Ensures(Contract.Result<T[]>() != null);
 
-            var attribs = member.GetCustomAttributes(typeof(T), false) as T[];
+            var attribs = module.GetCustomAttributes(typeof(T), false) as T[];
             Contract.Assume(attribs != null);
             return attribs;
         }
@@ -74,21 +74,21 @@ namespace Trinity.Encore.Framework.Core.Reflection
         }
 
         [Pure]
-        public static T GetCustomAttribute<T>(this Assembly member)
+        public static T GetCustomAttribute<T>(this Assembly assembly)
             where T : Attribute
         {
-            Contract.Requires(member != null);
+            Contract.Requires(assembly != null);
 
-            return member.GetCustomAttributes<T>().TryGet(0);
+            return assembly.GetCustomAttributes<T>().TryGet(0);
         }
 
         [Pure]
-        public static T GetCustomAttribute<T>(this Module member)
+        public static T GetCustomAttribute<T>(this Module module)
             where T : Attribute
         {
-            Contract.Requires(member != null);
+            Contract.Requires(module != null);
 
-            return member.GetCustomAttributes<T>().TryGet(0);
+            return module.GetCustomAttributes<T>().TryGet(0);
         }
 
         [Pure]
@@ -106,16 +106,16 @@ namespace Trinity.Encore.Framework.Core.Reflection
         /// Simple types are primitive types and strings.
         /// </summary>
         [Pure]
-        public static bool IsSimpleType(this Type type)
+        public static bool IsSimple(this Type type)
         {
             Contract.Requires(type != null);
 
-            return type.IsEnum || type.IsNumericType() || type == typeof(string) || type == typeof(char) ||
+            return type.IsEnum || type.IsNumeric() || type == typeof(string) || type == typeof(char) ||
                 type == typeof(bool);
         }
 
         [Pure]
-        public static bool IsNumericType(this Type type)
+        public static bool IsNumeric(this Type type)
         {
             Contract.Requires(type != null);
 
@@ -145,7 +145,7 @@ namespace Trinity.Encore.Framework.Core.Reflection
             Contract.Requires(method != null);
 
             var type = typeof(T);
-            if (!type.IsAssignableTo(typeof(MulticastDelegate)))
+            if (!type.IsAssignableTo(typeof(Delegate)))
                 throw new ArgumentException();
 
             return Delegate.CreateDelegate(type, method) as T;

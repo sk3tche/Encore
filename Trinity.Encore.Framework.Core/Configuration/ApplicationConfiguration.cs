@@ -115,7 +115,7 @@ namespace Trinity.Encore.Framework.Core.Configuration
                     if (type.IsGenericType)
                         throw new ReflectionException("Config value is within a generic type.");
 
-                    if (!prop.PropertyType.IsSimpleType())
+                    if (!prop.PropertyType.IsSimple())
                         throw new ReflectionException("Config value must be of a simple type.");
 
                     if (prop.GetIndexParameters().Length > 0)
