@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace Trinity.Encore.Framework.Core
 {
@@ -121,7 +122,8 @@ namespace Trinity.Encore.Framework.Core
             return stringRep;
         }
 
-        public static string Format(this string str, params object[] args)
+        [StringFormatMethod("str")]
+        public static string Interpolate(this string str, params object[] args)
         {
             Contract.Requires(str != null);
             Contract.Requires(args != null);

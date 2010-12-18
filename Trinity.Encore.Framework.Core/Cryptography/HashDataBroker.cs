@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Core.Cryptography
 {
@@ -70,7 +71,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
 
         public override int GetHashCode()
         {
-            return unchecked(RawData.Aggregate(0, (acc, b) => acc + Utilities.GetHashCode(b)));
+            return unchecked(RawData.Aggregate(0, (acc, b) => acc + HashCodeUtility.GetHashCode(b)));
         }
 
         public static bool operator ==(HashDataBroker a, HashDataBroker b)

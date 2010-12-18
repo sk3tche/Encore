@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Reflection;
+using Trinity.Encore.Framework.Core;
 using Trinity.Encore.Framework.Core.IO;
 using Trinity.Encore.Framework.Core.Reflection;
 
@@ -136,7 +137,7 @@ namespace Trinity.Encore.Framework.Game.IO
                         value = Enum.ToObject(type, reader.ReadUInt64());
                         break;
                     default:
-                        throw new ClientDbException(string.Format("Bad underlying enum type {0} encountered.", enumUnderlying));
+                        throw new ClientDbException("Bad underlying enum type {0} encountered.".Interpolate(enumUnderlying));
                 }
 
                 Contract.Assume(value != null);
@@ -176,7 +177,7 @@ namespace Trinity.Encore.Framework.Game.IO
                     return str;
             }
 
-            throw new ClientDbException(string.Format("Unsupported field type {0} encountered.", type));
+            throw new ClientDbException("Unsupported field type {0} encountered.".Interpolate(type));
         }
 
         protected void ReadStringTable(BinaryReader reader)

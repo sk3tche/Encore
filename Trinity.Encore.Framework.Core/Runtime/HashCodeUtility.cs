@@ -1,76 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 
-namespace Trinity.Encore.Framework.Core
+namespace Trinity.Encore.Framework.Core.Runtime
 {
-    public static class Utilities
+    public static class HashCodeUtility
     {
-        public static string ToCamelCase(string input)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(input));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-
-            var newName = new StringBuilder();
-            var upper = true;
-
-            foreach (var c in input)
-            {
-                var c2 = c;
-                if (c2 == '_')
-                    c2 = ' ';
-
-                c2 = upper ? char.ToUpper(c2) : char.ToLower(c2);
-
-                if (c2 == ' ')
-                {
-                    upper = true;
-                    continue;
-                }
-
-                upper = false;
-
-                newName.Append(c2);
-            }
-
-            var newNameStr = newName.ToString();
-            Contract.Assume(!string.IsNullOrEmpty(newNameStr));
-            return newNameStr;
-        }
-
-        public static byte[] HexStringToBinary(string data)
-        {
-            Contract.Requires(data != null);
-            Contract.Requires(data.Length % 2 == 0);
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-
-            var bytes = new List<byte>();
-
-            for (var i = 0; i < data.Length; i += 2)
-            {
-                Contract.Assume(i + 2 < data.Length);
-                bytes.Add(byte.Parse(data.Substring(i, 2), NumberStyles.HexNumber));
-            }
-
-            return bytes.ToArray();
-        }
-
-        public static string BinaryToHexString(byte[] data)
-        {
-            Contract.Requires(data != null);
-            Contract.Ensures(Contract.Result<string>() != null);
-
-            var str = string.Empty;
-
-            for (var i = 0; i < data.Length; ++i)
-                str += data[i].ToString("X2", CultureInfo.InvariantCulture);
-
-            return str;
-        }
-
         private const int HashPrime1 = 17;
 
         private const int HashPrime2 = 23;

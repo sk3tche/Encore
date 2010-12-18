@@ -66,9 +66,17 @@
     <Compile Include="Cryptography\SRPTest.cs" />
     <Compile Include="Dynamic\BagTest.cs" />
     <Compile Include="Exceptions\ExceptionManagerTest.cs" />
+    <Compile Include="ExtensionsTest.cs" />
+    <Compile Include="IO\IOExtensionsTest.cs" />
     <Compile Include="Mathematics\FastMathTest.cs" />
     <Compile Include="Mathematics\FastRandomTest.cs" />
     <Compile Include="Mathematics\MathExtensionsTest.cs" />
+    <Compile Include="Reflection\ReflectionExtensionsTest.cs" />
+    <Compile Include="Reflection\ReflectionUtilityTest.cs" />
+    <Compile Include="Runtime\UnionTest.cs" />
+    <Compile Include="Time\TimerTest.cs" />
+    <Compile Include="Time\TimeUtilityTest.cs" />
+    <Compile Include="UtilityTest.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

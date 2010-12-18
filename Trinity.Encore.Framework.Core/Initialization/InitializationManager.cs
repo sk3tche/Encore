@@ -133,7 +133,7 @@ namespace Trinity.Encore.Framework.Core.Initialization
         /// </summary>
         public static void InitializeAll()
         {
-            var max = (InitializationPass)ReflectionUtilities.GetEnumValueCount<InitializationPass>();
+            var max = (InitializationPass)ReflectionUtility.GetEnumValueCount<InitializationPass>();
 
             for (InitializationPass i = 0; i < max; i++)
             {
@@ -156,7 +156,7 @@ namespace Trinity.Encore.Framework.Core.Initialization
         /// </summary>
         public static void TeardownAll()
         {
-            var max = (int)((InitializationPass)ReflectionUtilities.GetEnumValueCount<InitializationPass>() - 1);
+            var max = (int)((InitializationPass)ReflectionUtility.GetEnumValueCount<InitializationPass>() - 1);
 
             for (var i = max; i >= 0; i--)
             {

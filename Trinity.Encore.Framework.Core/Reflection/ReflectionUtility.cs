@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Trinity.Encore.Framework.Core.Reflection
 {
-    public static class ReflectionUtilities
+    public static class ReflectionUtility
     {
         public static int GetEnumValueCount<T>()
         {

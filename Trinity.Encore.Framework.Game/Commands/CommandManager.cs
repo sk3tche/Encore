@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
+using Trinity.Encore.Framework.Core;
 using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Logging;
@@ -136,7 +137,7 @@ namespace Trinity.Encore.Framework.Game.Commands
                     continue;
 
                 if (!type.IsAssignableTo(cmdType))
-                    throw new ReflectionException(string.Format("A command class must inherit {0}.", cmdType));
+                    throw new ReflectionException("A command class must inherit {0}.".Interpolate(cmdType));
 
                 if (type.IsGenericType)
                     throw new ReflectionException("A command class cannot be generic.");

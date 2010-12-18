@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Trinity.Encore.Framework.Core;
+using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Network
 {
@@ -82,8 +83,8 @@ namespace Trinity.Encore.Framework.Network
 
         public override int GetHashCode()
         {
-            return unchecked(Family.GetHashCode() + UpperBoundary.Aggregate(0, (acc, b) => acc + Utilities.GetHashCode(b)) +
-                LowerBoundary.Aggregate(0, (acc, b) => acc + Utilities.GetHashCode(b)));
+            return unchecked(Family.GetHashCode() + UpperBoundary.Aggregate(0, (acc, b) => acc + HashCodeUtility.GetHashCode(b)) +
+                LowerBoundary.Aggregate(0, (acc, b) => acc + HashCodeUtility.GetHashCode(b)));
         }
     }
 }

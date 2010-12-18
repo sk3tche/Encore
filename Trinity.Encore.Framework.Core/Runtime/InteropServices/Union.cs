@@ -8,7 +8,7 @@ namespace Trinity.Encore.Framework.Core.Runtime.InteropServices
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
-    public struct UnionType : IComparable<UnionType>, IEquatable<UnionType>
+    public struct Union : IComparable<Union>, IEquatable<Union>
     {
         [FieldOffset(0)]
         public byte Byte;
@@ -50,7 +50,7 @@ namespace Trinity.Encore.Framework.Core.Runtime.InteropServices
         [FieldOffset(0)]
         public decimal Decimal;
 
-        public int CompareTo(UnionType other)
+        public int CompareTo(Union other)
         {
             if (this > other)
                 return 1;
@@ -66,38 +66,38 @@ namespace Trinity.Encore.Framework.Core.Runtime.InteropServices
             if (obj == null)
                 return false;
 
-            if (!(obj is UnionType))
+            if (!(obj is Union))
                 return false;
 
-            return Equals((UnionType)obj);
+            return Equals((Union)obj);
         }
 
         public override int GetHashCode()
         {
-            return Utilities.GetHashCode(Byte, SByte, UInt16, Int16, UInt32, Int32, UInt64, Int64, Char, Single, Double, Decimal);
+            return HashCodeUtility.GetHashCode(Byte, SByte, UInt16, Int16, UInt32, Int32, UInt64, Int64, Char, Single, Double, Decimal);
         }
 
-        public bool Equals(UnionType other)
+        public bool Equals(Union other)
         {
             return Decimal == other.Decimal;
         }
 
-        public static bool operator ==(UnionType a, UnionType b)
+        public static bool operator ==(Union a, Union b)
         {
             return a.Equals(b);
         }
 
-        public static bool operator !=(UnionType a, UnionType b)
+        public static bool operator !=(Union a, Union b)
         {
             return !(a == b);
         }
 
-        public static bool operator >(UnionType a, UnionType b)
+        public static bool operator >(Union a, Union b)
         {
             return a.Decimal > b.Decimal;
         }
 
-        public static bool operator <(UnionType a, UnionType b)
+        public static bool operator <(Union a, Union b)
         {
             return a.Decimal < b.Decimal;
         }

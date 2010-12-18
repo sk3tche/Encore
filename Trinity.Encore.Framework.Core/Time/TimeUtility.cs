@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace Trinity.Encore.Framework.Core.Time
 {
-    public static class TimeUtilities
+    public static class TimeUtility
     {
         public static readonly DateTime UnixEpochStart = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 

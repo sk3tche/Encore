@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using System.Text;
+using Trinity.Encore.Framework.Core;
 using Trinity.Encore.Framework.Core.Cryptography;
 
 namespace Trinity.Encore.Framework.Game.Cryptography
@@ -54,7 +55,7 @@ namespace Trinity.Encore.Framework.Game.Cryptography
 
             var user = caseSensitive ? username : username.ToUpper();
             var pass = caseSensitive ? password : password.ToUpper();
-            var str = string.Format("{0}:{1}", user, pass);
+            var str = "{0}:{1}".Interpolate(user, pass);
 
             return algo.ComputeHash(Encoding.UTF8.GetBytes(str));
         }

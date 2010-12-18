@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Trinity.Encore.Framework.Core;
 using Trinity.Encore.Framework.Core.Reflection;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 
@@ -15,19 +16,17 @@ namespace Trinity.Encore.Framework.Game.Threading
                 var type = typeof(T);
 
                 if (!type.IsSealed)
-                    throw new ReflectionException(string.Format("Type {0} cannot be a singleton, as it is inheritable.", type));
+                    throw new ReflectionException("Type {0} cannot be a singleton, as it is inheritable.".Interpolate(type));
 
                 var ctors = type.GetConstructors();
 
                 if (ctors.Length > 0)
-                    throw new ReflectionException(string.Format("Type {0} cannot be a singleton, as it has public constructors.",
-                        type));
+                    throw new ReflectionException("Type {0} cannot be a singleton, as it has public constructors.".Interpolate(type));
 
                 var ctor = type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
 
                 if (ctor == null || !ctor.IsPrivate)
-                    throw new ReflectionException(string.Format("Type {0} cannot be a singleton, as it has no private constructor.",
-                        type));
+                    throw new ReflectionException("Type {0} cannot be a singleton, as it has no private constructor.".Interpolate(type));
 
                 return (T)ctor.Invoke(null);
             });
