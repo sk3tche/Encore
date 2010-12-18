@@ -8,14 +8,18 @@ namespace Trinity.Encore.Tools.Patcher
     public sealed class ClientPatcher
     {
         /// <summary>
-        /// 4.0.3.13329:
-        /// 
+        /// The pattern to search for when finding the location to patch.
+        /// </summary>
+        /// <remarks>
+        /// The code to be patched looks like this in client version 4.0.3.13329:
+        /// <code>
         /// .text:004906A9 018 E8 C2 E5 FF FF           call    ClientServices__GetConnectionIndex
         /// .text:004906AE 018 8B C8                    mov     ecx, eax
         /// .text:004906B0 018 83 C4 04                 add     esp, 4
         /// .text:004906B3 014 83 E1 01                 and     ecx, 1
         /// .text:004906B6 014 80 BC 31 60 46 00 00 00  cmp     byte ptr [ecx+esi+4660h], 0
-        /// </summary>
+        /// </code>
+        /// </remarks>
         private static readonly byte?[] _connectionIndexPattern =
             {
                 0xE8, null, null, null, null, 0x8B, 0xC8, 0x83, 0xC4, 0x04,
@@ -42,6 +46,10 @@ namespace Trinity.Encore.Tools.Patcher
             _scanner = new PatternScanner(data);
         }
 
+        /// <summary>
+        /// Attempts to patch the client executable.
+        /// </summary>
+        /// <returns>A <see>Boolean</see> value indicating whether or not the patching succeeded.</returns>
         public bool Patch()
         {
             var offset = _scanner.Find(_connectionIndexPattern);
