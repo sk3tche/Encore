@@ -46,7 +46,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Services.Wor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{E570C6F6-1116-40E2-AA0F-993BC03496AB}"
 	ProjectSection(SolutionItems) = preProject
+		Documents\Compatibility.txt = Documents\Compatibility.txt
+		Documents\Documentation.txt = Documents\Documentation.txt
+		Documents\Installation.txt = Documents\Installation.txt
+		Documents\License.txt = Documents\License.txt
+		Documents\News.txt = Documents\News.txt
 		Documents\Thanks.txt = Documents\Thanks.txt
+		Documents\Welcome.txt = Documents\Welcome.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.Tools.Patcher", "Trinity.Encore.Tools.Patcher\Trinity.Encore.Tools.Patcher.csproj", "{E3B4759B-433D-4FA3-83C3-87B3EA440BBB}"

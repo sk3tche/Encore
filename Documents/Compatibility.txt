@@ -1,0 +1,10 @@
+== Encore Runtime/Framework Compatibility File ==
+
+Encore supports only the latest stable version of the Microsoft .NET runtime, and
+the latest Git/master version of the Mono runtime.
+
+Currently supported language version: C# 4.0
+Currently supported .NET Framework version: .NET FX 4.0
+Currently supported Microsoft runtime: .NET 4.0
+Currently supported Mono runtime: 2.9 (master)
+Currently supported game version: 4.0.3.13329 (Cataclysm)

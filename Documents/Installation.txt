@@ -1,0 +1,27 @@
+== Encore Installation Guide File ==
+
+A simple build and installation of Encore requires only a few things to be installed
+on your machine:
+
+ * The latest supported version of the .NET Framework (see Compatibility.txt)
+ * Microsoft Visual Studio 2010 (Express should work; Professional and above
+   preferred)
+
+If you are on Linux, you need the following installed:
+
+ * The latest supported version of the Mono runtime/framework (see
+   Compatibility.txt)
+ * Mono's MCS C# compiler (with support for the installed runtime)
+ * Mono's XBuild tool (with support for the installed runtime)
+
+To build and install on Windows, simply fire up Visual Studio, open the Encore
+solution file (Trinity.Encore.sln), and trigger a build (Build -> Build Solution).
+You may choose to build in either Debug or Release mode. Debug mode will include
+useful debugging information (such as logging), and will trigger the code analyzer,
+as well as the Code Contracts tools (if you have these installed). A Release build
+will simply build the source.
+
+On Linux, simply run either MonoDebug.sh or MonoRelease.sh. These will trigger a
+build for the respective mode, using the system's installed XBuild and MCS.
+
+The compiled files can be found in the /bin directory.

@@ -1,0 +1,32 @@
+== Encore Code Documentation File ==
+
+Documentation for the Encore source base can easily be built, provided that the Mono
+documentation tools are installed on your system (Monodoc, monodocer, mdoc). If you
+are on Windows, you will also need Cygwin, as the scripts to build the documentation
+are written in Bash.
+
+To build the documentation, open your system shell, and switch to the /Documentation
+directory. Then, execute:
+
+  ./MakeDocs.sh
+
+This builds the full documentation package, which includes Monodoc-style XML files
+and generated HTML documentation in both the light and dark styles.
+
+If you wish to build documentation only for a specific style, or for a specific
+build mode (MakeDocs.sh defaults to Debug), then you must use MonoDoc.sh. It has two
+parameters:
+
+ * --style=<STYLE_FILE>
+ * --mode=<BUILD_MODE>
+
+STYLE_FILE can be any XSLT file that specifies the style to use for the generated
+HTML documentation. It must follow the Monodoc template. Encore comes with two
+styles: Style.Dark.xsl and Style.Light.xsl. The default is to use Style.Light.xsl.
+
+BUILD_MODE must be either Debug or Release. Note that the Encore solution normally
+doesn't generate XML documentation files in Release. The default is Debug.
+
+Example:
+
+  ./MonoDoc.sh --style=Style.Dark.xsl --mode=Release

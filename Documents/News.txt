@@ -1,0 +1,11 @@
+== Encore Version News File ==
+
+Version 1.0:
+
+ * Initial development
+ * C# 4.0 and .NET 4.0/Mono 2.9 (master) support
+ * Actor-based threading
+ * IOCP-backed asynchronous networking
+ * WCF-based interprocess communication
+ * NHibernate-based SQL persistence layer
+ * Quad tree-based world partitioning
