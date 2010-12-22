@@ -11,6 +11,9 @@ namespace Trinity.Encore.Framework.Core.Runtime.InteropServices
     public struct Union : IComparable<Union>, IEquatable<Union>
     {
         [FieldOffset(0)]
+        public unsafe fixed byte Bytes [sizeof(decimal)];
+
+        [FieldOffset(0)]
         public byte Byte;
 
         [FieldOffset(0)]
@@ -40,6 +43,9 @@ namespace Trinity.Encore.Framework.Core.Runtime.InteropServices
 
         [FieldOffset(0)]
         public char Char;
+
+        [FieldOffset(0)]
+        public bool Boolean;
 
         [FieldOffset(0)]
         public float Single;

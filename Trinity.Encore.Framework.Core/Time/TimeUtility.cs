@@ -7,14 +7,14 @@ namespace Trinity.Encore.Framework.Core.Time
     {
         public static readonly DateTime UnixEpochStart = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
-        public static DateTime GetDateTimeFromUnixTime(long unixTime)
+        public static DateTime UnixTimeToDateTime(long unixTime)
         {
             Contract.Requires(unixTime > 0);
 
             return UnixEpochStart.AddSeconds(unixTime);
         }
 
-        public static long GetUnixTimeFromDateTime(DateTime timeValue)
+        public static long DateTimeToUnixTime(DateTime timeValue)
         {
             return (long)(timeValue - UnixEpochStart).TotalSeconds;
         }
