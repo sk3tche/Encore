@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trinity.Encore.Framework.Core.Reflection;
 
@@ -18,6 +19,7 @@ namespace Trinity.Encore.Tests.Core.Reflection
         private sealed class DummyType1
         {
             [Dummy]
+            [UsedImplicitly]
             public void DummyMethod()
             {
             }
@@ -29,6 +31,7 @@ namespace Trinity.Encore.Tests.Core.Reflection
         {
             [Dummy]
             [Dummy]
+            [UsedImplicitly]
             public void DummyMethod()
             {
             }
