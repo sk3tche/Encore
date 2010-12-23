@@ -130,6 +130,35 @@ namespace Trinity.Encore.Framework.Core.Collections
                 col.Add(cur);
         }
 
+        public static IEnumerable<T> Pad<T>(this IEnumerable<T> source, int desiredLength, Func<T> generator)
+        {
+            Contract.Requires(source != null);
+            Contract.Requires(desiredLength >= 0);
+            Contract.Requires(generator != null);
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
+            return PadIterator(source, desiredLength, generator);
+        }
+
+        private static IEnumerable<T> PadIterator<T>(IEnumerable<T> source, int desiredLength, Func<T> generator)
+        {
+            Contract.Requires(source != null);
+            Contract.Requires(desiredLength >= 0);
+            Contract.Requires(generator != null);
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
+            var count = 0;
+            foreach (var item in source)
+            {
+                count++;
+                yield return item;
+            }
+
+            var remaining = desiredLength - count;
+            for (var i = 0; i < remaining; i++)
+                yield return generator();
+        }
+
         public static IEnumerable<T> With<T>(this IEnumerable<T> source, Action<T> act)
         {
             Contract.Requires(source != null);

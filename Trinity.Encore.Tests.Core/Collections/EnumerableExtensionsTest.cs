@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trinity.Encore.Framework.Core.Collections;
 
@@ -27,6 +28,25 @@ namespace Trinity.Encore.Tests.Core.Collections
             Assert.AreEqual(stack.Count, 3);
             Assert.IsNotNull(prioQueue);
             Assert.AreEqual(prioQueue.Count, 3);
+        }
+
+        [TestMethod]
+        public void TestPad()
+        {
+            var list = new List<int>
+            {
+                0,
+                1,
+                2,
+                3,
+                4,
+            };
+
+            var last = 5;
+            var newSeq = list.Pad(10, () => last++);
+            var count = newSeq.Count();
+
+            Assert.AreEqual(10, count);
         }
     }
 }
