@@ -5,6 +5,7 @@ using System.Threading;
 using Trinity.Encore.Framework.Core.Configuration;
 using Trinity.Encore.Framework.Core.Exceptions;
 using Trinity.Encore.Framework.Core.Initialization;
+using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 
 namespace Trinity.Encore.Framework.Game.Threading
@@ -12,6 +13,8 @@ namespace Trinity.Encore.Framework.Game.Threading
     public abstract class ActorApplication<T> : SingletonActor<T>
         where T : ActorApplication<T>
     {
+        private static readonly LogProxy _log = new LogProxy("ActorApplication");
+
         public const int UpdateDelay = 50;
 
         public event EventHandler Shutdown;
@@ -66,6 +69,8 @@ namespace Trinity.Encore.Framework.Game.Threading
             {
                 ExceptionManager.RegisterException(ex);
             }
+
+            _log.Info("{0} initialized.", GetType().Name);
         }
 
         public void Stop()

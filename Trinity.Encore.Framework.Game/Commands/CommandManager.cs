@@ -75,6 +75,10 @@ namespace Trinity.Encore.Framework.Game.Commands
             Contract.Requires(fullCmd.Length > 0);
 
             var cmd = fullCmd.Take(1).Single();
+
+            if (string.IsNullOrWhiteSpace(cmd))
+                return;
+
             var args = fullCmd.Skip(1);
 
             Contract.Assume(cmd != null);
