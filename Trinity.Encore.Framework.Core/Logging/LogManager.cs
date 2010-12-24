@@ -36,6 +36,7 @@ namespace Trinity.Encore.Framework.Core.Logging
 
         static LogManager()
         {
+            // TODO: Make this more customizable.
             AddLogger(new ConsoleLogger());
         }
 

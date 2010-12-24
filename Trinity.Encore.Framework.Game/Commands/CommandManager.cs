@@ -102,14 +102,20 @@ namespace Trinity.Encore.Framework.Game.Commands
             // problems with console cancellation.
             lock (_cmdLock)
             {
+                bool correctArgs;
+
                 try
                 {
-                    var correctArgs = command.Execute(new CommandArguments(args), sender);
+                    correctArgs = command.Execute(new CommandArguments(args), sender);
                 }
                 catch (Exception ex)
                 {
                     ExceptionManager.RegisterException(ex);
+                    return;
                 }
+
+                if (!correctArgs)
+                    _log.Warn("Invalid arguments to command: {0}", cmd);
             }
         }
 
