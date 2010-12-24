@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Net;
+using System.ServiceModel;
 using Trinity.Encore.Framework.Core.Configuration;
 using Trinity.Encore.Framework.Core.Services;
 using Trinity.Encore.Framework.Game;
@@ -11,6 +12,8 @@ using Trinity.Encore.Services.Account.Bans;
 
 namespace Trinity.Encore.Services.Account.Services
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true,
+        ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public sealed class AccountService : IAccountService
     {
         [ConfigurationVariable("ipcUri", "net.tcp://127.0.0.1:9501/Encore.AccountService", Static = true)]

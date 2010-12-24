@@ -12,21 +12,29 @@ namespace Trinity.Encore.Framework.Services.Account
     [ServiceContract(ProtectionLevel = ProtectionLevel.None, SessionMode = SessionMode.Required)]
     public interface IAccountService
     {
+        [OperationContract]
         AccountData GetAccount(string username);
 
+        [OperationContract]
         void CreateAccount(string accountName, string password, string emailAddress, ClientLocale locale = ClientLocale.English,
             ClientBoxLevel boxLevel = ClientBoxLevel.Cataclysm);
 
+        [OperationContract]
         AccountBanData GetAccountBan(string username);
 
+        [OperationContract]
         void CreateAccountBan(string accountName, string notes = null, DateTime? expiry = null);
 
+        [OperationContract]
         IPBanData GetIPBan(IPAddress address);
 
+        [OperationContract]
         void CreateIPBan(IPAddress address, string notes = null, DateTime? expiry = null);
-        
+
+        [OperationContract]
         IPRangeBanData GetIPRangeBan(IPAddress address);
 
+        [OperationContract]
         void CreateIPRangeBan(IPAddressRange range, string notes = null, DateTime? expiry = null);
     }
 
