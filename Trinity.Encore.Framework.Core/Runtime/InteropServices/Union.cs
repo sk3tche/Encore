@@ -11,6 +11,7 @@ namespace Trinity.Encore.Framework.Core.Runtime.InteropServices
     public struct Union : IComparable<Union>, IEquatable<Union>
     {
         [FieldOffset(0)]
+        [CLSCompliant(false)]
         public unsafe fixed byte Bytes [sizeof(decimal)];
 
         [FieldOffset(0)]

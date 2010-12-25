@@ -78,7 +78,6 @@
     <Compile Include="Reflection\ReflectionUtilityTest.cs" />
     <Compile Include="Reflection\TypeExtensionsTest.cs" />
     <Compile Include="Runtime\UnionTest.cs" />
-    <Compile Include="Time\TimerTest.cs" />
     <Compile Include="Time\TimeUtilityTest.cs" />
     <Compile Include="UtilityTest.cs" />
   </ItemGroup>

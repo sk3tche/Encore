@@ -42,7 +42,7 @@ namespace Trinity.Encore.Framework.Core.Reflection
             return body.Constructor;
         }
 
-        public static PropertyInfo PropertyOf<T, TResult>(Expression<Func<T, TResult>> expr)
+        public static PropertyInfo PropertyOf<T>(Expression<Func<T>> expr)
         {
             var body = expr.Body as MemberExpression;
 
@@ -57,7 +57,7 @@ namespace Trinity.Encore.Framework.Core.Reflection
             return member;
         }
 
-        public static FieldInfo FieldOf<T, TResult>(Expression<Func<T, TResult>> expr)
+        public static FieldInfo FieldOf<T>(Expression<Func<T>> expr)
         {
             var body = expr.Body as MemberExpression;
 
@@ -68,21 +68,6 @@ namespace Trinity.Encore.Framework.Core.Reflection
 
             if (member == null)
                 throw new ArgumentException("Member expression is not a field.", "expr");
-
-            return member;
-        }
-
-        public static EventInfo EventOf<T>(Expression<Func<T>> expr)
-        {
-            var body = expr.Body as MemberExpression;
-
-            if (body == null)
-                throw new ArgumentException("Expression must be a member expression.");
-
-            var member = body.Member as EventInfo;
-
-            if (member == null)
-                throw new ArgumentException("Member expression is not an event.", "expr");
 
             return member;
         }
