@@ -15,7 +15,7 @@ namespace Trinity.Encore.Framework.Core.Reflection
             return Enum.GetValues(typeof(T)).Length;
         }
 
-        public static T GetMaxEnumValue<T>()
+        public static T GetEnumMaxValue<T>()
         {
             Contract.Assume(typeof(T).IsEnum);
 

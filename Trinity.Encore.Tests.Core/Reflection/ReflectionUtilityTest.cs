@@ -97,5 +97,35 @@ namespace Trinity.Encore.Tests.Core.Reflection
             Assert.IsNotNull(prop);
             Assert.AreEqual(actualProp, prop);
         }
+
+        [Serializable]
+        private enum DummyEnum
+        {
+            [UsedImplicitly]
+            Zero = 0,
+            [UsedImplicitly]
+            One = 1,
+            [UsedImplicitly]
+            Two = 2,
+            [UsedImplicitly]
+            Three = 3,
+            Four = 4,
+        }
+
+        [TestMethod]
+        public void TestGetEnumMaxValue()
+        {
+            var value = ReflectionUtility.GetEnumMaxValue<DummyEnum>();
+
+            Assert.AreEqual(DummyEnum.Four, value);
+        }
+
+        [TestMethod]
+        public void TestGetEnumValueCount()
+        {
+            var count = ReflectionUtility.GetEnumValueCount<DummyEnum>();
+
+            Assert.AreEqual(5, count);
+        }
     }
 }
