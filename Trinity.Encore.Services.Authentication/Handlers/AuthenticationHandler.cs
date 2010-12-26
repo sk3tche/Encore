@@ -209,7 +209,9 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             }
 
             if (securityFlags.HasFlag(ExtraSecurityFlags.Matrix))
+            {
                 var matrixHMACResult = packet.ReadBytes(20);
+            }
 
             if (securityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
             {

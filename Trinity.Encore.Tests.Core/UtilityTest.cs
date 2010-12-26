@@ -24,55 +24,40 @@ namespace Trinity.Encore.Tests.Core
             Assert.AreEqual(string.Empty, newStr3);
         }
 
-        [TestMethod]
-        public void TestByteArrayToHex()
-        {
-            var bytes1 = new byte[]
+        private const string String1 = "000102030405060708090A0B0C0D0E0F";
+
+        private static readonly byte[] _bytes1 =
             {
                 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
             };
-            var bytes2 = bytes1.Concat(new byte[]
-            {
-                0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
-                0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
-            }).ToArray();
 
-            var str1 = Utility.BinaryToHexString(bytes1);
-            var str2 = Utility.BinaryToHexString(bytes2);
+        private const string String2 = "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F";
 
-            Assert.AreEqual("000102030405060708090A0B0C0D0E0F", str1);
-            Assert.AreEqual("000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F", str2);
+        private static readonly byte[] _bytes2 = _bytes1.Concat(new byte[]
+        {
+            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+            0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
+        }).ToArray();
+
+        [TestMethod]
+        public void TestByteArrayToHex()
+        {
+            var str1 = Utility.BinaryToHexString(_bytes1);
+            var str2 = Utility.BinaryToHexString(_bytes2);
+
+            Assert.AreEqual(String1, str1);
+            Assert.AreEqual(String2, str2);
         }
 
         [TestMethod]
         public void TestHexToByteArray()
         {
-            var str1 = "000102030405060708090A0B0C0D0E0F";
-            var str2 = "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F";
+            var bytes1 = Utility.HexStringToBinary(String1);
+            var bytes2 = Utility.HexStringToBinary(String2);
 
-            var bytes1 = Utility.HexStringToBinary(bytes1);
-            var bytes2 = Utility.HexStringToBinary(bytes2);
-            var bytes1Reference = new byte[]
-            {
-                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-                0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-            };
-
-            var bytes2Reference = bytes1Reference.Concat(new byte[]
-            {
-                0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
-                0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
-            }).ToArray();
-            
-            Assert.AreEqual(bytes1.Length, bytes1Reference.Length);
-            Assert.AreEqual(bytes2.Length, bytes2Reference.Length);
-
-            for (int i = 0; i < bytes1.Length; i++)
-                Assert.AreEqual(bytes1[i], bytes1Reference[i]);
-
-            for (int i = 0; i < bytes2.Length; i++)
-                Assert.AreEqual(bytes2[i], bytes2Reference[i]);
+            Assert.IsTrue(bytes1.SequenceEqual(_bytes1));
+            Assert.IsTrue(bytes2.SequenceEqual(_bytes2));
         }
     }
 }
