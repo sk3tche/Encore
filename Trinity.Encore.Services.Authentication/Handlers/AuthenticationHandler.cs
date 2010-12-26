@@ -142,9 +142,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
                 }
 
                 if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
-                {
                     packet.Write((byte) 0);
-                }
 
                 client.Send(packet);
             }
@@ -209,10 +207,10 @@ namespace Trinity.Encore.Services.Authentication.Handlers
                 var pinRandom = packet.ReadBytes(16);
                 var pinSHA = packet.ReadBytes(20);
             }
+
             if (securityFlags.HasFlag(ExtraSecurityFlags.Matrix))
-            {
                 var matrixHMACResult = packet.ReadBytes(20);
-            }
+
             if (securityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
             {
                 var tokenLength = packet.ReadByte();
@@ -358,9 +356,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
                 client.AddPermission(new AuthenticatedPermission());
             }
             else
-            {
                 client.Disconnect();
-            }
         }
 
         private static void SendReconnectProofSuccess(IClient client)
