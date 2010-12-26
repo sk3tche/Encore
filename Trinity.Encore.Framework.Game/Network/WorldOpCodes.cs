@@ -43,7 +43,7 @@ namespace Trinity.Encore.Framework.Game.Network
         /// <summary>
         /// SMSG_NEW_WORLD.
         /// </summary>
-        ServerSessionNewWorld = 0xE828,
+        ServerSessionNewWorld = 0x38C8,
         /// <summary>
         /// SMSG_TIME_SYNC_REQ.
         /// </summary>
@@ -64,10 +64,6 @@ namespace Trinity.Encore.Framework.Game.Network
         /// </summary>
         ServerRedirectClient = 0x9000,
         /// <summary>
-        /// CMSG_REDIRECT_ERROR.
-        /// </summary>
-        ServerConnectionRedirectError = 0x0C2A,
-        /// <summary>
         /// CMSG_REDIRECT_UNK.
         /// </summary>
         ClientConnectionRedirectUnknown1 = 0x0581,
@@ -75,15 +71,10 @@ namespace Trinity.Encore.Framework.Game.Network
         /// CMSG_REDIRECT_AUTH_PROOF.
         /// </summary>
         ClientConnectionRedirectAuthenticationProof = 0x8C0A,
-        // haven't found in 4.0.3 yet
-        ///// <summary>
-        ///// CMSG_REDIRECT_TOKEN_UNKNOWN.
-        ///// </summary>
-        //ClientConnectionRedirectUnknown2 = 0x3001,
         /// <summary>
         /// SMSG_TRANSFER_PENDING.
         /// </summary>
-        ServerTransferPending = 0x502B,
+        ServerTransferPending = 0x547F,
         /// <summary>
         /// SMSG_TRANSFER_ABORTED.
         /// </summary>
