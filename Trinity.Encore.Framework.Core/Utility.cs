@@ -11,8 +11,8 @@ namespace Trinity.Encore.Framework.Core
     {
         public static string ToCamelCase(string input)
         {
-            Contract.Requires(!string.IsNullOrEmpty(input));
-            Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+            Contract.Requires(input != null);
+            Contract.Ensures(Contract.Result<string>() != null);
 
             const char space = ' ';
             var newName = new StringBuilder();
@@ -38,9 +38,7 @@ namespace Trinity.Encore.Framework.Core
                 newName.Append(c);
             }
 
-            var newNameStr = newName.ToString();
-            Contract.Assume(!string.IsNullOrEmpty(newNameStr));
-            return newNameStr;
+            return newName.ToString();
         }
 
         public static byte[] HexStringToBinary(string data)
