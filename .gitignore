@@ -3,7 +3,6 @@
 *.suo
 *.user
 *ReSharper*
-*.user
 *.vs10x
 *.pdb
 *.pidb
@@ -14,3 +13,4 @@ TestResults/*
 */bin/*
 */obj/*
 *.orig
+*.idc

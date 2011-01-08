@@ -8,3 +8,9 @@ databasing (supporting most SQL servers).
 
 The source base is written in pure C# code, using the Common Language Runtime and
 the .NET Framework. We focus on supporting both the Microsoft and Mono runtimes.
+
+The codebase focuses on design-by-contract (both with static analysis and runtime
+checking), as well as unit testing and related techniques, to ensure program
+correctness.
+
+Configuration is done via standard .NET XML configuration.

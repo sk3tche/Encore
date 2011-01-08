@@ -49,6 +49,7 @@ namespace Trinity.Encore.Framework.Game.Cryptography
         public static byte[] GenerateCredentialsHash(HashAlgorithm algo, string username, string password,
             bool caseSensitive = true)
         {
+            Contract.Requires(algo != null);
             Contract.Requires(!string.IsNullOrEmpty(username));
             Contract.Requires(!string.IsNullOrEmpty(password));
             Contract.Ensures(Contract.Result<byte[]>() != null);

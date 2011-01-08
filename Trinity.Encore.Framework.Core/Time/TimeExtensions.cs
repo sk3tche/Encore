@@ -2,7 +2,7 @@ using System;
 
 namespace Trinity.Encore.Framework.Core.Time
 {
-    public static class Extensions
+    public static class TimeExtensions
     {
         /// <summary>
         /// Converts a TimeSpan to its equivalent representation in milliseconds (Int64).

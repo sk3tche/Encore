@@ -96,7 +96,7 @@
     <Compile Include="Configuration\ConfigurationInfo.cs" />
     <Compile Include="Configuration\ConfigurationVariableAttribute.cs" />
     <Compile Include="Cryptography\BigInteger.cs" />
-    <Compile Include="Cryptography\CryptographicExtensions.cs" />
+    <Compile Include="Cryptography\CryptographyExtensions.cs" />
     <Compile Include="Cryptography\HashDataBroker.cs" />
     <Compile Include="Cryptography\SRP\SRPBase.cs" />
     <Compile Include="Cryptography\SRP\SRPClient.cs" />
@@ -135,7 +135,7 @@
     <Compile Include="Services\ServiceClient.cs" />
     <Compile Include="Services\ServiceHost.cs" />
     <Compile Include="Threading\Actors\Actor.cs" />
-    <Compile Include="Threading\Actors\ActorManager.cs" />
+    <Compile Include="Threading\Actors\ActorContext.cs" />
     <Compile Include="Threading\Actors\ActorTimer.cs" />
     <Compile Include="Threading\Actors\ChildActor.cs" />
     <Compile Include="Threading\Actors\IActor.cs" />

@@ -1,11 +1,16 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Threading;
+using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
-    internal sealed class Scheduler
+    /// <summary>
+    /// Manages registration and execution of Actor instances.
+    /// </summary>
+    internal sealed class Scheduler : IDisposableResource
     {
         private readonly ConcurrentQueue<Actor> _newActors = new ConcurrentQueue<Actor>();
 
@@ -15,8 +20,18 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private readonly AutoResetEvent _event = new AutoResetEvent(false);
 
+        private readonly ManualResetEventSlim processedEvent = new ManualResetEventSlim(true);
+
         private static volatile int _threadCount;
 
+        private volatile bool _running = true;
+
+        public event EventHandler Disposed;
+
+        /// <summary>
+        /// Gets the amount of actors in this Scheduler.
+        /// </summary>
+        /// <value>The amount of actors managed by this Scheduler.</value>
         public int ActorCount
         {
             get { return _actors.Count; }
@@ -34,7 +49,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         public Scheduler()
         {
             _thread = new Thread(ThreadBody);
-            _thread.Name = "Actor Thread " + _threadCount++;
+            _thread.Name = "Actor Thread {0}".Interpolate(_threadCount++);
             _thread.IsBackground = true;
             _thread.Start();
         }
@@ -49,9 +64,9 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private void TakeNewActors()
         {
-            Actor newActor;
             while (_newActors.Count > 0)
             {
+                Actor newActor;
                 if (!_newActors.TryDequeue(out newActor))
                     continue;
 
@@ -67,10 +82,12 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private void ThreadBody()
         {
-            while (true)
+            while (_running)
             {
                 _event.WaitOne();
                 TakeNewActors();
+
+                processedEvent.Reset();
 
                 while (_actors.Count > 0)
                 {
@@ -90,7 +107,39 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
                     Thread.Yield();
                 }
+
+                processedEvent.Set();
             }
         }
+
+        ~Scheduler()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            _running = false;
+
+            // Wait for processing to stop.
+            processedEvent.Wait();
+
+            // Notify all actors that we're shutting down.
+            var evnt = Disposed;
+            if (evnt != null)
+                evnt(this, EventArgs.Empty);
+        }
+
+        public void Dispose()
+        {
+            if (IsDisposed)
+                return;
+
+            Dispose(true);
+            IsDisposed = true;
+            GC.SuppressFinalize(this);
+        }
+
+        public bool IsDisposed { get; private set; }
     }
 }

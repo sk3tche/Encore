@@ -42,7 +42,6 @@ namespace Trinity.Encore.Framework.Game.Threading
         protected override void Dispose(bool disposing)
         {
             _updateTimer.Dispose();
-            _updateTimer = null;
 
             base.Dispose(disposing);
         }

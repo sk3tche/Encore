@@ -69,7 +69,7 @@
     <Compile Include="Cryptography\SRPTest.cs" />
     <Compile Include="Dynamic\BagTest.cs" />
     <Compile Include="Exceptions\ExceptionManagerTest.cs" />
-    <Compile Include="ExtensionsTest.cs" />
+    <Compile Include="EnumExtensionsTest.cs" />
     <Compile Include="IO\IOExtensionsTest.cs" />
     <Compile Include="Mathematics\FastMathTest.cs" />
     <Compile Include="Mathematics\FastRandomTest.cs" />

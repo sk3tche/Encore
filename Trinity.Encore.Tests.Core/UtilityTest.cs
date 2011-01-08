@@ -41,7 +41,7 @@ namespace Trinity.Encore.Tests.Core
         }).ToArray();
 
         [TestMethod]
-        public void TestByteArrayToHex()
+        public void TestBinaryToHexString()
         {
             var str1 = Utility.BinaryToHexString(_bytes1);
             var str2 = Utility.BinaryToHexString(_bytes2);
@@ -51,7 +51,7 @@ namespace Trinity.Encore.Tests.Core
         }
 
         [TestMethod]
-        public void TestHexToByteArray()
+        public void TestHexStringToBinary()
         {
             var bytes1 = Utility.HexStringToBinary(String1);
             var bytes2 = Utility.HexStringToBinary(String2);

@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace Trinity.Encore.Framework.Core.Cryptography
 {
-    public static class CryptographicExtensions
+    public static class CryptographyExtensions
     {
         /// <summary>
         /// Computes a hash from hash data brokers using the given

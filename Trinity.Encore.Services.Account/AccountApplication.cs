@@ -26,7 +26,6 @@ namespace Trinity.Encore.Services.Account
 
         protected override void OnStop()
         {
-            AccountDbContext.Dispose();
             _service.Close();
         }
     }

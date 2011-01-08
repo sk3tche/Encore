@@ -28,7 +28,7 @@ namespace Trinity.Encore.Tests.Core.IO
         }
 
         [TestMethod]
-        public void TestCStringIO()
+        public void TestCString()
         {
             _writer.WriteCString("ENCR");
             _writer.WriteCString("ENCR", Encoding.UTF8);
@@ -43,7 +43,7 @@ namespace Trinity.Encore.Tests.Core.IO
         }
 
         [TestMethod]
-        public void TestFourCCIO()
+        public void TestFourCC()
         {
             _writer.WriteFourCC("ENCR");
 
@@ -64,7 +64,7 @@ namespace Trinity.Encore.Tests.Core.IO
         }
 
         [TestMethod]
-        public void TestBigEndianIO()
+        public void TestBigEndian()
         {
             _writer.WriteBigEndian(short.MaxValue);
             _writer.WriteBigEndian(ushort.MaxValue);

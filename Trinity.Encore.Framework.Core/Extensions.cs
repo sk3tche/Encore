@@ -46,9 +46,10 @@ namespace Trinity.Encore.Framework.Core
             return value;
         }
 
-        public static byte ToByte(this bool boolean)
+        public static IConvertible AsConvertible<T>(this T value)
+            where T : IConvertible
         {
-            return (byte)(boolean ? 1 : 0);
+            return value;
         }
 
         /// <summary>

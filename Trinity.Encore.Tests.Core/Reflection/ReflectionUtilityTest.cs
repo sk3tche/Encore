@@ -99,7 +99,7 @@ namespace Trinity.Encore.Tests.Core.Reflection
         }
 
         [Serializable]
-        private enum DummyEnum
+        private enum DummyEnum : byte
         {
             [UsedImplicitly]
             Zero = 0,

@@ -8,10 +8,8 @@ using Trinity.Encore.Framework.Core.Security;
 
 namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
-    public abstract class Actor : RestrictedObject, IActor
+    public class Actor : RestrictedObject, IActor
     {
-        private Thread _schedulingThread;
-
         private IEnumerator<Operation> _msgIterator;
 
         private IEnumerator<Operation> _mainIterator;
@@ -26,19 +24,42 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         internal Scheduler Scheduler { get; set; }
 
+        public ActorContext Context { get; private set; }
+
         [ContractInvariantMethod]
         private void Invariant()
         {
+            Contract.Invariant(Context != null);
             Contract.Invariant(_msgQueue != null);
             Contract.Invariant(_disposeEvent != null);
             // Don't add IsDisposed here. It would cause major cancellation issues in an asynchronous environment.
         }
 
-        protected Actor()
+        public Actor()
+            : this(ActorContext.Global)
         {
+        }
+
+        public Actor(ActorContext context)
+        {
+            Contract.Requires(context != null);
+
+            Context = context;
             _disposeEvent = new AutoResetEvent(false);
 
-            Start();
+            _msgIterator = EnumerateMessages();
+            _mainIterator = Main();
+
+            Scheduler = Context.RegisterActor(this);
+            Scheduler.Disposed += OnDisposed;
+        }
+
+        private void OnDisposed(object sender, EventArgs args)
+        {
+            Scheduler.Disposed -= OnDisposed;
+
+            // No guarantee is made about where an actor is disposed!
+            InternalDispose();
         }
 
         ~Actor()
@@ -63,41 +84,13 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
             Dispose(true);
             IsDisposed = true;
-            GC.SuppressFinalize(this);
-
             _disposeEvent.Set();
+
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-        }
-
-        private void Start()
-        {
-            Contract.Ensures(_msgIterator != null);
-            Contract.Ensures(_mainIterator != null);
-
-            var currentThread = Thread.CurrentThread;
-            var oldThread = Interlocked.Exchange(ref _schedulingThread, currentThread);
-
-            if (oldThread != null && oldThread != currentThread)
-                throw new InvalidOperationException("An actor cannot be rescheduled within a different scheduler/thread.");
-
-            if (_msgIterator != null)
-                _msgIterator.Dispose();
-
-            _msgIterator = EnumerateMessages();
-
-            if (_mainIterator != null)
-                _mainIterator.Dispose();
-
-            _mainIterator = Main();
-            Contract.Assume(_mainIterator != null);
-
-            if (Scheduler == null)
-                Scheduler = ActorManager.RegisterActor(this);
-
-            Contract.Assume(_msgIterator != null);
         }
 
         internal bool ProcessMessages()
@@ -180,6 +173,16 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
     public abstract class Actor<TThis> : Actor, IActor<TThis>
         where TThis : Actor<TThis>
     {
+        protected Actor()
+        {
+        }
+
+        protected Actor(ActorContext context)
+            : base(context)
+        {
+            Contract.Requires(context != null);
+        }
+
         public void Post(Action<TThis> msg)
         {
             Post(() => msg((TThis)this));
