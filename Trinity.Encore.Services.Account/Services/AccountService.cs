@@ -45,6 +45,7 @@ namespace Trinity.Encore.Services.Account.Services
         public void CreateAccountBan(string accountName, string notes, DateTime? expiry)
         {
             var acc = AccountManager.Instance.FindAccount(x => x.Name == accountName);
+
             if (acc == null || acc.Ban != null)
                 throw new ArgumentException();
 
@@ -60,6 +61,7 @@ namespace Trinity.Encore.Services.Account.Services
         public void CreateIPBan(IPAddress address, string notes, DateTime? expiry)
         {
             var ban = BanManager.Instance.FindIPBan(x => x.Equals(address));
+
             if (ban != null)
                 throw new ArgumentException();
 
@@ -75,6 +77,7 @@ namespace Trinity.Encore.Services.Account.Services
         public void CreateIPRangeBan(IPAddressRange range, string notes, DateTime? expiry)
         {
             var ban = BanManager.Instance.FindIPRangeBan(x => x.Range.Equals(range));
+
             if (ban != null)
                 throw new ArgumentException();
 

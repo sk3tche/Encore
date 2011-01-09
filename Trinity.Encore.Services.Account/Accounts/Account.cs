@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Net;
+using Trinity.Encore.Framework.Core.Runtime.Serialization;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;
 using Trinity.Encore.Framework.Services.Account;
@@ -9,7 +10,7 @@ using Trinity.Encore.Services.Account.Database;
 
 namespace Trinity.Encore.Services.Account.Accounts
 {
-    public sealed class Account
+    public sealed class Account : IMemberwiseSerializable<AccountData>
     {
         public Account(AccountRecord record)
         {
@@ -25,6 +26,10 @@ namespace Trinity.Encore.Services.Account.Accounts
         internal void Delete()
         {
             Record.Delete();
+
+            var ban = Ban;
+            if (ban != null)
+                ban.Delete();
         }
 
         public AccountData Serialize()
@@ -188,6 +193,7 @@ namespace Trinity.Encore.Services.Account.Accounts
         public AccountBan Ban
         {
             get { return BanManager.Instance.FindAccountBan(x => x.Account.Id == Id); }
+            set { Record.Ban = value != null ? value.Record : null; }
         }
     }
 }

@@ -1,12 +1,13 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Net;
+using Trinity.Encore.Framework.Core.Runtime.Serialization;
 using Trinity.Encore.Framework.Services.Account;
 using Trinity.Encore.Services.Account.Database;
 
 namespace Trinity.Encore.Services.Account.Bans
 {
-    public sealed class IPBan
+    public sealed class IPBan : IMemberwiseSerializable<IPBanData>
     {
         public IPBan(IPBanRecord record)
         {
