@@ -11,6 +11,8 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
         /// </summary>
         public const int HeaderMagicNumber = 0x32424457;
 
+        public const int NewHeaderBuild = 12880;
+
         public int FieldCount { get; private set; }
 
         public int RecordSize { get; private set; }
@@ -55,7 +57,7 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
             Build = reader.ReadInt32();
             LastUpdated = reader.ReadInt32();
 
-            if (Build > 12880)
+            if (Build > NewHeaderBuild)
             {
                 MinId = reader.ReadInt32();
                 MaxId = reader.ReadInt32();
