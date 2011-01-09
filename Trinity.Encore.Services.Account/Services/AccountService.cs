@@ -34,6 +34,20 @@ namespace Trinity.Encore.Services.Account.Services
             AccountManager.Instance.CreateAccount(accountName, password, emailAddress, boxLevel, locale);
         }
 
+        public void SetLastIP(string username, IPAddress ip)
+        {
+            var acc = AccountManager.Instance.FindAccount(x => x.Name == username);
+            if (acc != null)
+                acc.LastIP = ip;
+        }
+
+        public void SetLastLogin(string username, DateTime time)
+        {
+            var acc = AccountManager.Instance.FindAccount(x => x.Name == username);
+            if (acc != null)
+                acc.LastLogin = time;
+        }
+
         public AccountBanData GetAccountBan(string username)
         {
             var ban = BanManager.Instance.FindAccountBan(x => x.Account.Name == username);

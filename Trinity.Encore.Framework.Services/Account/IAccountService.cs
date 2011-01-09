@@ -20,6 +20,12 @@ namespace Trinity.Encore.Framework.Services.Account
             ClientBoxLevel boxLevel = ClientBoxLevel.Cataclysm);
 
         [OperationContract]
+        void SetLastIP(string username, IPAddress ip);
+
+        [OperationContract]
+        void SetLastLogin(string username, DateTime time);
+
+        [OperationContract]
         AccountBanData GetAccountBan(string username);
 
         [OperationContract]
@@ -53,6 +59,16 @@ namespace Trinity.Encore.Framework.Services.Account
             Contract.Requires(!string.IsNullOrEmpty(accountName));
             Contract.Requires(!string.IsNullOrEmpty(password));
             Contract.Requires(!string.IsNullOrEmpty(emailAddress));
+        }
+
+        public void SetLastIP(string username, IPAddress ip)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(username));
+        }
+
+        public void SetLastLogin(string username, DateTime time)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(username));
         }
 
         public AccountBanData GetAccountBan(string username)
