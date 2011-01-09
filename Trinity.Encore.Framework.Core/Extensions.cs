@@ -46,6 +46,7 @@ namespace Trinity.Encore.Framework.Core
             return value;
         }
 
+        [CLSCompliant(false)]
         public static IConvertible AsConvertible<T>(this T value)
             where T : IConvertible
         {

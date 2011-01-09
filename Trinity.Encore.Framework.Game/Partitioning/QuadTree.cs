@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
-using Microsoft.Xna.Framework;
+using Mono.GameMath;
 
 namespace Trinity.Encore.Framework.Game.Partitioning
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using Microsoft.Xna.Framework;
+using Mono.GameMath;
 using Trinity.Encore.Framework.Core.Mathematics;
 
 namespace Trinity.Encore.Framework.Game.Mathematics

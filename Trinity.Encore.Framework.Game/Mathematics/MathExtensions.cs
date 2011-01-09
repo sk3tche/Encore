@@ -1,5 +1,5 @@
 using System;
-using Microsoft.Xna.Framework;
+using Mono.GameMath;
 
 namespace Trinity.Encore.Framework.Game.Mathematics
 {

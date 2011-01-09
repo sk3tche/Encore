@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Microsoft.Xna.Framework;
+using Mono.GameMath;
 using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 using Trinity.Encore.Framework.Game.Entities;

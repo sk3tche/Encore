@@ -71,10 +71,11 @@
     <Reference Include="FluentNHibernate, Version=1.1.0.685, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\FluentNHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=5.0.1659.36, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Xna.Framework.Lite, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c1443ffbbbe66e55, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\Microsoft.Xna.Framework.Lite.dll</HintPath>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\Dependencies\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.GameMath">
+      <HintPath>..\Dependencies\Mono.GameMath.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security">
       <HintPath>..\Dependencies\Mono.Security.dll</HintPath>

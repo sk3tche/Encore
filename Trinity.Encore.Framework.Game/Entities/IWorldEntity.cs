@@ -1,5 +1,5 @@
 using System;
-using Microsoft.Xna.Framework;
+using Mono.GameMath;
 using Trinity.Encore.Framework.Game.Partitioning;
 
 namespace Trinity.Encore.Framework.Game.Entities
