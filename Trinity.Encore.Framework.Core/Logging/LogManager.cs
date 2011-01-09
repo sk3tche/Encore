@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Text;
 using Trinity.Encore.Framework.Core.Configuration;
-using Trinity.Encore.Framework.Core.Initialization;
 using Trinity.Encore.Framework.Core.Logging.Loggers;
 
 namespace Trinity.Encore.Framework.Core.Logging

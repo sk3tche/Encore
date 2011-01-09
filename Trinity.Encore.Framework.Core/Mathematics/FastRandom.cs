@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.Contracts;
 
 namespace Trinity.Encore.Framework.Core.Mathematics
 {

@@ -1,4 +1,3 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trinity.Encore.Framework.Core.Cryptography;
 

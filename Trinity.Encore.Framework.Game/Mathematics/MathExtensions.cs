@@ -1,4 +1,3 @@
-using System;
 using Mono.GameMath;
 
 namespace Trinity.Encore.Framework.Game.Mathematics

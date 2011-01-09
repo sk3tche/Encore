@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Threading;
 using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Core.Threading.Actors

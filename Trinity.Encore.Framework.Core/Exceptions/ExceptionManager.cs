@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Trinity.Encore.Framework.Core.Initialization;
 using Trinity.Encore.Framework.Core.Logging;
 
 namespace Trinity.Encore.Framework.Core.Exceptions

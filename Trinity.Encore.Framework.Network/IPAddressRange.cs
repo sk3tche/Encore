@@ -3,7 +3,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using Trinity.Encore.Framework.Core;
 using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Network

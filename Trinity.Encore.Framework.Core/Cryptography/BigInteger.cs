@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Mathematics;
 
 namespace Trinity.Encore.Framework.Core.Cryptography

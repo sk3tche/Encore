@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.Contracts;
-using FluentNHibernate.Mapping;
 using Trinity.Encore.Framework.Persistence.Mapping;
 using Trinity.Encore.Services.Account.Bans;
 using Trinity.Encore.Services.Account.Database.Implementation;

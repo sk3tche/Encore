@@ -1,4 +1,3 @@
-using System;
 using Mono.GameMath;
 using Trinity.Encore.Framework.Game.Partitioning;
 

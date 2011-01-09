@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.Contracts;
-using FluentNHibernate.Mapping;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;
 using Trinity.Encore.Framework.Persistence.Mapping;

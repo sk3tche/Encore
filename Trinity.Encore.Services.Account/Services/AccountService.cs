@@ -1,9 +1,7 @@
 using System;
-using System.Diagnostics.Contracts;
 using System.Net;
 using System.ServiceModel;
 using Trinity.Encore.Framework.Core.Configuration;
-using Trinity.Encore.Framework.Core.Services;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Network;
 using Trinity.Encore.Framework.Services.Account;

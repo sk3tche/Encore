@@ -1,5 +1,4 @@
 using System;
-using Trinity.Encore.Framework.Core;
 using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Game.Entities

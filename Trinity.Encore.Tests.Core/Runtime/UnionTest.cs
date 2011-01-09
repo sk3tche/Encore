@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Trinity.Encore.Framework.Core.Runtime.InteropServices;
 
