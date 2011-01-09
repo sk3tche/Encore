@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
+using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Game.Threading;
 using Trinity.Encore.Framework.Network;
 using Trinity.Encore.Services.Account.Database;
@@ -73,7 +74,7 @@ namespace Trinity.Encore.Services.Account.Bans
             Contract.Ensures(Contract.Result<IEnumerable<AccountBan>>() != null);
 
             lock (_accountBans)
-                return _accountBans.Where(predicate);
+                return _accountBans.Where(predicate).Force();
         }
 
         public AccountBan FindAccountBan(Func<AccountBan, bool> predicate)
@@ -128,7 +129,7 @@ namespace Trinity.Encore.Services.Account.Bans
             Contract.Ensures(Contract.Result<IEnumerable<IPBan>>() != null);
 
             lock (_ipBans)
-                return _ipBans.Where(predicate);
+                return _ipBans.Where(predicate).Force();
         }
 
         public IPBan FindIPBan(Func<IPBan, bool> predicate)
@@ -183,7 +184,7 @@ namespace Trinity.Encore.Services.Account.Bans
             Contract.Ensures(Contract.Result<IEnumerable<IPRangeBan>>() != null);
 
             lock (_ipRangeBans)
-                return _ipRangeBans.Where(predicate);
+                return _ipRangeBans.Where(predicate).Force();
         }
 
         public IPRangeBan FindIPRangeBan(Func<IPRangeBan, bool> predicate)

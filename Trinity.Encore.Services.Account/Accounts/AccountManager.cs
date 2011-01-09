@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
+using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;
 using Trinity.Encore.Framework.Game.Threading;
@@ -103,9 +104,7 @@ namespace Trinity.Encore.Services.Account.Accounts
             Contract.Requires(acc != null);
 
             acc.Delete();
-
-            lock (_accounts)
-                _accounts.Remove(acc);
+            RemoveAccount(acc);
         }
 
         public IEnumerable<Account> FindAccounts(Func<Account, bool> predicate)
@@ -114,7 +113,7 @@ namespace Trinity.Encore.Services.Account.Accounts
             Contract.Ensures(Contract.Result<IEnumerable<Account>>() != null);
 
             lock (_accounts)
-                return _accounts.Where(predicate);
+                return _accounts.Where(predicate).Force();
         }
 
         public Account FindAccount(Func<Account, bool> predicate)
