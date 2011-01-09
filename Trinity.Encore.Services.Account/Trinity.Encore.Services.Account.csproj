@@ -94,6 +94,7 @@
     <Compile Include="Bans\BanManager.cs" />
     <Compile Include="Bans\IPBan.cs" />
     <Compile Include="Bans\IPRangeBan.cs" />
+    <Compile Include="Commands\Accounts\CreateAccountCommand.cs" />
     <Compile Include="Commands\Database\CreateDatabaseCommand.cs" />
     <Compile Include="Commands\Database\DropDatabaseCommand.cs" />
     <Compile Include="Commands\Database\ExportSchemaCommand.cs" />
@@ -134,6 +135,7 @@
     </None>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

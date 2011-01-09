@@ -14,8 +14,6 @@ namespace Trinity.Encore.Services.Account
                 CommandConsole.Run();
                 AccountApplication.Instance.Stop();
             }
-
-            Console.ReadKey();
         }
     }
 }

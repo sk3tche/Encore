@@ -118,6 +118,7 @@ namespace Trinity.Encore.Framework.Game.Commands
                     return;
                 }
 
+                // TODO: Make some interface for sending command responses to the sender.
                 if (!correctArgs)
                     _log.Warn("Invalid arguments to command: {0}", cmd);
             }

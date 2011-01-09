@@ -78,7 +78,7 @@ namespace Trinity.Encore.Services.Account.Database
         public AccountMapping()
         {
             Id(c => c.Id);
-            Map(c => c.Name).ReadOnly().Length(AccountManager.MaxNameLength);
+            Map(c => c.Name).Length(AccountManager.MaxNameLength);
             Map(c => c.EmailAddress);
             Map(c => c.SHA1Password).Length(Password.SHA1Length);
             Map(c => c.SHA256Password).Length(Password.SHA256Length);

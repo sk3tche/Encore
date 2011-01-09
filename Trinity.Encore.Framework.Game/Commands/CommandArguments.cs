@@ -189,5 +189,19 @@ namespace Trinity.Encore.Framework.Game.Commands
         {
             return _enum.MoveNext() ? _enum.Current : null;
         }
+
+        public T? NextEnum<T>()
+            where T : struct
+        {
+            var type = typeof(T);
+            if (!type.IsEnum)
+                throw new ArgumentException();
+
+            T value;
+            if (Enum.TryParse(NextString(), true, out value))
+                return value;
+
+            return null;
+        }
     }
 }
