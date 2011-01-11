@@ -36,7 +36,8 @@ namespace Trinity.Encore.Services.Account.Accounts
         {
             _log.Info("Loading accounts...");
 
-            foreach (var acc in AccountApplication.Instance.AccountDbContext.FindAll<AccountRecord>().Select(account => new Account(account)))
+            var accounts = AccountApplication.Instance.AccountDbContext.FindAll<AccountRecord>();
+            foreach (var acc in accounts.Select(account => new Account(account)))
                 AddAccount(acc);
 
             _log.Info("Loaded {0} accounts.", _accounts.Count);

@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using Trinity.Encore.Framework.Core.Collections;
+using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Game.Threading;
 using Trinity.Encore.Framework.Network;
 using Trinity.Encore.Services.Account.Database;
@@ -14,6 +15,8 @@ namespace Trinity.Encore.Services.Account.Bans
     {
         public const int MaxNotesLength = 512;
 
+        private static readonly LogProxy _log = new LogProxy("BanManager");
+
         private readonly List<AccountBan> _accountBans = new List<AccountBan>();
 
         private readonly List<IPBan> _ipBans = new List<IPBan>();
@@ -22,6 +25,29 @@ namespace Trinity.Encore.Services.Account.Bans
 
         private BanManager()
         {
+            _log.Info("Loading account bans...");
+
+            var accountBans = AccountApplication.Instance.AccountDbContext.FindAll<AccountBanRecord>();
+            foreach (var accBan in accountBans.Select(accountBan => new AccountBan(accountBan)))
+                AddAccountBan(accBan);
+
+            _log.Info("Loaded {0} account bans.", _accountBans.Count);
+
+            _log.Info("Loading IP bans...");
+
+            var ipBans = AccountApplication.Instance.AccountDbContext.FindAll<IPBanRecord>();
+            foreach (var ipBan in ipBans.Select(ipBan => new IPBan(ipBan)))
+                AddIPBan(ipBan);
+
+            _log.Info("Loaded {0} IP bans.", _ipBans.Count);
+
+            _log.Info("Loading IP range bans...");
+
+            var ipRangeBans = AccountApplication.Instance.AccountDbContext.FindAll<IPRangeBanRecord>();
+            foreach (var ipRangeBan in ipRangeBans.Select(ipRangeBan => new IPRangeBan(ipRangeBan)))
+                AddIPRangeBan(ipRangeBan);
+
+            _log.Info("Loaded {0} IP range bans.", _ipRangeBans.Count);
         }
 
         [ContractInvariantMethod]
