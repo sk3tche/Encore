@@ -9,6 +9,7 @@ using FluentNHibernate.Conventions;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Linq;
+using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Threading.Actors;
 using Trinity.Encore.Framework.Persistence.Schema;
 
@@ -344,8 +345,21 @@ namespace Trinity.Encore.Framework.Persistence
             {
                 var linq = session.Linq<T>();
                 Contract.Assume(linq != null);
-                return linq.Where(criteria);
+                return linq.Where(criteria).ToList();
             }
+        }
+
+        /// <summary>
+        /// Retrieves all entities of a given type.
+        /// </summary>
+        /// <typeparam name="T">The type of the entities to be retrieved.</typeparam>
+        /// <returns>A list of all entities of the given type.</returns>
+        public IEnumerable<T> FindAll<T>()
+            where T : class
+        {
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+
+            return Find<T>(x => true);
         }
 
         #endregion

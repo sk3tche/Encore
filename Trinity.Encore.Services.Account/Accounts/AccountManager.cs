@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
 using Trinity.Encore.Framework.Core.Collections;
+using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;
 using Trinity.Encore.Framework.Game.Threading;
@@ -21,6 +22,8 @@ namespace Trinity.Encore.Services.Account.Accounts
 
         public const int MaxPasswordLength = 16;
 
+        private static readonly LogProxy _log = new LogProxy("AccountManager");
+
         private readonly List<Account> _accounts = new List<Account>();
 
         [ContractInvariantMethod]
@@ -31,6 +34,12 @@ namespace Trinity.Encore.Services.Account.Accounts
 
         private AccountManager()
         {
+            _log.Info("Loading accounts...");
+
+            foreach (var acc in AccountApplication.Instance.AccountDbContext.FindAll<AccountRecord>().Select(account => new Account(account)))
+                AddAccount(acc);
+
+            _log.Info("Loaded {0} accounts.", _accounts.Count);
         }
 
         public static Password CreatePassword(string username, string password)
