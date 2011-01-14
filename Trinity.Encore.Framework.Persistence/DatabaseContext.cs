@@ -181,7 +181,7 @@ namespace Trinity.Encore.Framework.Persistence
 
         protected virtual IEnumerable<IConvention> CreateConventions()
         {
-            Contract.Ensures(Contract.Result<IEnumerable<IConvention>>() != null);
+            // FIXME: Contract.Ensures(Contract.Result<IEnumerable<IConvention>>() != null);
 
             yield break;
         }
@@ -343,7 +343,7 @@ namespace Trinity.Encore.Framework.Persistence
 
             using (var session = CreateSession())
             {
-                var linq = session.Linq<T>();
+                var linq = session.Query<T>();
                 Contract.Assume(linq != null);
                 return linq.Where(criteria).ToList();
             }
@@ -389,7 +389,7 @@ namespace Trinity.Encore.Framework.Persistence
 
         protected override IEnumerable<IMappingProvider> CreateMappings()
         {
-            Contract.Ensures(Contract.Result<IEnumerable<IMappingProvider>>() != null);
+            // FIXME: Contract.Ensures(Contract.Result<IEnumerable<IMappingProvider>>() != null);
 
             return null;
         }

@@ -68,13 +68,13 @@
     <AssemblyOriginatorKeyFile>..\Shared\Trinity.Encore.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Core">
       <HintPath>..\Dependencies\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\Castle.DynamicProxy2.dll</HintPath>
     </Reference>
-    <Reference Include="FluentNHibernate">
+    <Reference Include="FluentNHibernate, Version=1.2.0.694, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
@@ -86,9 +86,6 @@
     </Reference>
     <Reference Include="NHibernate.ByteCode.Castle">
       <HintPath>..\Dependencies\NHibernate.ByteCode.Castle.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate.Linq">
-      <HintPath>..\Dependencies\NHibernate.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql">
       <HintPath>..\Dependencies\Npgsql.dll</HintPath>

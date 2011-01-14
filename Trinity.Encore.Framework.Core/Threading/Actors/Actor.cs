@@ -131,14 +131,14 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         protected virtual IEnumerator<Operation> Main()
         {
-            Contract.Ensures(Contract.Result<IEnumerator<Operation>>() != null);
+            // FIXME: Contract.Ensures(Contract.Result<IEnumerator<Operation>>() != null);
 
             yield break; // No main by default.
         }
 
         private IEnumerator<Operation> EnumerateMessages()
         {
-            Contract.Ensures(Contract.Result<IEnumerator<Operation>>() != null);
+            // FIXME: Contract.Ensures(Contract.Result<IEnumerator<Operation>>() != null);
 
             while (true)
             {

@@ -68,7 +68,7 @@
     <AssemblyOriginatorKeyFile>..\Shared\Trinity.Encore.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentNHibernate, Version=1.1.0.685, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+    <Reference Include="FluentNHibernate, Version=1.2.0.694, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations">
@@ -80,7 +80,7 @@
     <Reference Include="Mono.Security">
       <HintPath>..\Dependencies\Mono.Security.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />

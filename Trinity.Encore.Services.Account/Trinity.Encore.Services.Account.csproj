@@ -133,7 +133,6 @@
     <None Include="..\Shared\Trinity.Encore.snk">
       <Link>Trinity.Encore.snk</Link>
     </None>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
