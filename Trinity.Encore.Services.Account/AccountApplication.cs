@@ -14,17 +14,17 @@ namespace Trinity.Encore.Services.Account
 
         public AccountDatabaseContext AccountDbContext { get; private set; }
 
-        private ServiceHost<IAccountService> _service;
+        private ServiceHost<IAccountService> _accountHost;
 
         protected override void OnStart(string[] args)
         {
             AccountDbContext = new AccountDatabaseContext();
-            _service = new ServiceHost<IAccountService>(new AccountService(), AccountService.IpcUri);
+            _accountHost = new ServiceHost<IAccountService>(new AccountService(), AccountService.IpcUri);
         }
 
         protected override void OnStop()
         {
-            _service.Close();
+            _accountHost.Close();
         }
     }
 }

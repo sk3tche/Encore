@@ -74,11 +74,14 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="AuthenticationApplication.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Enums\AuthResult.cs" />
     <Compile Include="Enums\ExtraSecurityFlags.cs" />
     <Compile Include="Handlers\AuthenticationHandler.cs" />
@@ -100,6 +103,10 @@
     <ProjectReference Include="..\Trinity.Encore.Framework.Network\Trinity.Encore.Framework.Network.csproj">
       <Project>{8D03D581-BE90-4714-AC46-50758EE1DD95}</Project>
       <Name>Trinity.Encore.Framework.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Encore.Framework.Services\Trinity.Encore.Framework.Services.csproj">
+      <Project>{4FBCED44-C91C-400B-80AB-40D5F6FC7B74}</Project>
+      <Name>Trinity.Encore.Framework.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
