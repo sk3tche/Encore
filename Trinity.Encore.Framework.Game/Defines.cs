@@ -12,7 +12,7 @@ namespace Trinity.Encore.Framework.Game
             {
                 Contract.Ensures(Contract.Result<Version>() != null);
 
-                return new Version(4, 0, 1, 13205);
+                return new Version(4, 0, 3, 13329);
             }
         }
 
