@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Trinity Encore Relaxed" Description=" " ToolsVersion="10.0">
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
-    <Rule Id="CA1001" Action="Warning" />
-    <Rule Id="CA1002" Action="Warning" />
     <Rule Id="CA1003" Action="Warning" />
     <Rule Id="CA1004" Action="Warning" />
     <Rule Id="CA1005" Action="Warning" />
@@ -11,19 +9,16 @@
     <Rule Id="CA1008" Action="Warning" />
     <Rule Id="CA1009" Action="Warning" />
     <Rule Id="CA1010" Action="Warning" />
-    <Rule Id="CA1011" Action="Warning" />
     <Rule Id="CA1012" Action="Warning" />
     <Rule Id="CA1013" Action="Warning" />
     <Rule Id="CA1014" Action="Warning" />
     <Rule Id="CA1016" Action="Warning" />
     <Rule Id="CA1017" Action="Warning" />
     <Rule Id="CA1018" Action="Warning" />
-    <Rule Id="CA1019" Action="Warning" />
     <Rule Id="CA1021" Action="Warning" />
     <Rule Id="CA1023" Action="Warning" />
     <Rule Id="CA1024" Action="Warning" />
     <Rule Id="CA1025" Action="Warning" />
-    <Rule Id="CA1026" Action="Warning" />
     <Rule Id="CA1027" Action="Warning" />
     <Rule Id="CA1030" Action="Warning" />
     <Rule Id="CA1032" Action="Warning" />
@@ -41,7 +36,6 @@
     <Rule Id="CA1048" Action="Warning" />
     <Rule Id="CA1049" Action="Warning" />
     <Rule Id="CA1050" Action="Warning" />
-    <Rule Id="CA1051" Action="Warning" />
     <Rule Id="CA1052" Action="Warning" />
     <Rule Id="CA1053" Action="Warning" />
     <Rule Id="CA1054" Action="Warning" />
@@ -52,14 +46,10 @@
     <Rule Id="CA1059" Action="Warning" />
     <Rule Id="CA1060" Action="Warning" />
     <Rule Id="CA1061" Action="Warning" />
-    <Rule Id="CA1062" Action="Warning" />
-    <Rule Id="CA1063" Action="Warning" />
     <Rule Id="CA1064" Action="Warning" />
-    <Rule Id="CA1065" Action="Warning" />
     <Rule Id="CA1300" Action="Warning" />
     <Rule Id="CA1301" Action="Warning" />
     <Rule Id="CA1302" Action="Warning" />
-    <Rule Id="CA1303" Action="Warning" />
     <Rule Id="CA1304" Action="Warning" />
     <Rule Id="CA1305" Action="Warning" />
     <Rule Id="CA1306" Action="Warning" />
@@ -94,7 +84,6 @@
     <Rule Id="CA1701" Action="Warning" />
     <Rule Id="CA1702" Action="Warning" />
     <Rule Id="CA1703" Action="Warning" />
-    <Rule Id="CA1704" Action="Warning" />
     <Rule Id="CA1707" Action="Warning" />
     <Rule Id="CA1708" Action="Warning" />
     <Rule Id="CA1710" Action="Warning" />
@@ -106,11 +95,8 @@
     <Rule Id="CA1716" Action="Warning" />
     <Rule Id="CA1717" Action="Warning" />
     <Rule Id="CA1719" Action="Warning" />
-    <Rule Id="CA1721" Action="Warning" />
     <Rule Id="CA1722" Action="Warning" />
-    <Rule Id="CA1724" Action="Warning" />
     <Rule Id="CA1725" Action="Warning" />
-    <Rule Id="CA1726" Action="Warning" />
     <Rule Id="CA1800" Action="Warning" />
     <Rule Id="CA1801" Action="Warning" />
     <Rule Id="CA1802" Action="Warning" />
@@ -121,10 +107,8 @@
     <Rule Id="CA1811" Action="Warning" />
     <Rule Id="CA1812" Action="Warning" />
     <Rule Id="CA1813" Action="Warning" />
-    <Rule Id="CA1814" Action="Warning" />
     <Rule Id="CA1815" Action="Warning" />
     <Rule Id="CA1816" Action="Warning" />
-    <Rule Id="CA1819" Action="Warning" />
     <Rule Id="CA1820" Action="Warning" />
     <Rule Id="CA1821" Action="Warning" />
     <Rule Id="CA1822" Action="Warning" />
@@ -133,8 +117,6 @@
     <Rule Id="CA1900" Action="Warning" />
     <Rule Id="CA1901" Action="Warning" />
     <Rule Id="CA1903" Action="Warning" />
-    <Rule Id="CA2000" Action="Warning" />
-    <Rule Id="CA2001" Action="Warning" />
     <Rule Id="CA2002" Action="Warning" />
     <Rule Id="CA2003" Action="Warning" />
     <Rule Id="CA2004" Action="Warning" />
@@ -193,7 +175,6 @@
     <Rule Id="CA2211" Action="Warning" />
     <Rule Id="CA2212" Action="Warning" />
     <Rule Id="CA2213" Action="Warning" />
-    <Rule Id="CA2214" Action="Warning" />
     <Rule Id="CA2215" Action="Warning" />
     <Rule Id="CA2216" Action="Warning" />
     <Rule Id="CA2217" Action="Warning" />
@@ -204,7 +185,6 @@
     <Rule Id="CA2222" Action="Warning" />
     <Rule Id="CA2223" Action="Warning" />
     <Rule Id="CA2224" Action="Warning" />
-    <Rule Id="CA2225" Action="Warning" />
     <Rule Id="CA2226" Action="Warning" />
     <Rule Id="CA2227" Action="Warning" />
     <Rule Id="CA2228" Action="Warning" />

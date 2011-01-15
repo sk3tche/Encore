@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using Trinity.Encore.Framework.Core.Exceptions;
@@ -10,9 +11,9 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 {
     public class Actor : RestrictedObject, IActor
     {
-        private IEnumerator<Operation> _msgIterator;
+        private readonly IEnumerator<Operation> _msgIterator;
 
-        private IEnumerator<Operation> _mainIterator;
+        private readonly IEnumerator<Operation> _mainIterator;
 
         private readonly ConcurrentQueue<Action> _msgQueue = new ConcurrentQueue<Action>();
 
@@ -72,11 +73,14 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             _disposeEvent.WaitOne();
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1816", Justification = "Behavior intended.")]
+        [SuppressMessage("Microsoft.Design", "CA1063", Justification = "Behavior intended.")]
         public void Dispose()
         {
             Post(InternalDispose);
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1816", Justification = "Behavior intended.")]
         private void InternalDispose()
         {
             if (IsDisposed)
@@ -89,6 +93,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             GC.SuppressFinalize(this);
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "_disposeEvent must not be disposed.")]
         protected virtual void Dispose(bool disposing)
         {
         }
@@ -170,6 +175,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         }
     }
 
+    [SuppressMessage("Microsoft.Design", "CA1063", Justification = "IDisposable is part of IActor.")]
     public abstract class Actor<TThis> : Actor, IActor<TThis>
         where TThis : Actor<TThis>
     {

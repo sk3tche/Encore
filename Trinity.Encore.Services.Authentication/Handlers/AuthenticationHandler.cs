@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Text;
 using Trinity.Encore.Framework.Core.Cryptography;
 using Trinity.Encore.Framework.Core.Cryptography.SRP;
@@ -17,29 +18,28 @@ namespace Trinity.Encore.Services.Authentication.Handlers
 {
     public static class AuthenticationHandler
     {
-        [AuthPacketHandler(GruntOpCodes.AuthenticationLogonChallenge)]
-        public static void HandleAuthLogonChallenge(IClient client, IncomingAuthPacket packet)
+        [AuthPacketHandler(GruntOpCode.AuthenticationLogOnChallenge)]
+        public static void HandleAuthLogOnChallenge(IClient client, IncomingAuthPacket packet)
         {
             Contract.Requires(client != null);
             Contract.Requires(packet != null);
 
-            var unk = packet.ReadByte();
-            var size = packet.ReadInt16();
-            // we can't read it in directly as a string or char array as in C# chars are 16 bits
-            var gameName = packet.ReadFourCC();
-            var version1 = packet.ReadByte();
-            var version2 = packet.ReadByte();
-            var version3 = packet.ReadByte();
-            var build = packet.ReadInt16();
-            var platform = packet.ReadFourCC();
-            var os = packet.ReadFourCC();
-            var country = packet.ReadFourCC();
-            var timezoneBias = packet.ReadInt32();
-            var ip = packet.ReadInt32();
+            packet.ReadByte(); // unk
+            packet.ReadInt16(); // size
+            packet.ReadFourCC(); // gameName
+            packet.ReadByte(); // version1
+            packet.ReadByte(); // version2
+            packet.ReadByte(); // version3
+            packet.ReadInt16(); // build
+            packet.ReadFourCC(); // platform
+            packet.ReadFourCC(); // os
+            packet.ReadFourCC(); // country
+            packet.ReadInt32(); // timeZoneBias
+            packet.ReadInt32(); // ip
             var usernameLength = packet.ReadByte();
             var usernameBytes = packet.ReadBytes(usernameLength);
             var username = Encoding.ASCII.GetString(usernameBytes);
-            SRPServer srpData = GetSRPDataForUsername(username);
+            SRPServer srpData = GetSRPDataForUserName(username);
             if (srpData == null)
             {
                 SendAuthenticationChallengeFailure(client, AuthResult.FailUnknownAccount);
@@ -68,13 +68,11 @@ namespace Trinity.Encore.Services.Authentication.Handlers
         /// </summary>
         /// <param name="username">The account's username.</param>
         /// <returns>null if no account exists, otherwise an SRPServer instance to be used for this connection.</returns>
-        private static SRPServer GetSRPDataForUsername(string username)
+        private static SRPServer GetSRPDataForUserName(string username)
         {
             // TODO this needs to be fetched from the database
             BigInteger credentials = null ?? new BigInteger(0);
             SRPServer srpData = new SRPServer(username, credentials, new WowAuthParameters());
-            BigInteger g = srpData.Parameters.Generator;
-            BigInteger n = srpData.Parameters.Modulus;
             srpData.Salt = new BigInteger(new FastRandom(), 32 * 8);
             return srpData;
         }
@@ -84,7 +82,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             Contract.Requires(client != null);
             Contract.Requires(result != AuthResult.Success);
 
-            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonChallenge, 2))
+            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnChallenge, 2))
             {
                 packet.Write((byte)0x00);
                 packet.Write((byte)result);
@@ -106,7 +104,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             Contract.Requires(generator != null);
             Contract.Requires(generator.ByteLength == 1);
 
-            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonChallenge, 118))
+            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnChallenge, 118))
             {
                 packet.Write((byte)0x00); // If this is > 0, the client fails immediately
                 packet.Write((byte)AuthResult.Success);
@@ -168,8 +166,8 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             public readonly byte[] shaHash;
         }
 
-        [AuthPacketHandler(GruntOpCodes.AuthenticationLogonProof)]
-        public static void HandleAuthLogonProof(IClient client, IncomingAuthPacket packet)
+        [AuthPacketHandler(GruntOpCode.AuthenticationLogOnProof)]
+        public static void HandleAuthLogOnProof(IClient client, IncomingAuthPacket packet)
         {
             Contract.Requires(client != null);
             Contract.Requires(packet != null);
@@ -179,7 +177,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             // SHA1 of { SHA1(Modulus) ^ SHA1(Generator), SHA1(USERNAME), salt, PublicA, PublicB, SessionKey }
             var clientResult = packet.ReadBigInteger(20);
             // SHA1 hash of the PublicA and HMACSHA1 of the contents of WoW.exe and unicows.dll. HMAC seed is the 16 bytes at the end of the challenge sent by the server.
-            var clientFileHash = packet.ReadBytes(20); // these can safely be ignored
+            packet.ReadBytes(20); // these can safely be ignored, clientFileHash
 
             // the client tends to send 0, but just in case it's safer to implement this.
             var numKeys = packet.ReadByte();
@@ -204,19 +202,19 @@ namespace Trinity.Encore.Services.Authentication.Handlers
 
             if (securityFlags.HasFlag(ExtraSecurityFlags.PIN))
             {
-                var pinRandom = packet.ReadBytes(16);
-                var pinSHA = packet.ReadBytes(20);
+                packet.ReadBytes(16); // pinRandom
+                packet.ReadBytes(20); // pinSha1
             }
 
             if (securityFlags.HasFlag(ExtraSecurityFlags.Matrix))
             {
-                var matrixHMACResult = packet.ReadBytes(20);
+                packet.ReadBytes(20); // matrixHmacResult
             }
 
             if (securityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
             {
                 var tokenLength = packet.ReadByte();
-                var token = packet.ReadBytes(tokenLength);
+                packet.ReadBytes(tokenLength); // token
             }
 
             SRPServer srpData = client.UserData.SRP;
@@ -224,19 +222,19 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             var success = srpData.Validator.IsClientProofValid(clientResult);
             if (success)
             {
-                SendAuthenticationLogonProofSuccess(client, srpData.Validator.ServerSessionKeyProof);
+                SendAuthenticationLogOnProofSuccess(client, srpData.Validator.ServerSessionKeyProof);
                 client.AddPermission(new AuthenticatedPermission());
             }
             else
-                SendAuthenticationLogonProofFailure(client, AuthResult.FailUnknownAccount);
+                SendAuthenticationLogOnProofFailure(client, AuthResult.FailUnknownAccount);
         }
 
-        public static void SendAuthenticationLogonProofSuccess(IClient client, BigInteger serverResult)
+        public static void SendAuthenticationLogOnProofSuccess(IClient client, BigInteger serverResult)
         {
             Contract.Requires(client != null);
             Contract.Requires(serverResult != null);
 
-            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonProof, 31))
+            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnProof, 31))
             {
                 packet.Write((byte)AuthResult.Success);
                 packet.Write(serverResult, 20);
@@ -253,11 +251,11 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             }
         }
 
-        public static void SendAuthenticationLogonProofFailure(IClient client, AuthResult result)
+        public static void SendAuthenticationLogOnProofFailure(IClient client, AuthResult result)
         {
             Contract.Requires(client != null);
 
-            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationLogonProof, 3))
+            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnProof, 3))
             {
                 packet.Write((byte)result);
                 if (result == AuthResult.FailUnknownAccount)
@@ -269,28 +267,28 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             }
         }
 
-        [AuthPacketHandler(GruntOpCodes.AuthenticationReconnectChallenge)]
+        [AuthPacketHandler(GruntOpCode.AuthenticationReconnectChallenge)]
         public static void HandleReconnectChallenge(IClient client, IncomingAuthPacket packet)
         {
-            // structure is the same as AuthenticationLogonChallenge
+            // structure is the same as AuthenticationLogOnChallenge
             Contract.Requires(client != null);
             Contract.Requires(packet != null);
 
-            var unk = packet.ReadByte();
-            var size = packet.ReadInt16();
-            var gameName = packet.ReadFourCC();
-            var version1 = packet.ReadByte();
-            var version2 = packet.ReadByte();
-            var version3 = packet.ReadByte();
-            var build = packet.ReadInt16();
-            var platform = packet.ReadFourCC();
-            var os = packet.ReadFourCC();
-            var country = packet.ReadFourCC();
-            var timezoneBias = packet.ReadInt32();
-            var ip = packet.ReadInt32();
+            packet.ReadByte(); // unk
+            packet.ReadInt16(); // size
+            packet.ReadFourCC(); // gameName
+            packet.ReadByte(); // version1
+            packet.ReadByte(); // version2
+            packet.ReadByte(); // version3
+            packet.ReadInt16(); // build
+            packet.ReadFourCC(); // platform
+            packet.ReadFourCC(); // os
+            packet.ReadFourCC(); // country
+            packet.ReadInt32(); // timeZoneBias
+            packet.ReadInt32(); // ip
             var usernameLength = packet.ReadByte();
             var usernameBytes = packet.ReadBytes(usernameLength);
-            var username = Encoding.ASCII.GetString(usernameBytes);
+            Encoding.ASCII.GetString(usernameBytes); // username
 
             // TODO fetch this from the database (or some other persistent storage)
             BigInteger sessionKey = null;
@@ -299,10 +297,10 @@ namespace Trinity.Encore.Services.Authentication.Handlers
                 return;
             }
 
-            BigInteger rand = new BigInteger(new FastRandom(), 16 * 8);
-            SendReconnectChallengeSuccess(client, rand);
-            client.UserData.ReconnectRand = rand;
-            client.UserData.Username = username;
+            //BigInteger rand = new BigInteger(new FastRandom(), 16 * 8);
+            //SendReconnectChallengeSuccess(client, rand);
+            //client.UserData.ReconnectRand = rand;
+            //client.UserData.Username = username;
         }
 
         private static void SendReconnectChallengeSuccess(IClient client, BigInteger rand)
@@ -311,7 +309,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             Contract.Requires(rand != null);
             Contract.Requires(rand.ByteLength == 16);
 
-            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationReconnectChallenge, 34))
+            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationReconnectChallenge, 34))
             {
                 packet.Write((byte)AuthResult.Success);
                 packet.Write(rand, 16);
@@ -322,14 +320,14 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             }
         }
 
-        [AuthPacketHandler(GruntOpCodes.AuthenticationReconnectProof)]
+        [AuthPacketHandler(GruntOpCode.AuthenticationReconnectProof)]
         public static void HandleReconnectProof(IClient client, IncomingAuthPacket packet)
         {
             var r1Data = packet.ReadBytes(16);
             BigInteger r1 = new BigInteger(r1Data);
             var r2Data = packet.ReadBytes(20);
             BigInteger r2 = new BigInteger(r2Data);
-            var r3Data = packet.ReadBytes(20);
+            packet.ReadBytes(20); // r3Data
             var numKeys = packet.ReadByte();
             if (numKeys > 0)
             {
@@ -350,7 +348,7 @@ namespace Trinity.Encore.Services.Authentication.Handlers
             BigInteger rand = client.UserData.ReconnectRand;
 
             // TODO fetch this from the database (or some other persistent storage)
-            BigInteger sessionKey = null ?? new BigInteger(0);
+            //BigInteger sessionKey = null ?? new BigInteger(0);
             BigInteger hash = srpData.Hash(new HashDataBroker(Encoding.ASCII.GetBytes(username)), r1, rand);
             if (hash == r2)
             {
@@ -363,10 +361,11 @@ namespace Trinity.Encore.Services.Authentication.Handlers
 
         private static void SendReconnectProofSuccess(IClient client)
         {
-            using (var packet = new OutgoingAuthPacket(GruntOpCodes.AuthenticationReconnectProof, 3))
+            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationReconnectProof, 3))
             {
                 packet.Write((byte)AuthResult.Success);
                 packet.Write((short)0); // two unknown bytes
+                client.Send(packet);
             }
         }
     }

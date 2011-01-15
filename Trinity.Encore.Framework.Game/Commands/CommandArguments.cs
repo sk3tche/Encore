@@ -195,7 +195,7 @@ namespace Trinity.Encore.Framework.Game.Commands
         {
             var type = typeof(T);
             if (!type.IsEnum)
-                throw new ArgumentException();
+                throw new ArgumentException("Type T is not an enum.");
 
             T value;
             if (Enum.TryParse(NextString(), true, out value))

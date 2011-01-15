@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 
@@ -8,10 +9,10 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
     /// </summary>
     public sealed class SRPClient : SRPBase
     {
-        public SRPClient(string username, BigInteger credentials, SRPParameters parameters)
-            : base(username, credentials, parameters)
+        public SRPClient(string userName, BigInteger credentials, SRPParameters parameters)
+            : base(userName, credentials, parameters)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
+            Contract.Requires(!string.IsNullOrEmpty(userName));
             Contract.Requires(credentials != null);
             Contract.Requires(parameters != null);
         }
@@ -24,7 +25,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
         public override BigInteger PublicEphemeralValueA
         {
             get { return PublicA ?? (PublicA = Parameters.Generator.ModPow(SecretValue, Parameters.Modulus)); }
-            set { throw new CryptographicException("Client cannot manually set A."); }
+            set { throw new NotSupportedException("Client cannot manually set A."); }
         }
 
         public override BigInteger PublicEphemeralValueB

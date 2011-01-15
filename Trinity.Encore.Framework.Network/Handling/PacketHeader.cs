@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
+using Trinity.Encore.Framework.Core.Runtime;
 
 namespace Trinity.Encore.Framework.Network.Handling
 {
@@ -26,6 +27,31 @@ namespace Trinity.Encore.Framework.Network.Handling
 
             Length = length;
             OpCode = opCode;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PacketHeader && Equals((PacketHeader)obj);
+        }
+
+        public bool Equals(PacketHeader other)
+        {
+            return other.Length == Length && other.OpCode == OpCode;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCodeUtility.GetHashCode(Length, OpCode);
+        }
+
+        public static bool operator ==(PacketHeader a, PacketHeader b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(PacketHeader a, PacketHeader b)
+        {
+            return !(a == b);
         }
     }
 }

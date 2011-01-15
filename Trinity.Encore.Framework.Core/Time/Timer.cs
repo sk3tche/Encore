@@ -1,9 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 
 namespace Trinity.Encore.Framework.Core.Time
 {
-    public sealed class Timer : IComparable<Timer>
+    public sealed class Timer
     {
         public Timer()
         {
@@ -46,32 +47,5 @@ namespace Trinity.Encore.Framework.Core.Time
         /// Interval between firing the bound event.
         /// </summary>
         public long IntervalMilliseconds { get; set; }
-
-        public int CompareTo(Timer other)
-        {
-            if (other == null || this > other)
-                return 1;
-
-            if (this < other)
-                return -1;
-
-            return 0;
-        }
-
-        public static bool operator >(Timer a, Timer b)
-        {
-            Contract.Requires(a != null);
-            Contract.Requires(b != null);
-
-            return a.IntervalMilliseconds > b.IntervalMilliseconds;
-        }
-
-        public static bool operator <(Timer a, Timer b)
-        {
-            Contract.Requires(a != null);
-            Contract.Requires(b != null);
-
-            return a.IntervalMilliseconds < b.IntervalMilliseconds;
-        }
     }
 }

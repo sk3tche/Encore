@@ -22,19 +22,25 @@ namespace Trinity.Encore.Framework.Core.Time
         /// <summary>
         /// Gets the current Unix time.
         /// </summary>
-        public static long GetUnixTime()
+        public static long UnixTime
         {
-            var ts = (DateTime.UtcNow - UnixEpochStart);
-            return (long)ts.TotalSeconds;
+            get
+            {
+                var ts = (DateTime.UtcNow - UnixEpochStart);
+                return (long)ts.TotalSeconds;
+            }
         }
 
         /// <summary>
         /// Gets the current Unix time, in milliseconds.
         /// </summary>
-        public static long GetUnixTimeMilliseconds()
+        public static long UnixTimeMilliseconds
         {
-            var ts = (DateTime.UtcNow - UnixEpochStart);
-            return ts.ToMilliseconds();
+            get
+            {
+                var ts = (DateTime.UtcNow - UnixEpochStart);
+                return ts.ToMilliseconds();
+            }
         }
     }
 }

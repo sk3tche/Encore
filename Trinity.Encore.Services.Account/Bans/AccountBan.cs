@@ -20,7 +20,7 @@ namespace Trinity.Encore.Services.Account.Bans
         /// Deletes the AccountBan from the backing storage. This object is considered invalid once
         /// this method has been executed.
         /// </summary>
-        internal void Delete()
+        public void Delete()
         {
             Record.Delete();
             Account.Ban = null;

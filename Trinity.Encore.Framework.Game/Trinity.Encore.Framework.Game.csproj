@@ -141,7 +141,7 @@
     <Compile Include="IO\Formats\DBC\ArmorLocationRecord.cs" />
     <Compile Include="IO\Formats\DBC\AuctionHouseRecord.cs" />
     <Compile Include="IO\Formats\DBC\BankBagSlotPricesRecord.cs" />
-    <Compile Include="IO\Formats\DBC\BarberShopStyleRecord.cs" />
+    <Compile Include="IO\Formats\DBC\BarbershopStyleRecord.cs" />
     <Compile Include="IO\Formats\DBC\BattlemasterListRecord.cs" />
     <Compile Include="IO\Formats\DBC\CharacterStartOutfitRecord.cs" />
     <Compile Include="IO\Formats\DBC\GTSpellScalingRecord.cs" />
@@ -168,7 +168,7 @@
     <Compile Include="Mathematics\CatmullRomSpline.cs" />
     <Compile Include="Mathematics\MathExtensions.cs" />
     <Compile Include="Network\Encryption\ARC4Crypt.cs" />
-    <Compile Include="Network\GruntOpCodes.cs" />
+    <Compile Include="Network\GruntOpCode.cs" />
     <Compile Include="Network\Handling\AuthPacketHandlerAttribute.cs" />
     <Compile Include="Network\Handling\AuthPacketPropagator.cs" />
     <Compile Include="Network\Handling\PacketHandler.cs" />
@@ -183,7 +183,7 @@
     <Compile Include="Network\Transmission\OutgoingWorldPacket.cs" />
     <Compile Include="Partitioning\QuadTree.cs" />
     <Compile Include="Partitioning\QuadTreeNode.cs" />
-    <Compile Include="Network\WorldOpCodes.cs" />
+    <Compile Include="Network\WorldOpCode.cs" />
     <Compile Include="Security\AuthenticatedPermission.cs" />
     <Compile Include="Security\ConsolePermission.cs" />
     <Compile Include="Security\RootPermission.cs" />

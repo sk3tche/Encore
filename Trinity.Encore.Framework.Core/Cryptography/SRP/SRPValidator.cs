@@ -34,7 +34,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
                 var parameters = SRP.Parameters;
                 var modulusHash = SRP.Hash(parameters.Modulus);
                 var generatorHash = SRP.Hash(parameters.Generator);
-                var usernameHash = SRP.Hash(SRP.Username);
+                var usernameHash = SRP.Hash(SRP.UserName);
 
                 return SRP.Hash(modulusHash ^ generatorHash, usernameHash, SRP.Salt,
                     SRP.PublicEphemeralValueA, SRP.PublicEphemeralValueB, SRP.SessionKey);

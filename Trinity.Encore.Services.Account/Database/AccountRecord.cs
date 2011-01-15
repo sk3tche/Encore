@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using Trinity.Encore.Framework.Game;
 using Trinity.Encore.Framework.Game.Cryptography;

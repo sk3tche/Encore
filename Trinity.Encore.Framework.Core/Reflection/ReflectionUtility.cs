@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,6 +9,7 @@ namespace Trinity.Encore.Framework.Core.Reflection
 {
     public static class ReflectionUtility
     {
+        [SuppressMessage("Microsoft.Design", "CA1004", Justification = "The use of type parameter T is intended.")]
         public static int GetEnumValueCount<T>()
         {
             Contract.Assume(typeof(T).IsEnum);
@@ -32,6 +34,7 @@ namespace Trinity.Encore.Framework.Core.Reflection
             return body.Method;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1006", Justification = "T must be nested.")]
         public static ConstructorInfo ConstructorOf<T>(Expression<Func<T>> expr)
         {
             var body = expr.Body as NewExpression;
@@ -42,6 +45,7 @@ namespace Trinity.Encore.Framework.Core.Reflection
             return body.Constructor;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1006", Justification = "T must be nested.")]
         public static PropertyInfo PropertyOf<T>(Expression<Func<T>> expr)
         {
             var body = expr.Body as MemberExpression;
@@ -57,6 +61,7 @@ namespace Trinity.Encore.Framework.Core.Reflection
             return member;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1006", Justification = "T must be nested.")]
         public static FieldInfo FieldOf<T>(Expression<Func<T>> expr)
         {
             var body = expr.Body as MemberExpression;

@@ -41,10 +41,10 @@ namespace Trinity.Encore.Framework.Network
         {
             Contract.Requires(addr != null);
             Contract.Ensures(Contract.Result<int>() > 0);
+            Contract.Ensures(Contract.Result<int>() == addr.GetAddressBytes().Length);
 
             var length = addr.GetAddressBytes().Length;
             Contract.Assume(length > 0);
-
             return length;
         }
 

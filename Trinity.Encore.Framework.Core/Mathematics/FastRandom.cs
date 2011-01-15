@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Trinity.Encore.Framework.Core.Mathematics
 {
@@ -15,6 +16,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         /// Gets a FastRandom instance for the current thread.
         /// </summary>
         [ThreadStatic]
+        [SuppressMessage("Microsoft.Security", "CA2104", Justification = "This field has to be public and read-only.")]
         public static readonly FastRandom Current = new FastRandom();
 
         private const double RealUnitInt32 = 1.0d / (int.MaxValue + 1.0d);
@@ -93,7 +95,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         }
 
         /// <summary>
-        /// Generates a random int over the range 0 to upperBound - 1, and not including upperBound.
+        /// Generates a random int over the range 0 to maxValue - 1, and not including maxValue.
         /// </summary>
         /// <param name="maxValue">The upper bound.</param>
         public override int Next(int maxValue)
@@ -109,13 +111,13 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         }
 
         /// <summary>
-        /// Generates a random int over the range lowerBound to upperBound - 1, and not including upperBound.
+        /// Generates a random int over the range minValue to maxValue - 1, and not including maxValue.
         /// 
-        /// Note that upperBound must be >= lowerBound and lowerBound may be negative.
+        /// Note that maxValue must be >= minValue and minValue may be negative.
         /// </summary>
-        /// <param name="lowerBound">The lower bound.</param>
-        /// <param name="upperBound">The upper bound.</param>
-        public override int Next(int lowerBound, int upperBound)
+        /// <param name="minValue">The lower bound.</param>
+        /// <param name="maxValue">The upper bound.</param>
+        public override int Next(int minValue, int maxValue)
         {
             var t = (_x ^ (_x << 11));
             _x = _y;
@@ -123,20 +125,20 @@ namespace Trinity.Encore.Framework.Core.Mathematics
             _z = _w;
 
             // The explicit int cast before the first multiplication gives better performance.
-            var range = upperBound - lowerBound;
+            var range = maxValue - minValue;
             if (range < 0)
             {
                 // If range is < 0 then an overflow has occurred and we must resort to
                 // using long integer arithmetic instead (slower). We also must use
                 // all 32 bits of precision, instead of the normal 31, which again
                 // is slower.
-                return lowerBound + (int)((RealUnitUInt32 * (_w = (_w ^ (_w >> 19)) ^ (t ^ (t >> 8)))) *
-                    ((long)upperBound - lowerBound));
+                return minValue + (int)((RealUnitUInt32 * (_w = (_w ^ (_w >> 19)) ^ (t ^ (t >> 8)))) *
+                    ((long)maxValue - minValue));
             }
 
             // 31 bits of precision will suffice if range <= int.MaxValue. This allows us
             // to cast to an int and gain a little more performance.
-            return lowerBound + (int)((RealUnitInt32 * (int)(0x7fffffff & (_w = (_w ^ (_w >> 19)) ^
+            return minValue + (int)((RealUnitInt32 * (int)(0x7fffffff & (_w = (_w ^ (_w >> 19)) ^
                 (t ^ (t >> 8))))) * range);
         }
 
@@ -168,7 +170,7 @@ namespace Trinity.Encore.Framework.Core.Mathematics
         public override unsafe void NextBytes(byte[] buffer)
         {
             if (buffer.Length % 8 != 0)
-                throw new ArgumentException();
+                throw new ArgumentException("Buffer length must be divisible by 8.");
 
             var x = _x;
             var y = _y;

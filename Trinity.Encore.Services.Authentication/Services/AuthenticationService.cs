@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Trinity.Encore.Framework.Core.Configuration;
 using Trinity.Encore.Framework.Services.Authentication;
 
@@ -7,6 +8,7 @@ namespace Trinity.Encore.Services.Authentication.Services
     public sealed class AuthenticationService : IAuthenticationService
     {
         [ConfigurationVariable("ipcUri", "net.tcp://127.0.0.1:9501/Encore.AuthenticationService", Static = true)]
+        [SuppressMessage("Microsoft.Design", "CA1056", Justification = "This is a configuration variable.")]
         public static string IpcUri { get; set; }
 
         public AuthenticationData GetAuthenticationData(string accountName)

@@ -3,17 +3,18 @@ using System;
 namespace Trinity.Encore.Framework.Game.Network
 {
     [Serializable]
-    public enum GruntOpCodes : byte
+    public enum GruntOpCode : byte
     {
-        // Authentication:
+        #region Authentication
+
         /// <summary>
         /// CMD_AUTH_LOGON_CHALLENGE.
         /// </summary>
-        AuthenticationLogonChallenge = 0x00,
+        AuthenticationLogOnChallenge = 0x00,
         /// <summary>
         /// CMD_AUTH_LOGON_PROOF.
         /// </summary>
-        AuthenticationLogonProof = 0x01,
+        AuthenticationLogOnProof = 0x01,
         /// <summary>
         /// CMD_AUTH_RECONNECT_CHALLENGE.
         /// </summary>
@@ -23,13 +24,19 @@ namespace Trinity.Encore.Framework.Game.Network
         /// </summary>
         AuthenticationReconnectProof = 0x03,
 
-        // Realms:
+        #endregion
+
+        #region Realms
+
         /// <summary>
         /// CMD_REALM_LIST.
         /// </summary>
         RealmList = 0x10,
 
-        // Patching:
+        #endregion
+
+        #region Patching
+
         /// <summary>
         /// CMD_XFER_INITIATE.
         /// 
@@ -42,5 +49,7 @@ namespace Trinity.Encore.Framework.Game.Network
         /// Deprecated, but still exists.
         /// </summary>
         TransferData = 0x31,
+
+        #endregion
     }
 }

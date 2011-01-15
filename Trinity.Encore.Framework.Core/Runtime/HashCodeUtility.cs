@@ -128,7 +128,7 @@ namespace Trinity.Encore.Framework.Core.Runtime
             where T10 : IEquatable<T10>
         {
             return GetHashCode(t1) * GetHashCode(t2) * GetHashCode(t3) * GetHashCode(t4) * GetHashCode(t5) * GetHashCode(t6) *
-                GetHashCode(t7) * GetHashCode(t8) * GetHashCode(t9) * GetHashCode(t9);
+                GetHashCode(t7) * GetHashCode(t8) * GetHashCode(t9) * GetHashCode(t10);
         }
 
         public static int GetHashCode<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6,
@@ -146,7 +146,7 @@ namespace Trinity.Encore.Framework.Core.Runtime
             where T11 : IEquatable<T11>
         {
             return GetHashCode(t1) * GetHashCode(t2) * GetHashCode(t3) * GetHashCode(t4) * GetHashCode(t5) * GetHashCode(t6) *
-                GetHashCode(t7) * GetHashCode(t8) * GetHashCode(t9) * GetHashCode(t9) * GetHashCode(t11);
+                GetHashCode(t7) * GetHashCode(t8) * GetHashCode(t9) * GetHashCode(t10) * GetHashCode(t11);
         }
 
         public static int GetHashCode<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5,
@@ -165,7 +165,7 @@ namespace Trinity.Encore.Framework.Core.Runtime
             where T12 : IEquatable<T12>
         {
             return GetHashCode(t1) * GetHashCode(t2) * GetHashCode(t3) * GetHashCode(t4) * GetHashCode(t5) * GetHashCode(t6) *
-                GetHashCode(t7) * GetHashCode(t8) * GetHashCode(t9) * GetHashCode(t9) * GetHashCode(t11) * GetHashCode(t12);
+                GetHashCode(t7) * GetHashCode(t8) * GetHashCode(t9) * GetHashCode(t10) * GetHashCode(t11) * GetHashCode(t12);
         }
     }
 }

@@ -36,10 +36,10 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         ~ActorTimer()
         {
-            Dispose(false);
+            InternalDispose();
         }
 
-        private void Dispose(bool disposing)
+        private void InternalDispose()
         {
             _timer.Dispose();
         }
@@ -49,8 +49,8 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             if (IsDisposed)
                 return;
 
+            InternalDispose();
             IsDisposed = true;
-            Dispose(true);
             GC.SuppressFinalize(this);
         }
 

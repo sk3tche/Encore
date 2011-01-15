@@ -31,7 +31,11 @@ namespace Trinity.Encore.Framework.Game.Commands
 
         private CommandManager()
         {
-            LoadAllCommands();
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Contract.Assume(asm != null);
+                LoadCommands(asm);
+            }
         }
 
         public void AddCommand(Command cmd, params string[] triggers)
@@ -63,10 +67,13 @@ namespace Trinity.Encore.Framework.Game.Commands
                 return _commands.TryGet(trigger);
         }
 
-        public IDictionary<string, Command> GetCommands()
+        public IDictionary<string, Command> Commands
         {
-            lock (_commands)
-                return new Dictionary<string, Command>(_commands); // Cloning is the future!
+            get
+            {
+                lock (_commands)
+                    return new Dictionary<string, Command>(_commands); // Cloning is the future!
+            }
         }
 
         public void ExecuteCommand(string[] fullCmd, IPermissible sender)
@@ -81,7 +88,6 @@ namespace Trinity.Encore.Framework.Game.Commands
 
             var args = fullCmd.Skip(1);
 
-            Contract.Assume(cmd != null);
             var command = GetCommand(cmd);
             if (command == null)
             {
@@ -121,15 +127,6 @@ namespace Trinity.Encore.Framework.Game.Commands
                 // TODO: Make some interface for sending command responses to the sender.
                 if (!correctArgs)
                     _log.Warn("Invalid arguments to command: {0}", cmd);
-            }
-        }
-
-        private void LoadAllCommands()
-        {
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Contract.Assume(asm != null);
-                LoadCommands(asm);
             }
         }
 

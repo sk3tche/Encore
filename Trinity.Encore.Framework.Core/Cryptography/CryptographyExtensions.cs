@@ -24,7 +24,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             using (var buffer = new MemoryStream())
             {
                 foreach (var broker in brokers)
-                    buffer.Write(broker.RawData, 0, broker.Length);
+                    buffer.Write(broker.GetRawData(), 0, broker.Length);
 
                 buffer.Position = 0;
 

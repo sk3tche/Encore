@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Trinity.Encore.Framework.Core;
 using Trinity.Encore.Framework.Core.Collections;
 using Trinity.Encore.Framework.Core.Logging;
 using Trinity.Encore.Framework.Core.Reflection;
@@ -67,10 +69,10 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
                     throw new ReflectionException("Packet handler methods must only take 2 arguments.");
 
                 if (parameters[0].ParameterType != typeof(IClient))
-                    throw new ReflectionException("The first parameter on packet handler methods must be of type IClient.");
+                    throw new ReflectionException("The first parameter on packet handler methods must be of type {0}.".Interpolate(typeof(IClient)));
 
                 if (parameters[1].ParameterType != typeof(TPacket))
-                    throw new ReflectionException("The second parameter on packet handler methods must be of type TPacket.");
+                    throw new ReflectionException("The second parameter on packet handler methods must be of type {0}.".Interpolate(typeof(TPacket)));
 
                 var opCode = attr.OpCode;
                 var handler = new PacketHandler<TPacket>(opCode, method, attr.Permission ?? typeof(ConnectedPermission));
@@ -105,7 +107,7 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
             if (handler == null)
             {
                 client.Disconnect();
-                _log.Warn("Client {0} sent an unhandled opcode {1} - disconnected.", client, opCode.ToString("X8"));
+                _log.Warn("Client {0} sent an unhandled opcode {1} - disconnected.", client, opCode.ToString("X8", CultureInfo.InvariantCulture));
                 return;
             }
 
@@ -116,7 +118,7 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
             {
                 client.Disconnect();
                 _log.Warn("Client {0} sent opcode {1} which requires permission {2} - disconnected.", client,
-                    opCode.ToString("X8"), permission.Name);
+                    opCode.ToString("X8", CultureInfo.InvariantCulture), permission.Name);
                 return;
             }
 

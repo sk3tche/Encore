@@ -18,7 +18,9 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             {
                 Contract.Ensures(Contract.Result<ActorContext>() != null);
 
-                return _globalLazy.Value;
+                var ctx = _globalLazy.Value;
+                Contract.Assume(ctx != null);
+                return ctx;
             }
         }
 
@@ -56,10 +58,10 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         ~ActorContext()
         {
-            Dispose(false);
+            InternalDispose();
         }
 
-        private void Dispose(bool disposing)
+        private void InternalDispose()
         {
             foreach (var scheduler in _schedulers)
                 scheduler.Dispose();
@@ -70,7 +72,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             if (IsDisposed)
                 return;
 
-            Dispose(true);
+            InternalDispose();
             IsDisposed = true;
             GC.SuppressFinalize(this);
         }

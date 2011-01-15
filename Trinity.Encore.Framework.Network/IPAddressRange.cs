@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
@@ -13,18 +14,26 @@ namespace Trinity.Encore.Framework.Network
     {
         public AddressFamily Family { get; private set; }
 
-        public byte[] LowerBoundary { get; private set; }
+        private readonly byte[] _lowerBoundary;
 
-        public byte[] UpperBoundary { get; private set; }
+        private readonly byte[] _upperBoundary;
+
+        public IPAddress LowerBoundary { get; private set; }
+
+        public IPAddress UpperBoundary { get; private set; }
 
         [ContractInvariantMethod]
         private void Invariant()
         {
+            Contract.Invariant(_lowerBoundary != null);
+            Contract.Invariant(_lowerBoundary.Length >= 4);
+            Contract.Invariant(_upperBoundary != null);
+            Contract.Invariant(_upperBoundary.Length >= 4);
+            Contract.Invariant(_lowerBoundary.Length == _upperBoundary.Length);
             Contract.Invariant(LowerBoundary != null);
-            Contract.Invariant(LowerBoundary.Length >= 4);
             Contract.Invariant(UpperBoundary != null);
-            Contract.Invariant(UpperBoundary.Length >= 4);
-            Contract.Invariant(LowerBoundary.Length == UpperBoundary.Length);
+            Contract.Invariant(LowerBoundary.GetLength() == UpperBoundary.GetLength());
+            Contract.Invariant(LowerBoundary.AddressFamily == UpperBoundary.AddressFamily);
         }
 
         public IPAddressRange(IPAddress lower, IPAddress upper)
@@ -33,17 +42,19 @@ namespace Trinity.Encore.Framework.Network
             Contract.Requires(lower.GetLength() == upper.GetLength());
 
             Family = lower.AddressFamily;
-            LowerBoundary = lower.GetAddressBytes();
-            UpperBoundary = upper.GetAddressBytes();
+            _lowerBoundary = lower.GetAddressBytes();
+            _upperBoundary = upper.GetAddressBytes();
+            LowerBoundary = lower;
+            UpperBoundary = upper;
 
-            Contract.Assert(LowerBoundary.Length >= 4);
-            Contract.Assert(UpperBoundary.Length >= 4);
+            Contract.Assume(_lowerBoundary.Length >= 4);
+            Contract.Assert(_upperBoundary.Length >= 4);
         }
 
         public bool IsInRange(IPAddress address)
         {
             // Some people just have to be like that...
-            if (address.AddressFamily != Family || address.GetLength() != LowerBoundary.Length)
+            if (address.AddressFamily != Family || address.GetLength() != _lowerBoundary.Length)
                 return false;
 
             var bytes = address.GetAddressBytes();
@@ -51,11 +62,11 @@ namespace Trinity.Encore.Framework.Network
             var lowerBoundary = true;
             var upperBoundary = true;
 
-            for (var i = 0; i < LowerBoundary.Length && (lowerBoundary || upperBoundary); i++)
+            for (var i = 0; i < _lowerBoundary.Length && (lowerBoundary || upperBoundary); i++)
             {
                 var currentByte = bytes[i];
-                var lowerByte = LowerBoundary[i];
-                var upperByte = UpperBoundary[i];
+                var lowerByte = _lowerBoundary[i];
+                var upperByte = _upperBoundary[i];
 
                 if ((lowerBoundary && currentByte < lowerByte) || (upperBoundary && currentByte > upperByte))
                     return false;
@@ -77,13 +88,13 @@ namespace Trinity.Encore.Framework.Network
             if (other == null)
                 return false;
 
-            return other.Family == Family && other.LowerBoundary.SequenceEqual(LowerBoundary) && other.UpperBoundary.SequenceEqual(UpperBoundary);
+            return other.Family == Family && other._lowerBoundary.SequenceEqual(_lowerBoundary) && other._upperBoundary.SequenceEqual(_upperBoundary);
         }
 
         public override int GetHashCode()
         {
-            return unchecked(Family.GetHashCode() + UpperBoundary.Aggregate(0, (acc, b) => acc + HashCodeUtility.GetHashCode(b)) +
-                LowerBoundary.Aggregate(0, (acc, b) => acc + HashCodeUtility.GetHashCode(b)));
+            return unchecked(Family.GetHashCode() + _upperBoundary.Aggregate(0, (acc, b) => acc + HashCodeUtility.GetHashCode(b)) +
+                _lowerBoundary.Aggregate(0, (acc, b) => acc + HashCodeUtility.GetHashCode(b)));
         }
     }
 }

@@ -9,12 +9,7 @@ namespace Trinity.Encore.Services.Authentication.Realms
     /// </summary>
     public static class RealmList
     {
-        private static readonly Dictionary<string, Realm> realms;
-
-        static RealmList()
-        {
-            realms = new Dictionary<string, Realm>();
-        }
+        private static readonly Dictionary<string, Realm> _realms = new Dictionary<string, Realm>();
 
         /// <summary>
         /// Updates the given realm's data if it exists, otherwise add the realm.
@@ -23,10 +18,10 @@ namespace Trinity.Encore.Services.Authentication.Realms
         public static void UpdateRealm(Realm realm)
         {
             Contract.Requires(realm != null);
-            if (realms.Keys.Contains(realm.Name))
-                realms[realm.Name] = realm;
+            if (_realms.Keys.Contains(realm.Name))
+                _realms[realm.Name] = realm;
             else
-                realms.Add(realm.Name, realm);
+                _realms.Add(realm.Name, realm);
         }
 
         /// <summary>
@@ -37,7 +32,7 @@ namespace Trinity.Encore.Services.Authentication.Realms
         public static Realm GetRealm(string realmName)
         {
             Contract.Requires(realmName != null);
-            return realms[realmName];
+            return _realms[realmName];
         }
 
         /// <summary>
@@ -47,16 +42,16 @@ namespace Trinity.Encore.Services.Authentication.Realms
         public static void RemoveRealm(string realmName)
         {
             Contract.Requires(realmName != null);
-            realms.Remove(realmName);
+            _realms.Remove(realmName);
         }
 
         /// <summary>
         /// Gets a list of realm names.
         /// </summary>
-        /// <returns>A list of realm names that correspond to extant realms in this list.</returns>
-        public static List<string> GetRealmNames()
+        /// <value>A list of realm names that correspond to extant realms in this list.</value>
+        public static IEnumerable<string> RealmNames
         {
-            return realms.Keys.ToList();
+            get { return _realms.Keys.ToList(); }
         }
     }
 }

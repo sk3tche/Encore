@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using Trinity.Encore.Framework.Core.Security;
 
@@ -26,11 +27,14 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
             Dispose(false);
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1816", Justification = "Behavior intended.")]
+        [SuppressMessage("Microsoft.Design", "CA1063", Justification = "Behavior intended.")]
         public void Dispose()
         {
             Post(InternalDispose);
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA1816", Justification = "Behavior intended.")]
         private void InternalDispose()
         {
             if (IsDisposed)
@@ -58,6 +62,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
         }
     }
 
+    [SuppressMessage("Microsoft.Design", "CA1063", Justification = "IDisposable is part of IActor.")]
     public abstract class ChildActor<TThis> : ChildActor, IActor<TThis>
         where TThis : ChildActor<TThis>
     {

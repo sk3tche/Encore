@@ -94,6 +94,14 @@ namespace Trinity.Encore.Services.Account.Bans
             return ban;
         }
 
+        public void DeleteAccountBan(AccountBan ban)
+        {
+            Contract.Requires(ban != null);
+
+            ban.Delete();
+            RemoveAccountBan(ban);
+        }
+
         public IEnumerable<AccountBan> FindAccountBans(Func<AccountBan, bool> predicate)
         {
             Contract.Requires(predicate != null);
@@ -149,6 +157,14 @@ namespace Trinity.Encore.Services.Account.Bans
             return ban;
         }
 
+        public void DeleteIPBan(IPBan ban)
+        {
+            Contract.Requires(ban != null);
+
+            ban.Delete();
+            RemoveIPBan(ban);
+        }
+
         public IEnumerable<IPBan> FindIPBans(Func<IPBan, bool> predicate)
         {
             Contract.Requires(predicate != null);
@@ -191,7 +207,7 @@ namespace Trinity.Encore.Services.Account.Bans
             Contract.Requires(range != null);
             Contract.Ensures(Contract.Result<IPRangeBan>() != null);
 
-            var rec = new IPRangeBanRecord(range.LowerBoundary, range.UpperBoundary)
+            var rec = new IPRangeBanRecord(range.LowerBoundary.GetAddressBytes(), range.UpperBoundary.GetAddressBytes())
             {
                 Notes = notes,
                 Expiry = expiry,
@@ -202,6 +218,14 @@ namespace Trinity.Encore.Services.Account.Bans
             var ban = new IPRangeBan(rec);
             AddIPRangeBan(ban);
             return ban;
+        }
+
+        public void DeleteIPRangeBan(IPRangeBan ban)
+        {
+            Contract.Requires(ban != null);
+
+            ban.Delete();
+            RemoveIPRangeBan(ban);
         }
 
         public IEnumerable<IPRangeBan> FindIPRangeBans(Func<IPRangeBan, bool> predicate)

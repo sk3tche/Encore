@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using Trinity.Encore.Framework.Core.Security;
 using Trinity.Encore.Framework.Game.Commands;
@@ -23,7 +24,7 @@ namespace Trinity.Encore.Services.Account.Commands.Database
         {
             Console.WriteLine("Executing this command will permanently overwrite the entire database. Continue? (Y/N)");
 
-            var answer = Console.ReadLine().ToUpper().ToCharArray().SingleOrDefault();
+            var answer = Console.ReadLine().ToUpper(CultureInfo.InvariantCulture).ToCharArray().SingleOrDefault();
             if (answer == 'Y')
                 AccountApplication.Instance.AccountDbContext.Post(x => x.Schema.Create());
 

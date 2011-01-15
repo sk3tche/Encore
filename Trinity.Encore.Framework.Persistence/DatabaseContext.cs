@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using FluentNHibernate;
@@ -36,10 +37,13 @@ namespace Trinity.Encore.Framework.Persistence
         protected override void Dispose(bool disposing)
         {
             SessionFactory.Dispose();
+
+            base.Dispose(disposing);
         }
 
         #region Private methods
 
+        [SuppressMessage("Microsoft.Maintainability", "CA1502", Justification = "Switch statements are not that evil...")]
         private static IPersistenceConfigurer CreateConfiguration(DatabaseType type, string connString)
         {
             Contract.Requires(!string.IsNullOrEmpty(connString));

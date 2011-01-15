@@ -43,11 +43,11 @@ namespace Trinity.Encore.Services.Account.Accounts
             _log.Info("Loaded {0} accounts.", _accounts.Count);
         }
 
-        public static Password CreatePassword(string username, string password)
+        public static Password CreatePassword(string userName, string password)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
-            Contract.Requires(username.Length >= MinNameLength);
-            Contract.Requires(username.Length <= MaxNameLength);
+            Contract.Requires(!string.IsNullOrEmpty(userName));
+            Contract.Requires(userName.Length >= MinNameLength);
+            Contract.Requires(userName.Length <= MaxNameLength);
             Contract.Requires(!string.IsNullOrEmpty(password));
             Contract.Requires(password.Length >= MinPasswordLength);
             Contract.Requires(password.Length <= MaxPasswordLength);
@@ -57,10 +57,10 @@ namespace Trinity.Encore.Services.Account.Accounts
             byte[] sha256;
 
             using (var hash = new SHA1Managed())
-                sha1 = Password.GenerateCredentialsHash(hash, username, password, false);
+                sha1 = Password.GenerateCredentialsHash(hash, userName, password, false);
 
             using (var hash = new SHA256Managed())
-                sha256 = Password.GenerateCredentialsHash(hash, username, password, false);
+                sha256 = Password.GenerateCredentialsHash(hash, userName, password, false);
 
             Contract.Assume(sha1.Length == Password.SHA1Length);
             Contract.Assume(sha256.Length == Password.SHA256Length);
@@ -83,25 +83,25 @@ namespace Trinity.Encore.Services.Account.Accounts
                 _accounts.Remove(acc);
         }
 
-        public Account CreateAccount(string username, string password, string email, ClientBoxLevel boxLevel = ClientBoxLevel.Cataclysm,
+        public Account CreateAccount(string userName, string password, string email, ClientBoxLevel boxLevel = ClientBoxLevel.Cataclysm,
             ClientLocale locale = ClientLocale.English)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
-            Contract.Requires(username.Length >= MinNameLength);
-            Contract.Requires(username.Length <= MaxNameLength);
+            Contract.Requires(!string.IsNullOrEmpty(userName));
+            Contract.Requires(userName.Length >= MinNameLength);
+            Contract.Requires(userName.Length <= MaxNameLength);
             Contract.Requires(!string.IsNullOrEmpty(password));
             Contract.Requires(password.Length >= MinPasswordLength);
             Contract.Requires(password.Length <= MaxPasswordLength);
             Contract.Requires(!string.IsNullOrEmpty(email));
             Contract.Ensures(Contract.Result<Account>() != null);
 
-            var pw = CreatePassword(username, password);
+            var pw = CreatePassword(userName, password);
             var sha1 = pw.SHA1Password.GetBytes();
             Contract.Assume(sha1.Length == Password.SHA1Length);
             var sha256 = pw.SHA256Password.GetBytes();
             Contract.Assume(sha256.Length == Password.SHA256Length);
 
-            var rec = new AccountRecord(username, email, sha1, sha256, boxLevel, locale);
+            var rec = new AccountRecord(userName, email, sha1, sha256, boxLevel, locale);
             rec.Create();
 
             var acc = new Account(rec);

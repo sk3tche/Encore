@@ -14,7 +14,7 @@ namespace Trinity.Encore.Framework.Game.Commands.System
 
         public override bool Execute(CommandArguments args, IPermissible sender)
         {
-            var commands = CommandManager.Instance.GetCommands();
+            var commands = CommandManager.Instance.Commands;
 
             foreach (var cmd in commands.Values.Distinct())
             {

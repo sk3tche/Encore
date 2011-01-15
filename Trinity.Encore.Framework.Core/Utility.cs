@@ -23,7 +23,7 @@ namespace Trinity.Encore.Framework.Core
                 if (c == '_')
                     c = space;
 
-                c = upperCase ? char.ToUpper(c) : char.ToLower(c);
+                c = upperCase ? char.ToUpper(c, CultureInfo.InvariantCulture) : char.ToLower(c, CultureInfo.InvariantCulture);
 
                 if (c == space)
                 {

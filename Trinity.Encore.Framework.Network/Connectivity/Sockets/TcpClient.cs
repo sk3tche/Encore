@@ -388,6 +388,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity.Sockets
             }
 
             SocketAsyncEventArgsPool.Release(_eventArgs);
+            Server.RemoveClient(this);
         }
 
         public IPacketCrypt Crypt { get; set; }

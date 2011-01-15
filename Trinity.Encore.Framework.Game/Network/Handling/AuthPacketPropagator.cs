@@ -24,7 +24,7 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
 
         protected override IncomingAuthPacket CreatePacket(int opCode, byte[] payload, int length)
         {
-            return new IncomingAuthPacket((GruntOpCodes)opCode, payload, length);
+            return new IncomingAuthPacket((GruntOpCode)opCode, payload, length);
         }
     }
 }

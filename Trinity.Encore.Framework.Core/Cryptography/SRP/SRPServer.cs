@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 
@@ -8,10 +9,10 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
     /// </summary>
     public sealed class SRPServer : SRPBase
     {
-        public SRPServer(string username, BigInteger credentials, SRPParameters parameters)
-            : base(username, credentials, parameters)
+        public SRPServer(string userName, BigInteger credentials, SRPParameters parameters)
+            : base(userName, credentials, parameters)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
+            Contract.Requires(!string.IsNullOrEmpty(userName));
             Contract.Requires(credentials != null);
             Contract.Requires(parameters != null);
         }
@@ -66,7 +67,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
 
                 return PublicB;
             }
-            set { throw new CryptographicException("Server cannot manually set B."); }
+            set { throw new NotSupportedException("Server cannot manually set B."); }
         }
 
         public override BigInteger SessionKeyRaw

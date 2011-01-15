@@ -13,20 +13,20 @@ namespace Trinity.Encore.Framework.Services.Account
     public interface IAccountService
     {
         [OperationContract]
-        AccountData GetAccount(string username);
+        AccountData GetAccount(string userName);
 
         [OperationContract]
         void CreateAccount(string accountName, string password, string emailAddress, ClientLocale locale = ClientLocale.English,
             ClientBoxLevel boxLevel = ClientBoxLevel.Cataclysm);
 
         [OperationContract]
-        void SetLastIP(string username, IPAddress ip);
+        void SetLastIP(string userName, IPAddress ip);
 
         [OperationContract]
-        void SetLastLogin(string username, DateTime time);
+        void SetLastLogin(string userName, DateTime time);
 
         [OperationContract]
-        AccountBanData GetAccountBan(string username);
+        AccountBanData GetAccountBan(string userName);
 
         [OperationContract]
         void CreateAccountBan(string accountName, string notes = null, DateTime? expiry = null);
@@ -47,9 +47,9 @@ namespace Trinity.Encore.Framework.Services.Account
     [ContractClassFor(typeof(IAccountService))]
     public abstract class AccountServiceContracts : IAccountService
     {
-        public AccountData GetAccount(string username)
+        public AccountData GetAccount(string userName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
+            Contract.Requires(!string.IsNullOrEmpty(userName));
 
             return null;
         }
@@ -61,19 +61,19 @@ namespace Trinity.Encore.Framework.Services.Account
             Contract.Requires(!string.IsNullOrEmpty(emailAddress));
         }
 
-        public void SetLastIP(string username, IPAddress ip)
+        public void SetLastIP(string userName, IPAddress ip)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
+            Contract.Requires(!string.IsNullOrEmpty(userName));
         }
 
-        public void SetLastLogin(string username, DateTime time)
+        public void SetLastLogin(string userName, DateTime time)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
+            Contract.Requires(!string.IsNullOrEmpty(userName));
         }
 
-        public AccountBanData GetAccountBan(string username)
+        public AccountBanData GetAccountBan(string userName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
+            Contract.Requires(!string.IsNullOrEmpty(userName));
 
             return null;
         }

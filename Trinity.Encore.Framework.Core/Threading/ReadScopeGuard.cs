@@ -28,7 +28,7 @@ namespace Trinity.Encore.Framework.Core.Threading
 
         ~ReadScopeGuard()
         {
-            Dispose(false);
+            InternalDispose();
         }
 
         public void Guard()
@@ -36,7 +36,7 @@ namespace Trinity.Encore.Framework.Core.Threading
             _lock.EnterReadLock();
         }
 
-        public void Dispose(bool disposing)
+        private void InternalDispose()
         {
             _lock.ExitReadLock();
         }
@@ -46,8 +46,8 @@ namespace Trinity.Encore.Framework.Core.Threading
             if (IsDisposed)
                 return;
 
+            InternalDispose();
             IsDisposed = true;
-            Dispose(true);
             GC.SuppressFinalize(this);
         }
 

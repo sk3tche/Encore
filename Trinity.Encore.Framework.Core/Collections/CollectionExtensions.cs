@@ -180,6 +180,7 @@ namespace Trinity.Encore.Framework.Core.Collections
         public static IEnumerable<T> Force<T>(this IEnumerable<T> source)
         {
             Contract.Requires(source != null);
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
 
             var enumer = source.GetEnumerator();
             while (enumer.MoveNext())

@@ -13,25 +13,30 @@ namespace Trinity.Encore.Framework.Core.Cryptography
         {
             Contract.Requires(data != null);
 
-            RawData = data;
+            _rawData = data;
         }
 
         [ContractInvariantMethod]
         private void Invariant()
         {
-            Contract.Invariant(RawData != null);
+            Contract.Invariant(_rawData != null);
         }
 
-        public byte[] RawData { get; private set; }
+        private readonly byte[] _rawData;
+
+        public byte[] GetRawData()
+        {
+            return (byte[])_rawData.Clone();
+        }
 
         public int Length
         {
             get
             {
                 Contract.Ensures(Contract.Result<int>() >= 0);
-                Contract.Ensures(Contract.Result<int>() == RawData.Length);
+                Contract.Ensures(Contract.Result<int>() == _rawData.Length);
 
-                return RawData.Length;
+                return _rawData.Length;
             }
         }
 
@@ -66,12 +71,12 @@ namespace Trinity.Encore.Framework.Core.Cryptography
 
         public bool Equals(HashDataBroker other)
         {
-            return other != null && RawData.SequenceEqual(other.RawData);
+            return other != null && _rawData.SequenceEqual(other._rawData);
         }
 
         public override int GetHashCode()
         {
-            return unchecked(RawData.Aggregate(0, (acc, b) => acc + HashCodeUtility.GetHashCode(b)));
+            return unchecked(_rawData.Aggregate(0, (acc, b) => acc + HashCodeUtility.GetHashCode(b)));
         }
 
         public static bool operator ==(HashDataBroker a, HashDataBroker b)

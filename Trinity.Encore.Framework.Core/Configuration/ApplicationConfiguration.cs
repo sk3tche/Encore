@@ -140,7 +140,7 @@ namespace Trinity.Encore.Framework.Core.Configuration
             }
         }
 
-        private object ConvertType(KeyValueConfigurationElement val, Type type)
+        private static object ConvertType(KeyValueConfigurationElement val, Type type)
         {
             Contract.Requires(val != null);
             Contract.Requires(val.Value != null);

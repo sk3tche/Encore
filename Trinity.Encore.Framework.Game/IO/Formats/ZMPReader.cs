@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
@@ -9,6 +10,8 @@ namespace Trinity.Encore.Framework.Game.IO.Formats
         public ZMPReader(string fileName)
             : base(fileName, Encoding.ASCII)
         {
+            Contract.Requires(!string.IsNullOrEmpty(fileName));
+
             Data = new int[128, 128];
         }
 

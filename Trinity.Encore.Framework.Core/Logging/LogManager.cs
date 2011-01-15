@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Text;
 using Trinity.Encore.Framework.Core.Configuration;
 using Trinity.Encore.Framework.Core.Logging.Loggers;
@@ -15,7 +16,11 @@ namespace Trinity.Encore.Framework.Core.Logging
     /// </summary>
     public static class LogManager
     {
-        private static readonly List<ILogger> _loggers = new List<ILogger>();
+        private static readonly List<ILogger> _loggers = new List<ILogger>
+        {
+            // TODO: Make this more customizable.
+            new ConsoleLogger()
+        };
 
         private static readonly StringBuilder _builder = new StringBuilder();
 
@@ -32,12 +37,6 @@ namespace Trinity.Encore.Framework.Core.Logging
         /// </summary>
         [ConfigurationVariable("ConsoleLogTimestamp", true)]
         public static bool UseConsoleTimestamp { get; set; }
-
-        static LogManager()
-        {
-            // TODO: Make this more customizable.
-            AddLogger(new ConsoleLogger());
-        }
 
         public static void AddLogger(ILogger logger)
         {
@@ -56,7 +55,7 @@ namespace Trinity.Encore.Framework.Core.Logging
             _builder.Append("[");
             _builder.Append(source);
             _builder.Append("] ");
-            _builder.AppendFormat(logString, args);
+            _builder.AppendFormat(CultureInfo.InvariantCulture, logString, args);
 
             var result = _builder.ToString();
             Contract.Assume(!string.IsNullOrEmpty(result));

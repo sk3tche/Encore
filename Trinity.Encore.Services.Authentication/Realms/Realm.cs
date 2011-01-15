@@ -60,16 +60,5 @@
             PopulationLevel = populationLevel;
             TimeZone = timeZone;
         }
-
-        /// <summary>
-        /// Gets the number of characters that the given user has on this realm.
-        /// </summary>
-        /// <param name="username">The user's username - likely stored in client.SRP.Username</param>
-        /// <returns>However many characters this user has on this realm.</returns>
-        public byte GetNumChars(string username)
-        {
-            // TODO implement
-            return (byte)0;
-        }
     }
 }

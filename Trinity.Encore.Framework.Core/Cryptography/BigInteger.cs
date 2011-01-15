@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using Trinity.Encore.Framework.Core.Mathematics;
 
@@ -127,7 +128,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
 
             var multiplier = new BigInteger(1);
             var result = new BigInteger();
-            value = value.ToUpper().Trim();
+            value = value.ToUpper(CultureInfo.InvariantCulture).Trim();
             var limit = 0;
 
             Contract.Assume(value.Length > 0);
@@ -1490,7 +1491,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             Contract.Ensures(Contract.Result<BigInteger>() != null);
 
             if ((exp._data[MaxLength - 1] & 0x80000000) != 0)
-                throw new ArgumentException();
+                throw new ArgumentException("ModPow overflow.");
 
             var resultNum = (BigInteger)1;
             BigInteger tempNum;
@@ -1971,9 +1972,9 @@ namespace Trinity.Encore.Framework.Core.Cryptography
             return ToString().GetHashCode();
         }
 
-        public override bool Equals(object o)
+        public override bool Equals(object obj)
         {
-            return Equals(o as BigInteger);
+            return Equals(obj as BigInteger);
         }
 
         public bool Equals(BigInteger other)

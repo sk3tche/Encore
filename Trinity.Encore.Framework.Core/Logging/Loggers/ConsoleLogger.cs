@@ -11,7 +11,7 @@ namespace Trinity.Encore.Framework.Core.Logging.Loggers
     {
         private readonly StringBuilder _builder = new StringBuilder();
 
-        private ConsoleColor? GetColor(ConsoleColor color)
+        private static ConsoleColor? GetColor(ConsoleColor color)
         {
             if (LogManager.UseConsoleColors)
                 return color;

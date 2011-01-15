@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.ServiceModel;
 using Trinity.Encore.Framework.Core.Exceptions;
@@ -21,6 +22,7 @@ namespace Trinity.Encore.Framework.Game.Services
             Contract.Invariant(_creator != null);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1006", Justification = "Must be nested.")]
         public IpcDevice(Func<DuplexServiceClient<TService, TCallback>> clientCreator)
         {
             Contract.Requires(clientCreator != null);
@@ -30,13 +32,13 @@ namespace Trinity.Encore.Framework.Game.Services
             _client.Open();
         }
 
-        public void Call(Action<TService> call)
+        public void Call(Action<TService> action)
         {
-            Contract.Requires(call != null);
+            Contract.Requires(action != null);
 
             try
             {
-                call(_client.ServiceChannel);
+                action(_client.ServiceChannel);
             }
             catch (Exception ex)
             {
@@ -75,9 +77,6 @@ namespace Trinity.Encore.Framework.Game.Services
 
         protected override void Dispose(bool disposing)
         {
-            if (IsDisposed)
-                return;
-
             if (_client != null)
                 Disconnect();
 

@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Threading;
 
@@ -64,13 +65,16 @@ namespace Trinity.Encore.Framework.Game.Identification
         /// <summary>
         /// Gets a collection containing all IDs currently queued for recycling.
         /// </summary>
-        public IEnumerable<long> GetRecycledIds()
+        public IEnumerable<long> RecycledIds
         {
-            Contract.Ensures(Contract.Result<IEnumerable<long>>() != null);
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<long>>() != null);
 
-            var arr = _recycledIds.ToArray();
-            Contract.Assume(arr != null);
-            return arr;
+                var arr = _recycledIds.ToArray();
+                Contract.Assume(arr != null);
+                return arr;
+            }
         }
     }
 }

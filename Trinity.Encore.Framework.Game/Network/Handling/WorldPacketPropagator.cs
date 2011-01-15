@@ -29,7 +29,7 @@ namespace Trinity.Encore.Framework.Game.Network.Handling
 
         protected override IncomingWorldPacket CreatePacket(int opCode, byte[] payload, int length)
         {
-            return new IncomingWorldPacket((WorldOpCodes)opCode, payload, length);
+            return new IncomingWorldPacket((WorldOpCode)opCode, payload, length);
         }
     }
 }

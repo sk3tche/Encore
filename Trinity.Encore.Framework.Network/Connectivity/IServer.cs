@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Net;
 
@@ -13,6 +14,7 @@ namespace Trinity.Encore.Framework.Network.Connectivity
 
         void Start(EndPoint ep);
 
+        [SuppressMessage("Microsoft.Naming", "CA1716", Justification = "Proper name.")]
         void Stop();
 
         event EventHandler<ConnectionEventArgs> ClientConnected;

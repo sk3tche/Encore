@@ -28,7 +28,7 @@ namespace Trinity.Encore.Framework.Core.Threading
 
         ~WriteScopeGuard()
         {
-            Dispose(false);
+            InternalDispose();
         }
 
         public void Guard()
@@ -36,19 +36,19 @@ namespace Trinity.Encore.Framework.Core.Threading
             _lock.EnterWriteLock();
         }
 
-        public void Dispose()
+        private void InternalDispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _lock.ExitWriteLock();
         }
 
-        public void Dispose(bool disposing)
+        public void Dispose()
         {
             if (IsDisposed)
                 return;
 
-            _lock.ExitWriteLock();
+            InternalDispose();
             IsDisposed = true;
+            GC.SuppressFinalize(this);
         }
 
         public bool IsDisposed { get; private set; }

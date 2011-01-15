@@ -5,7 +5,7 @@ namespace Trinity.Encore.Framework.Game.Network.Transmission
 {
     public sealed class IncomingWorldPacket : IncomingPacket
     {
-        public IncomingWorldPacket(WorldOpCodes opCode, byte[] data, int length)
+        public IncomingWorldPacket(WorldOpCode opCode, byte[] data, int length)
             : base(opCode, data, length, Defines.Protocol.Encoding)
         {
             Contract.Requires(data != null);
@@ -13,9 +13,9 @@ namespace Trinity.Encore.Framework.Game.Network.Transmission
             Contract.Requires(length <= data.Length);
         }
 
-        public new WorldOpCodes OpCode
+        public new WorldOpCode OpCode
         {
-            get { return (WorldOpCodes)base.OpCode; }
+            get { return (WorldOpCode)base.OpCode; }
         }
     }
 }

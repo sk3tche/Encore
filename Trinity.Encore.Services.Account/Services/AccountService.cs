@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.ServiceModel;
 using Trinity.Encore.Framework.Core.Configuration;
@@ -15,42 +16,43 @@ namespace Trinity.Encore.Services.Account.Services
     public sealed class AccountService : IAccountService
     {
         [ConfigurationVariable("ipcUri", "net.tcp://127.0.0.1:9501/Encore.AccountService", Static = true)]
+        [SuppressMessage("Microsoft.Design", "CA1056", Justification = "This is a configuration variable.")]
         public static string IpcUri { get; set; }
 
-        public AccountData GetAccount(string username)
+        public AccountData GetAccount(string userName)
         {
-            var acc = AccountManager.Instance.FindAccount(x => x.Name == username);
+            var acc = AccountManager.Instance.FindAccount(x => x.Name == userName);
             return acc != null ? acc.Serialize() : null;
         }
 
         public void CreateAccount(string accountName, string password, string emailAddress, ClientLocale locale, ClientBoxLevel boxLevel)
         {
             if (accountName.Length < AccountManager.MinNameLength || accountName.Length > AccountManager.MaxNameLength)
-                throw new ArgumentException();
+                throw new ArgumentException("Account name has an invalid length.");
 
             if (password.Length < AccountManager.MinPasswordLength || password.Length > AccountManager.MaxPasswordLength)
-                throw new ArgumentException();
+                throw new ArgumentException("Password has an invalid length.");
 
             AccountManager.Instance.CreateAccount(accountName, password, emailAddress, boxLevel, locale);
         }
 
-        public void SetLastIP(string username, IPAddress ip)
+        public void SetLastIP(string userName, IPAddress ip)
         {
-            var acc = AccountManager.Instance.FindAccount(x => x.Name == username);
+            var acc = AccountManager.Instance.FindAccount(x => x.Name == userName);
             if (acc != null)
                 acc.LastIP = ip;
         }
 
-        public void SetLastLogin(string username, DateTime time)
+        public void SetLastLogin(string userName, DateTime time)
         {
-            var acc = AccountManager.Instance.FindAccount(x => x.Name == username);
+            var acc = AccountManager.Instance.FindAccount(x => x.Name == userName);
             if (acc != null)
                 acc.LastLogin = time;
         }
 
-        public AccountBanData GetAccountBan(string username)
+        public AccountBanData GetAccountBan(string userName)
         {
-            var ban = BanManager.Instance.FindAccountBan(x => x.Account.Name == username);
+            var ban = BanManager.Instance.FindAccountBan(x => x.Account.Name == userName);
             return ban != null ? ban.Serialize() : null;
         }
 
@@ -58,8 +60,11 @@ namespace Trinity.Encore.Services.Account.Services
         {
             var acc = AccountManager.Instance.FindAccount(x => x.Name == accountName);
 
-            if (acc == null || acc.Ban != null)
-                throw new ArgumentException();
+            if (acc == null)
+                throw new ArgumentException("No account found.");
+
+            if (acc.Ban != null)
+                throw new ArgumentException("Account ban already exists.");
 
             BanManager.Instance.CreateAccountBan(acc, notes, expiry);
         }
@@ -75,7 +80,7 @@ namespace Trinity.Encore.Services.Account.Services
             var ban = BanManager.Instance.FindIPBan(x => x.Equals(address));
 
             if (ban != null)
-                throw new ArgumentException();
+                throw new ArgumentException("IP ban already exists.");
 
             BanManager.Instance.CreateIPBan(address, notes, expiry);
         }
@@ -91,7 +96,7 @@ namespace Trinity.Encore.Services.Account.Services
             var ban = BanManager.Instance.FindIPRangeBan(x => x.Range.Equals(range));
 
             if (ban != null)
-                throw new ArgumentException();
+                throw new ArgumentException("IP range ban already exists.");
 
             BanManager.Instance.CreateIPRangeBan(range, notes, expiry);
         }

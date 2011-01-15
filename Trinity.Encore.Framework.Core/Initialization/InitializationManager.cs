@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
@@ -18,6 +19,7 @@ namespace Trinity.Encore.Framework.Core.Initialization
 
         private static readonly LogProxy _log = new LogProxy("InitializationManager");
 
+        [SuppressMessage("Microsoft.Performance", "CA1810", Justification = "Initialization must be done in a static constructor.")]
         static InitializationManager()
         {
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
@@ -48,24 +50,24 @@ namespace Trinity.Encore.Framework.Core.Initialization
                         continue;
 
                     if (type.IsGenericType)
-                        throw new ReflectionException("Initializable method is within a generic type.");
+                        throw new ReflectionException("Initialization method is within a generic type.");
 
                     if (!method.IsPublic)
-                        throw new ReflectionException("Initializable method must be public.");
+                        throw new ReflectionException("Initialization method must be public.");
 
                     if (method.IsGenericMethod)
-                        throw new ReflectionException("Initializable method must not be generic.");
+                        throw new ReflectionException("Initialization method must not be generic.");
 
                     if (method.ReturnType != typeof(void))
-                        throw new ReflectionException("Invalid initializable method return type.");
+                        throw new ReflectionException("Invalid initialization method return type.");
 
                     var param = method.GetParameters();
 
                     if (param.Length != 1)
-                        throw new ReflectionException("Invalid initializable method parameter count.");
+                        throw new ReflectionException("Invalid initialization method parameter count.");
 
                     if (param[0].ParameterType != typeof(bool))
-                        throw new ReflectionException("Invalid initializable method parameter type.");
+                        throw new ReflectionException("Invalid initialization method parameter type.");
 
                     var init = new InitializationInfo(attr, method);
 

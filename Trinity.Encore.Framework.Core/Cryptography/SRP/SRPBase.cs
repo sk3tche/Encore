@@ -1,4 +1,5 @@
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Security.Cryptography;
 
 namespace Trinity.Encore.Framework.Core.Cryptography.SRP
@@ -10,18 +11,18 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
     [ContractClass(typeof(SRPBaseContracts))]
     public abstract class SRPBase
     {
-        protected SRPBase(string username, BigInteger credentials, SRPParameters parameters)
+        protected SRPBase(string userName, BigInteger credentials, SRPParameters parameters)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
+            Contract.Requires(!string.IsNullOrEmpty(userName));
             Contract.Requires(credentials != null);
             Contract.Requires(parameters != null);
 
             Parameters = parameters;
 
             if (!parameters.CaseSensitive)
-                username = username.ToUpper();
+                userName = userName.ToUpper(CultureInfo.InvariantCulture);
 
-            Username = username;
+            UserName = userName;
             Credentials = credentials;
             SecretValue = parameters.RandomNumber(parameters.KeyLength);
             Validator = new SRPValidator(this);
@@ -33,7 +34,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
             Contract.Invariant(Parameters != null);
             Contract.Invariant(Validator != null);
             Contract.Invariant(SecretValue != null);
-            Contract.Invariant(Username != null);
+            Contract.Invariant(UserName != null);
             Contract.Invariant(Credentials != null);
         }
 
@@ -74,7 +75,7 @@ namespace Trinity.Encore.Framework.Core.Cryptography.SRP
         /// <summary>
         /// I in the specification. This should be set before calculations happen.
         /// </summary>
-        public string Username { get; private set; }
+        public string UserName { get; private set; }
 
         /// <summary>
         /// This is p in the specification, although not plain text.

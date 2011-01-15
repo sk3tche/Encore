@@ -146,7 +146,7 @@ namespace Trinity.Encore.Framework.Core.Reflection
 
             var type = typeof(T);
             if (!type.IsAssignableTo(typeof(Delegate)))
-                throw new ArgumentException();
+                throw new ArgumentException("Type T is not a delegate type.");
 
             return Delegate.CreateDelegate(type, method) as T;
         }

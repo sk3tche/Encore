@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
 using Trinity.Encore.Framework.Game.IO;
 
@@ -90,7 +92,7 @@ namespace Trinity.Encore.Tools.Patcher
 
             var ofs = (long)offset;
 
-            Console.WriteLine("{0}: Offset found at: 0x{1}", patchName, ofs.ToString("X8"));
+            Console.WriteLine("{0}: Offset found at: 0x{1}", patchName, ofs.ToString("X8", CultureInfo.InvariantCulture));
 
             try
             {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using Trinity.Encore.Framework.Core.Runtime;
@@ -20,7 +21,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
 
         private readonly AutoResetEvent _event = new AutoResetEvent(false);
 
-        private readonly ManualResetEventSlim processedEvent = new ManualResetEventSlim(true);
+        private readonly ManualResetEventSlim _processedEvent = new ManualResetEventSlim(true);
 
         private static volatile int _threadCount;
 
@@ -87,7 +88,7 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
                 _event.WaitOne();
                 TakeNewActors();
 
-                processedEvent.Reset();
+                _processedEvent.Reset();
 
                 while (_actors.Count > 0)
                 {
@@ -108,21 +109,21 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
                     Thread.Yield();
                 }
 
-                processedEvent.Set();
+                _processedEvent.Set();
             }
         }
 
         ~Scheduler()
         {
-            Dispose(false);
+            InternalDispose();
         }
 
-        private void Dispose(bool disposing)
+        private void InternalDispose()
         {
             _running = false;
 
             // Wait for processing to stop.
-            processedEvent.Wait();
+            _processedEvent.Wait();
 
             // Notify all actors that we're shutting down.
             var evnt = Disposed;
@@ -130,12 +131,14 @@ namespace Trinity.Encore.Framework.Core.Threading.Actors
                 evnt(this, EventArgs.Empty);
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "_event must not be disposed.")]
+        [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "_processedEvent must not be disposed.")]
         public void Dispose()
         {
             if (IsDisposed)
                 return;
 
-            Dispose(true);
+            InternalDispose();
             IsDisposed = true;
             GC.SuppressFinalize(this);
         }
