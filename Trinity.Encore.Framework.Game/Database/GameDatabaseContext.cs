@@ -17,7 +17,7 @@ namespace Trinity.Encore.Framework.Game.Database
             Contract.Requires(!string.IsNullOrEmpty(connString));
         }
 
-        protected override IEnumerable<IConvention> CreateConventions()
+        protected override sealed IEnumerable<IConvention> CreateConventions()
         {
             yield return new IdConvention();
             yield return new IdGenerationConvention();

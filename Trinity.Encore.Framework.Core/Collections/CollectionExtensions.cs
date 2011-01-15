@@ -145,7 +145,7 @@ namespace Trinity.Encore.Framework.Core.Collections
             Contract.Requires(source != null);
             Contract.Requires(desiredLength >= 0);
             Contract.Requires(generator != null);
-            // FIXME: Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+            Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
 
             var count = 0;
             foreach (var item in source)
