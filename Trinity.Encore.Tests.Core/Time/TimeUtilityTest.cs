@@ -1,6 +1,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Time;
+using Trinity.Core.Time;
 
 namespace Trinity.Encore.Tests.Core.Time
 {

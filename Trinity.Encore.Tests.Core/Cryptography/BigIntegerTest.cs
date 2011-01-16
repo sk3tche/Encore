@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Cryptography;
+using Trinity.Core.Cryptography;
 
 namespace Trinity.Encore.Tests.Core.Cryptography
 {

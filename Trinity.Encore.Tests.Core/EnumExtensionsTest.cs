@@ -1,6 +1,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core;
+using Trinity.Core;
 
 namespace Trinity.Encore.Tests.Core
 {

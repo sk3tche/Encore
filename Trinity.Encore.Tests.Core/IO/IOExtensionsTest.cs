@@ -1,7 +1,7 @@
 using System.IO;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.IO;
+using Trinity.Core.IO;
 
 namespace Trinity.Encore.Tests.Core.IO
 {

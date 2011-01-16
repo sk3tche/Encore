@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{75E460A8-17CF-4005-813A-E1C2E714BDEA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Trinity.Encore.Game</RootNamespace>
+    <AssemblyName>Trinity.Encore.Game</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CONTRACTS_FULL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>True</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <NoWarn>1591,3009,3016,3015</NoWarn>
+    <DocumentationFile>..\bin\Debug\Trinity.Encore.Game.xml</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\Analysis\Relaxed.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>3009,3016,3015</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Shared\Trinity.Encore.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentNHibernate, Version=1.2.0.694, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+      <HintPath>..\Dependencies\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\Dependencies\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.GameMath">
+      <HintPath>..\Dependencies\Mono.GameMath.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\Dependencies\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\Dependencies\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Achievements\AchievementFaction.cs" />
+    <Compile Include="Achievements\AchievementFlags.cs" />
+    <Compile Include="ClientBoxLevel.cs" />
+    <Compile Include="ClientLocale.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandArguments.cs" />
+    <Compile Include="Commands\CommandAttribute.cs" />
+    <Compile Include="Commands\CommandConsole.cs" />
+    <Compile Include="Commands\CommandManager.cs" />
+    <Compile Include="Commands\System\ExitCommand.cs" />
+    <Compile Include="Commands\System\HelpCommand.cs" />
+    <Compile Include="Cryptography\Password.cs" />
+    <Compile Include="Cryptography\WowAuthParameters.cs" />
+    <Compile Include="Cryptography\SC2AuthParameters.cs" />
+    <Compile Include="Database\Conventions\Properties\PropertyNullableConvention.cs" />
+    <Compile Include="Database\Conventions\Properties\PropertyUpdateConvention.cs" />
+    <Compile Include="Database\Conventions\Relationships\RelationshipCascadeConvention.cs" />
+    <Compile Include="Database\Conventions\Relationships\RelationshipFetchConvention.cs" />
+    <Compile Include="Database\Conventions\Identity\IdGenerationConvention.cs" />
+    <Compile Include="Database\Conventions\Naming\ClassNameConvention.cs" />
+    <Compile Include="Database\Conventions\Naming\ForeignKeyNameConvention.cs" />
+    <Compile Include="Database\Conventions\Identity\IdConvention.cs" />
+    <Compile Include="Database\Conventions\Relationships\ReferenceConvention.cs" />
+    <Compile Include="Database\Conventions\Relationships\RelationshipLazyLoadConvention.cs" />
+    <Compile Include="Database\GameDatabaseContext.cs" />
+    <Compile Include="Defines.cs" />
+    <Compile Include="Entities\EntityGuid.cs" />
+    <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\IWorldEntity.cs" />
+    <Compile Include="Identification\IdGenerator.cs" />
+    <Compile Include="IO\BinaryFileReader.cs" />
+    <Compile Include="IO\Formats\ADBReader.cs" />
+    <Compile Include="IO\ClientDbException.cs" />
+    <Compile Include="IO\ClientDbReader.cs" />
+    <Compile Include="IO\Formats\ADTReader.cs" />
+    <Compile Include="IO\Formats\BLPReader.cs" />
+    <Compile Include="IO\Formats\BLSReader.cs" />
+    <Compile Include="IO\Formats\DB2Reader.cs" />
+    <Compile Include="IO\Formats\DBCReader.cs" />
+    <Compile Include="IO\Formats\DBC\AchievementCategoryRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AchievementCriteriaRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AchievementRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AreaGroupRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AreaPOIRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AreaTableRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AreaTriggerRecord.cs" />
+    <Compile Include="IO\Formats\DBC\ArmorLocationRecord.cs" />
+    <Compile Include="IO\Formats\DBC\AuctionHouseRecord.cs" />
+    <Compile Include="IO\Formats\DBC\BankBagSlotPricesRecord.cs" />
+    <Compile Include="IO\Formats\DBC\BarbershopStyleRecord.cs" />
+    <Compile Include="IO\Formats\DBC\BattlemasterListRecord.cs" />
+    <Compile Include="IO\Formats\DBC\CharacterStartOutfitRecord.cs" />
+    <Compile Include="IO\Formats\DBC\GTSpellScalingRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellCastTimeRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellEffectRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellLevelRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellRecord.cs" />
+    <Compile Include="IO\Formats\DBC\SpellScalingRecord.cs" />
+    <Compile Include="IO\Formats\M2Reader.cs" />
+    <Compile Include="IO\Formats\MPQReader.cs" />
+    <Compile Include="IO\Formats\PTCHReader.cs" />
+    <Compile Include="IO\Formats\TBLReader.cs" />
+    <Compile Include="IO\Formats\TEXReader.cs" />
+    <Compile Include="IO\Formats\WDLReader.cs" />
+    <Compile Include="IO\Formats\WDTReader.cs" />
+    <Compile Include="IO\Formats\WMOReader.cs" />
+    <Compile Include="IO\Formats\ZMPReader.cs" />
+    <Compile Include="IO\IClientDbRecord.cs" />
+    <Compile Include="IO\IOExtensions.cs" />
+    <Compile Include="IO\PatternScanner.cs" />
+    <Compile Include="IO\SkipPropertyAttribute.cs" />
+    <Compile Include="IO\StringReadMode.cs" />
+    <Compile Include="IO\Formats\WDBReader.cs" />
+    <Compile Include="Mathematics\CatmullRomSpline.cs" />
+    <Compile Include="Mathematics\MathExtensions.cs" />
+    <Compile Include="Network\Encryption\ARC4Crypt.cs" />
+    <Compile Include="Network\GruntOpCode.cs" />
+    <Compile Include="Network\Handling\AuthPacketHandlerAttribute.cs" />
+    <Compile Include="Network\Handling\AuthPacketPropagator.cs" />
+    <Compile Include="Network\Handling\PacketHandler.cs" />
+    <Compile Include="Network\Handling\PacketHandlerAttribute.cs" />
+    <Compile Include="Network\Handling\PacketPropagatorBase.cs" />
+    <Compile Include="Network\Handling\WorldPacketHandlerAttribute.cs" />
+    <Compile Include="Network\Handling\WorldPacketPropagator.cs" />
+    <Compile Include="Network\NetworkApplication.cs" />
+    <Compile Include="Network\Transmission\IncomingAuthPacket.cs" />
+    <Compile Include="Network\Transmission\IncomingWorldPacket.cs" />
+    <Compile Include="Network\Transmission\OutgoingAuthPacket.cs" />
+    <Compile Include="Network\Transmission\OutgoingWorldPacket.cs" />
+    <Compile Include="Partitioning\QuadTree.cs" />
+    <Compile Include="Partitioning\QuadTreeNode.cs" />
+    <Compile Include="Network\WorldOpCode.cs" />
+    <Compile Include="Security\AuthenticatedPermission.cs" />
+    <Compile Include="Security\ConsolePermission.cs" />
+    <Compile Include="Security\RootPermission.cs" />
+    <Compile Include="Services\IpcDevice.cs" />
+    <Compile Include="Terrain\AreaFlags.cs" />
+    <Compile Include="Threading\ActorApplication.cs" />
+    <Compile Include="Threading\SingletonActor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trinity.Core\Trinity.Core.csproj">
+      <Project>{78BB9167-FD73-451C-B007-0718DBDF0E14}</Project>
+      <Name>Trinity.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Network\Trinity.Network.csproj">
+      <Project>{8D03D581-BE90-4714-AC46-50758EE1DD95}</Project>
+      <Name>Trinity.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Persistence\Trinity.Persistence.csproj">
+      <Project>{F119B4B3-4520-4ED5-ABEF-189D1A61C7C5}</Project>
+      <Name>Trinity.Persistence</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IO\Formats\ADB\" />
+    <Folder Include="IO\Formats\DB2\" />
+    <Folder Include="IO\Formats\WDB\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Shared\Trinity.Encore.snk">
+      <Link>Trinity.Encore.snk</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

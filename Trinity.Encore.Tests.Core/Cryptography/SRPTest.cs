@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Cryptography.SRP;
-using Trinity.Encore.Framework.Game.Cryptography;
+using Trinity.Core.Cryptography.SRP;
+using Trinity.Encore.Game.Cryptography;
 
 namespace Trinity.Encore.Tests.Core.Cryptography
 {

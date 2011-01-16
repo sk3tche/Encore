@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Reflection;
+using Trinity.Core.Reflection;
 
 namespace Trinity.Encore.Tests.Core.Reflection
 {

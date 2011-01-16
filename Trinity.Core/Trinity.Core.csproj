@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{78BB9167-FD73-451C-B007-0718DBDF0E14}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Trinity.Core</RootNamespace>
+    <AssemblyName>Trinity.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CONTRACTS_FULL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>True</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <NoWarn>1591,3009,3016,3015</NoWarn>
+    <DocumentationFile>..\bin\Debug\Trinity.Core.xml</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\Analysis\Relaxed.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>3009,3016,3015</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Shared\Trinity.Encore.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>..\Dependencies\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\Dependencies\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Checksums\Adler32.cs" />
+    <Compile Include="Checksums\CRC32.cs" />
+    <Compile Include="Checksums\IChecksum.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Configuration\ApplicationConfiguration.cs" />
+    <Compile Include="Configuration\ConfigurationInfo.cs" />
+    <Compile Include="Configuration\ConfigurationVariableAttribute.cs" />
+    <Compile Include="Cryptography\BigInteger.cs" />
+    <Compile Include="Cryptography\CryptographyExtensions.cs" />
+    <Compile Include="Cryptography\HashDataBroker.cs" />
+    <Compile Include="Cryptography\SRP\SRPBase.cs" />
+    <Compile Include="Cryptography\SRP\SRPClient.cs" />
+    <Compile Include="Cryptography\SRP\SRPParameters.cs" />
+    <Compile Include="Cryptography\SRP\SRPServer.cs" />
+    <Compile Include="Cryptography\SRP\SRPValidator.cs" />
+    <Compile Include="Cryptography\SRP\SRPVersion.cs" />
+    <Compile Include="Dynamic\Bag.cs" />
+    <Compile Include="Exceptions\ExceptionEventArgs.cs" />
+    <Compile Include="Exceptions\ExceptionInfo.cs" />
+    <Compile Include="Exceptions\ExceptionManager.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Initialization\InitializationAttribute.cs" />
+    <Compile Include="Initialization\InitializationInfo.cs" />
+    <Compile Include="Initialization\InitializationManager.cs" />
+    <Compile Include="Initialization\InitializationPass.cs" />
+    <Compile Include="Runtime\HashCodeUtility.cs" />
+    <Compile Include="Runtime\InteropServices\Union.cs" />
+    <Compile Include="IO\IOExtensions.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Loggers\ConsoleLogger.cs" />
+    <Compile Include="Logging\LogManager.cs" />
+    <Compile Include="Logging\LogProxy.cs" />
+    <Compile Include="Mathematics\FastMath.cs" />
+    <Compile Include="Mathematics\FastRandom.cs" />
+    <Compile Include="Mathematics\MathExtensions.cs" />
+    <Compile Include="Reflection\ReflectionException.cs" />
+    <Compile Include="Reflection\ReflectionExtensions.cs" />
+    <Compile Include="Reflection\ReflectionUtility.cs" />
+    <Compile Include="Runtime\IDisposableResource.cs" />
+    <Compile Include="Runtime\RuntimeExtensions.cs" />
+    <Compile Include="Runtime\Serialization\IMemberwiseSerializable.cs" />
+    <Compile Include="Security\IPermissible.cs" />
+    <Compile Include="Security\Permission.cs" />
+    <Compile Include="Security\RestrictedObject.cs" />
+    <Compile Include="Services\DuplexServiceClient.cs" />
+    <Compile Include="Services\ServiceClient.cs" />
+    <Compile Include="Services\ServiceHost.cs" />
+    <Compile Include="Threading\Actors\Actor.cs" />
+    <Compile Include="Threading\Actors\ActorContext.cs" />
+    <Compile Include="Threading\Actors\ActorTimer.cs" />
+    <Compile Include="Threading\Actors\ChildActor.cs" />
+    <Compile Include="Threading\Actors\IActor.cs" />
+    <Compile Include="Threading\Actors\Operation.cs" />
+    <Compile Include="Threading\Actors\Scheduler.cs" />
+    <Compile Include="Threading\ReadScopeGuard.cs" />
+    <Compile Include="Threading\ReadWriteLock.cs" />
+    <Compile Include="Threading\WriteScopeGuard.cs" />
+    <Compile Include="Time\ITimerHolder.cs" />
+    <Compile Include="Time\TimeExtensions.cs" />
+    <Compile Include="Time\Timer.cs" />
+    <Compile Include="Time\TimeUtility.cs" />
+    <Compile Include="Utility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Shared\Trinity.Encore.snk">
+      <Link>Trinity.Encore.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

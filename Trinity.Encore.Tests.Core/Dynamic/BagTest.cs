@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Dynamic;
+using Trinity.Core.Dynamic;
 
 namespace Trinity.Encore.Tests.Core.Dynamic
 {

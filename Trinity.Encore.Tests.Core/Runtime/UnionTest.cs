@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Runtime.InteropServices;
+using Trinity.Core.Runtime.InteropServices;
 
 namespace Trinity.Encore.Tests.Core.Runtime
 {

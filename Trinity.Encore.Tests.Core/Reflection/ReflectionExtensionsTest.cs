@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Reflection;
+using Trinity.Core.Reflection;
 
 namespace Trinity.Encore.Tests.Core.Reflection
 {

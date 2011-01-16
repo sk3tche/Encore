@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Collections;
+using Trinity.Core.Collections;
 
 namespace Trinity.Encore.Tests.Core.Collections
 {

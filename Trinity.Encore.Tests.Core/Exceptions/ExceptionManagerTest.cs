@@ -1,6 +1,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Exceptions;
+using Trinity.Core.Exceptions;
 
 namespace Trinity.Encore.Tests.Core.Exceptions
 {

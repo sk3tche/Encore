@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Checksums;
+using Trinity.Core.Checksums;
 
 namespace Trinity.Encore.Tests.Core.Checksums
 {

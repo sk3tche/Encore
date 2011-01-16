@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Trinity.Encore.Framework.Core.Mathematics;
+using Trinity.Core.Mathematics;
 
 namespace Trinity.Encore.Tests.Core.Mathematics
 {
