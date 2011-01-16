@@ -211,8 +211,7 @@ namespace Trinity.Persistence
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="item">The entity to add.</param>
-        public void Add<T>(T item)
-            where T : class
+        public void Add(object item)
         {
             Contract.Requires(item != null);
 
@@ -231,8 +230,7 @@ namespace Trinity.Persistence
         /// </summary>
         /// <typeparam name="T">The type of the entities.</typeparam>
         /// <param name="itemsToSave">The entities to add.</param>
-        public void Add<T>(IEnumerable<T> itemsToSave)
-            where T : class
+        public void Add(IEnumerable<object> itemsToSave)
         {
             Contract.Requires(itemsToSave != null);
 
@@ -253,8 +251,7 @@ namespace Trinity.Persistence
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="item">The entity to update.</param>
-        public void Update<T>(T item)
-            where T : class
+        public void Update(object item)
         {
             Contract.Requires(item != null);
 
@@ -273,8 +270,7 @@ namespace Trinity.Persistence
         /// </summary>
         /// <typeparam name="T">The type of the entities.</typeparam>
         /// <param name="itemsToSave">The entities to update.</param>
-        public void Update<T>(IEnumerable<T> itemsToSave)
-            where T : class
+        public void Update(IEnumerable<object> itemsToSave)
         {
             Contract.Requires(itemsToSave != null);
 
@@ -295,8 +291,7 @@ namespace Trinity.Persistence
         /// </summary>
         /// <typeparam name="T">The type of entity.</typeparam>
         /// <param name="item">The entity to delete.</param>
-        public void Delete<T>(T item)
-            where T : class
+        public void Delete(object item)
         {
             Contract.Requires(item != null);
 
@@ -315,8 +310,7 @@ namespace Trinity.Persistence
         /// </summary>
         /// <typeparam name="T">The type of the entities.</typeparam>
         /// <param name="itemsToDelete">The entities to delete.</param>
-        public void Delete<T>(IEnumerable<T> itemsToDelete)
-            where T : class
+        public void Delete(IEnumerable<object> itemsToDelete)
         {
             Contract.Requires(itemsToDelete != null);
 
