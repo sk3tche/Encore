@@ -22,7 +22,6 @@ namespace Trinity.Encore.Game.Services
             Contract.Invariant(_creator != null);
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1006", Justification = "Must be nested.")]
         public IpcDevice(Func<DuplexServiceClient<TService, TCallback>> clientCreator)
         {
             Contract.Requires(clientCreator != null);

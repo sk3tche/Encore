@@ -9,7 +9,7 @@ using Trinity.Network;
 namespace Trinity.Encore.Services.Account
 {
     [ContractClass(typeof(AccountServiceContracts))]
-    [ServiceContract(ProtectionLevel = ProtectionLevel.None, SessionMode = SessionMode.Required)]
+    [ServiceContract(ProtectionLevel = ProtectionLevel.None, SessionMode = SessionMode.Required, CallbackContract = typeof(IEmptyCallbackService))]
     public interface IAccountService
     {
         [OperationContract]

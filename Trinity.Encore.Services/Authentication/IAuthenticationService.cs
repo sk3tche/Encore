@@ -5,7 +5,7 @@ using System.ServiceModel;
 namespace Trinity.Encore.Services.Authentication
 {
     [ContractClass(typeof(AuthenticationServiceContracts))]
-    [ServiceContract(ProtectionLevel = ProtectionLevel.None, SessionMode = SessionMode.Required)]
+    [ServiceContract(ProtectionLevel = ProtectionLevel.None, SessionMode = SessionMode.Required, CallbackContract = typeof(IEmptyCallbackService))]
     public interface IAuthenticationService
     {
         [OperationContract]

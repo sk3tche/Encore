@@ -15,7 +15,7 @@ namespace Trinity.Encore.AccountService.Services
         ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public sealed class AccountService : IAccountService
     {
-        [ConfigurationVariable("ipcUri", "net.tcp://127.0.0.1:9501/Encore.AccountService", Static = true)]
+        [ConfigurationVariable("IpcUri", "net.tcp://127.0.0.1:9501", Static = true)]
         [SuppressMessage("Microsoft.Design", "CA1056", Justification = "This is a configuration variable.")]
         public static string IpcUri { get; set; }
 

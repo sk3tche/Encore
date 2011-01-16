@@ -34,7 +34,6 @@ namespace Trinity.Core.Reflection
             return body.Method;
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1006", Justification = "T must be nested.")]
         public static ConstructorInfo ConstructorOf<T>(Expression<Func<T>> expr)
         {
             var body = expr.Body as NewExpression;
@@ -45,7 +44,6 @@ namespace Trinity.Core.Reflection
             return body.Constructor;
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1006", Justification = "T must be nested.")]
         public static PropertyInfo PropertyOf<T>(Expression<Func<T>> expr)
         {
             var body = expr.Body as MemberExpression;
@@ -61,7 +59,6 @@ namespace Trinity.Core.Reflection
             return member;
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1006", Justification = "T must be nested.")]
         public static FieldInfo FieldOf<T>(Expression<Func<T>> expr)
         {
             var body = expr.Body as MemberExpression;
