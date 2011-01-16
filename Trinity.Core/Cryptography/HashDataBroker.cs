@@ -26,6 +26,8 @@ namespace Trinity.Core.Cryptography
 
         public byte[] GetRawData()
         {
+            Contract.Ensures(Contract.Result<byte[]>().Length == Length);
+
             return (byte[])_rawData.Clone();
         }
 
@@ -71,6 +73,8 @@ namespace Trinity.Core.Cryptography
 
         public bool Equals(HashDataBroker other)
         {
+            Contract.Assume(other._rawData != null);
+
             return other != null && _rawData.SequenceEqual(other._rawData);
         }
 

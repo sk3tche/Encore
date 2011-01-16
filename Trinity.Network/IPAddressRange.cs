@@ -87,6 +87,8 @@ namespace Trinity.Network
             if (other == null)
                 return false;
 
+            Contract.Assume(other._lowerBoundary != null);
+            Contract.Assume(other._upperBoundary != null);
             return other.Family == Family && other._lowerBoundary.SequenceEqual(_lowerBoundary) && other._upperBoundary.SequenceEqual(_upperBoundary);
         }
 

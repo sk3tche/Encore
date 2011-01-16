@@ -11,7 +11,7 @@ namespace Trinity.Encore.Game.IO.Formats.DBC
 
         public string Name { get; set; }
 
-        public string Unk { get; set; }
+        public string Unknown { get; set; }
 
         public float CostMultiplier { get; set; }
 

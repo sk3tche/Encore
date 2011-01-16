@@ -103,81 +103,63 @@ namespace Trinity.Encore.Game.IO
             Contract.Requires(reader != null);
             Contract.Ensures(Contract.Result<object>() != null);
 
-            var type = prop.PropertyType;
-
-            if (type.IsEnum)
-            {
-                object value;
-                var enumUnderlying = type.GetEnumUnderlyingType();
-
-                switch (Type.GetTypeCode(enumUnderlying))
-                {
-                    case TypeCode.SByte:
-                        value = Enum.ToObject(type, reader.ReadSByte());
-                        break;
-                    case TypeCode.Byte:
-                        value = Enum.ToObject(type, reader.ReadByte());
-                        break;
-                    case TypeCode.Int16:
-                        value = Enum.ToObject(type, reader.ReadInt16());
-                        break;
-                    case TypeCode.UInt16:
-                        value = Enum.ToObject(type, reader.ReadUInt16());
-                        break;
-                    case TypeCode.Int32:
-                        value = Enum.ToObject(type, reader.ReadInt32());
-                        break;
-                    case TypeCode.UInt32:
-                        value = Enum.ToObject(type, reader.ReadUInt32());
-                        break;
-                    case TypeCode.Int64:
-                        value = Enum.ToObject(type, reader.ReadInt64());
-                        break;
-                    case TypeCode.UInt64:
-                        value = Enum.ToObject(type, reader.ReadUInt64());
-                        break;
-                    default:
-                        throw new ClientDbException("Bad underlying enum type {0} encountered.".Interpolate(enumUnderlying));
-                }
-
-                Contract.Assume(value != null);
-                return value;
-            }
+            var realAttr = prop.GetCustomAttribute<RealTypeAttribute>();
+            var type = realAttr != null ? realAttr.RealType : prop.PropertyType;
+            object value;
 
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Object:
-                    var value = Activator.CreateInstance(type);
+                    value = Activator.CreateInstance(type);
                     ReadValuesToClass(value, reader);
-                    return value;
+                    break;
                 case TypeCode.Boolean:
-                    return reader.ReadBoolean();
+                    value = reader.ReadBoolean();
+                    break;
                 case TypeCode.SByte:
-                    return reader.ReadSByte();
+                    value = reader.ReadSByte();
+                    break;
                 case TypeCode.Byte:
-                    return reader.ReadByte();
+                    value = reader.ReadByte();
+                    break;
                 case TypeCode.Int16:
-                    return reader.ReadInt16();
+                    value = reader.ReadInt16();
+                    break;
                 case TypeCode.UInt16:
-                    return reader.ReadUInt16();
+                    value = reader.ReadUInt16();
+                    break;
                 case TypeCode.Int32:
-                    return reader.ReadInt32();
+                    value = reader.ReadInt32();
+                    break;
                 case TypeCode.UInt32:
-                    return reader.ReadUInt32();
+                    value = reader.ReadUInt32();
+                    break;
                 case TypeCode.Int64:
-                    return reader.ReadInt64();
+                    value = reader.ReadInt64();
+                    break;
                 case TypeCode.UInt64:
-                    return reader.ReadUInt64();
+                    value = reader.ReadUInt64();
+                    break;
                 case TypeCode.Single:
-                    return reader.ReadSingle();
+                    value = reader.ReadSingle();
+                    break;
                 case TypeCode.String:
-                    var str = StringReadMode == StringReadMode.Direct ?
-                        reader.ReadCString() : StringTable[reader.ReadInt32()];
+                    var str = StringReadMode == StringReadMode.Direct ? reader.ReadCString() : StringTable[reader.ReadInt32()];
                     Contract.Assume(str != null);
-                    return str;
+                    value = str;
+                    break;
+                default:
+                    throw new ClientDbException("Unsupported field type {0} encountered.".Interpolate(type));
             }
 
-            throw new ClientDbException("Unsupported field type {0} encountered.".Interpolate(type));
+            // If we have a RealTypeAttribute, cast the value into the type used in code.
+            if (realAttr != null)
+                value = value.Cast(prop.PropertyType);
+
+            if (type.IsEnum)
+                value = Enum.ToObject(type, value);
+
+            return value;
         }
 
         protected void ReadStringTable(BinaryReader reader)

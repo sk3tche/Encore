@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using JetBrains.Annotations;
+using Trinity.Core.Reflection;
 
 namespace Trinity.Core
 {
@@ -32,16 +33,22 @@ namespace Trinity.Core
             Contract.Requires(newType != null);
             Contract.Ensures(Contract.Result<object>() != null);
 
+            object value;
+
             if (newType.IsEnum)
             {
                 var str = obj as string;
 
-                var enumValue = str != null ? Enum.Parse(newType, str) : Enum.ToObject(newType, obj);
-                Contract.Assume(enumValue != null);
-                return enumValue;
+                value = str != null ? Enum.Parse(newType, str) : Enum.ToObject(newType, obj);
+                Contract.Assume(value != null);
+                return value;
             }
 
-            var value = Convert.ChangeType(obj, newType);
+            var type = obj.GetType();
+            if (type.IsInteger() && newType == typeof(bool)) // Hack for boolean values.
+                return !obj.Equals(0.Cast(type)) ? true : false;
+
+            value = Convert.ChangeType(obj, newType);
             Contract.Assume(value != null);
             return value;
         }

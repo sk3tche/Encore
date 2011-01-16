@@ -6,6 +6,7 @@ namespace Trinity.Encore.Game.IO.Formats.DBC
     public sealed class BankBagSlotPricesRecord : IClientDbRecord
     {
         public int Id { get; set; }
+
         public int Price { get; set; }
     }
 }
