@@ -209,7 +209,6 @@ namespace Trinity.Persistence
         /// <summary>
         /// Adds an entity and its persistent children to the database.
         /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="item">The entity to add.</param>
         public void Add(object item)
         {
@@ -228,7 +227,6 @@ namespace Trinity.Persistence
         /// <summary>
         /// Adds a list of entities and their persistent children to the database.
         /// </summary>
-        /// <typeparam name="T">The type of the entities.</typeparam>
         /// <param name="itemsToSave">The entities to add.</param>
         public void Add(IEnumerable<object> itemsToSave)
         {
@@ -249,7 +247,6 @@ namespace Trinity.Persistence
         /// <summary>
         /// Saves the updated values of an entity and its persistent children to the database.
         /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="item">The entity to update.</param>
         public void Update(object item)
         {
@@ -268,7 +265,6 @@ namespace Trinity.Persistence
         /// <summary>
         /// Saves the updated values of a list of entities and their persistent children to the database.
         /// </summary>
-        /// <typeparam name="T">The type of the entities.</typeparam>
         /// <param name="itemsToSave">The entities to update.</param>
         public void Update(IEnumerable<object> itemsToSave)
         {
@@ -289,7 +285,6 @@ namespace Trinity.Persistence
         /// <summary>
         /// Deletes an entity from the database.
         /// </summary>
-        /// <typeparam name="T">The type of entity.</typeparam>
         /// <param name="item">The entity to delete.</param>
         public void Delete(object item)
         {
@@ -308,7 +303,6 @@ namespace Trinity.Persistence
         /// <summary>
         /// Deletes a list of entities from the database.
         /// </summary>
-        /// <typeparam name="T">The type of the entities.</typeparam>
         /// <param name="itemsToDelete">The entities to delete.</param>
         public void Delete(IEnumerable<object> itemsToDelete)
         {
