@@ -6,7 +6,6 @@
 *.vs10x
 *.pdb
 *.pidb
-*.tssettings
 *.userprefs
 bin/*
 TestResults/*
