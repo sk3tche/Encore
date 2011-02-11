@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Trinity.Core.IO;
@@ -5,6 +6,7 @@ using Trinity.Encore.AuthenticationService.Realms;
 using Trinity.Encore.Game.Network;
 using Trinity.Encore.Game.Network.Handling;
 using Trinity.Encore.Game.Network.Transmission;
+using Trinity.Encore.Game.Realms;
 using Trinity.Network.Connectivity;
 
 namespace Trinity.Encore.AuthenticationService.Handlers
@@ -19,51 +21,51 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 
             packet.ReadInt32(); // unk, ignored
 
-            var realmNames = RealmList.RealmNames;
+            RealmManager.Instance.PostAsync(mgr => SendRealmList(client, mgr.GetRealms(x => true)));
+        }
 
-            var realmsSize = 0;
-            foreach (string realmName in realmNames)
-            {
-                Realm realm = RealmList.GetRealm(realmName);
-                realmsSize += 3;
-                // +1 for the null character at the end
-                realmsSize += realm.Name.Length + 1;
-                realmsSize += realm.Address.Length + 1;
-                realmsSize += 6;
-                if ((realm.Color & 4) != 0)
-                    realmsSize += 5;
-            }
+        public static void SendRealmList(IClient client, IEnumerable<Realm> realms)
+        {
+            Contract.Requires(client != null);
+            Contract.Requires(realms != null);
 
-            using (var outPacket = new OutgoingAuthPacket(GruntOpCode.RealmList, 10 + realmsSize))
+            var count = realms.Count();
+
+            using (var packet = new OutgoingAuthPacket(GruntOpCode.RealmList,
+                2 + 4 + 4 + count * (1 + 1 + 1 + 4 + 4 + 1 + 1))) // estimated packet size
             {
-                outPacket.Write((short)(6 + realmsSize + 2));
-                outPacket.Write(0);
-                outPacket.Write((short)realmNames.Count());
-                foreach (string realmName in realmNames)
+                packet.Write((ushort)0); // packet length
+                packet.Write(0); // unk
+                packet.Write((ushort)count);
+
+                foreach (var realm in realms)
                 {
-                    Realm realm = RealmList.GetRealm(realmName);
-                    var numChars = 0; //Realm.GetNumChars(/*client.UserData.SRP.Username*/);
+                    packet.Write((byte)realm.Type);
+                    packet.Write((byte)realm.Status);
+                    packet.Write((byte)realm.Flags);
+                    packet.WriteCString(realm.Name);
+                    packet.WriteCString(realm.Location.ToString());
+                    packet.Write(realm.PopulationLevel);
+                    packet.Write(0); // number of characters the client has on this realm
+                    packet.Write((byte)realm.Category);
+                    packet.Write((byte)0x2C); // probably site id
 
-                    outPacket.Write(realm.Icon);
-                    outPacket.Write(realm.Lock);
-                    outPacket.Write(realm.Color);
-                    outPacket.WriteCString(realm.Name);
-                    outPacket.WriteCString(realm.Address);
-                    outPacket.Write(realm.PopulationLevel);
-                    outPacket.Write(numChars);
-                    outPacket.Write(realm.TimeZone);
-                    outPacket.Write((byte)0x2C);
-                    if ((realm.Color & 0x04) != 0)
-                    {
-                        outPacket.Write((byte)0);
-                        outPacket.Write((byte)0);
-                        outPacket.Write((byte)0);
-                        outPacket.Write((short)0);
-                    }
+                    if (!realm.Flags.HasFlag(RealmFlags.SpecifyBuild))
+                        continue;
+
+                    packet.Write((byte)realm.ClientVersion.Major);
+                    packet.Write((byte)realm.ClientVersion.Minor);
+                    packet.Write((byte)realm.ClientVersion.Build);
+                    packet.Write((ushort)realm.ClientVersion.Revision);
                 }
-                outPacket.Write((byte)0x10);
-                outPacket.Write((byte)0x00);
-                client.Send(outPacket);
+
+                packet.Write((ushort)0x1000);
+
+                // Write the packet length.
+                packet.Position = 0;
+                packet.Write((ushort)(packet.Length - packet.HeaderLength - 2));
+
+                client.Send(packet);
             }
         }
     }
