@@ -39,16 +39,24 @@ namespace Trinity.Encore.Game.Network
 
         /// <summary>
         /// CMD_XFER_INITIATE.
-        /// 
-        /// Deprecated, but still exists.
         /// </summary>
         TransferInitiate = 0x30,
         /// <summary>
         /// CMD_XFER_DATA.
-        /// 
-        /// Deprecated, but still exists.
         /// </summary>
         TransferData = 0x31,
+        /// <summary>
+        /// CMD_XFER_COMPLETE.
+        /// </summary>
+        TransferComplete = 0x32,
+        /// <summary>
+        /// CMD_XFER_RESUME.
+        /// </summary>
+        TransferResume = 0x33,
+        /// <summary>
+        /// CMD_XFER_CANCEL.
+        /// </summary>
+        TransferCancel = 0x34,
 
         #endregion
     }
