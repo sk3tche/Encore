@@ -51,6 +51,10 @@ namespace Trinity.Encore.AuthenticationService.Handlers
                 var publicEphemeral = new BigInteger(peData);
 
                 var rand = new BigInteger(new FastRandom(), 16 * 8);
+                Contract.Assume(srpData.Parameters.Modulus.ByteLength == 32);
+                Contract.Assume(srpData.Salt.ByteLength == 32);
+                Contract.Assume(rand.ByteLength == 16);
+                Contract.Assume(srpData.Parameters.Generator.ByteLength == 1);
                 SendAuthenticationChallengeSuccess(client,
                                                    publicEphemeral,
                                                    srpData.Parameters.Generator,
@@ -346,6 +350,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
                     var unk3 = packet.ReadBytes(4);
                     Contract.Assume(unk3.Length == 4);
                     var shaHash = packet.ReadBytes(20);
+                    Contract.Assume(shaHash.Length == 20);
                     keys[key] = new AuthLogonKey(unk1, unk2, unk3, shaHash);
                 }
             }
