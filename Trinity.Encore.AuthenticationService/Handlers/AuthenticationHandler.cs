@@ -357,6 +357,8 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             // TODO fetch this from the database (or some other persistent storage)
             //BigInteger sessionKey = null ?? new BigInteger(0);
             Contract.Assume(username != null);
+            Contract.Assume(r1 != null);
+            Contract.Assume(rand != null);
             BigInteger hash = srpData.Hash(new HashDataBroker(Encoding.ASCII.GetBytes(username)), r1, rand);
             if (hash == r2)
             {
