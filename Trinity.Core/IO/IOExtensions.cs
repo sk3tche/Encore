@@ -54,6 +54,10 @@ namespace Trinity.Core.IO
             Contract.Ensures(Contract.Result<string>() != null);
 
             var length = reader.ReadByte();
+
+            if (length < 0)
+                throw new InvalidDataException("String length was negative.");
+
             var bytes = reader.ReadBytes(length);
 
             return (encoding ?? Encoding.ASCII).GetString(bytes);
@@ -74,6 +78,10 @@ namespace Trinity.Core.IO
             Contract.Ensures(Contract.Result<string>() != null);
 
             var length = reader.ReadInt16();
+
+            if (length < 0)
+                throw new InvalidDataException("String length was negative.");
+
             var bytes = reader.ReadBytes(length);
 
             return (encoding ?? Encoding.ASCII).GetString(bytes);
@@ -94,6 +102,10 @@ namespace Trinity.Core.IO
             Contract.Ensures(Contract.Result<string>() != null);
 
             var length = reader.ReadInt32();
+
+            if (length < 0)
+                throw new InvalidDataException("String length was negative.");
+
             var bytes = reader.ReadBytes(length);
 
             return (encoding ?? Encoding.ASCII).GetString(bytes);

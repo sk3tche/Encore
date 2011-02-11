@@ -34,6 +34,8 @@ namespace Trinity.Encore.AuthenticationService.Realms
 
         public Realm GetRealm(string id)
         {
+            Contract.Requires(!string.IsNullOrEmpty(id));
+
             return _realms.TryGet(id);
         }
 

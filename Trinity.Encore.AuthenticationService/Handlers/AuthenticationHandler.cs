@@ -323,12 +323,15 @@ namespace Trinity.Encore.AuthenticationService.Handlers
         [AuthPacketHandler(GruntOpCode.AuthenticationReconnectProof)]
         public static void HandleReconnectProof(IClient client, IncomingAuthPacket packet)
         {
+            Contract.Requires(client != null);
+            Contract.Requires(packet != null);
+
             // MD5 hash of { AccountName, byte[16] random data }
             BigInteger r1 = packet.ReadBigInteger(16);
             // SHA1 hash of { AccountName, MD5 from above, ReconnectProof, SessionKey }
             BigInteger r2 = packet.ReadBigInteger(20);
             // SHA1 hash of { MD5 from above, byte[16] of 0's }
-            var r3 = packet.ReadBigInteger(20); // r3Data
+            packet.ReadBigInteger(20); // r3Data
 
             var numKeys = packet.ReadByte();
             if (numKeys > 0)
