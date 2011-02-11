@@ -38,8 +38,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 
             using (var packet = new OutgoingAuthPacket(GruntOpCode.TransferInitiate, 1 + 1 + 8 + 16))
             {
-                packet.Write((byte)0); // file type length
-                packet.Write(new byte[0]); // file type, "Patch" or "Survey", not a C string
+                packet.WriteP8String("Patch" ?? "Survey"); // file type
                 packet.Write((ulong)0); // file length
                 packet.Write(new byte[16]); // md5 of the file contents
 

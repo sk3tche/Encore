@@ -39,6 +39,66 @@ namespace Trinity.Core.IO
             return (encoding ?? Encoding.ASCII).GetString(arr);
         }
 
+        public static void WriteP8String(this BinaryWriter writer, string str, Encoding encoding = null)
+        {
+            Contract.Requires(writer != null);
+            Contract.Requires(str != null);
+
+            writer.Write((byte)str.Length);
+            writer.Write((encoding ?? Encoding.ASCII).GetBytes(str));
+        }
+
+        public static string ReadP8String(this BinaryReader reader, Encoding encoding = null)
+        {
+            Contract.Requires(reader != null);
+            Contract.Ensures(Contract.Result<string>() != null);
+
+            var length = reader.ReadByte();
+            var bytes = reader.ReadBytes(length);
+
+            return (encoding ?? Encoding.ASCII).GetString(bytes);
+        }
+
+        public static void WriteP16String(this BinaryWriter writer, string str, Encoding encoding = null)
+        {
+            Contract.Requires(writer != null);
+            Contract.Requires(str != null);
+
+            writer.Write((short)str.Length);
+            writer.Write((encoding ?? Encoding.ASCII).GetBytes(str));
+        }
+
+        public static string ReadP16String(this BinaryReader reader, Encoding encoding = null)
+        {
+            Contract.Requires(reader != null);
+            Contract.Ensures(Contract.Result<string>() != null);
+
+            var length = reader.ReadInt16();
+            var bytes = reader.ReadBytes(length);
+
+            return (encoding ?? Encoding.ASCII).GetString(bytes);
+        }
+
+        public static void WriteP32String(this BinaryWriter writer, string str, Encoding encoding = null)
+        {
+            Contract.Requires(writer != null);
+            Contract.Requires(str != null);
+
+            writer.Write(str.Length);
+            writer.Write((encoding ?? Encoding.ASCII).GetBytes(str));
+        }
+
+        public static string ReadP32String(this BinaryReader reader, Encoding encoding = null)
+        {
+            Contract.Requires(reader != null);
+            Contract.Ensures(Contract.Result<string>() != null);
+
+            var length = reader.ReadInt32();
+            var bytes = reader.ReadBytes(length);
+
+            return (encoding ?? Encoding.ASCII).GetString(bytes);
+        }
+
         public static void WriteFourCC(this BinaryWriter writer, string value)
         {
             Contract.Requires(writer != null);
