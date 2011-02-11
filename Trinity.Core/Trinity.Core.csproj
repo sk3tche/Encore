@@ -138,10 +138,12 @@
     <Compile Include="Threading\Actors\Actor.cs" />
     <Compile Include="Threading\Actors\ActorContext.cs" />
     <Compile Include="Threading\Actors\ActorTimer.cs" />
+    <Compile Include="Threading\Actors\ActorWaitHandle.cs" />
     <Compile Include="Threading\Actors\ChildActor.cs" />
     <Compile Include="Threading\Actors\IActor.cs" />
     <Compile Include="Threading\Actors\Operation.cs" />
     <Compile Include="Threading\Actors\Scheduler.cs" />
+    <Compile Include="Threading\IWaitable.cs" />
     <Compile Include="Threading\ReadScopeGuard.cs" />
     <Compile Include="Threading\ReadWriteLock.cs" />
     <Compile Include="Threading\WriteScopeGuard.cs" />

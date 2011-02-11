@@ -42,7 +42,7 @@ namespace Trinity.Encore.Game.Services
             catch (Exception ex)
             {
                 if (ex is CommunicationException)
-                    Post(Reconnect);
+                    PostAsync(Reconnect);
 
                 // Register, but ignore the exception.
                 ExceptionManager.RegisterException(ex);

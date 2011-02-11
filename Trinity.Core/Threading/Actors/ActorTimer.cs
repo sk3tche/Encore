@@ -63,7 +63,7 @@ namespace Trinity.Core.Threading.Actors
 
         private void TimerCallback(object state)
         {
-            TargetActor.Post(Callback);
+            TargetActor.PostAsync(Callback);
         }
     }
 }

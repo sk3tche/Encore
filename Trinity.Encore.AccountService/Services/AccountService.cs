@@ -21,7 +21,8 @@ namespace Trinity.Encore.AccountService.Services
 
         public AccountData GetAccount(string userName)
         {
-            var acc = AccountManager.Instance.FindAccount(x => x.Name == userName);
+            Account acc = null;
+            AccountManager.Instance.PostWait(mgr => acc = mgr.FindAccount(x => x.Name == userName)).Wait();
             return acc != null ? acc.Serialize() : null;
         }
 
@@ -33,32 +34,40 @@ namespace Trinity.Encore.AccountService.Services
             if (password.Length < AccountManager.MinPasswordLength || password.Length > AccountManager.MaxPasswordLength)
                 throw new ArgumentException("Password has an invalid length.");
 
-            AccountManager.Instance.CreateAccount(accountName, password, emailAddress, boxLevel, locale);
+            AccountManager.Instance.PostAsync(x => x.CreateAccount(accountName, password, emailAddress, boxLevel, locale));
         }
 
         public void SetLastIP(string userName, IPAddress ip)
         {
-            var acc = AccountManager.Instance.FindAccount(x => x.Name == userName);
-            if (acc != null)
-                acc.LastIP = ip;
+            AccountManager.Instance.PostAsync(mgr =>
+            {
+                var acc = mgr.FindAccount(x => x.Name == userName);
+                if (acc != null)
+                    acc.LastIP = ip;
+            });
         }
 
         public void SetLastLogin(string userName, DateTime time)
         {
-            var acc = AccountManager.Instance.FindAccount(x => x.Name == userName);
-            if (acc != null)
-                acc.LastLogin = time;
+            AccountManager.Instance.PostAsync(mgr =>
+            {
+                var acc = mgr.FindAccount(x => x.Name == userName);
+                if (acc != null)
+                    acc.LastLogin = time;
+            });
         }
 
         public AccountBanData GetAccountBan(string userName)
         {
-            var ban = BanManager.Instance.FindAccountBan(x => x.Account.Name == userName);
+            AccountBan ban = null;
+            BanManager.Instance.PostWait(mgr => ban = mgr.FindAccountBan(x => x.Account.Name == userName)).Wait();
             return ban != null ? ban.Serialize() : null;
         }
 
         public void CreateAccountBan(string accountName, string notes, DateTime? expiry)
         {
-            var acc = AccountManager.Instance.FindAccount(x => x.Name == accountName);
+            Account acc = null;
+            AccountManager.Instance.PostWait(mgr => acc = mgr.FindAccount(x => x.Name == accountName)).Wait();
 
             if (acc == null)
                 throw new ArgumentException("No account found.");
@@ -66,39 +75,43 @@ namespace Trinity.Encore.AccountService.Services
             if (acc.Ban != null)
                 throw new ArgumentException("Account ban already exists.");
 
-            BanManager.Instance.CreateAccountBan(acc, notes, expiry);
+            BanManager.Instance.PostAsync(mgr => mgr.CreateAccountBan(acc, notes, expiry));
         }
 
         public IPBanData GetIPBan(IPAddress address)
         {
-            var ban = BanManager.Instance.FindIPBan(x => x.Address.Equals(address));
+            IPBan ban = null;
+            BanManager.Instance.PostWait(mgr => ban = mgr.FindIPBan(x => x.Address.Equals(address))).Wait();
             return ban != null ? ban.Serialize() : null;
         }
 
         public void CreateIPBan(IPAddress address, string notes, DateTime? expiry)
         {
-            var ban = BanManager.Instance.FindIPBan(x => x.Equals(address));
+            IPBan ban = null;
+            BanManager.Instance.PostWait(mgr => ban = mgr.FindIPBan(x => x.Equals(address))).Wait();
 
             if (ban != null)
                 throw new ArgumentException("IP ban already exists.");
 
-            BanManager.Instance.CreateIPBan(address, notes, expiry);
+            BanManager.Instance.PostAsync(mgr => mgr.CreateIPBan(address, notes, expiry));
         }
 
         public IPRangeBanData GetIPRangeBan(IPAddress address)
         {
-            var ban = BanManager.Instance.FindIPRangeBan(x => x.Range.IsInRange(address));
+            IPRangeBan ban = null;
+            BanManager.Instance.PostWait(mgr => ban = mgr.FindIPRangeBan(x => x.Range.IsInRange(address))).Wait();
             return ban != null ? ban.Serialize() : null;
         }
 
         public void CreateIPRangeBan(IPAddressRange range, string notes, DateTime? expiry)
         {
-            var ban = BanManager.Instance.FindIPRangeBan(x => x.Range.Equals(range));
+            IPRangeBan ban = null;
+            BanManager.Instance.PostWait(mgr => ban = mgr.FindIPRangeBan(x => x.Range.Equals(range))).Wait();
 
             if (ban != null)
                 throw new ArgumentException("IP range ban already exists.");
 
-            BanManager.Instance.CreateIPRangeBan(range, notes, expiry);
+            BanManager.Instance.PostAsync(mgr => mgr.CreateIPRangeBan(range, notes, expiry));
         }
     }
 }

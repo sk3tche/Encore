@@ -1,6 +1,8 @@
+using System;
 using System.Diagnostics.Contracts;
 using System.Net.Security;
 using System.ServiceModel;
+using Trinity.Encore.Game.Realms;
 
 namespace Trinity.Encore.Services.Authentication
 {
@@ -15,7 +17,18 @@ namespace Trinity.Encore.Services.Authentication
         bool IsLoggedIn(string accountName);
 
         [OperationContract]
-        void SetLoggedIn(string accountName, bool loggedIn);
+        void SetActiveState(string accountName, bool loggedIn);
+
+        [OperationContract]
+        void RegisterWorldServer(string name, Uri location, RealmFlags flags, RealmCategory category, RealmType type, RealmStatus status,
+            int characterCount, int characterCapacity, Version clientVersion);
+
+        [OperationContract]
+        void UpdateWorldServer(string name, Uri location, RealmFlags flags, RealmCategory category, RealmType type, RealmStatus status,
+            int characterCount, int characterCapacity, Version clientVersion);
+
+        [OperationContract]
+        void UnregisterWorldServer();
     }
 
     [ContractClassFor(typeof(IAuthenticationService))]
@@ -35,9 +48,31 @@ namespace Trinity.Encore.Services.Authentication
             return false;
         }
 
-        public void SetLoggedIn(string accountName, bool loggedIn)
+        public void SetActiveState(string accountName, bool loggedIn)
         {
             Contract.Requires(!string.IsNullOrEmpty(accountName));
         }
+
+        public void RegisterWorldServer(string name, Uri location, RealmFlags flags, RealmCategory category, RealmType type, RealmStatus status,
+            int characterCount, int characterCapacity, Version clientVersion)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(name));
+            Contract.Requires(location != null);
+            Contract.Requires(characterCount >= 0);
+            Contract.Requires(characterCapacity >= 0);
+            Contract.Requires(clientVersion != null);
+        }
+
+        public void UpdateWorldServer(string name, Uri location, RealmFlags flags, RealmCategory category, RealmType type, RealmStatus status,
+            int characterCount, int characterCapacity, Version clientVersion)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(name));
+            Contract.Requires(location != null);
+            Contract.Requires(characterCount >= 0);
+            Contract.Requires(characterCapacity >= 0);
+            Contract.Requires(clientVersion != null);
+        }
+
+        public abstract void UnregisterWorldServer();
     }
 }

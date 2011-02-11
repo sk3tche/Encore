@@ -71,16 +71,14 @@ namespace Trinity.Encore.AccountService.Accounts
         {
             Contract.Requires(acc != null);
 
-            lock (_accounts)
-                _accounts.Add(acc);
+            _accounts.Add(acc);
         }
 
         public void RemoveAccount(Account acc)
         {
             Contract.Requires(acc != null);
 
-            lock (_accounts)
-                _accounts.Remove(acc);
+            _accounts.Remove(acc);
         }
 
         public Account CreateAccount(string userName, string password, string email, ClientBoxLevel boxLevel = ClientBoxLevel.Cataclysm,
@@ -122,16 +120,14 @@ namespace Trinity.Encore.AccountService.Accounts
             Contract.Requires(predicate != null);
             Contract.Ensures(Contract.Result<IEnumerable<Account>>() != null);
 
-            lock (_accounts)
-                return _accounts.Where(predicate).Force();
+            return _accounts.Where(predicate).Force();
         }
 
         public Account FindAccount(Func<Account, bool> predicate)
         {
             Contract.Requires(predicate != null);
 
-            lock (_accounts)
-                return _accounts.SingleOrDefault(predicate);
+            return _accounts.SingleOrDefault(predicate);
         }
     }
 }

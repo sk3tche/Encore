@@ -123,7 +123,7 @@ namespace Trinity.Encore.Game.Network.Handling
             }
 
             var packet = CreatePacket(opCode, payload, length);
-            client.Post(() => handler.Invoke(client, packet));
+            client.PostAsync(() => handler.Invoke(client, packet));
         }
 
         public abstract int HeaderLength { get; }

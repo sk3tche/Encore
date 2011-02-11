@@ -8,7 +8,7 @@ namespace Trinity.Network.Transmission
     public abstract class IncomingPacket : BinaryReader, IPacket
     {
         protected IncomingPacket(Enum opCode, byte[] data, int length, Encoding encoding)
-            : base(new MemoryStream(data, 0, length, false, false), encoding)
+            : base(new MemoryStream(data, 0, length, false), encoding)
         {
             Contract.Requires(opCode != null);
             Contract.Requires(data != null);

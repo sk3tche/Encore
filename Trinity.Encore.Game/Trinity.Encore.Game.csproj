@@ -185,6 +185,10 @@
     <Compile Include="Partitioning\QuadTree.cs" />
     <Compile Include="Partitioning\QuadTreeNode.cs" />
     <Compile Include="Network\WorldOpCode.cs" />
+    <Compile Include="Realms\RealmCategory.cs" />
+    <Compile Include="Realms\RealmFlags.cs" />
+    <Compile Include="Realms\RealmStatus.cs" />
+    <Compile Include="Realms\RealmType.cs" />
     <Compile Include="Security\AuthenticatedPermission.cs" />
     <Compile Include="Security\ConsolePermission.cs" />
     <Compile Include="Security\RootPermission.cs" />

@@ -71,7 +71,7 @@ namespace Trinity.Core.Threading.Actors
                 if (!_newActors.TryDequeue(out newActor))
                     continue;
 
-                // Accomodate for the race condition in Actor.Post.
+                // Accomodate for the race condition in Actor.PostAsync.
                 if (newActor.IsActive)
                     continue;
 

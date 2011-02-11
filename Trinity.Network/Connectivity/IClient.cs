@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Net;
 using Trinity.Core.Security;
+using Trinity.Core.Threading;
 using Trinity.Core.Threading.Actors;
 using Trinity.Network.Encryption;
 using Trinity.Network.Transmission;
@@ -53,6 +54,8 @@ namespace Trinity.Network.Connectivity
 
         public abstract void Join();
 
-        public abstract void Post(Action msg);
+        public abstract void PostAsync(Action msg);
+
+        public abstract IWaitable PostWait(Action msg);
     }
 }

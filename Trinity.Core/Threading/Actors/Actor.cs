@@ -77,7 +77,7 @@ namespace Trinity.Core.Threading.Actors
         [SuppressMessage("Microsoft.Design", "CA1063", Justification = "Behavior intended.")]
         public void Dispose()
         {
-            Post(InternalDispose);
+            PostAsync(InternalDispose);
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1816", Justification = "Behavior intended.")]
@@ -121,7 +121,7 @@ namespace Trinity.Core.Threading.Actors
             return operation == Operation.Continue;
         }
 
-        public void Post(Action msg)
+        public void PostAsync(Action msg)
         {
             _msgQueue.Enqueue(msg);
 
@@ -132,6 +132,21 @@ namespace Trinity.Core.Threading.Actors
 
             if (msg == tmp)
                 Scheduler.AddActor(this); // The message was sent while the actor was idle; restart it to continue processing.
+        }
+
+        public IWaitable PostWait(Action msg)
+        {
+            var eventHandle = new AutoResetEvent(false);
+
+            PostAsync(() =>
+            {
+                msg();
+
+                // Signal that message processing has happened.
+                eventHandle.Set();
+            });
+
+            return new ActorWaitHandle(eventHandle);
         }
 
         protected virtual IEnumerator<Operation> Main()
@@ -189,9 +204,14 @@ namespace Trinity.Core.Threading.Actors
             Contract.Requires(context != null);
         }
 
-        public void Post(Action<TThis> msg)
+        public void PostAsync(Action<TThis> msg)
         {
-            Post(() => msg((TThis)this));
+            PostAsync(() => msg((TThis)this));
+        }
+
+        public IWaitable PostWait(Action<TThis> msg)
+        {
+            return PostWait(() => msg((TThis)this));
         }
     }
 }

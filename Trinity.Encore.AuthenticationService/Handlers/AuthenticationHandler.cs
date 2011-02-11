@@ -4,7 +4,7 @@ using Trinity.Core.Cryptography;
 using Trinity.Core.Cryptography.SRP;
 using Trinity.Core.IO;
 using Trinity.Core.Mathematics;
-using Trinity.Encore.AuthenticationService.Enums;
+using Trinity.Encore.AuthenticationService.Authentication;
 using Trinity.Encore.Game.Cryptography;
 using Trinity.Encore.Game.IO;
 using Trinity.Encore.Game.Network;
@@ -41,7 +41,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             SRPServer srpData = GetSRPDataForUserName(username);
             if (srpData == null)
             {
-                SendAuthenticationChallengeFailure(client, AuthResult.FailUnknownAccount);
+                SendAuthenticationChallengeFailure(client, AuthenticationResult.FailedUnknownAccount);
             }
             else
             {
@@ -76,10 +76,10 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             return srpData;
         }
 
-        public static void SendAuthenticationChallengeFailure(IClient client, AuthResult result)
+        public static void SendAuthenticationChallengeFailure(IClient client, AuthenticationResult result)
         {
             Contract.Requires(client != null);
-            Contract.Requires(result != AuthResult.Success);
+            Contract.Requires(result != AuthenticationResult.Success);
 
             using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnChallenge, 2))
             {
@@ -106,7 +106,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnChallenge, 118))
             {
                 packet.Write((byte)0x00); // If this is > 0, the client fails immediately
-                packet.Write((byte)AuthResult.Success);
+                packet.Write((byte)AuthenticationResult.Success);
                 packet.Write(publicEphemeral, 32);
                 packet.Write(generator, 1, true);
                 packet.Write(modulus, 32, true);
@@ -115,7 +115,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 
                 var extraSecurityFlags = ExtraSecurityFlags.None;
                 packet.Write((byte)extraSecurityFlags);
-                if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.PIN))
+                if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.Pin))
                 {
                     packet.Write(0); // Used as the factor for determining PIN order
 
@@ -199,7 +199,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 
             var securityFlags = (ExtraSecurityFlags)packet.ReadByte(); // can be safely ignored
 
-            if (securityFlags.HasFlag(ExtraSecurityFlags.PIN))
+            if (securityFlags.HasFlag(ExtraSecurityFlags.Pin))
             {
                 packet.ReadBytes(16); // pinRandom
                 packet.ReadBytes(20); // pinSha1
@@ -225,7 +225,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
                 client.AddPermission(new AuthenticatedPermission());
             }
             else
-                SendAuthenticationLogOnProofFailure(client, AuthResult.FailUnknownAccount);
+                SendAuthenticationLogOnProofFailure(client, AuthenticationResult.FailedUnknownAccount);
         }
 
         public static void SendAuthenticationLogOnProofSuccess(IClient client, BigInteger serverResult)
@@ -235,7 +235,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 
             using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnProof, 31))
             {
-                packet.Write((byte)AuthResult.Success);
+                packet.Write((byte)AuthenticationResult.Success);
                 packet.Write(serverResult, 20);
                 // Flags. Only These are checked
                 // 0x1 = ?
@@ -250,14 +250,14 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             }
         }
 
-        public static void SendAuthenticationLogOnProofFailure(IClient client, AuthResult result)
+        public static void SendAuthenticationLogOnProofFailure(IClient client, AuthenticationResult result)
         {
             Contract.Requires(client != null);
 
             using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnProof, 3))
             {
                 packet.Write((byte)result);
-                if (result == AuthResult.FailUnknownAccount)
+                if (result == AuthenticationResult.FailedUnknownAccount)
                 {
                     // This is only read if the result == 4, and even then its not used. But it does need this to be here, as it does a length check before reading
                     packet.Write((short) 0);
@@ -310,7 +310,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 
             using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationReconnectChallenge, 34))
             {
-                packet.Write((byte)AuthResult.Success);
+                packet.Write((byte)AuthenticationResult.Success);
                 packet.Write(rand, 16);
 
                 // this should be a byte[] but there's no point in initializing it as we always send 0s
@@ -362,7 +362,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
         {
             using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationReconnectProof, 3))
             {
-                packet.Write((byte)AuthResult.Success);
+                packet.Write((byte)AuthenticationResult.Success);
                 packet.Write((short)0); // two unknown bytes
                 client.Send(packet);
             }

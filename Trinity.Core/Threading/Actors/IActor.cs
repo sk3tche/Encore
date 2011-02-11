@@ -10,22 +10,34 @@ namespace Trinity.Core.Threading.Actors
     {
         void Join();
 
-        void Post(Action msg);
+        void PostAsync(Action msg);
+
+        IWaitable PostWait(Action msg);
     }
 
     [ContractClass(typeof(ActorContracts<>))]
     public interface IActor<out TThis> : IActor
         where TThis : IActor<TThis>
     {
-        void Post(Action<TThis> msg);
+        void PostAsync(Action<TThis> msg);
+
+        IWaitable PostWait(Action<TThis> msg);
     }
 
     [ContractClassFor(typeof(IActor))]
     public abstract class ActorContracts : IActor
     {
-        public void Post(Action msg)
+        public void PostAsync(Action msg)
         {
             Contract.Requires(msg != null);
+        }
+
+        public IWaitable PostWait(Action msg)
+        {
+            Contract.Requires(msg != null);
+            Contract.Ensures(Contract.Result<IWaitable>() != null);
+
+            return null;
         }
 
         public abstract void Join();
@@ -45,9 +57,17 @@ namespace Trinity.Core.Threading.Actors
     public abstract class ActorContracts<TThis> : IActor<TThis>
         where TThis : IActor<TThis>
     {
-        public void Post(Action<TThis> msg)
+        public void PostAsync(Action<TThis> msg)
         {
             Contract.Requires(msg != null);
+        }
+
+        public IWaitable PostWait(Action<TThis> msg)
+        {
+            Contract.Requires(msg != null);
+            Contract.Ensures(Contract.Result<IWaitable>() != null);
+
+            return null;
         }
 
         public abstract void Dispose();
@@ -62,6 +82,8 @@ namespace Trinity.Core.Threading.Actors
 
         public abstract void Join();
 
-        public abstract void Post(Action msg);
+        public abstract void PostAsync(Action msg);
+
+        public abstract IWaitable PostWait(Action msg);
     }
 }

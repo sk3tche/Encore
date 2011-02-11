@@ -64,16 +64,14 @@ namespace Trinity.Encore.AccountService.Bans
         {
             Contract.Requires(ban != null);
 
-            lock (_accountBans)
-                _accountBans.Add(ban);
+            _accountBans.Add(ban);
         }
 
         public void RemoveAccountBan(AccountBan ban)
         {
             Contract.Requires(ban != null);
 
-            lock (_accountBans)
-                _accountBans.Remove(ban);
+            _accountBans.Remove(ban);
         }
 
         public AccountBan CreateAccountBan(Accounts.Account acc, string notes, DateTime? expiry)
@@ -107,16 +105,14 @@ namespace Trinity.Encore.AccountService.Bans
             Contract.Requires(predicate != null);
             Contract.Ensures(Contract.Result<IEnumerable<AccountBan>>() != null);
 
-            lock (_accountBans)
-                return _accountBans.Where(predicate).Force();
+            return _accountBans.Where(predicate).Force();
         }
 
         public AccountBan FindAccountBan(Func<AccountBan, bool> predicate)
         {
             Contract.Requires(predicate != null);
 
-            lock (_accountBans)
-                return _accountBans.SingleOrDefault(predicate);
+            return _accountBans.SingleOrDefault(predicate);
         }
 
         #endregion
@@ -127,16 +123,14 @@ namespace Trinity.Encore.AccountService.Bans
         {
             Contract.Requires(ban != null);
 
-            lock (_ipBans)
-                _ipBans.Add(ban);
+            _ipBans.Add(ban);
         }
 
         public void RemoveIPBan(IPBan ban)
         {
             Contract.Requires(ban != null);
 
-            lock (_ipBans)
-                _ipBans.Remove(ban);
+            _ipBans.Remove(ban);
         }
 
         public IPBan CreateIPBan(IPAddress ip, string notes, DateTime? expiry)
@@ -170,16 +164,14 @@ namespace Trinity.Encore.AccountService.Bans
             Contract.Requires(predicate != null);
             Contract.Ensures(Contract.Result<IEnumerable<IPBan>>() != null);
 
-            lock (_ipBans)
-                return _ipBans.Where(predicate).Force();
+            return _ipBans.Where(predicate).Force();
         }
 
         public IPBan FindIPBan(Func<IPBan, bool> predicate)
         {
             Contract.Requires(predicate != null);
 
-            lock (_ipBans)
-                return _ipBans.SingleOrDefault(predicate);
+            return _ipBans.SingleOrDefault(predicate);
         }
 
         #endregion
@@ -190,16 +182,14 @@ namespace Trinity.Encore.AccountService.Bans
         {
             Contract.Requires(ban != null);
 
-            lock (_ipRangeBans)
-                _ipRangeBans.Add(ban);
+            _ipRangeBans.Add(ban);
         }
 
         public void RemoveIPRangeBan(IPRangeBan ban)
         {
             Contract.Requires(ban != null);
 
-            lock (_ipRangeBans)
-                _ipRangeBans.Remove(ban);
+            _ipRangeBans.Remove(ban);
         }
 
         public IPRangeBan CreateIPRangeBan(IPAddressRange range, string notes, DateTime? expiry)
@@ -233,16 +223,14 @@ namespace Trinity.Encore.AccountService.Bans
             Contract.Requires(predicate != null);
             Contract.Ensures(Contract.Result<IEnumerable<IPRangeBan>>() != null);
 
-            lock (_ipRangeBans)
-                return _ipRangeBans.Where(predicate).Force();
+            return _ipRangeBans.Where(predicate).Force();
         }
 
         public IPRangeBan FindIPRangeBan(Func<IPRangeBan, bool> predicate)
         {
             Contract.Requires(predicate != null);
 
-            lock (_ipRangeBans)
-                return _ipRangeBans.SingleOrDefault(predicate);
+            return _ipRangeBans.SingleOrDefault(predicate);
         }
 
         #endregion

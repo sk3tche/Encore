@@ -31,7 +31,7 @@ namespace Trinity.Core.Threading.Actors
         [SuppressMessage("Microsoft.Design", "CA1063", Justification = "Behavior intended.")]
         public void Dispose()
         {
-            Post(InternalDispose);
+            PostAsync(InternalDispose);
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1816", Justification = "Behavior intended.")]
@@ -56,9 +56,14 @@ namespace Trinity.Core.Threading.Actors
             _parent.Join();
         }
 
-        public void Post(Action msg)
+        public void PostAsync(Action msg)
         {
-            _parent.Post(msg);
+            _parent.PostAsync(msg);
+        }
+
+        public IWaitable PostWait(Action msg)
+        {
+            return _parent.PostWait(msg);
         }
     }
 
@@ -72,9 +77,14 @@ namespace Trinity.Core.Threading.Actors
             Contract.Requires(parent != null);
         }
 
-        public void Post(Action<TThis> msg)
+        public void PostAsync(Action<TThis> msg)
         {
-            Post(() => msg((TThis)this));
+            PostAsync(() => msg((TThis)this));
+        }
+
+        public IWaitable PostWait(Action<TThis> msg)
+        {
+            return PostWait(() => msg((TThis)this));
         }
     }
 }

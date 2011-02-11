@@ -81,15 +81,17 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="AuthenticationApplication.cs" />
+    <Compile Include="Realms\RealmManager.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
-    <Compile Include="Enums\AuthResult.cs" />
-    <Compile Include="Enums\ExtraSecurityFlags.cs" />
+    <Compile Include="Authentication\AuthenticationResult.cs" />
+    <Compile Include="Authentication\ExtraSecurityFlags.cs" />
     <Compile Include="Handlers\AuthenticationHandler.cs" />
     <Compile Include="Handlers\PatchHandler.cs" />
     <Compile Include="Handlers\RealmListHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Realms\Realm.cs" />
-    <Compile Include="Realms\RealmList.cs" />
+    <Compile Include="Sessions\SessionInfo.cs" />
+    <Compile Include="Sessions\SessionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trinity.Core\Trinity.Core.csproj">

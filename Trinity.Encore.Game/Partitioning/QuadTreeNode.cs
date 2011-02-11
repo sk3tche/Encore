@@ -56,7 +56,7 @@ namespace Trinity.Encore.Game.Partitioning
             {
                 Contract.Assume(_entities != null);
                 _entities.Add(entity.Guid, entity);
-                entity.Post(() => entity.Node = this);
+                entity.PostAsync(() => entity.Node = this);
 
                 return true;
             }
@@ -85,7 +85,7 @@ namespace Trinity.Encore.Game.Partitioning
             {
                 Contract.Assume(_entities != null);
                 _entities.Remove(entity.Guid);
-                entity.Post(() => entity.Node = null);
+                entity.PostAsync(() => entity.Node = null);
 
                 return true;
             }

@@ -24,7 +24,7 @@ namespace Trinity.Encore.AccountService.Commands.Database
             if (string.IsNullOrEmpty(fileName))
                 return false;
 
-            AccountApplication.Instance.AccountDbContext.Post(x => x.Schema.Export(fileName));
+            AccountApplication.Instance.AccountDbContext.PostAsync(x => x.Schema.Export(fileName));
 
             return true;
         }

@@ -1,64 +1,53 @@
-﻿namespace Trinity.Encore.AuthenticationService.Realms
+﻿using System;
+using System.Diagnostics.Contracts;
+using Trinity.Core.Threading.Actors;
+using Trinity.Encore.Game.Realms;
+
+namespace Trinity.Encore.AuthenticationService.Realms
 {
-    // TODO add a way for the authserver to communicate with this particular realm
-    /// <summary>
-    /// Manages all data and communication that is specific to a single Realm - Auth-service connection.
-    /// </summary>
     public sealed class Realm
     {
-        #region Properties
-        public byte Lock
+        [ContractInvariantMethod]
+        private void Invariant()
         {
-            get;
-            private set;
+            Contract.Invariant(!string.IsNullOrEmpty(Id));
+            Contract.Invariant(!string.IsNullOrEmpty(Name));
+            Contract.Invariant(Location != null);
+            Contract.Invariant(ClientVersion != null);
+            Contract.Invariant(Capacity >= 0);
+            Contract.Invariant(Capacity >= 0);
         }
 
-        public byte Icon
-        {
-            get;
-            private set;
-        }
+        public string Id { get; set; }
 
-        public byte Color
-        {
-            get;
-            private set;
-        }
+        public string Name { get; set; }
 
-        public string Name
-        {
-            get;
-            private set;
-        }
+        public Uri Location { get; set; }
 
-        public string Address
-        {
-            get;
-            private set;
-        }
+        public Version ClientVersion { get; set; }
+
+        public RealmType Type { get; set; }
+
+        public RealmStatus Status { get; set; }
+
+        public RealmCategory Category { get; set; }
+
+        public int Capacity { get; set; }
+
+        public int Population { get; set; }
 
         public float PopulationLevel
         {
-            get;
-            private set;
+            get { return Population > Capacity * 0.75f ? 1.7f : Population > Capacity / 3.0f ? 1.6f : 1.5f; }
         }
 
-        public byte TimeZone
-        {
-            get;
-            private set;
-        }
-        #endregion
+        public RealmFlags Flags { get; set; }
 
-        public Realm(byte icon, byte locked, byte color, string name, string address, float populationLevel, byte timeZone)
+        public Realm(string id)
         {
-            Icon = icon;
-            Lock = locked;
-            Color = color;
-            Name = name;
-            Address = address;
-            PopulationLevel = populationLevel;
-            TimeZone = timeZone;
+            Contract.Requires(!string.IsNullOrEmpty(id));
+
+            Id = id;
         }
     }
 }

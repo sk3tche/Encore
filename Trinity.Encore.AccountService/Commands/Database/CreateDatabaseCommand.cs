@@ -26,7 +26,7 @@ namespace Trinity.Encore.AccountService.Commands.Database
 
             var answer = Console.ReadLine().ToUpper(CultureInfo.InvariantCulture).ToCharArray().SingleOrDefault();
             if (answer == 'Y')
-                AccountApplication.Instance.AccountDbContext.Post(x => x.Schema.Create());
+                AccountApplication.Instance.AccountDbContext.PostAsync(x => x.Schema.Create());
 
             return true;
         }

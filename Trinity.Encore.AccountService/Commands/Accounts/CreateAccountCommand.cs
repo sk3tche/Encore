@@ -43,7 +43,7 @@ namespace Trinity.Encore.AccountService.Commands.Accounts
             var box = args.NextEnum<ClientBoxLevel>() ?? ClientBoxLevel.Cataclysm;
             var locale = args.NextEnum<ClientLocale>() ?? ClientLocale.English;
 
-            AccountManager.Instance.CreateAccount(name, password, email, box, locale);
+            AccountManager.Instance.PostAsync(x => x.CreateAccount(name, password, email, box, locale));
             return true;
         }
     }
