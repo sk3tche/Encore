@@ -7,9 +7,9 @@ namespace Trinity.Network.Handling
     [Serializable]
     public struct PacketHeader
     {
-        public int Length;
+        public readonly int Length;
 
-        public int OpCode;
+        public readonly int OpCode;
 
         [ContractInvariantMethod]
         private void Invariant()
