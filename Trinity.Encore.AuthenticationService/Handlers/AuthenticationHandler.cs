@@ -35,9 +35,8 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             packet.ReadFourCC(); // country
             packet.ReadInt32(); // timeZoneBias
             packet.ReadInt32(); // ip
-            var usernameLength = packet.ReadByte();
-            var usernameBytes = packet.ReadBytes(usernameLength);
-            var username = Encoding.ASCII.GetString(usernameBytes);
+            var username = packet.ReadP8String();
+            Contract.Assume(!string.IsNullOrEmpty(username));
             SRPServer srpData = GetSRPDataForUserName(username);
             if (srpData == null)
             {
@@ -65,13 +64,14 @@ namespace Trinity.Encore.AuthenticationService.Handlers
         /// Calculates SRP information based on the username of the account used.
         /// If this account does not exist in the database, return null.
         /// </summary>
-        /// <param name="username">The account's username.</param>
+        /// <param name="userName">The account's username.</param>
         /// <returns>null if no account exists, otherwise an SRPServer instance to be used for this connection.</returns>
-        private static SRPServer GetSRPDataForUserName(string username)
+        private static SRPServer GetSRPDataForUserName(string userName)
         {
+            Contract.Requires(!string.IsNullOrEmpty(userName));
             // TODO this needs to be fetched from the database
             BigInteger credentials = null ?? new BigInteger(0);
-            SRPServer srpData = new SRPServer(username, credentials, new WowAuthParameters());
+            SRPServer srpData = new SRPServer(userName, credentials, new WowAuthParameters());
             srpData.Salt = new BigInteger(new FastRandom(), 32 * 8);
             return srpData;
         }
@@ -213,11 +213,14 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             if (securityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
             {
                 var tokenLength = packet.ReadByte();
+                Contract.Assume(tokenLength >= 0);
                 packet.ReadBytes(tokenLength); // token
             }
 
             SRPServer srpData = client.UserData.SRP;
+            Contract.Assume(clientPublicEphemeralA != null);
             srpData.PublicEphemeralValueA = clientPublicEphemeralA;
+            Contract.Assume(clientResult != null);
             var success = srpData.Validator.IsClientProofValid(clientResult);
             if (success)
             {
@@ -285,9 +288,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             packet.ReadFourCC(); // country
             packet.ReadInt32(); // timeZoneBias
             packet.ReadInt32(); // ip
-            var usernameLength = packet.ReadByte();
-            var usernameBytes = packet.ReadBytes(usernameLength);
-            Encoding.ASCII.GetString(usernameBytes); // username
+            packet.ReadP8String();
 
             // TODO fetch this from the database (or some other persistent storage)
             BigInteger sessionKey = null;
@@ -343,6 +344,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
                     var unk1 = packet.ReadInt16();
                     var unk2 = packet.ReadInt32();
                     var unk3 = packet.ReadBytes(4);
+                    Contract.Assume(unk3.Length == 4);
                     var shaHash = packet.ReadBytes(20);
                     keys[key] = new AuthLogonKey(unk1, unk2, unk3, shaHash);
                 }
@@ -354,6 +356,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 
             // TODO fetch this from the database (or some other persistent storage)
             //BigInteger sessionKey = null ?? new BigInteger(0);
+            Contract.Assume(username != null);
             BigInteger hash = srpData.Hash(new HashDataBroker(Encoding.ASCII.GetBytes(username)), r1, rand);
             if (hash == r2)
             {

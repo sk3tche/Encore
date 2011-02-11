@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using Trinity.Core.Services;
 using Trinity.Encore.AccountService.Database.Implementation;
 using Trinity.Encore.Game.Threading;
@@ -18,6 +19,8 @@ namespace Trinity.Encore.AccountService
         protected override void OnStart(string[] args)
         {
             AccountDbContext = new AccountDatabaseContext();
+
+            Contract.Assume(!string.IsNullOrEmpty(Services.AccountService.IpcUri));
             _accountHost = new ServiceHost<IAccountService, Services.AccountService>(new Services.AccountService(), Services.AccountService.IpcUri);
             _accountHost.Open();
         }

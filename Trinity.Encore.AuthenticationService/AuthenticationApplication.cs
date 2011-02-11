@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using Trinity.Core.Configuration;
 using Trinity.Core.Services;
 using Trinity.Encore.Game.Services;
@@ -28,6 +29,7 @@ namespace Trinity.Encore.AuthenticationService
             AccountService = new IpcDevice<IAccountService, EmptyCallbackService>(() =>
                 new DuplexServiceClient<IAccountService, EmptyCallbackService>(new EmptyCallbackService(), AccountIpcUri));
 
+            Contract.Assume(!string.IsNullOrEmpty(Services.AuthenticationService.IpcUri));
             _authenticationHost = new ServiceHost<IAuthenticationService, Services.AuthenticationService>(new Services.AuthenticationService(),
                 Services.AuthenticationService.IpcUri);
         }

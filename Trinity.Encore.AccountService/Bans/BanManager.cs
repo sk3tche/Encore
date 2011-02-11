@@ -29,7 +29,10 @@ namespace Trinity.Encore.AccountService.Bans
 
             var accountBans = AccountApplication.Instance.AccountDbContext.FindAll<AccountBanRecord>();
             foreach (var accBan in accountBans.Select(accountBan => new AccountBan(accountBan)))
+            {
+                Contract.Assume(accBan != null);
                 AddAccountBan(accBan);
+            }
 
             _log.Info("Loaded {0} account bans.", _accountBans.Count);
 
@@ -37,7 +40,10 @@ namespace Trinity.Encore.AccountService.Bans
 
             var ipBans = AccountApplication.Instance.AccountDbContext.FindAll<IPBanRecord>();
             foreach (var ipBan in ipBans.Select(ipBan => new IPBan(ipBan)))
+            {
+                Contract.Assume(ipBan != null);
                 AddIPBan(ipBan);
+            }
 
             _log.Info("Loaded {0} IP bans.", _ipBans.Count);
 
@@ -45,7 +51,10 @@ namespace Trinity.Encore.AccountService.Bans
 
             var ipRangeBans = AccountApplication.Instance.AccountDbContext.FindAll<IPRangeBanRecord>();
             foreach (var ipRangeBan in ipRangeBans.Select(ipRangeBan => new IPRangeBan(ipRangeBan)))
+            {
+                Contract.Assume(ipRangeBan != null);
                 AddIPRangeBan(ipRangeBan);
+            }
 
             _log.Info("Loaded {0} IP range bans.", _ipRangeBans.Count);
         }

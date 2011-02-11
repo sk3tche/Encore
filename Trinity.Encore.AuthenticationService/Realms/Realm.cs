@@ -43,11 +43,17 @@ namespace Trinity.Encore.AuthenticationService.Realms
 
         public RealmFlags Flags { get; set; }
 
-        public Realm(string id)
+        public Realm(string id, string name, Uri uri, Version version)
         {
             Contract.Requires(!string.IsNullOrEmpty(id));
+            Contract.Requires(!string.IsNullOrEmpty(name));
+            Contract.Requires(uri != null);
+            Contract.Requires(version != null);
 
             Id = id;
+            Name = name;
+            Location = uri;
+            ClientVersion = version;
         }
     }
 }

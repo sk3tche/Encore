@@ -42,17 +42,14 @@ namespace Trinity.Encore.AuthenticationService.Services
             var id = OperationContext.Current.SessionId;
             Contract.Assume(!string.IsNullOrEmpty(id));
 
-            RealmManager.Instance.PostAsync(mgr => mgr.AddRealm(new Realm(id)
+            RealmManager.Instance.PostAsync(mgr => mgr.AddRealm(new Realm(id, name, location, clientVersion)
             {
-                Name = name,
-                Location = location,
                 Flags = flags,
                 Category = category,
                 Type = type,
                 Status = status,
                 Population = characterCount,
                 Capacity = characterCapacity,
-                ClientVersion = clientVersion,
             }));
         }
 

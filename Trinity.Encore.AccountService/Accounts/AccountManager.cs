@@ -38,7 +38,10 @@ namespace Trinity.Encore.AccountService.Accounts
 
             var accounts = AccountApplication.Instance.AccountDbContext.FindAll<AccountRecord>();
             foreach (var acc in accounts.Select(account => new Account(account)))
+            {
+                Contract.Assume(acc != null);
                 AddAccount(acc);
+            }
 
             _log.Info("Loaded {0} accounts.", _accounts.Count);
         }
