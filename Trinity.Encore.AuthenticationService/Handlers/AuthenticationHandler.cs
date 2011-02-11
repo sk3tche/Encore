@@ -111,7 +111,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
                 packet.Write(generator, 1, true);
                 packet.Write(modulus, 32, true);
                 packet.Write(salt, 32);
-                packet.Write(rand, 16);
+                packet.Write(rand, 16); // HMAC seed for the client exe verification (I think)
 
                 var extraSecurityFlags = ExtraSecurityFlags.None;
                 packet.Write((byte)extraSecurityFlags);
@@ -302,18 +302,19 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             //client.UserData.Username = username;
         }
 
-        private static void SendReconnectChallengeSuccess(IClient client, BigInteger rand)
+        private static void SendReconnectChallengeSuccess(IClient client, BigInteger reconnectProof)
         {
             Contract.Requires(client != null);
-            Contract.Requires(rand != null);
-            Contract.Requires(rand.ByteLength == 16);
+            Contract.Requires(reconnectProof != null);
+            Contract.Requires(reconnectProof.ByteLength == 16);
 
             using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationReconnectChallenge, 34))
             {
                 packet.Write((byte)AuthenticationResult.Success);
-                packet.Write(rand, 16);
+                packet.Write(reconnectProof, 16); // ReconnectProof
 
-                // this should be a byte[] but there's no point in initializing it as we always send 0s
+                // this should be a byte[16] but there's no point in initializing it as we always send 0s
+                // Seed for the HMAC for the client exe verification
                 packet.Write((ulong)0);
                 packet.Write((ulong)0);
             }
@@ -322,11 +323,13 @@ namespace Trinity.Encore.AuthenticationService.Handlers
         [AuthPacketHandler(GruntOpCode.AuthenticationReconnectProof)]
         public static void HandleReconnectProof(IClient client, IncomingAuthPacket packet)
         {
-            var r1Data = packet.ReadBytes(16);
-            BigInteger r1 = new BigInteger(r1Data);
-            var r2Data = packet.ReadBytes(20);
-            BigInteger r2 = new BigInteger(r2Data);
-            packet.ReadBytes(20); // r3Data
+            // MD5 hash of { AccountName, byte[16] random data }
+            BigInteger r1 = packet.ReadBigInteger(16);
+            // SHA1 hash of { AccountName, MD5 from above, ReconnectProof, SessionKey }
+            BigInteger r2 = packet.ReadBigInteger(20);
+            // SHA1 hash of { MD5 from above, byte[16] of 0's }
+            var r3 = packet.ReadBigInteger(20); // r3Data
+
             var numKeys = packet.ReadByte();
             if (numKeys > 0)
             {
