@@ -24,7 +24,6 @@ namespace Trinity.Encore.AccountService
 
             AccountDbContext = new AccountDatabaseContext();
 
-            Contract.Assume(!string.IsNullOrEmpty(Services.AccountService.IpcUri));
             _accountHost = new ServiceHost<IAccountService, Services.AccountService>(new Services.AccountService(), Services.AccountService.IpcUri);
             _accountHost.Open();
         }

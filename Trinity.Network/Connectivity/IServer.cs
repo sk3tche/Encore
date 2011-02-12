@@ -29,7 +29,7 @@ namespace Trinity.Network.Connectivity
 
         public void Start(string address, int port)
         {
-            Contract.Requires(!string.IsNullOrEmpty(address), "An IP address must be specified.");
+            Contract.Requires(!string.IsNullOrWhiteSpace(address), "An IP address must be specified.");
             Contract.Requires(port >= IPEndPoint.MinPort && port <= IPEndPoint.MaxPort, "An invalid port number was specified.");
         }
 
