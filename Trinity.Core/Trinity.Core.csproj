@@ -94,6 +94,7 @@
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationInfo.cs" />
+    <Compile Include="Configuration\ConfigurationValueException.cs" />
     <Compile Include="Configuration\ConfigurationVariableAttribute.cs" />
     <Compile Include="Cryptography\BigInteger.cs" />
     <Compile Include="Cryptography\CryptographyExtensions.cs" />
