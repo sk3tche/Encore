@@ -45,7 +45,7 @@ namespace Trinity.Core
             }
 
             var type = obj.GetType();
-            if (type.IsInteger() && newType == typeof(bool)) // Hack for boolean values.
+            if (type.IsInteger() && newType == typeof(bool)) // A hack for boolean values.
                 return !obj.Equals(0.Cast(type)) ? true : false;
 
             value = Convert.ChangeType(obj, newType);
