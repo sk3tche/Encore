@@ -26,6 +26,8 @@ namespace Trinity.Encore.AuthenticationService
         [ConfigurationVariable("ListenPort", "3724", Static = true)]
         public static int ListenPort { get; set; }
 
+        private IPAddress _listenIp;
+
         private AuthenticationApplication()
         {
         }
@@ -36,10 +38,21 @@ namespace Trinity.Encore.AuthenticationService
 
         protected override void OnStart(string[] args)
         {
+            if (string.IsNullOrWhiteSpace(AccountIpcUri))
+                throw new ConfigurationValueException("Invalid account service IPC URI string.");
+
+            if (string.IsNullOrWhiteSpace(Services.AuthenticationService.IpcUri))
+                throw new ConfigurationValueException("Invalid IPC URI string.");
+
+            if (!IPAddress.TryParse(ListenHost, out _listenIp))
+                throw new ConfigurationValueException("Invalid listen host.");
+
+            if (ListenPort < IPEndPoint.MinPort || ListenPort > IPEndPoint.MaxPort)
+                throw new ConfigurationValueException("Invalid listen port.");
+
             AccountService = new IpcDevice<IAccountService, EmptyCallbackService>(() =>
                 new DuplexServiceClient<IAccountService, EmptyCallbackService>(new EmptyCallbackService(), AccountIpcUri));
 
-            Contract.Assume(!string.IsNullOrEmpty(Services.AuthenticationService.IpcUri));
             _authenticationHost = new ServiceHost<IAuthenticationService, Services.AuthenticationService>(new Services.AuthenticationService(),
                 Services.AuthenticationService.IpcUri);
         }
@@ -56,7 +69,13 @@ namespace Trinity.Encore.AuthenticationService
 
         public override IPEndPoint EndPoint
         {
-            get { return new IPEndPoint(IPAddress.Parse(ListenHost), ListenPort); }
+            get
+            {
+                Contract.Assume(_listenIp != null);
+                Contract.Assume(ListenPort > IPEndPoint.MinPort);
+                Contract.Assume(ListenPort < IPEndPoint.MaxPort);
+                return new IPEndPoint(_listenIp, ListenPort);
+            }
         }
     }
 }

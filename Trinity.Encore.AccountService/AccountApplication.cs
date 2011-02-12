@@ -1,4 +1,5 @@
 using System.Diagnostics.Contracts;
+using Trinity.Core.Configuration;
 using Trinity.Core.Services;
 using Trinity.Encore.AccountService.Database.Implementation;
 using Trinity.Encore.Game.Threading;
@@ -18,6 +19,9 @@ namespace Trinity.Encore.AccountService
 
         protected override void OnStart(string[] args)
         {
+            if (string.IsNullOrWhiteSpace(Services.AccountService.IpcUri))
+                throw new ConfigurationValueException("Invalid IPC URI string.");
+
             AccountDbContext = new AccountDatabaseContext();
 
             Contract.Assume(!string.IsNullOrEmpty(Services.AccountService.IpcUri));
