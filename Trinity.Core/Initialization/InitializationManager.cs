@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
+using Trinity.Core.Collections;
 using Trinity.Core.Logging;
 using Trinity.Core.Reflection;
 
@@ -139,8 +140,7 @@ namespace Trinity.Core.Initialization
 
             for (InitializationPass i = 0; i < max; i++)
             {
-                List<InitializationInfo> list;
-                _initializers.TryGetValue(i, out list);
+                var list = _initializers.TryGet(i);
 
                 if (list == null)
                     continue;
@@ -158,12 +158,11 @@ namespace Trinity.Core.Initialization
         /// </summary>
         public static void TeardownAll()
         {
-            var max = (int)((InitializationPass)ReflectionUtility.GetEnumValueCount<InitializationPass>() - 1);
+            var max = (InitializationPass)ReflectionUtility.GetEnumValueCount<InitializationPass>() - 1;
 
             for (var i = max; i >= 0; i--)
             {
-                List<InitializationInfo> list;
-                _initializers.TryGetValue((InitializationPass)i, out list);
+                var list = _initializers.TryGet(i);
 
                 if (list == null)
                     continue;

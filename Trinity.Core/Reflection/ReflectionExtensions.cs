@@ -8,7 +8,7 @@ namespace Trinity.Core.Reflection
     public static class ReflectionExtensions
     {
         [Pure]
-        public static T[] GetCustomAttributes<T>(this Type type)
+        public static T[] GetCustomAttributes<T>(this ICustomAttributeProvider type)
             where T : Attribute
         {
             Contract.Requires(type != null);
@@ -20,75 +20,12 @@ namespace Trinity.Core.Reflection
         }
 
         [Pure]
-        public static T[] GetCustomAttributes<T>(this MemberInfo member)
-            where T : Attribute
-        {
-            Contract.Requires(member != null);
-            Contract.Ensures(Contract.Result<T[]>() != null);
-
-            var attribs = member.GetCustomAttributes(typeof(T), false) as T[];
-            Contract.Assume(attribs != null);
-            return attribs;
-        }
-
-        [Pure]
-        public static T[] GetCustomAttributes<T>(this Assembly assembly)
-            where T : Attribute
-        {
-            Contract.Requires(assembly != null);
-            Contract.Ensures(Contract.Result<T[]>() != null);
-
-            var attribs = assembly.GetCustomAttributes(typeof(T), false) as T[];
-            Contract.Assume(attribs != null);
-            return attribs;
-        }
-
-        [Pure]
-        public static T[] GetCustomAttributes<T>(this Module module)
-            where T : Attribute
-        {
-            Contract.Requires(module != null);
-            Contract.Ensures(Contract.Result<T[]>() != null);
-
-            var attribs = module.GetCustomAttributes(typeof(T), false) as T[];
-            Contract.Assume(attribs != null);
-            return attribs;
-        }
-
-        [Pure]
-        public static T GetCustomAttribute<T>(this Type type)
+        public static T GetCustomAttribute<T>(this ICustomAttributeProvider type)
             where T : Attribute
         {
             Contract.Requires(type != null);
 
             return type.GetCustomAttributes<T>().TryGet(0);
-        }
-
-        [Pure]
-        public static T GetCustomAttribute<T>(this MemberInfo member)
-            where T : Attribute
-        {
-            Contract.Requires(member != null);
-
-            return member.GetCustomAttributes<T>().TryGet(0);
-        }
-
-        [Pure]
-        public static T GetCustomAttribute<T>(this Assembly assembly)
-            where T : Attribute
-        {
-            Contract.Requires(assembly != null);
-
-            return assembly.GetCustomAttributes<T>().TryGet(0);
-        }
-
-        [Pure]
-        public static T GetCustomAttribute<T>(this Module module)
-            where T : Attribute
-        {
-            Contract.Requires(module != null);
-
-            return module.GetCustomAttributes<T>().TryGet(0);
         }
 
         [Pure]
