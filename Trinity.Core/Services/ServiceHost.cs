@@ -23,7 +23,7 @@ namespace Trinity.Core.Services
             : this(instance, new Uri(uri))
         {
             Contract.Requires(instance != null);
-            Contract.Requires(!string.IsNullOrEmpty(uri));
+            Contract.Requires(!string.IsNullOrWhiteSpace(uri));
         }
 
         public TService Channel

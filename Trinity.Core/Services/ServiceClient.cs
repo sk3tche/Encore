@@ -12,7 +12,7 @@ namespace Trinity.Core.Services
         public ServiceClient(string uri)
             : this(new Uri(uri))
         {
-            Contract.Requires(!string.IsNullOrEmpty(uri));
+            Contract.Requires(!string.IsNullOrWhiteSpace(uri));
         }
 
         public ServiceClient(Uri uri)

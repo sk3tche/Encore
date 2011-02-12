@@ -14,7 +14,7 @@ namespace Trinity.Core.Services
             : this(callback, new Uri(uri))
         {
             Contract.Requires(callback != null);
-            Contract.Requires(!string.IsNullOrEmpty(uri));
+            Contract.Requires(!string.IsNullOrWhiteSpace(uri));
         }
 
         public DuplexServiceClient(TCallback callback, Uri uri)
