@@ -19,7 +19,7 @@ namespace Trinity.Encore.Game.Threading
 
         public event EventHandler Shutdown;
 
-        private ActorTimer _updateTimer;
+        private readonly ActorTimer _updateTimer;
 
         private DateTime _lastUpdate;
 
