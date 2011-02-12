@@ -94,9 +94,7 @@ namespace Trinity.Encore.Game.Network.Handling
 
         public PacketHandler<TPacket> GetHandler(int opCode)
         {
-            PacketHandler<TPacket> handler;
-            _handlers.TryGetValue(opCode, out handler);
-            return handler; // Can be null.
+            return _handlers.TryGet(opCode);
         }
 
         protected abstract TPacket CreatePacket(int opCode, byte[] payload, int length);

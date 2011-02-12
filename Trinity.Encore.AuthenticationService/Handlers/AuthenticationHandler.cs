@@ -149,26 +149,6 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             }
         }
 
-        private struct AuthLogonKey
-        {
-            public AuthLogonKey(short unk1, int unk2, byte[] unk3, byte[] shaHash)
-            {
-                Contract.Requires(unk3 != null);
-                Contract.Requires(shaHash != null);
-                Contract.Requires(unk3.Length == 4);
-                Contract.Requires(shaHash.Length == 20);
-                this.unk1 = unk1;
-                this.unk2 = unk2;
-                this.unk3 = unk3;
-                this.shaHash = shaHash;
-            }
-
-            public readonly short unk1;
-            public readonly int unk2;
-            public readonly byte[] unk3;
-            public readonly byte[] shaHash;
-        }
-
         [AuthPacketHandler(GruntOpCode.AuthenticationLogOnProof)]
         public static void HandleAuthLogOnProof(IClient client, IncomingAuthPacket packet)
         {
@@ -186,18 +166,13 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             var numKeys = packet.ReadByte();
             if (numKeys > 0)
             {
-                // only initialize the array if we actually HAVE keys
-                AuthLogonKey[] keys = new AuthLogonKey[numKeys];
-                for (byte key = 0; key < numKeys; key++)
+                for (var key = 0; key < numKeys; key++)
                 {
-                    var unk1 = packet.ReadInt16();
-                    var unk2 = packet.ReadInt32();
-                    var unk3 = packet.ReadBytes(4);
+                    packet.ReadInt16();
+                    packet.ReadInt32();
+                    packet.ReadBytes(4);
                     // SHA of { PublicA, PublicB, byte[20] unknown data }
-                    var shaHash = packet.ReadBytes(20);
-                    Contract.Assume(unk3.Length == 4);
-                    Contract.Assume(shaHash.Length == 20);
-                    keys[key] = new AuthLogonKey(unk1, unk2, unk3, shaHash);
+                    packet.ReadBytes(20);
                 }
             }
 
@@ -296,7 +271,8 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 
             // TODO fetch this from the database (or some other persistent storage)
             BigInteger sessionKey = null;
-            if (sessionKey == null) {
+            if (sessionKey == null)
+            {
                 client.Disconnect();
                 return;
             }
@@ -342,16 +318,13 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             if (numKeys > 0)
             {
                 // only initialize the array if we actually HAVE keys
-                AuthLogonKey[] keys = new AuthLogonKey[numKeys];
                 for (byte key = 0; key < numKeys; key++)
                 {
-                    var unk1 = packet.ReadInt16();
-                    var unk2 = packet.ReadInt32();
-                    var unk3 = packet.ReadBytes(4);
-                    Contract.Assume(unk3.Length == 4);
-                    var shaHash = packet.ReadBytes(20);
-                    Contract.Assume(shaHash.Length == 20);
-                    keys[key] = new AuthLogonKey(unk1, unk2, unk3, shaHash);
+                    packet.ReadInt16();
+                    packet.ReadInt32();
+                    packet.ReadBytes(4);
+                    // SHA of { PublicA, PublicB, byte[20] unknown data }
+                    packet.ReadBytes(20);
                 }
             }
 
