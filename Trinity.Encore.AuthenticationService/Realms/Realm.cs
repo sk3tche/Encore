@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using Trinity.Core.Threading.Actors;
 using Trinity.Encore.Game.Realms;
 
 namespace Trinity.Encore.AuthenticationService.Realms

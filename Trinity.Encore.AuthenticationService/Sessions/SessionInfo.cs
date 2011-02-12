@@ -1,8 +1,6 @@
-using System;
 using System.Diagnostics.Contracts;
 using Trinity.Core.Cryptography.SRP;
 using Trinity.Core.Runtime.Serialization;
-using Trinity.Encore.Services.Account;
 using Trinity.Encore.Services.Authentication;
 
 namespace Trinity.Encore.AuthenticationService.Sessions

@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.ServiceModel;
-using System.Threading;
 using Trinity.Core.Configuration;
 using Trinity.Encore.AuthenticationService.Realms;
 using Trinity.Encore.AuthenticationService.Sessions;

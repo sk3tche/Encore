@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Net;
@@ -7,7 +6,6 @@ using Trinity.Core.Services;
 using Trinity.Encore.Game.Network;
 using Trinity.Encore.Game.Network.Handling;
 using Trinity.Encore.Game.Services;
-using Trinity.Encore.Game.Threading;
 using Trinity.Encore.Services;
 using Trinity.Encore.Services.Account;
 using Trinity.Encore.Services.Authentication;
