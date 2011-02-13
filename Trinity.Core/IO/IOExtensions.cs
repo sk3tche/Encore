@@ -237,7 +237,7 @@ namespace Trinity.Core.IO
         {
             Contract.Requires(stream != null);
 
-            return stream.Position >= stream.Length;
+            return stream.Position == stream.Length - 1;
         }
 
         public static BinaryReader GetBinaryReader(this byte[] data, Encoding encoding = null)
