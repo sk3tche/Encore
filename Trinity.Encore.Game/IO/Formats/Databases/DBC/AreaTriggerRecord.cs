@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 
-namespace Trinity.Encore.Game.IO.Formats.DBC
+namespace Trinity.Encore.Game.IO.Formats.Databases.DBC
 {
     [ContractVerification(false)]
     public sealed class AreaTriggerRecord : IClientDbRecord

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 
-namespace Trinity.Encore.Game.IO.Formats.DBC
+namespace Trinity.Encore.Game.IO.Formats.Databases.DBC
 {
     [ContractVerification(false)]
     public sealed class SpellScalingRecord : IClientDbRecord
@@ -33,6 +33,9 @@ namespace Trinity.Encore.Game.IO.Formats.DBC
         /// <returns>The appropriate cast time in milliseconds for the given level.</returns>
         public int GetCastTimeForLevel(int level)
         {
+            Contract.Requires(level > 0);
+            Contract.Requires(level < Defines.Game.MaxLevelCap);
+
             var castTime = (CastMin + ((CastMax - CastMin) / (CastDiv - 1)) * (level - 1));
             if (castTime > CastMax)
                 castTime = CastMax;

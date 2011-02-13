@@ -6,14 +6,19 @@ namespace Trinity.Encore.Game
 {
     public static class Defines
     {
-        public static Version SupportedClientVersion
+        public static class Game
         {
-            get
+            public static Version SupportedClientVersion
             {
-                Contract.Ensures(Contract.Result<Version>() != null);
+                get
+                {
+                    Contract.Ensures(Contract.Result<Version>() != null);
 
-                return new Version(4, 0, 3, 13329);
+                    return new Version(4, 0, 3, 13329);
+                }
             }
+
+            public const int MaxLevelCap = 255;
         }
 
         public static class Protocol

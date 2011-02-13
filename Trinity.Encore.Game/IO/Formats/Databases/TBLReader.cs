@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using Trinity.Core.IO;
 
-namespace Trinity.Encore.Game.IO.Formats
+namespace Trinity.Encore.Game.IO.Formats.Databases
 {
     public sealed class TBLReader : BinaryFileReader
     {

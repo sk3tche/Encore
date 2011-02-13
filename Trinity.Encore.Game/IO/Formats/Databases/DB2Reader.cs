@@ -1,7 +1,7 @@
 using System.Diagnostics.Contracts;
 using System.IO;
 
-namespace Trinity.Encore.Game.IO.Formats
+namespace Trinity.Encore.Game.IO.Formats.Databases
 {
     public class DB2Reader<T> : ClientDbReader<T>
         where T : class, IClientDbRecord, new()
