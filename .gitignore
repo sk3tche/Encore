@@ -3,7 +3,6 @@
 *.suo
 *.user
 *ReSharper*
-*.vs10x
 *.pdb
 *.pidb
 *.userprefs
