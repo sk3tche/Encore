@@ -136,10 +136,10 @@ namespace Trinity.Encore.Game.IO.Compression
             },
         };
 
-        public static MemoryStream Decompress(BinaryReader data)
+        public static byte[] Decompress(BinaryReader data)
         {
             Contract.Requires(data != null);
-            Contract.Ensures(Contract.Result<MemoryStream>() != null);
+            Contract.Ensures(Contract.Result<byte[]>() != null);
 
             var compType = data.ReadByte();
 
@@ -151,33 +151,36 @@ namespace Trinity.Encore.Game.IO.Compression
             var tail = BuildList(primeData);
             var head = BuildTree(tail);
 
-            var outputStream = new MemoryStream();
-            var bitStream = new BitStreamReader(data);
-
-            int decoded;
-            do
+            using (var outputStream = new MemoryStream())
             {
-                var node = Decode(bitStream, head);
-                decoded = node.DecompressedValue;
+                var bitStream = new BitStreamReader(data);
 
-                switch (decoded)
+                int decoded;
+                do
                 {
-                    case byte.MaxValue:
-                        break;
-                    case byte.MaxValue + 1:
-                        var newValue = bitStream.ReadBits(8);
-                        outputStream.WriteByte((byte)newValue);
-                        Contract.Assume(tail != null);
-                        tail = InsertNode(tail, newValue);
-                        break;
-                    default:
-                        outputStream.WriteByte((byte)decoded);
-                        break;
-                }
-            } while (decoded != byte.MaxValue);
+                    var node = Decode(bitStream, head);
+                    decoded = node.DecompressedValue;
 
-            outputStream.Seek(0, SeekOrigin.Begin);
-            return outputStream;
+                    switch (decoded)
+                    {
+                        case byte.MaxValue:
+                            break;
+                        case byte.MaxValue + 1:
+                            var newValue = bitStream.ReadBits(8);
+                            outputStream.WriteByte((byte)newValue);
+                            Contract.Assume(tail != null);
+                            tail = InsertNode(tail, newValue);
+                            break;
+                        default:
+                            outputStream.WriteByte((byte)decoded);
+                            break;
+                    }
+                } while (decoded != byte.MaxValue);
+
+                var arr = outputStream.ToArray();
+                Contract.Assume(arr != null);
+                return arr;
+            }
         }
 
         private static HuffmanLinkedNode Decode(BitStreamReader input, HuffmanLinkedNode head)

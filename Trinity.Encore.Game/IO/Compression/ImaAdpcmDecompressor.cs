@@ -41,111 +41,112 @@ namespace Trinity.Encore.Game.IO.Compression
             var array2 = new int[channelCount];
 
             var outputStream = new MemoryStream();
-            var output = new BinaryWriter(outputStream);
-
-            input.ReadByte();
-            var shift = input.ReadByte();
-
-            for (var i = 0; i < channelCount; i++)
+            using (var output = new BinaryWriter(outputStream))
             {
-                var temp = input.ReadInt16();
-                array2[i] = temp;
-                output.Write(temp);
-            }
+                input.ReadByte();
+                var shift = input.ReadByte();
 
-            var channel = channelCount - 1;
-
-            while (!input.BaseStream.IsRead())
-            {
-                var value = input.ReadByte();
-
-                if (channelCount == 2)
-                    channel = 1 - channel;
-
-                if ((value & 0x80) != 0)
+                for (var i = 0; i < channelCount; i++)
                 {
-                    switch (value & 0x7f)
-                    {
-                        case 0:
-                            if (array1[channel] != 0)
-                                array1[channel]--;
-
-                            output.Write((short)array2[channel]);
-                            break;
-                        case 1:
-                            array1[channel] += 8;
-
-                            if (array1[channel] > 0x58)
-                                array1[channel] = 0x58;
-
-                            if (channelCount == 2)
-                                channel = 1 - channel;
-                            break;
-                        case 2:
-                            break;
-                        default:
-                            array1[channel] -= 8;
-                            if (array1[channel] < 0)
-                                array1[channel] = 0;
-
-                            if (channelCount == 2)
-                                channel = 1 - channel;
-                            break;
-                    }
+                    var temp = input.ReadInt16();
+                    array2[i] = temp;
+                    output.Write(temp);
                 }
-                else
+
+                var channel = channelCount - 1;
+
+                while (!input.BaseStream.IsRead())
                 {
-                    var temp1 = _sLookup1[array1[channel]];
-                    var temp2 = temp1 >> shift;
+                    var value = input.ReadByte();
 
-                    if ((value & 1) != 0)
-                        temp2 += (temp1 >> 0);
+                    if (channelCount == 2)
+                        channel = 1 - channel;
 
-                    if ((value & 2) != 0)
-                        temp2 += (temp1 >> 1);
-
-                    if ((value & 4) != 0)
-                        temp2 += (temp1 >> 2);
-
-                    if ((value & 8) != 0)
-                        temp2 += (temp1 >> 3);
-
-                    if ((value & 0x10) != 0)
-                        temp2 += (temp1 >> 4);
-
-                    if ((value & 0x20) != 0)
-                        temp2 += (temp1 >> 5);
-
-                    var temp3 = array2[channel];
-
-                    if ((value & 0x40) != 0)
+                    if ((value & 0x80) != 0)
                     {
-                        temp3 -= temp2;
-                        if (temp3 <= short.MinValue)
-                            temp3 = short.MinValue;
+                        switch (value & 0x7f)
+                        {
+                            case 0:
+                                if (array1[channel] != 0)
+                                    array1[channel]--;
+
+                                output.Write((short)array2[channel]);
+                                break;
+                            case 1:
+                                array1[channel] += 8;
+
+                                if (array1[channel] > 0x58)
+                                    array1[channel] = 0x58;
+
+                                if (channelCount == 2)
+                                    channel = 1 - channel;
+                                break;
+                            case 2:
+                                break;
+                            default:
+                                array1[channel] -= 8;
+                                if (array1[channel] < 0)
+                                    array1[channel] = 0;
+
+                                if (channelCount == 2)
+                                    channel = 1 - channel;
+                                break;
+                        }
                     }
                     else
                     {
-                        temp3 += temp2;
-                        if (temp3 >= short.MaxValue)
-                            temp3 = short.MaxValue;
+                        var temp1 = _sLookup1[array1[channel]];
+                        var temp2 = temp1 >> shift;
+
+                        if ((value & 1) != 0)
+                            temp2 += (temp1 >> 0);
+
+                        if ((value & 2) != 0)
+                            temp2 += (temp1 >> 1);
+
+                        if ((value & 4) != 0)
+                            temp2 += (temp1 >> 2);
+
+                        if ((value & 8) != 0)
+                            temp2 += (temp1 >> 3);
+
+                        if ((value & 0x10) != 0)
+                            temp2 += (temp1 >> 4);
+
+                        if ((value & 0x20) != 0)
+                            temp2 += (temp1 >> 5);
+
+                        var temp3 = array2[channel];
+
+                        if ((value & 0x40) != 0)
+                        {
+                            temp3 -= temp2;
+                            if (temp3 <= short.MinValue)
+                                temp3 = short.MinValue;
+                        }
+                        else
+                        {
+                            temp3 += temp2;
+                            if (temp3 >= short.MaxValue)
+                                temp3 = short.MaxValue;
+                        }
+
+                        array2[channel] = temp3;
+                        output.Write((short)temp3);
+
+                        array1[channel] += _sLookup2[value & 0x1f];
+
+                        if (array1[channel] < 0)
+                            array1[channel] = 0;
+                        else if (array1[channel] > 0x58)
+                            array1[channel] = 0x58;
                     }
-
-                    array2[channel] = temp3;
-                    output.Write((short)temp3);
-
-                    array1[channel] += _sLookup2[value & 0x1f];
-
-                    if (array1[channel] < 0)
-                        array1[channel] = 0;
-                    else if (array1[channel] > 0x58)
-                        array1[channel] = 0x58;
                 }
-            }
 
-            var arr = outputStream.ToArray();
-            Contract.Assume(arr != null);
-            return arr;
+                var arr = outputStream.ToArray();
+                Contract.Assume(arr != null);
+                return arr;
+            }
         }
     }
 }
