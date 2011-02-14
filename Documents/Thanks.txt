@@ -23,5 +23,5 @@ the development of the source base in one way or another:
  * Xanadu
  * Zor
 
- If you have contributed to the project and you are not on this list, please contact
- a developer in order to have your name added.
+If you have contributed to the project and you are not on this list, please contact
+a developer in order to have your name added.
