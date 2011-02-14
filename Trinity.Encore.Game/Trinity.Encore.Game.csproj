@@ -129,6 +129,7 @@
     <Compile Include="IO\Compression\ImaAdpcmDecompressor.cs" />
     <Compile Include="IO\Compression\PkLibCompressionType.cs" />
     <Compile Include="IO\Compression\PkLibDecompressor.cs" />
+    <Compile Include="IO\Compression\SparseDecompressor.cs" />
     <Compile Include="IO\Formats\Databases\ADBReader.cs" />
     <Compile Include="IO\ClientDbException.cs" />
     <Compile Include="IO\ClientDbReader.cs" />

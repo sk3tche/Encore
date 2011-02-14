@@ -7,22 +7,8 @@ using Trinity.Core;
 namespace Trinity.Encore.Game.IO.Compression
 {
     // Based on code by Ladislav Zezula and Foole.
-    public sealed class PkLibDecompressor
+    public static class PkLibDecompressor
     {
-        private readonly BitStreamReader _bitStream;
-
-        private readonly PkLibCompressionType _compressionType;
-
-        private readonly int _dictSizeBits; // Dictionary size in bits.
-
-        [ContractInvariantMethod]
-        private void Invariant()
-        {
-            Contract.Invariant(_bitStream != null);
-            Contract.Invariant(_dictSizeBits >= 4);
-            Contract.Invariant(_dictSizeBits <= 6);
-        }
-
         private static readonly byte[] _sLenBits =
         {
             3, 2, 3, 3, 4, 4, 4, 5,
@@ -75,39 +61,35 @@ namespace Trinity.Encore.Game.IO.Compression
             return GenerateDecodeTable(_sLenBits, _sLenCode);
         })();
 
-        public PkLibDecompressor(BinaryReader input)
+        public static byte[] Decompress(BinaryReader input, int expectedSize)
         {
             Contract.Requires(input != null);
-
-            _bitStream = new BitStreamReader(input);
-
-            _compressionType = (PkLibCompressionType)input.ReadByte();
-
-            if (_compressionType != PkLibCompressionType.Binary && _compressionType != PkLibCompressionType.ASCII)
-                throw new InvalidDataException("Invalid compression type: {0}".Interpolate(_compressionType));
-
-            _dictSizeBits = input.ReadByte();
-
-            if (_dictSizeBits < 4 || _dictSizeBits > 6)
-                throw new InvalidDataException("Invalid dictionary size: {0}".Interpolate(_dictSizeBits));
-        }
-
-        public byte[] Explode(int expectedSize)
-        {
             Contract.Requires(expectedSize >= 0);
             Contract.Ensures(Contract.Result<byte[]>() != null);
+
+            var bitStream = new BitStreamReader(input);
+
+            var compressionType = (PkLibCompressionType)input.ReadByte();
+
+            if (compressionType != PkLibCompressionType.Binary && compressionType != PkLibCompressionType.ASCII)
+                throw new InvalidDataException("Invalid compression type: {0}".Interpolate(compressionType));
+
+            var dictSizeBits = input.ReadByte();
+
+            if (dictSizeBits < 4 || dictSizeBits > 6)
+                throw new InvalidDataException("Invalid dictionary size: {0}".Interpolate(dictSizeBits));
 
             var outputBuffer = new byte[expectedSize];
             var outputStream = new MemoryStream(outputBuffer);
 
             int instruction;
-            while ((instruction = DecodeLiteral()) != -1)
+            while ((instruction = DecodeLiteral(bitStream, compressionType)) != -1)
             {
                 if (instruction >= 0x100)
                 {
                     // If instruction is greater than 0x100, it means "repeat n - 0xfe bytes".
                     var copyLength = instruction - 0xfe;
-                    var moveBack = DecodeDistance(copyLength);
+                    var moveBack = DecodeDistance(bitStream, copyLength, dictSizeBits);
 
                     if (moveBack == 0)
                         break;
@@ -130,31 +112,33 @@ namespace Trinity.Encore.Game.IO.Compression
             return result;
         }
 
-        private int DecodeLiteral()
+        private static int DecodeLiteral(BitStreamReader bitStream, PkLibCompressionType compressionType)
         {
+            Contract.Requires(bitStream != null);
+
             // Return values:
             // 0x000 to 0x0ff: One byte from compressed file.
             // 0x100 to 0x305: Copy previous block (0x100 = 1 byte).
             // -1: End of stream.
-            switch (_bitStream.ReadBits(1))
+            switch (bitStream.ReadBits(1))
             {
                 case -1:
                     return -1;
                 case 1:
                     // The next bits are positions in buffers.
-                    int pos = _sPosition2[_bitStream.PeekByte()];
+                    int pos = _sPosition2[bitStream.PeekByte()];
 
                     // Skip the bits we just used.
                     var numBits = _sLenBits[pos];
                     Contract.Assume(numBits < BitStreamReader.MaxBitCount);
-                    if (_bitStream.ReadBits(numBits) == -1)
+                    if (bitStream.ReadBits(numBits) == -1)
                         return -1;
     
                     var nBits = _sExLenBits[pos];
                     if (nBits != 0)
                     {
                         Contract.Assume(nBits < BitStreamReader.MaxBitCount);
-                        var val2 = _bitStream.ReadBits(nBits);
+                        var val2 = bitStream.ReadBits(nBits);
                         if (val2 == -1 && (pos + val2 != 0x10e))
                             return -1;
 
@@ -163,8 +147,8 @@ namespace Trinity.Encore.Game.IO.Compression
 
                     return pos + 0x100; // Return number of bytes to repeat.
                 case 0:
-                    if (_compressionType == PkLibCompressionType.Binary)
-                        return _bitStream.ReadBits(sizeof(byte) * 8);
+                    if (compressionType == PkLibCompressionType.Binary)
+                        return bitStream.ReadBits(sizeof(byte) * 8);
 
                     // TODO: Implement ASCII mode.
                     throw new NotImplementedException("ASCII mode is not yet implemented.");
@@ -173,34 +157,37 @@ namespace Trinity.Encore.Game.IO.Compression
             }
         }
 
-        private int DecodeDistance(int length)
+        private static int DecodeDistance(BitStreamReader bitStream, int length, int dictSizeBits)
         {
+            Contract.Requires(bitStream != null);
             Contract.Requires(length >= 0);
+            Contract.Requires(dictSizeBits >= 0);
+            Contract.Requires(dictSizeBits < BitStreamReader.MaxBitCount);
 
-            if (_bitStream.EnsureBits(8) == false)
+            if (bitStream.EnsureBits(8) == false)
                 return 0;
 
-            var pos = (int)_sPosition1[_bitStream.PeekByte()];
+            var pos = (int)_sPosition1[bitStream.PeekByte()];
             var skip = _sDistBits[pos]; // Number of bits to skip.
 
             // Skip the appropriate number of bits
             Contract.Assume(skip < BitStreamReader.MaxBitCount);
-            if (_bitStream.ReadBits(skip) == -1)
+            if (bitStream.ReadBits(skip) == -1)
                 return 0;
 
             if (length == 2)
             {
-                if (_bitStream.EnsureBits(2) == false)
+                if (bitStream.EnsureBits(2) == false)
                     return 0;
 
-                pos = (pos << 2) | _bitStream.ReadBits(2);
+                pos = (pos << 2) | bitStream.ReadBits(2);
             }
             else
             {
-                if (_bitStream.EnsureBits(_dictSizeBits) == false)
+                if (bitStream.EnsureBits(dictSizeBits) == false)
                     return 0;
 
-                pos = ((pos << _dictSizeBits)) | _bitStream.ReadBits(_dictSizeBits);
+                pos = ((pos << dictSizeBits)) | bitStream.ReadBits(dictSizeBits);
             }
 
             return pos + 1;
