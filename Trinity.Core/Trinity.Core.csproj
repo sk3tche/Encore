@@ -77,6 +77,9 @@
     <Reference Include="JetBrains.Annotations">
       <HintPath>..\Dependencies\JetBrains.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="SevenZip.Lzma">
+      <HintPath>..\Dependencies\SevenZip.Lzma.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -114,6 +117,14 @@
     <Compile Include="Initialization\InitializationInfo.cs" />
     <Compile Include="Initialization\InitializationManager.cs" />
     <Compile Include="Initialization\InitializationPass.cs" />
+    <Compile Include="IO\Compression\BZip2Compressor.cs" />
+    <Compile Include="IO\Compression\BZip2Decompressor.cs" />
+    <Compile Include="IO\Compression\CompressionExtensions.cs" />
+    <Compile Include="IO\Compression\LzmaCompressor.cs" />
+    <Compile Include="IO\Compression\LzmaDecompressor.cs" />
+    <Compile Include="IO\Compression\ZLibCompressionLevel.cs" />
+    <Compile Include="IO\Compression\ZLibCompressor.cs" />
+    <Compile Include="IO\Compression\ZLibDecompressor.cs" />
     <Compile Include="Runtime\HashCodeUtility.cs" />
     <Compile Include="Runtime\InteropServices\Union.cs" />
     <Compile Include="IO\IOExtensions.cs" />
