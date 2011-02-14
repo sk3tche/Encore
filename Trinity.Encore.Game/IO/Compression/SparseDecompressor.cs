@@ -5,6 +5,7 @@ using Trinity.Core.IO;
 namespace Trinity.Encore.Game.IO.Compression
 {
     // Based on code by Ladislav Zezula and ShadowFlare.
+    // TODO: Figure out if this is reusable enough to be moved to Trinity.Core.
     public static class SparseDecompressor
     {
         public const int CompressionThreshold = 5;

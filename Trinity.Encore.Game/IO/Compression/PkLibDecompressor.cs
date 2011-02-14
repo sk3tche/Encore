@@ -7,6 +7,7 @@ using Trinity.Core;
 namespace Trinity.Encore.Game.IO.Compression
 {
     // Based on code by Ladislav Zezula and Foole.
+    // TODO: Figure out if this is reusable enough to be moved to Trinity.Core.
     public static class PkLibDecompressor
     {
         private static readonly byte[] _sLenBits =

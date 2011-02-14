@@ -5,6 +5,7 @@ using Trinity.Core.IO;
 namespace Trinity.Encore.Game.IO.Compression
 {
     // Based on code by Ladislav Zezula and Foole.
+    // TODO: Figure out if this is reusable enough to be moved to Trinity.Core.
     public static class ImaAdpcmDecompressor
     {
         private static readonly int[] _sLookup1 =
