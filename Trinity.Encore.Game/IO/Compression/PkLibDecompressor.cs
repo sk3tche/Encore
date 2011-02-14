@@ -80,36 +80,36 @@ namespace Trinity.Encore.Game.IO.Compression
                 throw new InvalidDataException("Invalid dictionary size: {0}".Interpolate(dictSizeBits));
 
             var outputBuffer = new byte[expectedSize];
-            var outputStream = new MemoryStream(outputBuffer);
-
-            int instruction;
-            while ((instruction = DecodeLiteral(bitStream, compressionType)) != -1)
+            using (var outputStream = new MemoryStream(outputBuffer))
             {
-                if (instruction >= 0x100)
+                int instruction;
+                while ((instruction = DecodeLiteral(bitStream, compressionType)) != -1)
                 {
-                    // If instruction is greater than 0x100, it means "repeat n - 0xfe bytes".
-                    var copyLength = instruction - 0xfe;
-                    var moveBack = DecodeDistance(bitStream, copyLength, dictSizeBits);
+                    if (instruction >= 0x100)
+                    {
+                        // If instruction is greater than 0x100, it means "repeat n - 0xfe bytes".
+                        var copyLength = instruction - 0xfe;
+                        var moveBack = DecodeDistance(bitStream, copyLength, dictSizeBits);
 
-                    if (moveBack == 0)
-                        break;
+                        if (moveBack == 0)
+                            break;
 
-                    var source = (int)outputStream.Position - moveBack;
+                        var source = (int)outputStream.Position - moveBack;
 
-                    while (copyLength-- > 0)
-                        outputStream.WriteByte(outputBuffer[source++]);
+                        while (copyLength-- > 0)
+                            outputStream.WriteByte(outputBuffer[source++]);
+                    }
+                    else
+                        outputStream.WriteByte((byte)instruction);
                 }
-                else
-                    outputStream.WriteByte((byte)instruction);
+
+                if (outputStream.Position == expectedSize)
+                    return outputBuffer;
+
+                var arr = outputStream.ToArray();
+                Contract.Assume(arr != null);
+                return arr;
             }
-
-            if (outputStream.Position == expectedSize)
-                return outputBuffer;
-
-            var resultLength = (int)outputStream.Position;
-            var result = new byte[resultLength];
-            Buffer.BlockCopy(outputBuffer, 0, result, 0, resultLength);
-            return result;
         }
 
         private static int DecodeLiteral(BitStreamReader bitStream, PkLibCompressionType compressionType)

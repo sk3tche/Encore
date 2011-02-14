@@ -25,7 +25,6 @@ namespace Trinity.Encore.Game.IO.Compression
             using (var writer = new BinaryWriter(stream))
             {
                 var outputLength = reader.ReadInt32BigEndian();
-
                 if (outputLength < 0)
                     throw new InvalidDataException("Negative output length encountered.");
 
