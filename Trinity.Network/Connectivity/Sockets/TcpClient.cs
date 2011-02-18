@@ -49,7 +49,7 @@ namespace Trinity.Network.Connectivity.Sockets
             Contract.Invariant(_socket != null);
             Contract.Invariant(_eventArgs != null);
             Contract.Invariant(_headerBuffer != null);
-            Contract.Invariant(_headerBuffer.Length == _propagator.HeaderLength);
+            Contract.Invariant(_headerBuffer.Length == _propagator.IncomingHeaderLength);
             Contract.Invariant(_receiveBuffer != null);
             Contract.Invariant(_receiveBuffer.Length >= InitialReceiveBufferSize);
             Contract.Invariant(_receiveOpCode >= 0);
@@ -71,7 +71,7 @@ namespace Trinity.Network.Connectivity.Sockets
 
             _socket = socket;
             _eventArgs = SocketAsyncEventArgsPool.Acquire();
-            _headerBuffer = new byte[propagator.HeaderLength];
+            _headerBuffer = new byte[propagator.IncomingHeaderLength];
             _receiveBuffer = new byte[InitialReceiveBufferSize]; // Start out with a 2 ^ 16 - 1 buffer.
             _propagator = propagator;
             Server = server;
@@ -85,7 +85,7 @@ namespace Trinity.Network.Connectivity.Sockets
 
         private void Receive()
         {
-            _eventArgs.SetBuffer(_headerBuffer, 0, _propagator.HeaderLength);
+            _eventArgs.SetBuffer(_headerBuffer, 0, _propagator.IncomingHeaderLength);
             _eventArgs.Completed += OnReceiveHeader;
 
             try
@@ -133,7 +133,7 @@ namespace Trinity.Network.Connectivity.Sockets
                 return;
             }
 
-            var length = _propagator.HeaderLength;
+            var length = _propagator.IncomingHeaderLength;
             if (bytesTransferred > length)
             {
                 _log.Warn("Client {0} sent an invalid-length header ({1} bytes, expected {2}) - disconnected.", this,
@@ -246,7 +246,7 @@ namespace Trinity.Network.Connectivity.Sockets
             }
 
             Contract.Assume(_receiveLength < _receiveBuffer.Length);
-            Contract.Assume(_headerBuffer.Length == _propagator.HeaderLength); // Make the static checker shut up.
+            Contract.Assume(_headerBuffer.Length == _propagator.IncomingHeaderLength); // Make the static checker shut up.
         }
 
         private void OnReceivePayload(object sender, SocketAsyncEventArgs args)
@@ -282,7 +282,7 @@ namespace Trinity.Network.Connectivity.Sockets
                     _propagator.HandlePayload(this, _receiveOpCode, _receiveBuffer, _receivePosition);
                     _receivePosition = 0;
 
-                    Contract.Assume(_headerBuffer.Length == _propagator.HeaderLength); // Make the static checker shut up.
+                    Contract.Assume(_headerBuffer.Length == _propagator.IncomingHeaderLength); // Make the static checker shut up.
                     return;
                 }
 
@@ -319,18 +319,18 @@ namespace Trinity.Network.Connectivity.Sockets
             _receivePosition = 0;
 
             _propagator.HandlePayload(this, _receiveOpCode, _receiveBuffer, _receiveLength);
-            Contract.Assume(_headerBuffer.Length == _propagator.HeaderLength); // Make the static checker shut up.
+            Contract.Assume(_headerBuffer.Length == _propagator.IncomingHeaderLength); // Make the static checker shut up.
         }
 
         public void Send(OutgoingPacket packet)
         {
-            var headerLength = packet.HeaderLength;
+            var headerLength = _propagator.OutgoingHeaderLength;
             var length = packet.Length;
             var totalLength = headerLength + length;
 
             // Insert the header.
             var bytes = new byte[totalLength];
-            packet.WriteHeader(bytes);
+            _propagator.WriteHeader(packet, bytes);
 
             // Insert the payload.
             packet.Position = 0;

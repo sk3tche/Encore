@@ -5,7 +5,6 @@ using System.Text;
 
 namespace Trinity.Network.Transmission
 {
-    [ContractClass(typeof(OutgoingPacketContracts))]
     public abstract class OutgoingPacket : BinaryWriter, IPacket
     {
         protected OutgoingPacket(Enum opCode, Encoding encoding, int capacity = 0)
@@ -24,7 +23,6 @@ namespace Trinity.Network.Transmission
             Contract.Invariant(OpCode != null);
             Contract.Invariant(Length >= 0);
             Contract.Invariant(Position >= 0);
-            Contract.Invariant(HeaderLength > 0);
         }
 
         public Enum OpCode { get; private set; }
@@ -38,35 +36,6 @@ namespace Trinity.Network.Transmission
         {
             get { return (int)BaseStream.Position; }
             set { BaseStream.Position = value; }
-        }
-
-        public abstract int HeaderLength { get; }
-
-        public abstract void WriteHeader(byte[] buffer);
-    }
-
-    [ContractClassFor(typeof(OutgoingPacket))]
-    public abstract class OutgoingPacketContracts : OutgoingPacket
-    {
-        protected OutgoingPacketContracts(Enum opCode, Encoding encoding, int capacity)
-            : base(opCode, encoding, capacity)
-        {
-        }
-
-        public override int HeaderLength
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<int>() > 0);
-
-                return 0;
-            }
-        }
-
-        public override void WriteHeader(byte[] buffer)
-        {
-            Contract.Requires(buffer != null);
-            Contract.Requires(buffer.Length >= HeaderLength);
         }
     }
 }
