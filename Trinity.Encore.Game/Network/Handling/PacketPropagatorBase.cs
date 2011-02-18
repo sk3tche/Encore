@@ -99,6 +99,10 @@ namespace Trinity.Encore.Game.Network.Handling
 
         protected abstract TPacket CreatePacket(int opCode, byte[] payload, int length);
 
+        public abstract int IncomingHeaderLength { get; }
+
+        public abstract PacketHeader HandleHeader(IClient client, byte[] header);
+
         public void HandlePayload(IClient client, int opCode, byte[] payload, int length)
         {
             var handler = GetHandler(opCode);
@@ -124,9 +128,7 @@ namespace Trinity.Encore.Game.Network.Handling
             client.PostAsync(() => handler.Invoke(client, packet));
         }
 
-        public abstract int HeaderLength { get; }
-
-        public abstract PacketHeader HandleHeader(IClient client, byte[] header);
+        public abstract void WriteHeader(OutgoingPacket packet, byte[] buffer);
     }
 
     [ContractClassFor(typeof(PacketPropagatorBase<,>))]

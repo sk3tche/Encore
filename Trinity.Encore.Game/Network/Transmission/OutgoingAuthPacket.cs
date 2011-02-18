@@ -17,14 +17,11 @@ namespace Trinity.Encore.Game.Network.Transmission
             get { return (GruntOpCode)base.OpCode; }
         }
 
+        public const int HeaderSize = 1; // Opcode only; length exists only in some packets.
+
         public override int HeaderLength
         {
-            get { return 1; /* Opcode only; length exists in a select few packets. */ }
-        }
-
-        public override void WriteHeader(byte[] buffer)
-        {
-            buffer[0] = ((IConvertible)OpCode).ToByte(null);
+            get { return HeaderSize; }
         }
     }
 }
