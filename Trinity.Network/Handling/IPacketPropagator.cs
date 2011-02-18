@@ -10,8 +10,6 @@ namespace Trinity.Network.Handling
     {
         int IncomingHeaderLength { get; }
 
-        int OutgoingHeaderLength { get; }
-
         PacketHeader HandleHeader(IClient client, byte[] header);
 
         void HandlePayload(IClient client, int opCode, byte[] payload, int length);
@@ -23,16 +21,6 @@ namespace Trinity.Network.Handling
     public abstract class PacketHandlerContracts : IPacketPropagator
     {
         public int IncomingHeaderLength
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<int>() > 0);
-
-                return 0;
-            }
-        }
-
-        public int OutgoingHeaderLength
         {
             get
             {
@@ -66,7 +54,7 @@ namespace Trinity.Network.Handling
         {
             Contract.Requires(packet != null);
             Contract.Requires(buffer != null);
-            Contract.Requires(buffer.Length >= OutgoingHeaderLength);
+            Contract.Requires(buffer.Length >= packet.HeaderLength);
         }
     }
 }

@@ -324,7 +324,7 @@ namespace Trinity.Network.Connectivity.Sockets
 
         public void Send(OutgoingPacket packet)
         {
-            var headerLength = _propagator.OutgoingHeaderLength;
+            var headerLength = packet.HeaderLength;
             var length = packet.Length;
             var totalLength = headerLength + length;
 
