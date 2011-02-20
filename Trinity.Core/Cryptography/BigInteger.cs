@@ -389,7 +389,7 @@ namespace Trinity.Core.Cryptography
             var result = new BigInteger(bi1);
 
             for (var i = 0; i < MaxLength; i++)
-                result._data[i] = ~(bi1._data[i]);
+                result._data[i] = ~bi1._data[i];
 
             long carry = 1;
             var index = 0;
@@ -1702,8 +1702,14 @@ namespace Trinity.Core.Cryptography
             {
                 Contract.Ensures(Contract.Result<int>() >= 0);
 
-                while (_dataLength > 1 && _data[_dataLength - 1] == 0)
-                    _dataLength--;
+                var leadingZeros = false;
+                if (_dataLength > 1 && _data[_dataLength - 1] == 0)
+                {
+                    leadingZeros = true;
+
+                    while (_data[_dataLength - 1] == 0)
+                        _dataLength--;
+                }
 
                 var value = _data[_dataLength - 1];
                 var mask = 0x80000000;
@@ -1717,13 +1723,11 @@ namespace Trinity.Core.Cryptography
 
                 bits += ((_dataLength - 1) << 5);
 
+                if (leadingZeros && (value & mask) != 0)
+                    bits++;
+
                 return bits;
             }
-        }
-
-        public byte LeastSignificantByte
-        {
-            get { return ByteValue; }
         }
 
         public byte ByteValue
@@ -1954,6 +1958,40 @@ namespace Trinity.Core.Cryptography
             }
 
             return result;
+        }
+
+        [CLSCompliant(false)]
+        public uint SignBit
+        {
+            get { return (_data[MaxLength - 1] & 0x80000000); }
+        }
+
+        public int Sign
+        {
+            get
+            {
+                var sign = SignBit;
+
+                // If the sign bit is set, the value is negative.
+                if (sign != 0)
+                    return -1;
+
+                var pos = MaxLength - 1;
+
+                // Check for zero, since the sign bit being 0 can also indicate the value of zero.
+                for (var i = 0; i < _dataLength; i++)
+                {
+                    if (_data[i] != 0)
+                        break;
+
+                    // If all bits and the sign bit are 0, the value is zero.
+                    if (i == pos)
+                        return 0;
+                }
+
+                // The value must be positive.
+                return 1;
+            }
         }
 
         public override int GetHashCode()
