@@ -24,10 +24,13 @@ namespace Trinity.Encore.Game.IO.Formats.Databases
 
         protected override void Read(BinaryReader reader)
         {
-            Magic = reader.ReadFourCC();
-            Load = reader.ReadInt32();
+            Magic = reader.ReadFourCC(); // TODO: Magic check.
+            Load = reader.ReadInt32(); // TODO: What's this do?
             LastModified = reader.ReadInt32();
             Build = reader.ReadInt32();
+
+            if (Build < 0)
+                throw new InvalidDataException("Negative build was encountered.");
 
             while (!reader.BaseStream.IsRead())
                 Records.Add(new TBLRecord(reader));

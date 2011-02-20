@@ -24,9 +24,16 @@ namespace Trinity.Encore.Game.IO.Formats
 
         protected override void Read(BinaryReader reader)
         {
-            Magic = reader.ReadFourCC();
+            Magic = reader.ReadFourCC(); // TODO: Magic check.
             Version = reader.ReadInt32();
+
+            if (Version < 0)
+                throw new InvalidDataException("Negative version encountered.");
+
             PermutationCount = reader.ReadInt32();
+
+            if (PermutationCount < 0)
+                throw new InvalidDataException("Negative permutation count encountered.");
 
             for (var i = 0; i < PermutationCount; i++)
                 Chunks.Add(new BLSChunk(reader));
@@ -54,10 +61,16 @@ namespace Trinity.Encore.Game.IO.Formats
 
             public BLSChunk(BinaryReader reader)
             {
+                Contract.Requires(reader != null);
+
                 UnknownFlags1 = reader.ReadInt32();
                 UnknownFlags2 = reader.ReadInt32();
                 Unknown = reader.ReadInt32(); // Always zero?
                 Size = reader.ReadInt32();
+
+                if (Size < 0)
+                    throw new InvalidDataException("Negative chunk size encountered.");
+
                 Data = reader.ReadBytes(Size);
             }
 

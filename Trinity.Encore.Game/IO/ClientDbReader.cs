@@ -53,7 +53,7 @@ namespace Trinity.Encore.Game.IO
         {
             if (HeaderMagic != null)
                 if (reader.ReadInt32() != HeaderMagic)
-                    throw new ClientDbException("Invalid client DB header magic number.");
+                    throw new InvalidDataException("Invalid client DB header magic number.");
 
             var data = ReadData(reader);
 

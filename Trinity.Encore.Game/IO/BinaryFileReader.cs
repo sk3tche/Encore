@@ -28,9 +28,9 @@ namespace Trinity.Encore.Game.IO
 
         protected void ReadFile()
         {
-            var stream = File.Open(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using (var reader = new BinaryReader(stream, Encoding))
-                Read(reader);
+            using (var stream = File.Open(FileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var reader = new BinaryReader(stream, Encoding))
+                    Read(reader);
         }
 
         protected abstract void Read(BinaryReader reader);

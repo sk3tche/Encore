@@ -50,26 +50,56 @@ namespace Trinity.Encore.Game.IO.Formats.Databases
         protected override byte[] ReadData(BinaryReader reader)
         {
             RecordCount = reader.ReadInt32();
+
+            if (RecordCount < 0)
+                throw new InvalidDataException("Negative record count was encountered.");
+
             FieldCount = reader.ReadInt32();
+
+            if (FieldCount < 0)
+                throw new InvalidDataException("Negative field count was encountered.");
+
             RecordSize = reader.ReadInt32();
+
+            if (RecordSize < 0)
+                throw new InvalidDataException("Negative record size was encountered.");
+
             StringTableSize = reader.ReadInt32();
+
+            if (StringTableSize < 0)
+                throw new InvalidDataException("Negative string table size was encountered.");
+
             TableHash = reader.ReadInt32();
             Build = reader.ReadInt32();
+
+            if (Build < 0)
+                throw new InvalidDataException("Negative build was encountered.");
+
             LastUpdated = reader.ReadInt32();
 
             if (Build > NewHeaderBuild)
             {
                 MinId = reader.ReadInt32();
+
+                if (MinId < 0)
+                    throw new InvalidDataException("Negative minimum ID was encountered.");
+
                 MaxId = reader.ReadInt32();
+
+                if (MaxId < 0)
+                    throw new InvalidDataException("Negative maximum ID was encountered.");
+
                 Locale = (ClientLocale)reader.ReadInt32();
                 Unknown4 = reader.ReadInt32();
 
                 // No idea what these are...
-                if (MaxId != 0)
+                // TODO: Unhackify this.
+                if (MaxId > 0)
                 {
-                    var size = MaxId * 4 - 48;
-                    Contract.Assume(size > 0);
+                    if (MaxId < 12)
+                        throw new InvalidDataException("Invalid maximum ID value was encountered.");
 
+                    var size = MaxId * 4 - 48;
                     reader.ReadBytes(size);
                     reader.ReadBytes(size * 2);
                 }
@@ -77,7 +107,6 @@ namespace Trinity.Encore.Game.IO.Formats.Databases
 
             // Read in all the records.
             var count = RecordCount * RecordSize;
-            Contract.Assume(count >= 0);
             return reader.ReadBytes(count);
         }
     }

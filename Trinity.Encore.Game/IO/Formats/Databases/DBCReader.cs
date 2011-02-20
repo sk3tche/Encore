@@ -29,13 +29,27 @@ namespace Trinity.Encore.Game.IO.Formats.Databases
         protected override byte[] ReadData(BinaryReader reader)
         {
             RecordCount = reader.ReadInt32();
+
+            if (RecordCount < 0)
+                throw new InvalidDataException("Negative record count was encountered.");
+
             FieldCount = reader.ReadInt32();
+
+            if (FieldCount < 0)
+                throw new InvalidDataException("Negative field count was encountered.");
+
             RecordSize = reader.ReadInt32();
+
+            if (RecordSize < 0)
+                throw new InvalidDataException("Negative record size was encountered.");
+
             StringTableSize = reader.ReadInt32();
+
+            if (StringTableSize < 0)
+                throw new InvalidDataException("Negative string table size was encountered.");
 
             // Read in all the records.
             var count = RecordCount * RecordSize;
-            Contract.Assume(count >= 0);
             return reader.ReadBytes(count);
         }
     }

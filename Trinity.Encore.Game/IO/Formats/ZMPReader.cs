@@ -6,12 +6,14 @@ namespace Trinity.Encore.Game.IO.Formats
 {
     public sealed class ZMPReader : BinaryFileReader
     {
+        public const int AxisSize = 128;
+
         public ZMPReader(string fileName)
             : base(fileName, Encoding.ASCII)
         {
             Contract.Requires(!string.IsNullOrEmpty(fileName));
 
-            Data = new int[128, 128];
+            Data = new int[AxisSize, AxisSize];
         }
 
         [ContractInvariantMethod]
@@ -24,8 +26,8 @@ namespace Trinity.Encore.Game.IO.Formats
 
         protected override void Read(BinaryReader reader)
         {
-            for (var x = 0; x < 128; x++)
-                for (var y = 0; y < 128; y++)
+            for (var x = 0; x < AxisSize; x++)
+                for (var y = 0; y < AxisSize; y++)
                     Data[x, y] = reader.ReadInt32();
         }
     }

@@ -6,13 +6,11 @@ using Trinity.Core.IO;
 
 namespace Trinity.Encore.Game.IO.Formats
 {
-    public sealed class PTCHReader
+    public sealed class PTCHReader : BinaryFileReader
     {
         public const string BSD0ChunkName = "BSD0";
 
         public const string COPYChunkName = "COPY";
-
-        public string FileName { get; private set; }
 
         public PTCHChunk PTCH { get; private set; }
 
@@ -33,42 +31,29 @@ namespace Trinity.Encore.Game.IO.Formats
         }
 
         public PTCHReader(string fileName)
+            : base(fileName, System.Text.Encoding.ASCII)
         {
             Contract.Requires(!string.IsNullOrEmpty(fileName));
-
-            FileName = fileName;
 
             ReadFile();
         }
 
-        private void ReadFile()
+        protected override void Read(BinaryReader reader)
         {
-            Contract.Ensures(PTCH != null);
-            Contract.Ensures(MD5 != null);
-            Contract.Ensures(XFRM != null);
+            PTCH = new PTCHChunk(reader);
+            MD5 = new MD5Chunk(reader);
+            XFRM = new XFRMChunk(reader);
 
-            var stream = File.Open(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using (var reader = new BinaryReader(stream))
+            switch (XFRM.Type)
             {
-                PTCH = new PTCHChunk(reader);
-                MD5 = new MD5Chunk(reader);
-                XFRM = new XFRMChunk(reader);
-
-                switch (XFRM.Type)
-                {
-                    case BSD0ChunkName:
-                        BSD0 = new BSD0Chunk(reader);
-                        BSDIFF40 = BSD0.Unpack();
-                        break;
-                    case COPYChunkName:
-                        COPY = new COPYChunk(reader);
-                        break;
-                }
+                case BSD0ChunkName:
+                    BSD0 = new BSD0Chunk(reader);
+                    BSDIFF40 = BSD0.Unpack();
+                    break;
+                case COPYChunkName:
+                    COPY = new COPYChunk(reader);
+                    break;
             }
-
-            Contract.Assume(PTCH != null);
-            Contract.Assume(MD5 != null);
-            Contract.Assume(XFRM != null);
         }
 
         public void Apply(string newFileName)
@@ -85,7 +70,8 @@ namespace Trinity.Encore.Game.IO.Formats
             var diffBlock = BSDIFF40.DiffBlock.GetBinaryReader();
             var extraBlock = BSDIFF40.ExtraBlock.GetBinaryReader();
 
-            var sizeAfter = PTCH.SizeAfter;
+            var sizeAfter = PTCH.NewSize;
+            Contract.Assume(newFileName.Length > 0);
             var oldFile = File.ReadAllBytes(newFileName);
             var newFile = new byte[sizeAfter];
 
@@ -95,17 +81,24 @@ namespace Trinity.Encore.Game.IO.Formats
             while (newFileOffset < sizeAfter)
             {
                 var diffChunkSize = controlBlock.ReadInt32();
+
+                if (diffChunkSize < 0)
+                    throw new InvalidDataException("Negative diff chunk size encountered.");
+
                 var extraChunkSize = controlBlock.ReadInt32();
+
+                if (extraChunkSize < 0)
+                    throw new InvalidDataException("Negative extra chunk size encountered.");
+
                 var extraOffset = controlBlock.ReadInt32();
 
-                Contract.Assume(diffChunkSize >= 0);
                 var diffChunk = diffBlock.ReadBytes(diffChunkSize);
                 Buffer.BlockCopy(diffChunk, 0, newFile, newFileOffset, diffChunkSize);
 
                 for (var i = 0; i < diffChunkSize; i++)
                 {
                     var oldPlusI = oldFileOffset + i;
-                    if (oldPlusI < 0 || oldPlusI >= PTCH.SizeBefore)
+                    if (oldPlusI < 0 || oldPlusI >= PTCH.OldSize)
                         continue;
 
                     var newPlusI = newFileOffset + i;
@@ -118,7 +111,6 @@ namespace Trinity.Encore.Game.IO.Formats
                 newFileOffset += diffChunkSize;
                 oldFileOffset += diffChunkSize;
 
-                Contract.Assume(extraChunkSize >= 0);
                 var extraChunk = extraBlock.ReadBytes(extraChunkSize);
                 Buffer.BlockCopy(extraChunk, 0, newFile, newFileOffset, extraChunkSize);
 
@@ -141,14 +133,21 @@ namespace Trinity.Encore.Game.IO.Formats
             {
                 Contract.Requires(reader != null);
 
-                Magic = reader.ReadFourCC();
+                Magic = reader.ReadFourCC(); // TODO: Magic check.
                 PatchSize = reader.ReadInt32();
-                SizeBefore = reader.ReadInt32();
-                SizeAfter = reader.ReadInt32();
 
-                Contract.Assert(PatchSize >= 0);
-                Contract.Assert(SizeBefore >= 0);
-                Contract.Assert(SizeAfter >= 0);
+                if (PatchSize < 0)
+                    throw new InvalidDataException("Negative patch size encountered.");
+
+                OldSize = reader.ReadInt32();
+
+                if (OldSize < 0)
+                    throw new InvalidDataException("Negative old size encountered.");
+
+                NewSize = reader.ReadInt32();
+
+                if (NewSize < 0)
+                    throw new InvalidDataException("Negative new size encountered.");
             }
 
             [ContractInvariantMethod]
@@ -157,33 +156,35 @@ namespace Trinity.Encore.Game.IO.Formats
                 Contract.Invariant(Magic != null);
                 Contract.Invariant(Magic.Length == 4);
                 Contract.Invariant(PatchSize >= 0);
-                Contract.Invariant(SizeBefore >= 0);
-                Contract.Invariant(SizeAfter >= 0);
+                Contract.Invariant(OldSize >= 0);
+                Contract.Invariant(NewSize >= 0);
             }
 
             public string Magic { get; private set; }
 
             public int PatchSize { get; private set; }
 
-            public int SizeBefore { get; private set; }
+            public int OldSize { get; private set; }
 
-            public int SizeAfter { get; private set; }
+            public int NewSize { get; private set; }
         }
 
         public sealed class MD5Chunk
         {
-            public const int HashLength = 16;
+            public const int HashLength = 16; // Size of MD5 digest. No framework constant...
 
             public MD5Chunk(BinaryReader reader)
             {
                 Contract.Requires(reader != null);
 
-                Magic = reader.ReadFourCC();
+                Magic = reader.ReadFourCC(); // TODO: Magic check.
                 BlockSize = reader.ReadInt32();
-                HashBefore = reader.ReadBytes(HashLength);
-                HashAfter = reader.ReadBytes(HashLength);
 
-                Contract.Assert(BlockSize >= 0);
+                if (BlockSize < 0)
+                    throw new InvalidDataException("Negative block size encountered.");
+
+                OldHash = reader.ReadBytes(HashLength);
+                NewHash = reader.ReadBytes(HashLength);
             }
 
             [ContractInvariantMethod]
@@ -192,19 +193,19 @@ namespace Trinity.Encore.Game.IO.Formats
                 Contract.Invariant(Magic != null);
                 Contract.Invariant(Magic.Length == 4);
                 Contract.Invariant(BlockSize >= 0);
-                Contract.Invariant(HashBefore != null);
-                Contract.Invariant(HashBefore.Length == HashLength);
-                Contract.Invariant(HashAfter != null);
-                Contract.Invariant(HashAfter.Length == HashLength);
+                Contract.Invariant(OldHash != null);
+                Contract.Invariant(OldHash.Length == HashLength);
+                Contract.Invariant(NewHash != null);
+                Contract.Invariant(NewHash.Length == HashLength);
             }
 
             public string Magic { get; private set; }
 
             public int BlockSize { get; private set; }
 
-            public byte[] HashBefore { get; private set; }
+            public byte[] OldHash { get; private set; }
 
-            public byte[] HashAfter { get; private set; }
+            public byte[] NewHash { get; private set; }
         }
 
         public sealed class XFRMChunk
@@ -213,13 +214,13 @@ namespace Trinity.Encore.Game.IO.Formats
             {
                 Contract.Requires(reader != null);
 
-                Magic = reader.ReadFourCC();
+                Magic = reader.ReadFourCC(); // TODO: Magic check.
                 BlockSize = reader.ReadInt32();
-                Type = reader.ReadFourCC();
 
-                Contract.Assert(BlockSize >= 0);
-                Contract.Assert(!string.IsNullOrEmpty(Type));
-                Contract.Assert(Type.Length == 4);
+                if (BlockSize < 0)
+                    throw new InvalidDataException("Negative block size encountered.");
+
+                Type = reader.ReadFourCC();
             }
 
             [ContractInvariantMethod]
@@ -245,12 +246,23 @@ namespace Trinity.Encore.Game.IO.Formats
             {
                 Contract.Requires(data != null);
 
-                using (var reader = new BinaryReader(new MemoryStream(data)))
+                using (var reader = data.GetBinaryReader())
                 {
-                    Magic = reader.ReadFourCC() + reader.ReadFourCC();
+                    Magic = reader.ReadFourCC() + reader.ReadFourCC(); // TODO: Magic check.
                     ControlBlockSize = reader.ReadInt64();
+
+                    if (ControlBlockSize < 0)
+                        throw new InvalidDataException("Negative control block size encountered.");
+
                     DiffBlockSize = reader.ReadInt64();
-                    SizeAfter = reader.ReadInt64();
+
+                    if (DiffBlockSize < 0)
+                        throw new InvalidDataException("Negative diff block size encountered.");
+
+                    NewSize = reader.ReadInt64();
+
+                    if (NewSize < 0)
+                        throw new InvalidDataException("Negative new size encountered.");
 
                     ControlBlock = reader.ReadBytes((int)ControlBlockSize);
                     DiffBlock = reader.ReadBytes((int)DiffBlockSize);
@@ -266,7 +278,7 @@ namespace Trinity.Encore.Game.IO.Formats
                 Contract.Invariant(Magic.Length == 8);
                 Contract.Invariant(ControlBlockSize >= 0);
                 Contract.Invariant(DiffBlockSize >= 0);
-                Contract.Invariant(SizeAfter >= 0);
+                Contract.Invariant(NewSize >= 0);
                 Contract.Invariant(ControlBlock != null);
                 Contract.Invariant(DiffBlock != null);
                 Contract.Invariant(ExtraBlock != null);
@@ -278,7 +290,7 @@ namespace Trinity.Encore.Game.IO.Formats
 
             public long DiffBlockSize { get; private set; }
 
-            public long SizeAfter { get; private set; }
+            public long NewSize { get; private set; }
 
             public byte[] ControlBlock { get; private set; }
 
@@ -294,12 +306,15 @@ namespace Trinity.Encore.Game.IO.Formats
                 Contract.Requires(reader != null);
 
                 UnpackedSize = reader.ReadInt32();
+
+                if (UnpackedSize < 0)
+                    throw new InvalidDataException("Negative unpacked size encountered.");
+
                 var stream = reader.BaseStream;
                 var count = (int)(stream.Length - stream.Position);
                 Contract.Assume(count >= 0);
-                CompressedDiff = reader.ReadBytes(count);
 
-                Contract.Assert(UnpackedSize >= 0);
+                CompressedDiff = reader.ReadBytes(count);
             }
 
             [ContractInvariantMethod]
@@ -311,7 +326,7 @@ namespace Trinity.Encore.Game.IO.Formats
 
             public BSDIFF40Chunk Unpack()
             {
-                using (var reader = new BinaryReader(new MemoryStream(CompressedDiff)))
+                using (var reader = CompressedDiff.GetBinaryReader())
                 {
                     var list = new List<byte>();
 
@@ -339,6 +354,7 @@ namespace Trinity.Encore.Game.IO.Formats
                 var stream = reader.BaseStream;
                 var count = (int)(stream.Length - stream.Position);
                 Contract.Assume(count >= 0);
+
                 FullData = reader.ReadBytes(count);
             }
 

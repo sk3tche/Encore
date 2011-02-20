@@ -34,12 +34,19 @@ namespace Trinity.Encore.Game.IO.Formats.Databases
 
         protected override byte[] ReadData(BinaryReader reader)
         {
-            Magic = reader.ReadInt32();
+            Magic = reader.ReadInt32(); // TODO: Magic check? It's different for the various files.
             Build = reader.ReadInt32();
+
+            if (Build < 0)
+                throw new InvalidDataException("Negative build was encountered.");
+
             Locale = (ClientLocale)reader.ReadInt32();
             Unknown1 = reader.ReadInt32();
             Unknown2 = reader.ReadInt32();
             Version = reader.ReadInt32();
+
+            if (Version < 0)
+                throw new InvalidDataException("Negative version was encountered.");
 
             var data = new List<byte>();
             var count = 0;
@@ -49,10 +56,12 @@ namespace Trinity.Encore.Game.IO.Formats.Databases
                 var entry = reader.ReadInt32();
                 var size = reader.ReadInt32();
 
+                if (size < 0)
+                    throw new InvalidDataException("Negative record size encountered.");
+
                 if (entry == 0 && size == 0)
                     continue; // End of file.
 
-                Contract.Assume(size > 0);
                 var row = reader.ReadBytes(size);
                 data.AddRange(BitConverter.GetBytes(entry));
                 data.AddRange(row);
