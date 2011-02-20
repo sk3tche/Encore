@@ -83,20 +83,15 @@ namespace Trinity.Encore.Tests.Core.Cryptography
             var value5 = new BigInteger(0xFFFFFFFFFFFFFFFF);
 
             Assert.AreEqual(0, value1.ByteLength);
-            Assert.AreEqual(sizeof(uint) / 4, value1.DataLength);
-            Assert.AreEqual(0, value1.BitCount);
+            Assert.AreEqual(0, value1.BitLength);
             Assert.AreEqual(0, value2.ByteLength);
-            Assert.AreEqual(sizeof(uint) / 4, value2.DataLength);
-            Assert.AreEqual(0, value2.BitCount);
+            Assert.AreEqual(0, value2.BitLength);
             Assert.AreEqual(sizeof(uint), value3.ByteLength);
-            Assert.AreEqual(sizeof(uint) / 4, value3.DataLength);
-            Assert.AreEqual(sizeof(uint) * 8, value3.BitCount);
+            Assert.AreEqual(sizeof(uint) * 8, value3.BitLength);
             Assert.AreEqual(0, value4.ByteLength);
-            Assert.AreEqual(sizeof(uint) / 4, value4.DataLength);
-            Assert.AreEqual(0, value4.BitCount);
+            Assert.AreEqual(0, value4.BitLength);
             Assert.AreEqual(sizeof(ulong), value5.ByteLength);
-            Assert.AreEqual(sizeof(ulong) / 4, value5.DataLength);
-            Assert.AreEqual(sizeof(ulong) * 8, value5.BitCount);
+            Assert.AreEqual(sizeof(ulong) * 8, value5.BitLength);
         }
 
         [TestMethod]

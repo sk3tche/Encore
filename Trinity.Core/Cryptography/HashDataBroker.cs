@@ -45,7 +45,7 @@ namespace Trinity.Core.Cryptography
         public static implicit operator HashDataBroker(byte[] data)
         {
             Contract.Requires(data != null);
-            Contract.Ensures(Contract.Result<HashDataBroker>() != null);
+            Contract.Ensures(!ReferenceEquals(Contract.Result<HashDataBroker>(), null));
 
             return new HashDataBroker(data);
         }
@@ -53,7 +53,7 @@ namespace Trinity.Core.Cryptography
         public static implicit operator HashDataBroker(BigInteger integer)
         {
             Contract.Requires(integer != null);
-            Contract.Ensures(Contract.Result<HashDataBroker>() != null);
+            Contract.Ensures(!ReferenceEquals(Contract.Result<HashDataBroker>(), null));
 
             return new HashDataBroker(integer.GetBytes());
         }
@@ -61,7 +61,7 @@ namespace Trinity.Core.Cryptography
         public static implicit operator HashDataBroker(string str)
         {
             Contract.Requires(str != null);
-            Contract.Ensures(Contract.Result<HashDataBroker>() != null);
+            Contract.Ensures(!ReferenceEquals(Contract.Result<HashDataBroker>(), null));
 
             return new HashDataBroker(Encoding.UTF8.GetBytes(str));
         }
@@ -73,9 +73,11 @@ namespace Trinity.Core.Cryptography
 
         public bool Equals(HashDataBroker other)
         {
-            Contract.Assume(other._rawData != null);
+            if (other == null)
+                return false;
 
-            return other != null && _rawData.SequenceEqual(other._rawData);
+            Contract.Assume(other._rawData != null);
+            return _rawData.SequenceEqual(other._rawData);
         }
 
         public override int GetHashCode()
@@ -85,6 +87,15 @@ namespace Trinity.Core.Cryptography
 
         public static bool operator ==(HashDataBroker a, HashDataBroker b)
         {
+            var oa = a as object;
+            var ob = b as object;
+
+            if (oa == null && ob == null)
+                return true;
+
+            if (oa == null || ob == null)
+                return false;
+
             return a.Equals(b);
         }
 

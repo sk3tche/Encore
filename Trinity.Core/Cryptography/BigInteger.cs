@@ -8,7 +8,6 @@ using Trinity.Core.Mathematics;
 namespace Trinity.Core.Cryptography
 {
     // This class was written by Chew Keong TAN.
-    [ContractVerification(false)]
     [Serializable]
     public sealed class BigInteger : IEquatable<BigInteger>, IComparable<BigInteger>, IComparable
     {
@@ -22,16 +21,7 @@ namespace Trinity.Core.Cryptography
         /// </summary>
         private readonly uint[] _data;
 
-        /// <summary>
-        /// The length of the BigInteger in 4-byte intervals.
-        /// </summary>
-        /// <remarks>
-        /// For example, a DataLength of 3 means 12 bytes (three Int32 values).
-        /// 
-        /// Note that this property does not indicate the in-memory size of the BigInteger. All BigInteger instances
-        /// are always <see cref="MaxLength">MaxLength</see> * 4 in size.
-        /// </remarks>
-        public int DataLength { get; private set; }
+        private int _dataLength;
 
         /// <summary>
         /// Gets the number of bytes that are actually used in the BigInteger.
@@ -40,9 +30,9 @@ namespace Trinity.Core.Cryptography
         {
             get
             {
-                Contract.Ensures(Contract.Result<int>() > 0);
+                Contract.Ensures(Contract.Result<int>() >= 0);
 
-                var numBits = BitCount;
+                var numBits = BitLength;
                 var numBytes = numBits >> 3;
 
                 if ((numBits & 0x7) != 0)
@@ -57,57 +47,58 @@ namespace Trinity.Core.Cryptography
         {
             Contract.Invariant(_data != null);
             Contract.Invariant(_data.Length == MaxLength);
+            Contract.Invariant(BitLength >= 0);
             Contract.Invariant(ByteLength >= 0);
-            Contract.Invariant(DataLength >= 0);
+            Contract.Invariant(_dataLength >= 0);
         }
 
         public BigInteger()
         {
             _data = new uint[MaxLength];
-            DataLength = 1;
+            _dataLength = 1;
         }
 
         public BigInteger(long value)
             : this()
         {
             var tempVal = value;
-            DataLength = 0;
+            _dataLength = 0;
 
-            while (value != 0 && DataLength < MaxLength)
+            while (value != 0 && _dataLength < MaxLength)
             {
-                _data[DataLength] = (uint)(value & 0xffffffff);
+                _data[_dataLength] = (uint)(value & 0xffffffff);
                 value >>= 32;
-                DataLength++;
+                _dataLength++;
             }
 
             if (tempVal > 0 && (value != 0 || (_data[MaxLength - 1] & 0x80000000) != 0))
                 throw new ArithmeticException("Positive overflow.");
 
-            if (tempVal < 0 && (value != -1 || (_data[DataLength - 1] & 0x80000000) == 0))
+            if (tempVal < 0 && (value != -1 || (_data[_dataLength - 1] & 0x80000000) == 0))
                 throw new ArithmeticException("Negative underflow.");
 
-            if (DataLength == 0)
-                DataLength = 1;
+            if (_dataLength == 0)
+                _dataLength = 1;
         }
 
         [CLSCompliant(false)]
         public BigInteger(ulong value)
             : this()
         {
-            DataLength = 0;
+            _dataLength = 0;
 
-            while (value != 0 && DataLength < MaxLength)
+            while (value != 0 && _dataLength < MaxLength)
             {
-                _data[DataLength] = (uint)(value & 0xffffffff);
+                _data[_dataLength] = (uint)(value & 0xffffffff);
                 value >>= 32;
-                DataLength++;
+                _dataLength++;
             }
 
             if (value != 0 || (_data[MaxLength - 1] & 0x80000000) != 0)
                 throw new ArithmeticException("Positive overflow.");
 
-            if (DataLength == 0)
-                DataLength = 1;
+            if (_dataLength == 0)
+                _dataLength = 1;
         }
 
         public BigInteger(BigInteger bi)
@@ -115,9 +106,9 @@ namespace Trinity.Core.Cryptography
         {
             Contract.Requires(bi != null);
 
-            DataLength = bi.DataLength;
+            _dataLength = bi._dataLength;
 
-            for (var i = 0; i < DataLength; i++)
+            for (var i = 0; i < _dataLength; i++)
                 _data[i] = bi._data[i];
         }
 
@@ -166,10 +157,10 @@ namespace Trinity.Core.Cryptography
 
             _data = new uint[MaxLength];
 
-            for (var i = 0; i < result.DataLength; i++)
+            for (var i = 0; i < result._dataLength; i++)
                 _data[i] = result._data[i];
 
-            DataLength = result.DataLength;
+            _dataLength = result._dataLength;
         }
 
         public BigInteger(byte[] inData)
@@ -189,7 +180,7 @@ namespace Trinity.Core.Cryptography
             if (dataLength > MaxLength)
                 throw new ArithmeticException("Byte overflow.");
 
-            DataLength = dataLength;
+            _dataLength = dataLength;
             _data = new uint[MaxLength];
 
             for (int i = inData.Length - 1, j = 0; i >= 3; i -= 4, j++)
@@ -199,18 +190,18 @@ namespace Trinity.Core.Cryptography
             switch (leftOver)
             {
                 case 1:
-                    _data[DataLength - 1] = inData[0];
+                    _data[_dataLength - 1] = inData[0];
                     break;
                 case 2:
-                    _data[DataLength - 1] = (uint)((inData[0] << 8) + inData[1]);
+                    _data[_dataLength - 1] = (uint)((inData[0] << 8) + inData[1]);
                     break;
                 case 3:
-                    _data[DataLength - 1] = (uint)((inData[0] << 16) + (inData[1] << 8) + inData[2]);
+                    _data[_dataLength - 1] = (uint)((inData[0] << 16) + (inData[1] << 8) + inData[2]);
                     break;
             }
 
-            while (DataLength > 1 && _data[DataLength - 1] == 0)
-                DataLength--;
+            while (_dataLength > 1 && _data[_dataLength - 1] == 0)
+                _dataLength--;
 
             Contract.Assume(ByteLength == inData.Length);
         }
@@ -221,15 +212,15 @@ namespace Trinity.Core.Cryptography
             Contract.Requires(inData != null);
 
             inData = (uint[])inData.Clone();
-            DataLength = inData.Length;
+            _dataLength = inData.Length;
 
             _data = new uint[MaxLength];
 
-            for (int i = DataLength - 1, j = 0; i >= 0; i--, j++)
+            for (int i = _dataLength - 1, j = 0; i >= 0; i--, j++)
                 _data[j] = inData[i];
 
-            while (DataLength > 1 && _data[DataLength - 1] == 0)
-                DataLength--;
+            while (_dataLength > 1 && _data[_dataLength - 1] == 0)
+                _dataLength--;
         }
 
         public BigInteger(Random rand, int bitLength)
@@ -240,7 +231,7 @@ namespace Trinity.Core.Cryptography
                 rand = new FastRandom(); // Default to our own RNG.
 
             _data = new uint[MaxLength];
-            DataLength = 1;
+            _dataLength = 1;
 
             GenerateRandomBits(bitLength, rand);
         }
@@ -291,24 +282,24 @@ namespace Trinity.Core.Cryptography
             Contract.Ensures(Contract.Result<BigInteger>() != null);
 
             var result = new BigInteger();
-            result.DataLength = (bi1.DataLength > bi2.DataLength) ? bi1.DataLength : bi2.DataLength;
+            result._dataLength = (bi1._dataLength > bi2._dataLength) ? bi1._dataLength : bi2._dataLength;
             long carry = 0;
 
-            for (var i = 0; i < result.DataLength; i++)
+            for (var i = 0; i < result._dataLength; i++)
             {
                 var sum = (long)bi1._data[i] + bi2._data[i] + carry;
                 carry = sum >> 32;
                 result._data[i] = (uint)(sum & 0xffffffff);
             }
 
-            if (carry != 0 && result.DataLength < MaxLength)
+            if (carry != 0 && result._dataLength < MaxLength)
             {
-                result._data[result.DataLength] = (uint)(carry);
-                result.DataLength++;
+                result._data[result._dataLength] = (uint)(carry);
+                result._dataLength++;
             }
 
-            while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                result.DataLength--;
+            while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                result._dataLength--;
 
             const int lastPos = MaxLength - 1;
             if ((bi1._data[lastPos] & 0x80000000) == (bi2._data[lastPos] & 0x80000000) &&
@@ -370,13 +361,13 @@ namespace Trinity.Core.Cryptography
                 index++;
             }
 
-            if (index <= result.DataLength)
+            if (index <= result._dataLength)
             {
-                while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                    result.DataLength--;
+                while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                    result._dataLength--;
             }
             else
-                result.DataLength = index;
+                result._dataLength = index;
 
             const int lastPos = MaxLength - 1;
 
@@ -392,7 +383,7 @@ namespace Trinity.Core.Cryptography
             Contract.Requires(bi1 != null);
             Contract.Ensures(Contract.Result<BigInteger>() != null);
 
-            if (bi1.DataLength == 1 && bi1._data[0] == 0)
+            if (bi1._dataLength == 1 && bi1._data[0] == 0)
                 return new BigInteger();
 
             var result = new BigInteger(bi1);
@@ -415,10 +406,10 @@ namespace Trinity.Core.Cryptography
             if ((bi1._data[MaxLength - 1] & 0x80000000) == (result._data[MaxLength - 1] & 0x80000000))
                 throw new ArithmeticException("Overflow in operator -.");
 
-            result.DataLength = MaxLength;
+            result._dataLength = MaxLength;
 
-            while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                result.DataLength--;
+            while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                result._dataLength--;
 
             return result;
         }
@@ -430,10 +421,10 @@ namespace Trinity.Core.Cryptography
             Contract.Ensures(Contract.Result<BigInteger>() != null);
 
             var result = new BigInteger();
-            result.DataLength = (bi1.DataLength > bi2.DataLength) ? bi1.DataLength : bi2.DataLength;
+            result._dataLength = (bi1._dataLength > bi2._dataLength) ? bi1._dataLength : bi2._dataLength;
             long carryIn = 0;
 
-            for (var i = 0; i < result.DataLength; i++)
+            for (var i = 0; i < result._dataLength; i++)
             {
                 var diff = bi1._data[i] - (long)bi2._data[i] - carryIn;
                 result._data[i] = (uint)(diff & 0xffffffff);
@@ -442,14 +433,14 @@ namespace Trinity.Core.Cryptography
 
             if (carryIn != 0)
             {
-                for (var i = result.DataLength; i < MaxLength; i++)
+                for (var i = result._dataLength; i < MaxLength; i++)
                     result._data[i] = 0xffffffff;
 
-                result.DataLength = MaxLength;
+                result._dataLength = MaxLength;
             }
 
-            while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                result.DataLength--;
+            while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                result._dataLength--;
 
             const int lastPos = MaxLength - 1;
 
@@ -515,11 +506,11 @@ namespace Trinity.Core.Cryptography
                 index++;
             }
 
-            if (index > result.DataLength)
-                result.DataLength = index;
+            if (index > result._dataLength)
+                result._dataLength = index;
 
-            while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                result.DataLength--;
+            while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                result._dataLength--;
 
             const int lastPos = MaxLength - 1;
 
@@ -562,14 +553,14 @@ namespace Trinity.Core.Cryptography
 
             try
             {
-                for (var i = 0; i < bi1.DataLength; i++)
+                for (var i = 0; i < bi1._dataLength; i++)
                 {
                     if (bi1._data[i] == 0)
                         continue;
 
                     ulong mcarry = 0;
 
-                    for (int j = 0, k = i; j < bi2.DataLength; j++, k++)
+                    for (int j = 0, k = i; j < bi2._dataLength; j++, k++)
                     {
                         var val = ((ulong)bi1._data[i] * bi2._data[j]) + result._data[k] + mcarry;
 
@@ -578,7 +569,7 @@ namespace Trinity.Core.Cryptography
                     }
 
                     if (mcarry != 0)
-                        result._data[i + bi2.DataLength] = (uint)mcarry;
+                        result._data[i + bi2._dataLength] = (uint)mcarry;
                 }
             }
             catch (Exception)
@@ -586,21 +577,21 @@ namespace Trinity.Core.Cryptography
                 throw new ArithmeticException("Multiplication overflow.");
             }
 
-            result.DataLength = bi1.DataLength + bi2.DataLength;
+            result._dataLength = bi1._dataLength + bi2._dataLength;
 
-            while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                result.DataLength--;
+            while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                result._dataLength--;
 
             if ((result._data[lastPos] & 0x80000000) != 0)
             {
                 if (bi1Neg != bi2Neg && result._data[lastPos] == 0x80000000)
                 {
-                    if (result.DataLength == 1)
+                    if (result._dataLength == 1)
                         return result;
 
                     var isMaxNeg = true;
 
-                    for (var i = 0; i < result.DataLength - 1 && isMaxNeg; i++)
+                    for (var i = 0; i < result._dataLength - 1 && isMaxNeg; i++)
                         if (result._data[i] != 0)
                             isMaxNeg = false;
 
@@ -662,11 +653,11 @@ namespace Trinity.Core.Cryptography
             Contract.Ensures(outRemainder != null);
 
             var result = new uint[MaxLength];
-            var remainderLen = bi1.DataLength + 1;
+            var remainderLen = bi1._dataLength + 1;
             var remainder = new uint[remainderLen];
 
             var mask = 0x80000000;
-            var val = bi2._data[bi2.DataLength - 1];
+            var val = bi2._data[bi2._dataLength - 1];
             var shift = 0;
             var resultPos = 0;
 
@@ -676,19 +667,19 @@ namespace Trinity.Core.Cryptography
                 mask >>= 1;
             }
 
-            for (var i = 0; i < bi1.DataLength; i++)
+            for (var i = 0; i < bi1._dataLength; i++)
                 remainder[i] = bi1._data[i];
 
             ShiftLeft(remainder, shift);
             bi2 = bi2 << shift;
 
-            var j = remainderLen - bi2.DataLength;
+            var j = remainderLen - bi2._dataLength;
             var pos = remainderLen - 1;
 
-            ulong firstDivisorByte = bi2._data[bi2.DataLength - 1];
-            ulong secondDivisorByte = bi2._data[bi2.DataLength - 2];
+            ulong firstDivisorByte = bi2._data[bi2._dataLength - 1];
+            ulong secondDivisorByte = bi2._data[bi2._dataLength - 2];
 
-            var divisorLen = bi2.DataLength + 1;
+            var divisorLen = bi2._dataLength + 1;
             var dividendPart = new uint[divisorLen];
 
             while (j > 0)
@@ -729,7 +720,7 @@ namespace Trinity.Core.Cryptography
                 var yy = kk - ss;
 
                 for (var h = 0; h < divisorLen; h++)
-                    remainder[pos - h] = yy._data[bi2.DataLength - h];
+                    remainder[pos - h] = yy._data[bi2._dataLength - h];
 
                 result[resultPos++] = (uint)q_hat;
 
@@ -737,24 +728,24 @@ namespace Trinity.Core.Cryptography
                 j--;
             }
 
-            outQuotient.DataLength = resultPos;
+            outQuotient._dataLength = resultPos;
             var y = 0;
 
-            for (var x = outQuotient.DataLength - 1; x >= 0; x--, y++)
+            for (var x = outQuotient._dataLength - 1; x >= 0; x--, y++)
                 outQuotient._data[y] = result[x];
 
             for (; y < MaxLength; y++)
                 outQuotient._data[y] = 0;
 
-            while (outQuotient.DataLength > 1 && outQuotient._data[outQuotient.DataLength - 1] == 0)
-                outQuotient.DataLength--;
+            while (outQuotient._dataLength > 1 && outQuotient._data[outQuotient._dataLength - 1] == 0)
+                outQuotient._dataLength--;
 
-            if (outQuotient.DataLength == 0)
-                outQuotient.DataLength = 1;
+            if (outQuotient._dataLength == 0)
+                outQuotient._dataLength = 1;
 
-            outRemainder.DataLength = ShiftRight(remainder, shift);
+            outRemainder._dataLength = ShiftRight(remainder, shift);
 
-            for (y = 0; y < outRemainder.DataLength; y++)
+            for (y = 0; y < outRemainder._dataLength; y++)
                 outRemainder._data[y] = remainder[y];
 
             for (; y < MaxLength; y++)
@@ -777,13 +768,13 @@ namespace Trinity.Core.Cryptography
             for (var i = 0; i < MaxLength; i++)
                 outRemainder._data[i] = bi1._data[i];
 
-            outRemainder.DataLength = bi1.DataLength;
+            outRemainder._dataLength = bi1._dataLength;
 
-            while (outRemainder.DataLength > 1 && outRemainder._data[outRemainder.DataLength - 1] == 0)
-                outRemainder.DataLength--;
+            while (outRemainder._dataLength > 1 && outRemainder._data[outRemainder._dataLength - 1] == 0)
+                outRemainder._dataLength--;
 
             ulong divisor = bi2._data[0];
-            var pos = outRemainder.DataLength - 1;
+            var pos = outRemainder._dataLength - 1;
             ulong dividend = outRemainder._data[pos];
 
             if (dividend >= divisor)
@@ -807,23 +798,23 @@ namespace Trinity.Core.Cryptography
                 outRemainder._data[pos--] = (uint)(dividend % divisor);
             }
 
-            outQuotient.DataLength = resultPos;
+            outQuotient._dataLength = resultPos;
             var j = 0;
 
-            for (var i = outQuotient.DataLength - 1; i >= 0; i--, j++)
+            for (var i = outQuotient._dataLength - 1; i >= 0; i--, j++)
                 outQuotient._data[j] = result[i];
 
             for (; j < MaxLength; j++)
                 outQuotient._data[j] = 0;
 
-            while (outQuotient.DataLength > 1 && outQuotient._data[outQuotient.DataLength - 1] == 0)
-                outQuotient.DataLength--;
+            while (outQuotient._dataLength > 1 && outQuotient._data[outQuotient._dataLength - 1] == 0)
+                outQuotient._dataLength--;
 
-            if (outQuotient.DataLength == 0)
-                outQuotient.DataLength = 1;
+            if (outQuotient._dataLength == 0)
+                outQuotient._dataLength = 1;
 
-            while (outRemainder.DataLength > 1 && outRemainder._data[outRemainder.DataLength - 1] == 0)
-                outRemainder.DataLength--;
+            while (outRemainder._dataLength > 1 && outRemainder._data[outRemainder._dataLength - 1] == 0)
+                outRemainder._dataLength--;
         }
 
         public static BigInteger operator /(BigInteger bi1, BigInteger bi2)
@@ -859,7 +850,7 @@ namespace Trinity.Core.Cryptography
             if (bi1 < bi2)
                 return quotient;
 
-            if (bi2.DataLength == 1)
+            if (bi2._dataLength == 1)
                 SingleByteDivide(bi1, bi2, ref quotient, ref remainder);
             else
                 MultiByteDivide(bi1, bi2, ref quotient, ref remainder);
@@ -927,7 +918,7 @@ namespace Trinity.Core.Cryptography
             if (bi1 < bi2)
                 return remainder;
 
-            if (bi2.DataLength == 1)
+            if (bi2._dataLength == 1)
                 SingleByteDivide(bi1, bi2, ref quotient, ref remainder);
             else
                 MultiByteDivide(bi1, bi2, ref quotient, ref remainder);
@@ -1013,7 +1004,7 @@ namespace Trinity.Core.Cryptography
 
             var result = new BigInteger(bi1);
             Contract.Assume(result._data != null);
-            result.DataLength = ShiftLeft(result._data, shiftVal);
+            result._dataLength = ShiftLeft(result._data, shiftVal);
             return result;
         }
 
@@ -1065,24 +1056,24 @@ namespace Trinity.Core.Cryptography
 
             var result = new BigInteger(bi1);
             Contract.Assume(result._data != null);
-            result.DataLength = ShiftRight(result._data, shiftVal);
+            result._dataLength = ShiftRight(result._data, shiftVal);
 
             if ((bi1._data[MaxLength - 1] & 0x80000000) != 0)
             {
-                for (var i = MaxLength - 1; i >= result.DataLength; i--)
+                for (var i = MaxLength - 1; i >= result._dataLength; i--)
                     result._data[i] = 0xffffffff;
 
                 var mask = 0x80000000;
                 for (var i = 0; i < 32; i++)
                 {
-                    if ((result._data[result.DataLength - 1] & mask) != 0)
+                    if ((result._data[result._dataLength - 1] & mask) != 0)
                         break;
 
-                    result._data[result.DataLength - 1] |= mask;
+                    result._data[result._dataLength - 1] |= mask;
                     mask >>= 1;
                 }
 
-                result.DataLength = MaxLength;
+                result._dataLength = MaxLength;
             }
 
             return result;
@@ -1136,10 +1127,10 @@ namespace Trinity.Core.Cryptography
             for (var i = 0; i < MaxLength; i++)
                 result._data[i] = ~(bi1._data[i]);
 
-            result.DataLength = MaxLength;
+            result._dataLength = MaxLength;
 
-            while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                result.DataLength--;
+            while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                result._dataLength--;
 
             return result;
         }
@@ -1151,7 +1142,7 @@ namespace Trinity.Core.Cryptography
             Contract.Ensures(Contract.Result<BigInteger>() != null);
 
             var result = new BigInteger();
-            var len = (bi1.DataLength > bi2.DataLength) ? bi1.DataLength : bi2.DataLength;
+            var len = (bi1._dataLength > bi2._dataLength) ? bi1._dataLength : bi2._dataLength;
 
             for (var i = 0; i < len; i++)
             {
@@ -1159,10 +1150,10 @@ namespace Trinity.Core.Cryptography
                 result._data[i] = sum;
             }
 
-            result.DataLength = MaxLength;
+            result._dataLength = MaxLength;
 
-            while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                result.DataLength--;
+            while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                result._dataLength--;
 
             return result;
         }
@@ -1174,7 +1165,7 @@ namespace Trinity.Core.Cryptography
             Contract.Ensures(Contract.Result<BigInteger>() != null);
 
             var result = new BigInteger();
-            var len = (bi1.DataLength > bi2.DataLength) ? bi1.DataLength : bi2.DataLength;
+            var len = (bi1._dataLength > bi2._dataLength) ? bi1._dataLength : bi2._dataLength;
 
             for (var i = 0; i < len; i++)
             {
@@ -1182,10 +1173,10 @@ namespace Trinity.Core.Cryptography
                 result._data[i] = sum;
             }
 
-            result.DataLength = MaxLength;
+            result._dataLength = MaxLength;
 
-            while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                result.DataLength--;
+            while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                result._dataLength--;
 
             return result;
         }
@@ -1197,7 +1188,7 @@ namespace Trinity.Core.Cryptography
             Contract.Ensures(Contract.Result<BigInteger>() != null);
 
             var result = new BigInteger();
-            var len = (bi1.DataLength > bi2.DataLength) ? bi1.DataLength : bi2.DataLength;
+            var len = (bi1._dataLength > bi2._dataLength) ? bi1._dataLength : bi2._dataLength;
 
             for (var i = 0; i < len; i++)
             {
@@ -1205,10 +1196,10 @@ namespace Trinity.Core.Cryptography
                 result._data[i] = sum;
             }
 
-            result.DataLength = MaxLength;
+            result._dataLength = MaxLength;
 
-            while (result.DataLength > 1 && result._data[result.DataLength - 1] == 0)
-                result.DataLength--;
+            while (result._dataLength > 1 && result._data[result._dataLength - 1] == 0)
+                result._dataLength--;
 
             return result;
         }
@@ -1289,7 +1280,7 @@ namespace Trinity.Core.Cryptography
             if ((bi1._data[pos] & 0x80000000) == 0 && (bi2._data[pos] & 0x80000000) != 0)
                 return true;
 
-            var len = (bi1.DataLength > bi2.DataLength) ? bi1.DataLength : bi2.DataLength;
+            var len = (bi1._dataLength > bi2._dataLength) ? bi1._dataLength : bi2._dataLength;
             for (pos = len - 1; pos >= 0 && bi1._data[pos] == bi2._data[pos]; pos--)
             {
             }
@@ -1343,7 +1334,7 @@ namespace Trinity.Core.Cryptography
             if ((bi1._data[pos] & 0x80000000) == 0 && (bi2._data[pos] & 0x80000000) != 0)
                 return false;
 
-            var len = (bi1.DataLength > bi2.DataLength) ? bi1.DataLength : bi2.DataLength;
+            var len = (bi1._dataLength > bi2._dataLength) ? bi1._dataLength : bi2._dataLength;
             for (pos = len - 1; pos >= 0 && bi1._data[pos] == bi2._data[pos]; pos--)
             {
             }
@@ -1509,14 +1500,14 @@ namespace Trinity.Core.Cryptography
                 n = -n;
 
             var constant = new BigInteger();
-            var i = n.DataLength << 1;
+            var i = n._dataLength << 1;
             constant._data[i] = 0x00000001;
-            constant.DataLength = i + 1;
+            constant._dataLength = i + 1;
             constant = constant / n;
-            var totalBits = exp.BitCount;
+            var totalBits = exp.BitLength;
             var count = 0;
 
-            for (var pos = 0; pos < exp.DataLength; pos++)
+            for (var pos = 0; pos < exp._dataLength; pos++)
             {
                 uint mask = 0x01;
 
@@ -1525,17 +1516,15 @@ namespace Trinity.Core.Cryptography
                     if ((exp._data[pos] & mask) != 0)
                     {
                         var resultNumTemp = resultNum * tempNum;
-                        Contract.Assume(resultNumTemp.DataLength - n.DataLength - 1 >= 0);
                         resultNum = BarrettReduction(resultNumTemp, n, constant);
                     }
 
                     mask <<= 1;
 
                     var tempNum2 = tempNum * tempNum;
-                    Contract.Assume(tempNum2.DataLength - n.DataLength - 1 >= 0);
                     tempNum = BarrettReduction(tempNum2, n, constant);
 
-                    if (tempNum.DataLength == 1 && tempNum._data[0] == 1)
+                    if (tempNum._dataLength == 1 && tempNum._data[0] == 1)
                     {
                         if (thisNegative && (exp._data[0] & 0x1) != 0)
                             return -resultNum;
@@ -1560,45 +1549,45 @@ namespace Trinity.Core.Cryptography
         {
             Contract.Requires(x != null);
             Contract.Requires(n != null);
-            Contract.Requires(x.DataLength - n.DataLength - 1 >= 0);
             Contract.Requires(constant != null);
             Contract.Ensures(Contract.Result<BigInteger>() != null);
 
-            var k = n.DataLength;
+            var k = n._dataLength;
             var kPlusOne = k + 1;
             var kMinusOne = k - 1;
             var q1 = new BigInteger();
 
-            for (int i = kMinusOne, j = 0; i < x.DataLength; i++, j++)
+            for (int i = kMinusOne, j = 0; i < x._dataLength; i++, j++)
                 q1._data[j] = x._data[i];
 
-            q1.DataLength = x.DataLength - kMinusOne;
+            var q1Len = x._dataLength - kMinusOne;
+            if (q1Len <= 0)
+                q1Len = 1;
 
-            if (q1.DataLength <= 0)
-                q1.DataLength = 1;
+            q1._dataLength = q1Len;
 
             var q2 = q1 * constant;
             var q3 = new BigInteger();
 
-            for (int i = kPlusOne, j = 0; i < q2.DataLength; i++, j++)
+            for (int i = kPlusOne, j = 0; i < q2._dataLength; i++, j++)
                 q3._data[j] = q2._data[i];
 
-            Contract.Assume(q2.DataLength - kPlusOne >= 0);
-            q3.DataLength = q2.DataLength - kPlusOne;
+            var q3Len = q2._dataLength - kPlusOne;
+            if (q3Len <= 0)
+                q3Len = 1;
 
-            if (q3.DataLength <= 0)
-                q3.DataLength = 1;
+            q3._dataLength = q3Len;
 
             var r1 = new BigInteger();
-            var lengthToCopy = (x.DataLength > kPlusOne) ? kPlusOne : x.DataLength;
+            var lengthToCopy = (x._dataLength > kPlusOne) ? kPlusOne : x._dataLength;
 
             for (var i = 0; i < lengthToCopy; i++)
                 r1._data[i] = x._data[i];
 
-            r1.DataLength = lengthToCopy;
+            r1._dataLength = lengthToCopy;
             var r2 = new BigInteger();
 
-            for (var i = 0; i < q3.DataLength; i++)
+            for (var i = 0; i < q3._dataLength; i++)
             {
                 if (q3._data[i] == 0)
                     continue;
@@ -1606,7 +1595,7 @@ namespace Trinity.Core.Cryptography
                 ulong mcarry = 0;
                 var t = i;
 
-                for (var j = 0; j < n.DataLength && t < kPlusOne; j++, t++)
+                for (var j = 0; j < n._dataLength && t < kPlusOne; j++, t++)
                 {
                     var val = (q3._data[i] * (ulong)n._data[j]) + r2._data[t] + mcarry;
 
@@ -1618,10 +1607,10 @@ namespace Trinity.Core.Cryptography
                     r2._data[t] = (uint)mcarry;
             }
 
-            r2.DataLength = kPlusOne;
+            r2._dataLength = kPlusOne;
 
-            while (r2.DataLength > 1 && r2._data[r2.DataLength - 1] == 0)
-                r2.DataLength--;
+            while (r2._dataLength > 1 && r2._data[r2._dataLength - 1] == 0)
+                r2._dataLength--;
 
             r1 -= r2;
 
@@ -1630,7 +1619,7 @@ namespace Trinity.Core.Cryptography
                 var val = new BigInteger();
 
                 val._data[kPlusOne] = 0x00000001;
-                val.DataLength = kPlusOne + 1;
+                val._dataLength = kPlusOne + 1;
                 r1 += val;
             }
 
@@ -1660,7 +1649,7 @@ namespace Trinity.Core.Cryptography
 
             var g = y;
 
-            while (x.DataLength > 1 || (x.DataLength == 1 && x._data[0] != 0))
+            while (x._dataLength > 1 || (x._dataLength == 1 && x._data[0] != 0))
             {
                 g = x;
                 x = y % x;
@@ -1701,22 +1690,22 @@ namespace Trinity.Core.Cryptography
             else
                 _data[dwords - 1] |= 0x80000000;
 
-            DataLength = dwords;
+            _dataLength = dwords;
 
-            if (DataLength == 0)
-                DataLength = 1;
+            if (_dataLength == 0)
+                _dataLength = 1;
         }
 
-        public int BitCount
+        public int BitLength
         {
             get
             {
                 Contract.Ensures(Contract.Result<int>() >= 0);
 
-                while (DataLength > 1 && _data[DataLength - 1] == 0)
-                    DataLength--;
+                while (_dataLength > 1 && _data[_dataLength - 1] == 0)
+                    _dataLength--;
 
-                var value = _data[DataLength - 1];
+                var value = _data[_dataLength - 1];
                 var mask = 0x80000000;
                 var bits = 32;
 
@@ -1726,7 +1715,7 @@ namespace Trinity.Core.Cryptography
                     mask >>= 1;
                 }
 
-                bits += ((DataLength - 1) << 5);
+                bits += ((_dataLength - 1) << 5);
 
                 return bits;
             }
@@ -1808,7 +1797,7 @@ namespace Trinity.Core.Cryptography
             var a = modulus;
             var b = this;
 
-            while (b.DataLength > 1 || (b.DataLength == 1 && b._data[0] != 0))
+            while (b._dataLength > 1 || (b._dataLength == 1 && b._data[0] != 0))
             {
                 var quotient = new BigInteger();
                 var remainder = new BigInteger();
@@ -1824,7 +1813,7 @@ namespace Trinity.Core.Cryptography
                     p[1] = pval;
                 }
 
-                if (b.DataLength == 1)
+                if (b._dataLength == 1)
                     SingleByteDivide(a, b, ref quotient, ref remainder);
                 else
                     MultiByteDivide(a, b, ref quotient, ref remainder);
@@ -1840,7 +1829,7 @@ namespace Trinity.Core.Cryptography
                 step++;
             }
 
-            if (r[0].DataLength > 1 || (r[0].DataLength == 1 && r[0]._data[0] != 1))
+            if (r[0]._dataLength > 1 || (r[0]._dataLength == 1 && r[0]._data[0] != 1))
                 return null;
 
             var q02 = q[0];
@@ -1870,7 +1859,7 @@ namespace Trinity.Core.Cryptography
             Contract.Ensures(Contract.Result<byte[]>().Length == numBytes);
 
             var result = new byte[numBytes];
-            var numBits = BitCount;
+            var numBits = BitLength;
             var realNumBytes = numBits >> 3;
 
             if ((numBits & 0x7) != 0)
@@ -1900,8 +1889,8 @@ namespace Trinity.Core.Cryptography
             var mask = (uint)1 << bitPos;
             _data[bytePos] |= mask;
 
-            if (bytePos >= DataLength)
-                DataLength = bytePos + 1;
+            if (bytePos >= _dataLength)
+                _dataLength = bytePos + 1;
         }
 
         public void UnsetBit(int bitNum)
@@ -1910,7 +1899,7 @@ namespace Trinity.Core.Cryptography
 
             var bytePos = bitNum >> 5;
 
-            if (bytePos >= DataLength)
+            if (bytePos >= _dataLength)
                 return;
 
             var bitPos = (byte)(bitNum & 0x1f);
@@ -1919,15 +1908,15 @@ namespace Trinity.Core.Cryptography
 
             _data[bytePos] &= mask2;
 
-            if (DataLength > 1 && _data[DataLength - 1] == 0)
-                DataLength--;
+            if (_dataLength > 1 && _data[_dataLength - 1] == 0)
+                _dataLength--;
         }
 
         public BigInteger Sqrt()
         {
             Contract.Ensures(Contract.Result<BigInteger>() != null);
 
-            var numBits = (uint)BitCount;
+            var numBits = (uint)BitLength;
 
             if ((numBits & 0x1) != 0)
                 numBits = (numBits >> 1) + 1;
@@ -1947,7 +1936,7 @@ namespace Trinity.Core.Cryptography
             else
                 mask = 0x80000000;
 
-            result.DataLength = (int)bytePos;
+            result._dataLength = (int)bytePos;
 
             for (var i = (int)bytePos - 1; i >= 0; i--)
             {
@@ -1983,10 +1972,10 @@ namespace Trinity.Core.Cryptography
                 return false;
 
             // If the length doesn't equal, we can gain some speed.
-            if (DataLength != other.DataLength)
+            if (_dataLength != other._dataLength)
                 return false;
 
-            for (var i = 0; i < DataLength; i++)
+            for (var i = 0; i < _dataLength; i++)
                 if (_data[i] != other._data[i])
                     return false;
 
@@ -2041,11 +2030,11 @@ namespace Trinity.Core.Cryptography
             var remainder = new BigInteger();
             var biRadix = new BigInteger(radix);
 
-            if (a.DataLength == 1 && a._data[0] == 0)
+            if (a._dataLength == 1 && a._data[0] == 0)
                 result = "0";
             else
             {
-                while (a.DataLength > 1 || (a.DataLength == 1 && a._data[0] != 0))
+                while (a._dataLength > 1 || (a._dataLength == 1 && a._data[0] != 0))
                 {
                     SingleByteDivide(a, biRadix, ref quotient, ref remainder);
 

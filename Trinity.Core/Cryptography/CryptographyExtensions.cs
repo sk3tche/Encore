@@ -18,7 +18,6 @@ namespace Trinity.Core.Cryptography
             Contract.Requires(brokers != null);
             Contract.Requires(brokers.Length >= 0);
             Contract.Ensures(Contract.Result<BigInteger>() != null);
-            Contract.Ensures(Contract.Result<BigInteger>().DataLength == algorithm.HashSize);
             Contract.Ensures(Contract.Result<BigInteger>().ByteLength == algorithm.HashSize / 8);
 
             using (var buffer = new MemoryStream())
@@ -29,7 +28,6 @@ namespace Trinity.Core.Cryptography
                 buffer.Position = 0;
 
                 var result = new BigInteger(algorithm.ComputeHash(buffer));
-                Contract.Assume(result.DataLength == algorithm.HashSize);
                 Contract.Assume(result.ByteLength == algorithm.HashSize / 8);
                 return result;
             }
