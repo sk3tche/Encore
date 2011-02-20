@@ -133,18 +133,12 @@ namespace Trinity.Core.IO
 
         public static void WriteBigEndian(this BinaryWriter writer, short value)
         {
-            unchecked
-            {
-                writer.Write(IPAddress.HostToNetworkOrder(value));
-            }
+            writer.Write(IPAddress.HostToNetworkOrder(value));
         }
 
         public static short ReadInt16BigEndian(this BinaryReader reader)
         {
-            unchecked
-            {
-                return IPAddress.NetworkToHostOrder(reader.ReadInt16());
-            }
+            return IPAddress.NetworkToHostOrder(reader.ReadInt16());
         }
 
         [CLSCompliant(false)]
@@ -167,18 +161,12 @@ namespace Trinity.Core.IO
 
         public static void WriteBigEndian(this BinaryWriter writer, int value)
         {
-            unchecked
-            {
-                writer.Write(IPAddress.HostToNetworkOrder(value));
-            }
+            writer.Write(IPAddress.HostToNetworkOrder(value));
         }
 
         public static int ReadInt32BigEndian(this BinaryReader reader)
         {
-            unchecked
-            {
-                return IPAddress.NetworkToHostOrder(reader.ReadInt32());
-            }
+            return IPAddress.NetworkToHostOrder(reader.ReadInt32());
         }
 
         [CLSCompliant(false)]
@@ -201,18 +189,12 @@ namespace Trinity.Core.IO
 
         public static void WriteBigEndian(this BinaryWriter writer, long value)
         {
-            unchecked
-            {
-                writer.Write(IPAddress.HostToNetworkOrder(value));
-            }
+            writer.Write(IPAddress.HostToNetworkOrder(value));
         }
 
         public static long ReadInt64BigEndian(this BinaryReader reader)
         {
-            unchecked
-            {
-                return IPAddress.NetworkToHostOrder(reader.ReadInt64());
-            }
+            return IPAddress.NetworkToHostOrder(reader.ReadInt64());
         }
 
         [CLSCompliant(false)]
@@ -245,7 +227,7 @@ namespace Trinity.Core.IO
             Contract.Requires(data != null);
             Contract.Ensures(Contract.Result<BinaryReader>() != null);
 
-            return new BinaryReader(new MemoryStream(data), encoding ?? Encoding.UTF8);
+            return new BinaryReader(new MemoryStream(data, false), encoding ?? Encoding.UTF8);
         }
 
         public static BinaryWriter GetBinaryWriter(this byte[] data, Encoding encoding = null)
