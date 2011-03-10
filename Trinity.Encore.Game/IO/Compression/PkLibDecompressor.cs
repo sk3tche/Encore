@@ -107,9 +107,7 @@ namespace Trinity.Encore.Game.IO.Compression
                 if (outputStream.Position == expectedSize)
                     return outputBuffer;
 
-                var arr = outputStream.ToArray();
-                Contract.Assume(arr != null);
-                return arr;
+                return outputStream.ToArray();
             }
         }
 

@@ -178,9 +178,7 @@ namespace Trinity.Encore.Game.IO.Compression
                     }
                 } while (decoded != byte.MaxValue);
 
-                var arr = outputStream.ToArray();
-                Contract.Assume(arr != null);
-                return arr;
+                return outputStream.ToArray();
             }
         }
 

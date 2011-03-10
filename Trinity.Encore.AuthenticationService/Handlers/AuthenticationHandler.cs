@@ -192,7 +192,6 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             if (securityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
             {
                 var tokenLength = packet.ReadByte();
-                Contract.Assume(tokenLength >= 0);
                 packet.ReadBytes(tokenLength); // token
             }
 

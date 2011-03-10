@@ -20,9 +20,7 @@ namespace Trinity.Core.IO.Compression
                 {
                     coder.Code(inStream, outStream, input.Length, minimumOutputLength, null);
 
-                    var arr = outStream.ToArray();
-                    Contract.Assume(arr != null);
-                    return arr;
+                    return outStream.ToArray();
                 }
             }
         }

@@ -17,9 +17,7 @@ namespace Trinity.Core.IO.Compression
             using (var stream = new BZip2OutputStream(ms))
                 stream.Write(input, 0, length);
 
-            var arr = ms.ToArray();
-            Contract.Assume(arr != null);
-            return arr;
+            return ms.ToArray();
         }
     }
 }

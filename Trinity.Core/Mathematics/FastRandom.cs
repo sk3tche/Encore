@@ -144,6 +144,7 @@ namespace Trinity.Core.Mathematics
             var value = minValue + (int)((RealUnitInt32 * (int)(0x7fffffff & (_w = (_w ^ (_w >> 19)) ^ (t ^ (t >> 8))))) * range);
             Contract.Assume(value >= minValue);
             Contract.Assume(value <= maxValue);
+            Contract.Assume(value < maxValue || maxValue == minValue && value == minValue);
             return value;
         }
 

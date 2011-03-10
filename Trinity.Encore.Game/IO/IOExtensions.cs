@@ -86,7 +86,6 @@ namespace Trinity.Encore.Game.IO
             Contract.Requires(reader != null);
 
             var length = reader.ReadByte();
-            Contract.Assume(length >= 0); // Because casting a byte to an int can yield a negative value...
             var data = reader.ReadBytes(length);
 
             return new BigInteger(data);

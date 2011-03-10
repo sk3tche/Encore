@@ -71,7 +71,6 @@ namespace Trinity.Encore.Game.IO.Formats
             var extraBlock = BSDIFF40.ExtraBlock.GetBinaryReader();
 
             var sizeAfter = PTCH.NewSize;
-            Contract.Assume(newFileName.Length > 0);
             var oldFile = File.ReadAllBytes(newFileName);
             var newFile = new byte[sizeAfter];
 

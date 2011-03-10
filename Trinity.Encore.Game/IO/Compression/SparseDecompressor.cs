@@ -47,9 +47,7 @@ namespace Trinity.Encore.Game.IO.Compression
                     writer.Write(data);
                 }
 
-                var arr = stream.ToArray();
-                Contract.Assume(arr != null);
-                return arr;
+                return stream.ToArray();
             }
         }
     }
