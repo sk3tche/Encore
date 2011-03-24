@@ -41,8 +41,9 @@ namespace Trinity.Core
 
             var type = obj.GetType();
             if (type.IsInteger() && newType == typeof(bool)) // A hack for boolean values.
-                return !obj.Equals(0.Cast(type)) ? true : false;
+                return obj.Equals(0.Cast(type)) ? false : true;
 
+            // Since we require that value is not null, the returned value won't be either.
             var value = Convert.ChangeType(obj, newType);
             Contract.Assume(value != null);
             return value;

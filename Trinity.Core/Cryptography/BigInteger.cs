@@ -122,7 +122,9 @@ namespace Trinity.Core.Cryptography
             value = value.ToUpper(CultureInfo.InvariantCulture).Trim();
             var limit = 0;
 
-            Contract.Assume(value.Length > 0);
+            if (value.Length == 0)
+                throw new ArgumentException("value is empty.", "value");
+
             if (value[0] == '-')
                 limit = 1;
 

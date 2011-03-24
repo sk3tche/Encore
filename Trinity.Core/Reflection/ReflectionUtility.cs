@@ -12,16 +12,20 @@ namespace Trinity.Core.Reflection
         [SuppressMessage("Microsoft.Design", "CA1004", Justification = "The use of type parameter T is intended.")]
         public static int GetEnumValueCount<T>()
         {
-            Contract.Assume(typeof(T).IsEnum);
+            var type = typeof(T);
+            if (!type.IsEnum)
+                throw new ArgumentException("The type of T is not an enumeration.");
 
-            return Enum.GetValues(typeof(T)).Length;
+            return Enum.GetValues(type).Length;
         }
 
         public static T GetEnumMaxValue<T>()
         {
-            Contract.Assume(typeof(T).IsEnum);
+            var type = typeof(T);
+            if (!type.IsEnum)
+                throw new ArgumentException("The type of T is not an enumeration.");
 
-            return ((T[])Enum.GetValues(typeof(T))).Max();
+            return ((T[])Enum.GetValues(type)).Max();
         }
 
         public static MethodInfo MethodOf(Expression<Action> expr)
@@ -49,7 +53,7 @@ namespace Trinity.Core.Reflection
             var body = expr.Body as MemberExpression;
 
             if (body == null)
-                throw new ArgumentException("Expression must be a member expression.");
+                throw new ArgumentException("Expression must be a member expression.", "expr");
 
             var member = body.Member as PropertyInfo;
 
@@ -64,7 +68,7 @@ namespace Trinity.Core.Reflection
             var body = expr.Body as MemberExpression;
 
             if (body == null)
-                throw new ArgumentException("Expression must be a member expression.");
+                throw new ArgumentException("Expression must be a member expression.", "expr");
 
             var member = body.Member as FieldInfo;
 
