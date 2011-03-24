@@ -3,6 +3,9 @@ using System.Diagnostics.Contracts;
 
 namespace Trinity.Core.Exceptions
 {
+    /// <summary>
+    /// Provides data for the <see cref="ExceptionManager.ExceptionOccurred"/> event.
+    /// </summary>
     public sealed class ExceptionEventArgs : EventArgs
     {
         /// <summary>

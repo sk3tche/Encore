@@ -19,12 +19,7 @@ namespace Trinity.Core.Configuration
         private readonly List<ConfigurationInfo> _configs = new List<ConfigurationInfo>();
 
         /// <summary>
-        /// Whether to save after adding/changing values.
-        /// </summary>
-        public bool SaveOnChange { get; set; }
-
-        /// <summary>
-        /// The executable that this configuration is associated with.
+        /// Gets the executable file that this configuration is associated with.
         /// </summary>
         public FileInfo ExecutableFile { get; private set; }
 
@@ -40,16 +35,18 @@ namespace Trinity.Core.Configuration
         /// Default constructor.
         /// </summary>
         /// <param name="executablePath">The path of the executable whose AppConfig to load.</param>
-        /// <param name="saveOnChange">Whether or not to save when the configuration changes.</param>
-        public ApplicationConfiguration(string executablePath, bool saveOnChange = true)
+        public ApplicationConfiguration(string executablePath)
         {
             Contract.Requires(!string.IsNullOrEmpty(executablePath));
 
             ExecutableFile = new FileInfo(executablePath);
-            SaveOnChange = saveOnChange;
             _cfg = ConfigurationManager.OpenExeConfiguration(ExecutableFile.FullName);
         }
 
+        /// <summary>
+        /// Opens the configuration file, reads any stored values, and inserts default values where needed.
+        /// </summary>
+        /// <returns>true if the file was opened; false if a new one was written.</returns>
         public bool Open()
         {
             var result = true;
@@ -74,20 +71,25 @@ namespace Trinity.Core.Configuration
             return result;
         }
 
+        /// <summary>
+        /// Loads configuration values to in-memory properties.
+        /// </summary>
         public void Load()
         {
             foreach (var cfg in _configs)
             {
-                var attr = cfg.Attribute;
-                var val = _cfg.AppSettings.Settings[attr.Name];
-
+                var val = _cfg.AppSettings.Settings[cfg.Attribute.Name];
                 Contract.Assume(val != null);
                 Contract.Assume(val.Value != null);
+
                 var value = ConvertType(val, cfg.Property.PropertyType);
                 cfg.SetValue(value);
             }
         }
 
+        /// <summary>
+        /// Scans all loaded assemblies for configuration properties.
+        /// </summary>
         public void ScanAll()
         {
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
@@ -97,6 +99,10 @@ namespace Trinity.Core.Configuration
             }
         }
 
+        /// <summary>
+        /// Scans a given assembly for configuration properties.
+        /// </summary>
+        /// <param name="asm">The assembly to scan.</param>
         public void ScanAssembly(Assembly asm)
         {
             Contract.Requires(asm != null);
@@ -156,6 +162,9 @@ namespace Trinity.Core.Configuration
             }
         }
 
+        /// <summary>
+        /// Saves all in-memory configuration values.
+        /// </summary>
         public void Save()
         {
             foreach (var cfg in _configs.Where(x => !x.Attribute.Static))

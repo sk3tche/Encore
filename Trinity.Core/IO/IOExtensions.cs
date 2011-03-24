@@ -9,6 +9,12 @@ namespace Trinity.Core.IO
 {
     public static class IOExtensions
     {
+        /// <summary>
+        /// Writes a null-terminated string to a given <see cref="BinaryWriter"/>.
+        /// </summary>
+        /// <param name="writer">The writer to write the string to.</param>
+        /// <param name="str">The string to write.</param>
+        /// <param name="encoding">The encoding to use (<see cref="ASCIIEncoding"/> by default).</param>
         public static void WriteCString(this BinaryWriter writer, string str, Encoding encoding = null)
         {
             Contract.Requires(writer != null);
@@ -18,6 +24,12 @@ namespace Trinity.Core.IO
             writer.Write((byte)0);
         }
 
+        /// <summary>
+        /// Reads a null-terminated string from a given <see cref="BinaryReader"/>.
+        /// </summary>
+        /// <param name="reader">The reader to read the string from.</param>
+        /// <param name="encoding">The encoding to use (<see cref="ASCIIEncoding"/> by default).</param>
+        /// <returns>The string read from the given reader.</returns>
         public static string ReadCString(this BinaryReader reader, Encoding encoding = null)
         {
             Contract.Requires(reader != null);
@@ -215,6 +227,11 @@ namespace Trinity.Core.IO
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether a stream is read to the end.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns>A value indicating whether the stream is read to the end.</returns>
         public static bool IsRead(this Stream stream)
         {
             Contract.Requires(stream != null);
@@ -222,6 +239,12 @@ namespace Trinity.Core.IO
             return stream.Position == stream.Length;
         }
 
+        /// <summary>
+        /// Wraps a <see cref="BinaryReader"/> around a given byte array.
+        /// </summary>
+        /// <param name="data">The byte array to wrap.</param>
+        /// <param name="encoding">The encoding to use (<see cref="UTF8Encoding"/> by default).</param>
+        /// <returns>The resulting reader.</returns>
         public static BinaryReader GetBinaryReader(this byte[] data, Encoding encoding = null)
         {
             Contract.Requires(data != null);
@@ -230,6 +253,12 @@ namespace Trinity.Core.IO
             return new BinaryReader(new MemoryStream(data, false), encoding ?? Encoding.UTF8);
         }
 
+        /// <summary>
+        /// Wraps a <see cref="BinaryWriter"/> around a given byte array.
+        /// </summary>
+        /// <param name="data">The byte array to wrap.</param>
+        /// <param name="encoding">The encoding to use (<see cref="UTF8Encoding"/> by default).</param>
+        /// <returns>The resulting writer.</returns>
         public static BinaryWriter GetBinaryWriter(this byte[] data, Encoding encoding = null)
         {
             Contract.Requires(data != null);

@@ -11,6 +11,9 @@ namespace Trinity.Core.Exceptions
     /// </summary>
     public static class ExceptionManager
     {
+        /// <summary>
+        /// Triggered when an exception is registered.
+        /// </summary>
         public static event EventHandler<ExceptionEventArgs> ExceptionOccurred;
 
         private static readonly SynchronizedCollection<ExceptionInfo> _exceptionList =
@@ -49,6 +52,11 @@ namespace Trinity.Core.Exceptions
                 PrintException(inner);
         }
 
+        /// <summary>
+        /// Gets all cached exceptions.
+        /// </summary>
+        /// <param name="clear">A value indicating whether to clear the internal cache after cloning it.</param>
+        /// <returns>A clone of the exception cache.</returns>
         public static ExceptionInfo[] GetExceptions(bool clear = false)
         {
             var exceptions = _exceptionList.ToArray();
@@ -59,6 +67,9 @@ namespace Trinity.Core.Exceptions
             return exceptions;
         }
 
+        /// <summary>
+        /// Clears the internal exception cache.
+        /// </summary>
         public static void ClearExceptions()
         {
             _exceptionList.Clear();

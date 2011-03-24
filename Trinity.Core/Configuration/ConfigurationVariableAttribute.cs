@@ -5,7 +5,7 @@ namespace Trinity.Core.Configuration
 {
     /// <summary>
     /// Indicates that a property is a configuration value, and can be parsed by
-    /// the AppConfig class.
+    /// the <see cref="ApplicationConfiguration"/> class.
     /// </summary>
     [MeansImplicitUse]
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]

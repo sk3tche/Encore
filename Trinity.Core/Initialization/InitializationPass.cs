@@ -2,6 +2,9 @@ using System;
 
 namespace Trinity.Core.Initialization
 {
+    /// <summary>
+    /// Indicates which pass an initializable routine is to be executed in.
+    /// </summary>
     [Serializable]
     public enum InitializationPass : byte
     {

@@ -4,6 +4,9 @@ using System.Security.Cryptography;
 
 namespace Trinity.Core.Cryptography
 {
+    /// <summary>
+    /// Contains extension methods for cryptographic classes.
+    /// </summary>
     public static class CryptographyExtensions
     {
         /// <summary>

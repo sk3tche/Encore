@@ -8,6 +8,13 @@ using Trinity.Core.Mathematics;
 namespace Trinity.Core.Cryptography
 {
     // This class was written by Chew Keong TAN.
+    /// <summary>
+    /// Represents an arbitrary-length integer.
+    /// </summary>
+    /// <remarks>
+    /// In reality, this class is limited to <see cref="MaxLength"/> * 4 bytes, which should be sufficient
+    /// for all realistic cryptographic scenarios.
+    /// </remarks>
     [Serializable]
     public sealed class BigInteger : IEquatable<BigInteger>, IComparable<BigInteger>, IComparable
     {
@@ -16,9 +23,6 @@ namespace Trinity.Core.Cryptography
         /// </summary>
         public const int MaxLength = 512;
 
-        /// <summary>
-        /// Holds bytes from the BigInteger.
-        /// </summary>
         private readonly uint[] _data;
 
         private int _dataLength;

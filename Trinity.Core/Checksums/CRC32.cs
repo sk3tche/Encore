@@ -16,6 +16,11 @@ namespace Trinity.Core.Checksums
             Contract.Invariant(_crc != null);
         }
 
+        /// <summary>
+        /// Calculates the CRC32-IEEE 802.3 checksum of a given input.
+        /// </summary>
+        /// <param name="input">The input to calculate a checksum for.</param>
+        /// <returns>The checksum for the given input.</returns>
         public long Calculate(byte[] input)
         {
             _crc.Reset();
@@ -24,6 +29,12 @@ namespace Trinity.Core.Checksums
             return _crc.Value;
         }
 
+        /// <summary>
+        /// Checks if two inputs have matching CRC32-IEEE 802.3 checksums.
+        /// </summary>
+        /// <param name="input1">The first input.</param>
+        /// <param name="input2">The second input.</param>
+        /// <returns>Whether or not the two inputs have matching checksums.</returns>
         public bool Matches(byte[] input1, byte[] input2)
         {
             // Let's optimize it a bit.

@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 namespace Trinity.Core.Checksums
 {
     /// <summary>
-    /// Implements the Adler 32 checksum algorithm.
+    /// Implements the Adler-32 checksum algorithm.
     /// </summary>
     public sealed class Adler32 : IChecksum
     {
@@ -16,7 +16,7 @@ namespace Trinity.Core.Checksums
         }
 
         /// <summary>
-        /// Calculates the Adler 32 checksum of a given input.
+        /// Calculates the Adler-32 checksum of a given input.
         /// </summary>
         /// <param name="input">The input to calculate a checksum for.</param>
         /// <returns>The checksum for the given input.</returns>
@@ -29,7 +29,7 @@ namespace Trinity.Core.Checksums
         }
 
         /// <summary>
-        /// Checks if two inputs have matching Adler 32 checksums.
+        /// Checks if two inputs have matching Adler-32 checksums.
         /// </summary>
         /// <param name="input1">The first input.</param>
         /// <param name="input2">The second input.</param>

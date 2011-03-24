@@ -51,6 +51,7 @@ namespace Trinity.Core.Collections
         /// Returns the entry in this list at the given index, or the default value of the element
         /// type if the index was out of bounds.
         /// </summary>
+        /// <typeparam name="T">The type of the elements in the list.</typeparam>
         /// <param name="list">The list to retrieve from.</param>
         /// <param name="index">The index to try to retrieve at.</param>
         /// <returns>The value, or the default value of the element type.</returns>
@@ -66,6 +67,11 @@ namespace Trinity.Core.Collections
         /// Returns the entry in this dictionary at the given key, or the default value of the key
         /// if none.
         /// </summary>
+        /// <typeparam name="TKey">The key type.</typeparam>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="dict">The dictionary to operate on.</param>
+        /// <param name="key">The key of the element to retrieve.</param>
+        /// <returns>The value (if any).</returns>
         public static TValue TryGet<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
         {
             Contract.Requires(dict != null);
@@ -75,6 +81,13 @@ namespace Trinity.Core.Collections
             return dict.TryGetValue(key, out val) ? val : default(TValue);
         }
 
+        /// <summary>
+        /// Swaps the position of two elements in a list.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the list.</typeparam>
+        /// <param name="self">The list to operate on.</param>
+        /// <param name="index1">The first index.</param>
+        /// <param name="index2">The second index.</param>
         public static void Swap<T>(this IList<T> self, int index1, int index2)
         {
             Contract.Requires(self != null);
@@ -89,6 +102,12 @@ namespace Trinity.Core.Collections
             self[index2] = temp;
         }
 
+        /// <summary>
+        /// Converts a sequence to a queue.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <param name="self">The sequence to convert.</param>
+        /// <returns>A queue built from the given sequence.</returns>
         public static Queue<T> ToQueue<T>(this IEnumerable<T> self)
         {
             Contract.Requires(self != null);
@@ -97,6 +116,12 @@ namespace Trinity.Core.Collections
             return new Queue<T>(self);
         }
 
+        /// <summary>
+        /// Converts a sequence to a stack.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <param name="self">The sequence to convert.</param>
+        /// <returns>A stack built from the given sequence.</returns>
         public static Stack<T> ToStack<T>(this IEnumerable<T> self)
         {
             Contract.Requires(self != null);
@@ -105,6 +130,13 @@ namespace Trinity.Core.Collections
             return new Stack<T>(self);
         }
 
+        /// <summary>
+        /// Converts a sequence to a priority queue.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <param name="self">The sequence to convert.</param>
+        /// <param name="cmp">The comparer to use in the priority queue.</param>
+        /// <returns>A priority queue built from the given sequence.</returns>
         public static C5.IPriorityQueue<T> ToPriorityQueue<T>(this IEnumerable<T> self, IComparer<T> cmp = null)
         {
             Contract.Requires(self != null);
@@ -121,6 +153,12 @@ namespace Trinity.Core.Collections
             return queue;
         }
 
+        /// <summary>
+        /// Adds a sequence of elements to a collection.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <param name="col">The collection to add elements to.</param>
+        /// <param name="enumerable">The elements to add.</param>
         public static void AddRange<T>(this ICollection<T> col, IEnumerable<T> enumerable)
         {
             Contract.Requires(col != null);
@@ -130,6 +168,14 @@ namespace Trinity.Core.Collections
                 col.Add(cur);
         }
 
+        /// <summary>
+        /// Pads a sequence with items until a desired length is reached.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in the sequence.</typeparam>
+        /// <param name="source">The sequence to pad.</param>
+        /// <param name="desiredLength">The desired sequence length.</param>
+        /// <param name="generator">The generator function to call when more items are needed.</param>
+        /// <returns>A padded sequence.</returns>
         public static IEnumerable<T> Pad<T>(this IEnumerable<T> source, int desiredLength, Func<T> generator)
         {
             Contract.Requires(source != null);
@@ -159,6 +205,13 @@ namespace Trinity.Core.Collections
                 yield return generator();
         }
 
+        /// <summary>
+        /// Execute a given action on a sequence immediately.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements.</typeparam>
+        /// <param name="source">The sequence to iterate over.</param>
+        /// <param name="act">The action to apply on each element.</param>
+        /// <returns>The original sequence.</returns>
         public static IEnumerable<T> With<T>(this IEnumerable<T> source, Action<T> act)
         {
             Contract.Requires(source != null);

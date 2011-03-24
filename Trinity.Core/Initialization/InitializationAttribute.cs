@@ -16,10 +16,23 @@ namespace Trinity.Core.Initialization
             Pass = pass;
         }
 
+        /// <summary>
+        /// The name of the initializable routine.
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// The pass in which the routine is to be executed.
+        /// </summary>
+        /// <remarks>
+        /// Note that the routine may not strictly be executed in the given pass, depending on the dependency
+        /// hierarchy. This property is just a hint.
+        /// </remarks>
         public InitializationPass Pass { get; private set; }
 
+        /// <summary>
+        /// A type that must be initialized before this routine is initialized.
+        /// </summary>
         public Type Dependency { get; set; }
     }
 }

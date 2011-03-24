@@ -6,6 +6,9 @@ using Trinity.Core.Runtime;
 
 namespace Trinity.Core.Cryptography
 {
+    /// <summary>
+    /// Helper class that carries hashing data.
+    /// </summary>
     [Serializable]
     public sealed class HashDataBroker : IEquatable<HashDataBroker>
     {
@@ -24,6 +27,10 @@ namespace Trinity.Core.Cryptography
 
         private readonly byte[] _rawData;
 
+        /// <summary>
+        /// Gets a clone of the contained data.
+        /// </summary>
+        /// <returns>A clone of the contained data.</returns>
         public byte[] GetRawData()
         {
             Contract.Ensures(Contract.Result<byte[]>().Length == Length);
@@ -31,6 +38,9 @@ namespace Trinity.Core.Cryptography
             return (byte[])_rawData.Clone();
         }
 
+        /// <summary>
+        /// Gets the length of the contained data.
+        /// </summary>
         public int Length
         {
             get
@@ -63,6 +73,7 @@ namespace Trinity.Core.Cryptography
             Contract.Requires(str != null);
             Contract.Ensures(!ReferenceEquals(Contract.Result<HashDataBroker>(), null));
 
+            // TODO: It's kinda ugly that we hardcode UTF-8 here. Can we change this?
             return new HashDataBroker(Encoding.UTF8.GetBytes(str));
         }
 
