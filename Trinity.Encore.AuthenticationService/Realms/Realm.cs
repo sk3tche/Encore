@@ -14,7 +14,6 @@ namespace Trinity.Encore.AuthenticationService.Realms
             Contract.Invariant(Location != null);
             Contract.Invariant(ClientVersion != null);
             Contract.Invariant(Capacity >= 0);
-            Contract.Invariant(Capacity >= 0);
         }
 
         public string Id { get; set; }
