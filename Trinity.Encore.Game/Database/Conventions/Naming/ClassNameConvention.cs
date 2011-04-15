@@ -1,4 +1,6 @@
+using System;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 
@@ -11,7 +13,7 @@ namespace Trinity.Encore.Game.Database.Conventions.Naming
         public void Apply(IClassInstance instance)
         {
             var tableName = instance.TableName;
-            var recIndex = tableName.IndexOf(Record);
+            var recIndex = tableName.IndexOf(Record, StringComparison.Ordinal);
 
             if (recIndex == -1)
                 return;
