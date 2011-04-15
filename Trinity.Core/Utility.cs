@@ -50,7 +50,7 @@ namespace Trinity.Core
             for (var i = 0; i < data.Length; i += 2)
             {
                 Contract.Assume(i + 2 <= data.Length);
-                bytes.Add(byte.Parse(data.Substring(i, 2), NumberStyles.HexNumber));
+                bytes.Add(byte.Parse(data.Substring(i, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture));
             }
 
             return bytes.ToArray();

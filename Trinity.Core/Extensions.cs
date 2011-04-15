@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using JetBrains.Annotations;
 using Trinity.Core.Reflection;
 
@@ -44,7 +45,7 @@ namespace Trinity.Core
                 return obj.Equals(0.Cast(type)) ? false : true;
 
             // Since we require that value is not null, the returned value won't be either.
-            var value = Convert.ChangeType(obj, newType);
+            var value = Convert.ChangeType(obj, newType, CultureInfo.InvariantCulture);
             Contract.Assume(value != null);
             return value;
         }
@@ -134,7 +135,7 @@ namespace Trinity.Core
             Contract.Requires(args != null);
             Contract.Ensures(Contract.Result<string>() != null);
 
-            return string.Format(str, args);
+            return string.Format(CultureInfo.InvariantCulture, str, args);
         }
 
         public static bool IsBetween<T>(this T comparable, T lower, T upper)
