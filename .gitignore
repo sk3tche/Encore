@@ -12,3 +12,4 @@ TestResults/*
 */obj/*
 *.orig
 *.idc
+*.cache
