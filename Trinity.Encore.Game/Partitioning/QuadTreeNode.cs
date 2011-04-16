@@ -54,7 +54,6 @@ namespace Trinity.Encore.Game.Partitioning
 
             if (IsLeaf)
             {
-                Contract.Assume(_entities != null);
                 _entities.Add(entity.Guid, entity);
                 entity.PostAsync(() => entity.Node = this);
 
@@ -83,7 +82,6 @@ namespace Trinity.Encore.Game.Partitioning
 
             if (IsLeaf)
             {
-                Contract.Assume(_entities != null);
                 _entities.Remove(entity.Guid);
                 entity.PostAsync(() => entity.Node = null);
 
