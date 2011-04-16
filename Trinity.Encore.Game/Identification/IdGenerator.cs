@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -10,7 +11,7 @@ namespace Trinity.Encore.Game.Identification
     /// </summary>
     public sealed class IdGenerator
     {
-        private readonly ConcurrentQueue<long> _recycledIds = new ConcurrentQueue<long>();
+        private readonly ConcurrentQueue<ulong> _recycledIds = new ConcurrentQueue<ulong>();
 
         private long _lastId;
 
@@ -24,9 +25,10 @@ namespace Trinity.Encore.Game.Identification
         /// Constructs a new instance of the IdGenerator class.
         /// </summary>
         /// <param name="begin">The ID to begin generating at.</param>
-        public IdGenerator(long begin = 0)
+        [CLSCompliant(false)]
+        public IdGenerator(ulong begin = (ulong)0)
         {
-            _lastId = begin;
+            _lastId = (long)begin;
         }
 
         /// <summary>
@@ -35,20 +37,22 @@ namespace Trinity.Encore.Game.Identification
         /// If the recycling queue isn't empty, the ID returned will be a
         /// recycled ID.
         /// </summary>
-        public long GenerateId()
+        [CLSCompliant(false)]
+        public ulong GenerateId()
         {
-            long id;
-            if (!_recycledIds.TryDequeue(out id))
-                id = Interlocked.Increment(ref _lastId);
+            ulong id;
+            if (_recycledIds.TryDequeue(out id))
+                return id;
 
-            return id;
+            return (ulong)Interlocked.Increment(ref _lastId);
         }
 
         /// <summary>
         /// Queues an ID for recycling.
         /// </summary>
         /// <param name="id">The ID to recycle.</param>
-        public void RecycleId(long id)
+        [CLSCompliant(false)]
+        public void RecycleId(ulong id)
         {
             _recycledIds.Enqueue(id);
         }
@@ -56,19 +60,20 @@ namespace Trinity.Encore.Game.Identification
         /// <summary>
         /// Gets the last generated (non-recycled) ID.
         /// </summary>
-        public long LastId
+        [CLSCompliant(false)]
+        public ulong LastId
         {
-            get { return _lastId; }
+            get { return (ulong)_lastId; }
         }
 
         /// <summary>
         /// Gets a collection containing all IDs currently queued for recycling.
         /// </summary>
-        public IEnumerable<long> RecycledIds
+        public IEnumerable<ulong> RecycledIds
         {
             get
             {
-                Contract.Ensures(Contract.Result<IEnumerable<long>>() != null);
+                Contract.Ensures(Contract.Result<IEnumerable<ulong>>() != null);
 
                 var arr = _recycledIds.ToArray();
                 Contract.Assume(arr != null);
