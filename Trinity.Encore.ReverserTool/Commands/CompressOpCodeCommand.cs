@@ -1,4 +1,5 @@
 using System;
+using Trinity.Core;
 using Trinity.Core.Security;
 using Trinity.Encore.Game.Commands;
 
@@ -12,21 +13,23 @@ namespace Trinity.Encore.ReverserTool.Commands
             get { return "Condenses a world server opcode."; }
         }
 
-        public override bool Execute(CommandArguments args, IPermissible sender)
+        public override void Execute(CommandArguments args, ICommandUser sender)
         {
             var opCode = args.NextUInt16();
-            if (opCode == null || (int)opCode <= 0)
-                return false;
-
-            var result = OpCodeUtility.CompressOpCode((int)opCode);
-            if (result == null)
+            if (opCode == 0)
             {
-                Console.WriteLine("Could not condense opcode.");
-                return true;
+                sender.Respond("Invalid opcode given.");
+                return;
             }
 
-            Console.WriteLine("Condensed opcode: {0}", result);
-            return true;
+            var result = OpCodeUtility.CompressOpCode(opCode);
+            if (result == null)
+            {
+                sender.Respond("Could not condense opcode.");
+                return;
+            }
+
+            sender.Respond("Condensed opcode: {0}".Interpolate(result));
         }
     }
 }

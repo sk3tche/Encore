@@ -100,10 +100,13 @@
     <Compile Include="ClientBoxLevel.cs" />
     <Compile Include="ClientLocale.cs" />
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandArgumentException.cs" />
     <Compile Include="Commands\CommandArguments.cs" />
     <Compile Include="Commands\CommandAttribute.cs" />
     <Compile Include="Commands\CommandConsole.cs" />
     <Compile Include="Commands\CommandManager.cs" />
+    <Compile Include="Commands\ConsoleCommandUser.cs" />
+    <Compile Include="Commands\ICommandUser.cs" />
     <Compile Include="Commands\System\ExitCommand.cs" />
     <Compile Include="Commands\System\HelpCommand.cs" />
     <Compile Include="Cryptography\Password.cs" />

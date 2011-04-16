@@ -12,7 +12,7 @@ namespace Trinity.Encore.Game.Commands.System
             get { return "Lists all available commands."; }
         }
 
-        public override bool Execute(CommandArguments args, IPermissible sender)
+        public override void Execute(CommandArguments args, ICommandUser sender)
         {
             var commands = CommandManager.Instance.Commands;
 
@@ -36,8 +36,6 @@ namespace Trinity.Encore.Game.Commands.System
 
                 Console.WriteLine(": {0}", cmd.Description);
             }
-
-            return true;
         }
     }
 }

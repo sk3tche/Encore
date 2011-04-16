@@ -20,15 +20,13 @@ namespace Trinity.Encore.AccountService.Commands.Database
             get { return typeof(ConsolePermission); }
         }
 
-        public override bool Execute(CommandArguments args, IPermissible sender)
+        public override void Execute(CommandArguments args, ICommandUser sender)
         {
             Console.WriteLine("Executing this command will permanently overwrite the entire database. Continue? (Y/N)");
 
             var answer = Console.ReadLine().ToUpper(CultureInfo.InvariantCulture).ToCharArray().SingleOrDefault();
             if (answer == 'Y')
                 AccountApplication.Instance.AccountDbContext.PostAsync(x => x.Schema.Create());
-
-            return true;
         }
     }
 }

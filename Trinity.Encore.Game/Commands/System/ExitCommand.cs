@@ -17,10 +17,9 @@ namespace Trinity.Encore.Game.Commands.System
             get { return typeof(ConsolePermission); }
         }
 
-        public override bool Execute(CommandArguments args, IPermissible sender)
+        public override void Execute(CommandArguments args, ICommandUser sender)
         {
             CommandConsole.StopConsole = true;
-            return true;
         }
     }
 }

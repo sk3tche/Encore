@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using Trinity.Core;
 using Trinity.Core.Security;
 using Trinity.Encore.AccountService.Accounts;
 using Trinity.Encore.Game;
@@ -20,31 +22,47 @@ namespace Trinity.Encore.AccountService.Commands.Accounts
             get { return typeof(RootPermission); }
         }
 
-        public override bool Execute(CommandArguments args, IPermissible sender)
+        public override void Execute(CommandArguments args, ICommandUser sender)
         {
             var name = args.NextString();
+            var password = args.NextString();
+            var email = args.NextString();
+            var box = args.NextEnum<ClientBoxLevel>(ClientBoxLevel.Cataclysm);
+            var locale = args.NextEnum<ClientLocale>(ClientLocale.English);
+
             if (string.IsNullOrEmpty(name))
-                return false;
+            {
+                sender.Respond("No name given.");
+                return;
+            }
 
             if (name.Length < AccountManager.MinNameLength || name.Length > AccountManager.MaxNameLength)
-                return false;
+            {
+                sender.Respond("Name must be between {0} and {1} characters long.".Interpolate(AccountManager.MinNameLength,
+                    AccountManager.MaxNameLength));
+                return;
+            }
 
-            var password = args.NextString();
             if (string.IsNullOrEmpty(password))
-                return false;
+            {
+                sender.Respond("No password given.");
+                return;
+            }
 
             if (password.Length < AccountManager.MinPasswordLength || password.Length > AccountManager.MaxPasswordLength)
-                return false;
+            {
+                sender.Respond("Password must be between {0} and {1} characters long.".Interpolate(AccountManager.MinPasswordLength,
+                    AccountManager.MaxPasswordLength));
+                return;
+            }
 
-            var email = args.NextString();
             if (string.IsNullOrEmpty(email))
-                return false;
-
-            var box = args.NextEnum<ClientBoxLevel>() ?? ClientBoxLevel.Cataclysm;
-            var locale = args.NextEnum<ClientLocale>() ?? ClientLocale.English;
+            {
+                sender.Respond("No email given.");
+                return;
+            }
 
             AccountManager.Instance.PostAsync(x => x.CreateAccount(name, password, email, box, locale));
-            return true;
         }
     }
 }

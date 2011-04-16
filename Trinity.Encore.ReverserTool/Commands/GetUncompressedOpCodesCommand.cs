@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Trinity.Core;
 using Trinity.Core.Security;
 using Trinity.Encore.Game.Commands;
 
@@ -13,24 +14,20 @@ namespace Trinity.Encore.ReverserTool.Commands
             get { return "Calculates any uncompressed opcodes for a condensed opcode."; }
         }
 
-        public override bool Execute(CommandArguments args, IPermissible sender)
+        public override void Execute(CommandArguments args, ICommandUser sender)
         {
-            var opCode = args.NextUInt16();
-            if (opCode == null)
-                return false;
+            var condensedOpCode = args.NextUInt16();
+            var opCodes = OpCodeUtility.GetOpCodesForCondensedOpCode(condensedOpCode);
 
-            var opCodes = OpCodeUtility.GetOpCodesForCondensedOpCode((int)opCode);
             if (opCodes.Count() == 0)
             {
-                Console.WriteLine("No uncompressed opcodes found.");
-                return true;
+                sender.Respond("No uncompressed opcodes found.");
+                return;
             }
 
-            Console.WriteLine("Found the following opcodes:");
+            sender.Respond("Found the following opcodes:");
             foreach (var uncompressedOpCode in opCodes)
-                Console.WriteLine("{0} ({0:X})", uncompressedOpCode);
-
-            return true;
+                sender.Respond("{0} ({0:X})".Interpolate(uncompressedOpCode));
         }
     }
 }

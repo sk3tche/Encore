@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Trinity.Core;
 using Trinity.Core.Collections;
 using Trinity.Core.Exceptions;
@@ -17,8 +18,6 @@ namespace Trinity.Encore.Game.Commands
     public sealed class CommandManager : SingletonActor<CommandManager>
     {
         private readonly Dictionary<string, Command> _commands = new Dictionary<string, Command>(StringComparer.OrdinalIgnoreCase);
-
-        private readonly LogProxy _log = new LogProxy("CommandManager");
 
         private readonly object _cmdLock = new object();
 
@@ -44,9 +43,8 @@ namespace Trinity.Encore.Game.Commands
             Contract.Requires(triggers != null);
             Contract.Requires(triggers.Length > 0);
 
-            lock (_commands)
-                foreach (var trigger in triggers)
-                    _commands.Add(trigger, cmd);
+            foreach (var trigger in triggers)
+                _commands.Add(trigger, cmd);
         }
 
         public void RemoveCommand(params string[] triggers)
@@ -54,29 +52,23 @@ namespace Trinity.Encore.Game.Commands
             Contract.Requires(triggers != null);
             Contract.Requires(triggers.Length > 0);
 
-            lock (_commands)
-                foreach (var trigger in triggers)
-                    _commands.Remove(trigger);
+            foreach (var trigger in triggers)
+                _commands.Remove(trigger);
         }
 
         public Command GetCommand(string trigger)
         {
             Contract.Requires(trigger != null);
 
-            lock (_commands)
-                return _commands.TryGet(trigger);
+            return _commands.TryGet(trigger);
         }
 
         public IDictionary<string, Command> Commands
         {
-            get
-            {
-                lock (_commands)
-                    return new Dictionary<string, Command>(_commands); // Cloning is the future!
-            }
+            get { return new Dictionary<string, Command>(_commands); }
         }
 
-        public void ExecuteCommand(string[] fullCmd, IPermissible sender)
+        public void ExecuteCommand(string[] fullCmd, ICommandUser sender)
         {
             Contract.Requires(fullCmd != null);
             Contract.Requires(fullCmd.Length > 0);
@@ -86,25 +78,23 @@ namespace Trinity.Encore.Game.Commands
             if (string.IsNullOrWhiteSpace(cmd))
                 return;
 
-            var args = fullCmd.Skip(1);
-
             var command = GetCommand(cmd);
             if (command == null)
             {
-                _log.Warn("Unknown command: {0}", cmd);
+                sender.Respond("Unknown command: {0}".Interpolate(cmd));
                 return;
             }
 
-            if (command.RequiresSender && sender == null)
+            if (command.RequiresSender && (sender == null || sender is ConsoleCommandUser))
             {
-                _log.Warn("Command {0} requires a sender.", cmd);
+                sender.Respond("Command {0} requires a sender.".Interpolate(cmd));
                 return;
             }
 
             var permission = command.RequiredPermission;
             if (sender != null && permission != null && permission != typeof(ConsolePermission) && !sender.HasPermission(permission))
             {
-                _log.Warn("Command {0} requires permission {1}.", cmd, permission);
+                sender.Respond("Command {0} requires permission {1}.".Interpolate(cmd, permission));
                 return;
             }
 
@@ -112,21 +102,19 @@ namespace Trinity.Encore.Game.Commands
             // problems with console cancellation.
             lock (_cmdLock)
             {
-                bool correctArgs;
-
                 try
                 {
-                    correctArgs = command.Execute(new CommandArguments(args), sender);
+                    command.Execute(new CommandArguments(fullCmd.Skip(1)), sender);
+                }
+                catch (CommandArgumentException ex)
+                {
+                    sender.Respond("Argument error for command {0}: {1}".Interpolate(cmd, ex.Message));
                 }
                 catch (Exception ex)
                 {
                     ExceptionManager.RegisterException(ex);
                     return;
                 }
-
-                // TODO: Make some interface for sending command responses to the sender.
-                if (!correctArgs)
-                    _log.Warn("Invalid arguments to command: {0}", cmd);
             }
         }
 

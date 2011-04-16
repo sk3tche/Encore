@@ -4,6 +4,8 @@ namespace Trinity.Encore.Game.Commands
 {
     public static class CommandConsole
     {
+        private static readonly ConsoleCommandUser _user = new ConsoleCommandUser();
+
         public static bool StopConsole { get; set; }
 
         public static void Run()
@@ -14,7 +16,7 @@ namespace Trinity.Encore.Game.Commands
                 if (line == null)
                     break;
 
-                CommandManager.Instance.ExecuteCommand(line.Split(' '), null);
+                CommandManager.Instance.ExecuteCommand(line.Split(' '), _user);
             }
         }
     }

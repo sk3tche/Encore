@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.Contracts;
+using System.Text;
 using Trinity.Core.Security;
 
 namespace Trinity.Encore.Game.Commands
@@ -44,17 +45,15 @@ namespace Trinity.Encore.Game.Commands
         /// <param name="args">The arguments to the command.</param>
         /// <param name="sender">The sender of the command (may be null in the case of the console).</param>
         /// <returns>Whether or not arguments were valid.</returns>
-        public abstract bool Execute(CommandArguments args, IPermissible sender);
+        public abstract void Execute(CommandArguments args, ICommandUser sender);
     }
 
     [ContractClassFor(typeof(Command))]
     public abstract class CommandContracts : Command
     {
-        public override bool Execute(CommandArguments args, IPermissible sender)
+        public override void Execute(CommandArguments args, ICommandUser sender)
         {
             Contract.Requires(args != null);
-
-            return false;
         }
     }
 }

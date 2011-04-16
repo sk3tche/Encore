@@ -1,4 +1,5 @@
 using System;
+using Trinity.Core;
 using Trinity.Core.Security;
 using Trinity.Encore.Game.Commands;
 
@@ -12,26 +13,22 @@ namespace Trinity.Encore.ReverserTool.Commands
             get { return "Calculates the JAM opcode(s) for an opcode."; }
         }
 
-        public override bool Execute(CommandArguments args, IPermissible sender)
+        public override void Execute(CommandArguments args, ICommandUser sender)
         {
             var opCode = args.NextUInt16();
-            if (opCode == null || (int)opCode <= 0)
-                return false;
+            if (opCode == 0)
+            {
+                sender.Respond("Invalid opcode given.");
+                return;
+            }
 
-            var opc = (int)opCode;
-            var jamClient = OpCodeUtility.GetJamClientOpCode(opc);
-            if (jamClient != null)
-                Console.WriteLine("JAM client opcode: {0} ({0:X})", jamClient);
-            else
-                Console.WriteLine("Could not calculate JAM client opcode.");
+            var jamClient = OpCodeUtility.GetJamClientOpCode(opCode);
+            sender.Respond(jamClient != null ? "JAM client opcode: {0} ({0:X})".Interpolate(jamClient) :
+                "Could not calculate JAM client opcode.");
 
-            var jamClientConn = OpCodeUtility.GetJamClientConnectionOpCode(opc);
-            if (jamClientConn != null)
-                Console.WriteLine("JAM client connection opcode: {0} ({0:X})", jamClientConn);
-            else
-                Console.WriteLine("Could not calculate JAM client connection opcode.");
-
-            return true;
+            var jamClientConn = OpCodeUtility.GetJamClientConnectionOpCode(opCode);
+            sender.Respond(jamClientConn != null ? "JAM client connection opcode: {0} ({0:X})".Interpolate(jamClientConn) :
+                "Could not calculate JAM client connection opcode.");
         }
     }
 }

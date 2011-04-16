@@ -18,15 +18,16 @@ namespace Trinity.Encore.AccountService.Commands.Database
             get { return typeof(ConsolePermission); }
         }
 
-        public override bool Execute(CommandArguments args, IPermissible sender)
+        public override void Execute(CommandArguments args, ICommandUser sender)
         {
             var fileName = args.NextString();
             if (string.IsNullOrEmpty(fileName))
-                return false;
+            {
+                sender.Respond("No file name given.");
+                return;
+            }
 
             AccountApplication.Instance.AccountDbContext.PostAsync(x => x.Schema.Export(fileName));
-
-            return true;
         }
     }
 }
