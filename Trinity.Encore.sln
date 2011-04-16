@@ -35,6 +35,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.AuthenticationService", "Trinity.Encore.AuthenticationService\Trinity.Encore.AuthenticationService.csproj", "{96FD1F4C-6EAB-4870-96E3-FABEEFA79738}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.MapService", "Trinity.Encore.MapService\Trinity.Encore.MapService.csproj", "{C7A7B350-0338-4F2D-9795-EC0E6D950CE0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{75E460A8-17CF-4005-813A-E1C2E714BDEA} = {75E460A8-17CF-4005-813A-E1C2E714BDEA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trinity.Encore.PatchService", "Trinity.Encore.PatchService\Trinity.Encore.PatchService.csproj", "{91BC7EFE-297C-4C57-BE53-A07E4613CC4C}"
 EndProject

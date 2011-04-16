@@ -74,6 +74,10 @@
     <AssemblyOriginatorKeyFile>..\Shared\Trinity.Encore.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.GameMath, Version=0.1.0.0, Culture=neutral, PublicKeyToken=565248a7de28f663, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Mono.GameMath.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -82,12 +86,24 @@
     <Compile Include="..\Shared\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Map.cs" />
+    <Compile Include="MapManager.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Shared\Trinity.Encore.snk">
       <Link>Trinity.Encore.snk</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trinity.Core\Trinity.Core.csproj">
+      <Project>{78BB9167-FD73-451C-B007-0718DBDF0E14}</Project>
+      <Name>Trinity.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trinity.Encore.Game\Trinity.Encore.Game.csproj">
+      <Project>{75E460A8-17CF-4005-813A-E1C2E714BDEA}</Project>
+      <Name>Trinity.Encore.Game</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
