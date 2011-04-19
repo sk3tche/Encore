@@ -8,14 +8,14 @@ namespace Trinity.Encore.Game.IO
 {
     public static class IOExtensions
     {
-        public static EntityGuid ReadPackedGuid(this BinaryReader reader)
+        public static EntityGuid ReadSmartGuid(this BinaryReader reader)
         {
             Contract.Requires(reader != null);
 
             return new EntityGuid(ReadPackedUInt64(reader));
         }
 
-        public static void WritePackedGuid(this BinaryWriter writer, EntityGuid guid)
+        public static void WriteSmartGuid(this BinaryWriter writer, EntityGuid guid)
         {
             Contract.Requires(writer != null);
 
