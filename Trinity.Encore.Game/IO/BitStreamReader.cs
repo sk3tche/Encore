@@ -60,9 +60,9 @@ namespace Trinity.Encore.Game.IO
             if (_reader.BaseStream.IsRead())
                 return false;
 
-            var nextvalue = _reader.ReadByte();
+            var nextValue = _reader.ReadByte();
 
-            _current |= nextvalue << _bitCount;
+            _current |= nextValue << _bitCount;
             _bitCount += sizeof(byte) * 8;
 
             return true;
