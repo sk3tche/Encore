@@ -227,6 +227,23 @@ namespace Trinity.Core.IO
             }
         }
 
+        public static void Pad(this BinaryWriter writer, byte value, int count)
+        {
+            Contract.Requires(writer != null);
+            Contract.Requires(count >= 0);
+
+            for (var i = 0; i < count; i++)
+                writer.Write(value);
+        }
+
+        public static void Skip(this BinaryReader reader, int count)
+        {
+            Contract.Requires(reader != null);
+            Contract.Requires(count >= 0);
+
+            reader.ReadBytes(count);
+        }
+
         /// <summary>
         /// Gets a value indicating whether a stream is read to the end.
         /// </summary>
