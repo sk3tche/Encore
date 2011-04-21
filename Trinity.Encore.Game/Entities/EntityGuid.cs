@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using Trinity.Core.Runtime;
 
 namespace Trinity.Encore.Game.Entities
@@ -9,12 +10,19 @@ namespace Trinity.Encore.Game.Entities
     /// The ID may not always be world-unique, as some types of GUIDs are map-local.
     /// </summary>
     [Serializable]
+    [StructLayout(LayoutKind.Explicit, Pack = 1)]
     public struct EntityGuid : IEquatable<EntityGuid>
     {
         public static readonly EntityGuid Zero = new EntityGuid(0);
 
         [CLSCompliant(false)]
+        [FieldOffset(0)]
         public readonly ulong Full;
+
+        [CLSCompliant(false)]
+        [NonSerialized]
+        [FieldOffset(0)]
+        public unsafe fixed byte Bytes [sizeof(ulong)];
 
         [CLSCompliant(false)]
         public EntityGuid(ulong full)
