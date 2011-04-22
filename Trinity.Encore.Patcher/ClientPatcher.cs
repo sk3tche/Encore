@@ -28,6 +28,24 @@ namespace Trinity.Encore.Patcher
             };
 
         /// <summary>
+        /// The search pattern to find the location to patch the connection index check.
+        /// </summary>
+        /// <remarks>
+        /// The code to be patched looks like this in client version 4.0.6.13623:
+        /// <code>
+        ///.text:0049168D 018 0F 85 40+                jnz     loc_4917D3
+        ///.text:00491693                              loc_491693:
+        ///.text:00491693 018 8B 4D 10                 mov     ecx, [ebp+arg_8]
+        ///.text:00491696 018 8B 55 08                 mov     edx, [ebp+arg_0]
+        /// </code>
+        /// </remarks>
+        private static readonly byte?[] _connectionIndexCheckPattern =
+            {
+                0x0F, 0x85, null, null, null, null, 0x8B, 0x4D, 0x10, 0x8B,
+                0x55, 0x08, 0x53, 0x51, 0x8B, 0x8F, null, null, null, null,
+            };
+
+        /// <summary>
         /// The search pattern to find the location to patch the Grunt/Battle.net selection.
         /// </summary>
         /// <remarks>
@@ -119,6 +137,9 @@ namespace Trinity.Encore.Patcher
         public bool Patch()
         {
             if (!Patch("Connection index selection", _connectionIndexPattern, new byte[] { 0xB8, 0x00, 0x00, 0x00, 0x00 }))
+                return false;
+
+            if (!Patch("Connection index check", _connectionIndexCheckPattern, new byte[] { 0x90, 0x90, 0x90, 0x90, 0x90 }))
                 return false;
 
             if (!Patch("Grunt/Battle.net selection", _emailCheckPattern, new byte[] { 0xEB }))
