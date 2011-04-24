@@ -129,7 +129,9 @@
     <Compile Include="Entities\IWorldEntity.cs" />
     <Compile Include="Identification\IdGenerator.cs" />
     <Compile Include="IO\BinaryFileReader.cs" />
+    <Compile Include="IO\BitPacker.cs" />
     <Compile Include="IO\BitStreamReader.cs" />
+    <Compile Include="IO\BitUnpacker.cs" />
     <Compile Include="IO\Compression\HuffmanDecompressor.cs" />
     <Compile Include="IO\Compression\HuffmanLinkedNode.cs" />
     <Compile Include="IO\Compression\ImaAdpcmDecompressor.cs" />
