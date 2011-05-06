@@ -8,6 +8,7 @@ using Trinity.Core.Runtime;
 namespace Trinity.Network
 {
     // Code inspired from a StackOverflow post by Richard Szalay.
+
     [Serializable]
     public sealed class IPAddressRange
     {

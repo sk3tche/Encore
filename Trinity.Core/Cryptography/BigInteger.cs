@@ -8,6 +8,7 @@ using Trinity.Core.Mathematics;
 namespace Trinity.Core.Cryptography
 {
     // This class was written by Chew Keong TAN.
+
     /// <summary>
     /// Represents an arbitrary-length integer.
     /// </summary>
@@ -1982,7 +1983,7 @@ namespace Trinity.Core.Cryptography
                 if (sign != 0)
                     return -1;
 
-                var pos = MaxLength - 1;
+                const int pos = MaxLength - 1;
 
                 // Check for zero, since the sign bit being 0 can also indicate the value of zero.
                 for (var i = 0; i < _dataLength; i++)
