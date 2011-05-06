@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Trinity.Encore.Services.Account
 {
-    [DataContract(IsReference = true)]
+    [DataContract]
     public sealed class IPBanData
     {
         [DataMember]

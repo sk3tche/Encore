@@ -3,7 +3,7 @@ using Trinity.Core.Cryptography;
 
 namespace Trinity.Encore.Services.Authentication
 {
-    [DataContract(IsReference = true)]
+    [DataContract]
     public sealed class AuthenticationData
     {
         [DataMember]

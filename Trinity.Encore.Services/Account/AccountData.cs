@@ -6,7 +6,7 @@ using Trinity.Encore.Game.Cryptography;
 
 namespace Trinity.Encore.Services.Account
 {
-    [DataContract(IsReference = true)]
+    [DataContract]
     public sealed class AccountData
     {
         [DataMember]
