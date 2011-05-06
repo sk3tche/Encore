@@ -3,7 +3,7 @@
 Version 1.0:
 
  * Initial development
- * C# 4.0 and .NET 4.0/Mono 2.9 (master) support
+ * C# 4.0 and .NET 4.0/Mono 2.10.2 (master) support
  * Actor-based threading
  * IOCP-backed asynchronous networking
  * WCF-based interprocess communication
