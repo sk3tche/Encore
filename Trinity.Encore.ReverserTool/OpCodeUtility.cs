@@ -13,7 +13,7 @@ namespace Trinity.Encore.ReverserTool
         {
             Contract.Requires(opCode > 0);
 
-            return (opCode & 0x4c9) == 0x440 && opCode != 0x5C54;
+            return (opCode & 0x4c9) == 0x440 && opCode != 0x5C54 && opCode != 0x5E70;
         }
 
         public static int? CompressOpCode(int opCode)
