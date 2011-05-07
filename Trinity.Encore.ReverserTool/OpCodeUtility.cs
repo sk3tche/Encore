@@ -29,8 +29,9 @@ namespace Trinity.Encore.ReverserTool
         public static IEnumerable<int> GetOpCodesForCondensedOpCode(int condensedOpCode)
         {
             for (var i = 1; i < MaxOpCode; i++)
-                if (CompressOpCode(i) == condensedOpCode)
-                    yield return i;
+                if ((i & 0x4C09) != 0x440)
+                    if (CompressOpCode(i) == condensedOpCode)
+                        yield return i;
         }
 
         public static bool IsJamClientOpCode(int opCode)
