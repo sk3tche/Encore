@@ -1,6 +1,8 @@
+using Trinity.Persistence.Entities;
+
 namespace Trinity.Encore.AccountService.Database.Implementation
 {
-    public abstract class AccountDatabaseRecord
+    public abstract class AccountDatabaseRecord : IActiveRecord
     {
         public virtual void Create()
         {
