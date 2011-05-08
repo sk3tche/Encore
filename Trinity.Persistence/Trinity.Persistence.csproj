@@ -80,6 +80,15 @@
     <Reference Include="FluentNHibernate, Version=1.2.0.694, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
       <HintPath>..\Dependencies\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Migrator">
+      <HintPath>..\Dependencies\Migrator.dll</HintPath>
+    </Reference>
+    <Reference Include="Migrator.Framework">
+      <HintPath>..\Dependencies\Migrator.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Migrator.Providers">
+      <HintPath>..\Dependencies\Migrator.Providers.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\Dependencies\MySql.Data.dll</HintPath>
       <Private>True</Private>
@@ -113,6 +122,9 @@
     <Compile Include="Mapping\MappableObject.cs" />
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="Schema\SchemaInfo.cs" />
+    <Compile Include="Versioning\Migration.cs" />
+    <Compile Include="Versioning\Migrator.cs" />
+    <Compile Include="Versioning\NullLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Shared\Trinity.Encore.snk">
@@ -125,6 +137,7 @@
       <Name>Trinity.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

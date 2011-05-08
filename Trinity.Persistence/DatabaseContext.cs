@@ -26,6 +26,12 @@ namespace Trinity.Persistence
             Contract.Invariant(Configuration != null);
         }
 
+        protected internal Configuration Configuration { get; private set; }
+
+        protected ISessionFactory SessionFactory { get; private set; }
+
+        public SchemaInfo Schema { get; private set; }
+
         protected DatabaseContext(DatabaseType type, string connString)
         {
             Contract.Requires(!string.IsNullOrEmpty(connString));
@@ -40,8 +46,6 @@ namespace Trinity.Persistence
             base.Dispose(disposing);
         }
 
-        #region Private methods
-
         [SuppressMessage("Microsoft.Maintainability", "CA1502", Justification = "Switch statements are not that evil...")]
         private static IPersistenceConfigurer CreateConfiguration(DatabaseType type, string connString)
         {
@@ -55,45 +59,6 @@ namespace Trinity.Persistence
                 case DatabaseType.DB2:
                     config = DB2Configuration.Standard.ConnectionString(connString);
                     break;
-                case DatabaseType.Firebird:
-                    config = new FirebirdConfiguration().ConnectionString(connString);
-                    break;
-                case DatabaseType.IfxDrda:
-                    config = IfxDRDAConfiguration.Informix.ConnectionString(connString);
-                    break;
-                case DatabaseType.IfxDrda0940:
-                    config = IfxDRDAConfiguration.Informix0940.ConnectionString(connString);
-                    break;
-                case DatabaseType.IfxDrda1000:
-                    config = IfxDRDAConfiguration.Informix1000.ConnectionString(connString);
-                    break;
-                case DatabaseType.IfxOdbc:
-                    config = IfxOdbcConfiguration.Informix.ConnectionString(connString);
-                    break;
-                case DatabaseType.IfxOdbc0940:
-                    config = IfxOdbcConfiguration.Informix0940.ConnectionString(connString);
-                    break;
-                case DatabaseType.IfxOdbc1000:
-                    config = IfxOdbcConfiguration.Informix1000.ConnectionString(connString);
-                    break;
-                case DatabaseType.IfxSqli:
-                    config = IfxSQLIConfiguration.Informix.ConnectionString(connString);
-                    break;
-                case DatabaseType.IfxSqli0940:
-                    config = IfxSQLIConfiguration.Informix0940.ConnectionString(connString);
-                    break;
-                case DatabaseType.IfxSqli1000:
-                    config = IfxSQLIConfiguration.Informix1000.ConnectionString(connString);
-                    break;
-                case DatabaseType.JetDriver:
-                    config = JetDriverConfiguration.Standard.ConnectionString(connString);
-                    break;
-                case DatabaseType.MsSql7:
-                    config = MsSqlConfiguration.MsSql7.ConnectionString(connString);
-                    break;
-                case DatabaseType.MsSql2000:
-                    config = MsSqlConfiguration.MsSql2000.ConnectionString(connString);
-                    break;
                 case DatabaseType.MsSql2005:
                     config = MsSqlConfiguration.MsSql2005.ConnectionString(connString);
                     break;
@@ -106,26 +71,14 @@ namespace Trinity.Persistence
                 case DatabaseType.MySql:
                     config = MySQLConfiguration.Standard.ConnectionString(connString);
                     break;
-                case DatabaseType.Oracle9:
-                    config = OracleClientConfiguration.Oracle9.ConnectionString(connString);
-                    break;
                 case DatabaseType.Oracle10:
                     config = OracleClientConfiguration.Oracle10.ConnectionString(connString);
-                    break;
-                case DatabaseType.OracleData9:
-                    config = OracleDataClientConfiguration.Oracle9.ConnectionString(connString);
                     break;
                 case DatabaseType.OracleData10:
                     config = OracleDataClientConfiguration.Oracle10.ConnectionString(connString);
                     break;
                 case DatabaseType.PostgreSql:
                     config = PostgreSQLConfiguration.Standard.ConnectionString(connString);
-                    break;
-                case DatabaseType.PostgreSql81:
-                    config = PostgreSQLConfiguration.PostgreSQL81.ConnectionString(connString);
-                    break;
-                case DatabaseType.PostgreSql82:
-                    config = PostgreSQLConfiguration.PostgreSQL82.ConnectionString(connString);
                     break;
                 case DatabaseType.SQLite:
                     config = SQLiteConfiguration.Standard.ConnectionString(connString);
@@ -176,10 +129,6 @@ namespace Trinity.Persistence
             Schema = new SchemaInfo(this);
         }
 
-        #endregion
-
-        #region Protected methods
-
         protected abstract IEnumerable<IMappingProvider> CreateMappings();
 
         protected virtual IEnumerable<IConvention> CreateConventions()
@@ -201,10 +150,6 @@ namespace Trinity.Persistence
             Contract.Assume(session != null);
             return session;
         }
-
-        #endregion
-
-        #region Public methods
 
         /// <summary>
         /// Adds an entity and its persistent children to the database.
@@ -352,22 +297,6 @@ namespace Trinity.Persistence
 
             return Find<T>(x => true);
         }
-
-        #endregion
-
-        #region Public properties
-
-        public SchemaInfo Schema { get; private set; }
-
-        #endregion
-
-        #region Protected properties
-
-        protected internal Configuration Configuration { get; private set; }
-
-        protected ISessionFactory SessionFactory { get; private set; }
-
-        #endregion
     }
 
     [ContractClassFor(typeof(DatabaseContext))]
