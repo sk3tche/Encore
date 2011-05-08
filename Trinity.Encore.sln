@@ -79,6 +79,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 		Dependencies\Castle.Core.dll = Dependencies\Castle.Core.dll
 		Dependencies\Castle.DynamicProxy2.dll = Dependencies\Castle.DynamicProxy2.dll
 		Dependencies\FluentNHibernate.dll = Dependencies\FluentNHibernate.dll
+		Dependencies\IBM.Data.DB2.dll = Dependencies\IBM.Data.DB2.dll
+		Dependencies\IBM.Data.U2.Ucinet.dll = Dependencies\IBM.Data.U2.Ucinet.dll
 		Dependencies\ICSharpCode.SharpZipLib.dll = Dependencies\ICSharpCode.SharpZipLib.dll
 		Dependencies\Iesi.Collections.dll = Dependencies\Iesi.Collections.dll
 		Dependencies\JetBrains.Annotations.dll = Dependencies\JetBrains.Annotations.dll
@@ -96,10 +98,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 		Dependencies\NHibernate.ByteCode.Castle.dll = Dependencies\NHibernate.ByteCode.Castle.dll
 		Dependencies\NHibernate.dll = Dependencies\NHibernate.dll
 		Dependencies\Npgsql.dll = Dependencies\Npgsql.dll
+		Dependencies\Oracle.DataAccess.dll = Dependencies\Oracle.DataAccess.dll
 		Dependencies\ParallelExtensionsExtras.dll = Dependencies\ParallelExtensionsExtras.dll
+		Dependencies\Remotion.Data.Linq.dll = Dependencies\Remotion.Data.Linq.dll
 		Dependencies\SevenZip.Lzma.dll = Dependencies\SevenZip.Lzma.dll
 		Dependencies\System.Data.SQLite.dll = Dependencies\System.Data.SQLite.dll
 		Dependencies\System.Data.SQLite.Linq.dll = Dependencies\System.Data.SQLite.Linq.dll
+		Dependencies\System.Data.SqlServerCe.dll = Dependencies\System.Data.SqlServerCe.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{00E2E8CB-A932-4FF3-B3DB-A3195A09A93A}"
