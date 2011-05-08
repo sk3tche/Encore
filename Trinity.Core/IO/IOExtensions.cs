@@ -143,6 +143,22 @@ namespace Trinity.Core.IO
             return fourCC;
         }
 
+        public static void Write(this BinaryWriter writer, IPAddress ip)
+        {
+            Contract.Requires(writer != null);
+            Contract.Requires(ip != null);
+
+            writer.Write(ip.GetAddressBytes());
+        }
+
+        public static IPAddress ReadIPAddress(this BinaryReader reader, bool ipv6)
+        {
+            Contract.Requires(reader != null);
+            Contract.Ensures(Contract.Result<IPAddress>() != null);
+
+            return new IPAddress(reader.ReadBytes(ipv6 ? 16 : 4));
+        }
+
         public static void WriteBigEndian(this BinaryWriter writer, short value)
         {
             writer.Write(IPAddress.HostToNetworkOrder(value));
