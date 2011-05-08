@@ -9,6 +9,6 @@ namespace Trinity.Encore.AuthenticationService.Authentication
         None = 0x00,
         Pin = 0x01,
         Matrix = 0x02,
-        SecurityToken = 0x04,
+        Token = 0x04,
     }
 }

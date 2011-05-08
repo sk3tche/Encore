@@ -64,7 +64,7 @@ namespace Trinity.Encore.AuthenticationService
 
         protected override IServer CreateServer()
         {
-            return new TcpServer(new AuthPacketPropagator());
+            return new TcpServer(new AuthenticationPacketPropagator());
         }
 
         public override IPEndPoint EndPoint

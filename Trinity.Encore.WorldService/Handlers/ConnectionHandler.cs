@@ -8,7 +8,7 @@ namespace Trinity.Encore.WorldService.Handlers
 {
     public static class ConnectionHandler
     {
-        [WorldPacketHandler(WorldOpCode.ClientConnectionPing)]
+        //[WorldPacketHandler(WorldOpCode.ClientConnectionPing)]
         public static void HandlePing(IClient client, IncomingWorldPacket packet)
         {
             Contract.Requires(client != null);

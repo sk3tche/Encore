@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -15,10 +16,12 @@ using Trinity.Network.Transmission;
 
 namespace Trinity.Encore.Game.Network.Handling
 {
-    [ContractClass(typeof(PacketPropagatorBaseContracts<,>))]
-    public abstract class PacketPropagatorBase<TAttribute, TPacket> : IPacketPropagator
+    [SuppressMessage("Microsoft.Design", "CA1005", Justification = "All type parameters are needed.")]
+    [ContractClass(typeof(PacketPropagatorBaseContracts<,,>))]
+    public abstract class PacketPropagatorBase<TAttribute, TPacket, THandler> : IPacketPropagator
         where TAttribute : PacketHandlerAttribute
         where TPacket : IncomingPacket
+        where THandler : PacketHandlerBase<TPacket>
     {
         private static readonly LogProxy _log = new LogProxy("PacketPropagatorBase");
 
@@ -44,38 +47,27 @@ namespace Trinity.Encore.Game.Network.Handling
         {
             Contract.Requires(asm != null);
 
-            foreach (var method in asm.GetTypes().SelectMany(type => type.GetMethods()))
+            foreach (var type in asm.GetTypes())
             {
-                Contract.Assume(method != null);
+                Contract.Assume(type != null);
 
-                var attr = method.GetCustomAttribute<TAttribute>();
+                var attr = type.GetCustomAttribute<TAttribute>();
                 if (attr == null)
                     continue;
 
-                if (!method.IsPrivate)
-                    throw new ReflectionException("Packet handler methods must be private.");
+                var handlerType = typeof(PacketHandlerBase<TPacket>);
+                if (!type.IsAssignableTo(handlerType))
+                    throw new ReflectionException("Packet handler classes must inherited {0}.".Interpolate(handlerType));
 
-                if (!method.IsStatic)
-                    throw new ReflectionException("Packet handler methods must be static.");
+                if (type.IsGenericTypeDefinition)
+                    throw new ReflectionException("Packet handler classes must not be generic.");
 
-                if (method.IsGenericMethod)
-                    throw new ReflectionException("Packet handler methods must not be generic.");
-
-                if (method.ReturnType != typeof(void))
-                    throw new ReflectionException("Packet handler methods must not return a value.");
-
-                var parameters = method.GetParameters();
-                if (parameters.Length != 2)
-                    throw new ReflectionException("Packet handler methods must only take 2 arguments.");
-
-                if (parameters[0].ParameterType != typeof(IClient))
-                    throw new ReflectionException("The first parameter on packet handler methods must be of type {0}.".Interpolate(typeof(IClient)));
-
-                if (parameters[1].ParameterType != typeof(TPacket))
-                    throw new ReflectionException("The second parameter on packet handler methods must be of type {0}.".Interpolate(typeof(TPacket)));
+                var ctor = type.GetConstructor(Type.EmptyTypes);
+                if (ctor == null)
+                    throw new ReflectionException("Packet handler classes must have a public parameterless constructor.");
 
                 var opCode = attr.OpCode;
-                var handler = new PacketHandler<TPacket>(opCode, method, attr.Permission ?? typeof(ConnectedPermission));
+                var handler = new PacketHandler<TPacket>(opCode, ctor, attr.Permission ?? typeof(ConnectedPermission));
                 AddHandler(((IConvertible)opCode).ToInt32(null), handler);
             }
         }
@@ -124,6 +116,7 @@ namespace Trinity.Encore.Game.Network.Handling
                 return;
             }
 
+            // Invoke the packet handler. Exceptions are caught in the client actor's context.
             var packet = CreatePacket(opCode, payload, length);
             client.PostAsync(() => handler.Invoke(client, packet));
         }
@@ -131,10 +124,11 @@ namespace Trinity.Encore.Game.Network.Handling
         public abstract void WriteHeader(OutgoingPacket packet, byte[] buffer);
     }
 
-    [ContractClassFor(typeof(PacketPropagatorBase<,>))]
-    public abstract class PacketPropagatorBaseContracts<TAttribute, TPacket> : PacketPropagatorBase<TAttribute, TPacket>
+    [ContractClassFor(typeof(PacketPropagatorBase<,,>))]
+    public abstract class PacketPropagatorBaseContracts<TAttribute, TPacket, THandler> : PacketPropagatorBase<TAttribute, TPacket, THandler>
         where TAttribute : PacketHandlerAttribute
         where TPacket : IncomingPacket
+        where THandler : PacketHandlerBase<TPacket>
     {
         protected override TPacket CreatePacket(int opCode, byte[] payload, int length)
         {

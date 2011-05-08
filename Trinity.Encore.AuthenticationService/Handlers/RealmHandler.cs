@@ -11,19 +11,8 @@ using Trinity.Network.Connectivity;
 
 namespace Trinity.Encore.AuthenticationService.Handlers
 {
-    public static class RealmListHandler
+    public static class RealmHandler
     {
-        [AuthPacketHandler(GruntOpCode.RealmList)]
-        public static void HandleRealmList(IClient client, IncomingAuthPacket packet)
-        {
-            Contract.Requires(client != null);
-            Contract.Requires(packet != null);
-
-            packet.ReadInt32(); // unk, ignored
-
-            RealmManager.Instance.PostAsync(mgr => SendRealmList(client, mgr.GetRealms(x => true)));
-        }
-
         public static void SendRealmList(IClient client, IEnumerable<Realm> realms)
         {
             Contract.Requires(client != null);

@@ -9,29 +9,6 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 {
     public static class TransferHandler
     {
-        [AuthPacketHandler(GruntOpCode.TransferComplete)]
-        public static void HandleTransferComplete(IClient client, IncomingAuthPacket packet)
-        {
-            Contract.Requires(client != null);
-            Contract.Requires(packet != null);
-        }
-
-        [AuthPacketHandler(GruntOpCode.TransferResume)]
-        public static void HandleTransferResume(IClient client, IncomingAuthPacket packet)
-        {
-            Contract.Requires(client != null);
-            Contract.Requires(packet != null);
-
-            packet.ReadUInt64(); // file position
-        }
-
-        [AuthPacketHandler(GruntOpCode.TransferCancel)]
-        public static void HandleTransferCancel(IClient client, IncomingAuthPacket packet)
-        {
-            Contract.Requires(client != null);
-            Contract.Requires(packet != null);
-        }
-
         public static void SendTransferInitiate(IClient client)
         {
             Contract.Requires(client != null);

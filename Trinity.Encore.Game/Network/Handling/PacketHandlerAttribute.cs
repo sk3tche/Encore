@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 
 namespace Trinity.Encore.Game.Network.Handling
 {
-    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
     [MeansImplicitUse]
     public abstract class PacketHandlerAttribute : Attribute
     {

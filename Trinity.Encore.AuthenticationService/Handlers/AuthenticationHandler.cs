@@ -17,25 +17,11 @@ namespace Trinity.Encore.AuthenticationService.Handlers
 {
     public static class AuthenticationHandler
     {
-        [AuthPacketHandler(GruntOpCode.AuthenticationLogOnChallenge)]
+        // TODO: Migrate all this stuff to the new handlers...
+
+        /*
         public static void HandleAuthLogOnChallenge(IClient client, IncomingAuthPacket packet)
         {
-            Contract.Requires(client != null);
-            Contract.Requires(packet != null);
-
-            packet.ReadByte(); // unk
-            packet.ReadInt16(); // size
-            packet.ReadFourCC(); // gameName
-            packet.ReadByte(); // version1
-            packet.ReadByte(); // version2
-            packet.ReadByte(); // version3
-            packet.ReadInt16(); // build
-            packet.ReadFourCC(); // platform
-            packet.ReadFourCC(); // os
-            packet.ReadFourCC(); // country
-            packet.ReadInt32(); // timeZoneBias
-            packet.ReadInt32(); // ip
-            var username = packet.ReadP8String();
             Contract.Assume(!string.IsNullOrEmpty(username));
             SRPServer srpData = GetSRPDataForUserName(username);
             if (srpData == null)
@@ -79,6 +65,7 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             srpData.Salt = new BigInteger(new FastRandom(), 32 * 8);
             return srpData;
         }
+
 
         public static void SendAuthenticationChallengeFailure(IClient client, AuthenticationResult result)
         {
@@ -142,59 +129,15 @@ namespace Trinity.Encore.AuthenticationService.Handlers
                     // The HMAC result is sent in the auth proof
                 }
 
-                if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
+                if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.Token))
                     packet.Write((byte) 0);
 
                 client.Send(packet);
             }
         }
 
-        [AuthPacketHandler(GruntOpCode.AuthenticationLogOnProof)]
         public static void HandleAuthLogOnProof(IClient client, IncomingAuthPacket packet)
         {
-            Contract.Requires(client != null);
-            Contract.Requires(packet != null);
-
-            var clientPublicEphemeralA = packet.ReadBigInteger(32);
-            // Client Proof.
-            // SHA1 of { SHA1(Modulus) ^ SHA1(Generator), SHA1(USERNAME), salt, PublicA, PublicB, SessionKey }
-            var clientResult = packet.ReadBigInteger(20);
-            // SHA1 hash of the PublicA and HMACSHA1 of the contents of WoW.exe and unicows.dll. HMAC seed is the 16 bytes at the end of the challenge sent by the server.
-            packet.ReadBytes(20); // these can safely be ignored, clientFileHash
-
-            // the client tends to send 0, but just in case it's safer to implement this.
-            var numKeys = packet.ReadByte();
-            if (numKeys > 0)
-            {
-                for (var key = 0; key < numKeys; key++)
-                {
-                    packet.ReadInt16();
-                    packet.ReadInt32();
-                    packet.ReadBytes(4);
-                    // SHA of { PublicA, PublicB, byte[20] unknown data }
-                    packet.ReadBytes(20);
-                }
-            }
-
-            var securityFlags = (ExtraSecurityFlags)packet.ReadByte(); // can be safely ignored
-
-            if (securityFlags.HasFlag(ExtraSecurityFlags.Pin))
-            {
-                packet.ReadBytes(16); // pinRandom
-                packet.ReadBytes(20); // pinSha1
-            }
-
-            if (securityFlags.HasFlag(ExtraSecurityFlags.Matrix))
-            {
-                packet.ReadBytes(20); // matrixHmacResult
-            }
-
-            if (securityFlags.HasFlag(ExtraSecurityFlags.SecurityToken))
-            {
-                var tokenLength = packet.ReadByte();
-                packet.ReadBytes(tokenLength); // token
-            }
-
             SRPServer srpData = client.UserData.SRP;
             Contract.Assume(clientPublicEphemeralA != null);
             srpData.PublicEphemeralValueA = clientPublicEphemeralA;
@@ -247,27 +190,8 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             }
         }
 
-        [AuthPacketHandler(GruntOpCode.AuthenticationReconnectChallenge)]
         public static void HandleReconnectChallenge(IClient client, IncomingAuthPacket packet)
         {
-            // structure is the same as AuthenticationLogOnChallenge
-            Contract.Requires(client != null);
-            Contract.Requires(packet != null);
-
-            packet.ReadByte(); // unk
-            packet.ReadInt16(); // size
-            packet.ReadFourCC(); // gameName
-            packet.ReadByte(); // version1
-            packet.ReadByte(); // version2
-            packet.ReadByte(); // version3
-            packet.ReadInt16(); // build
-            packet.ReadFourCC(); // platform
-            packet.ReadFourCC(); // os
-            packet.ReadFourCC(); // country
-            packet.ReadInt32(); // timeZoneBias
-            packet.ReadInt32(); // ip
-            packet.ReadP8String();
-
             // TODO fetch this from the database (or some other persistent storage)
             BigInteger sessionKey = null;
             if (sessionKey == null)
@@ -300,33 +224,8 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             }
         }
 
-        [AuthPacketHandler(GruntOpCode.AuthenticationReconnectProof)]
         public static void HandleReconnectProof(IClient client, IncomingAuthPacket packet)
         {
-            Contract.Requires(client != null);
-            Contract.Requires(packet != null);
-
-            // MD5 hash of { AccountName, byte[16] random data }
-            BigInteger r1 = packet.ReadBigInteger(16);
-            // SHA1 hash of { AccountName, MD5 from above, ReconnectProof, SessionKey }
-            BigInteger r2 = packet.ReadBigInteger(20);
-            // SHA1 hash of { MD5 from above, byte[16] of 0's }
-            packet.ReadBigInteger(20); // r3Data
-
-            var numKeys = packet.ReadByte();
-            if (numKeys > 0)
-            {
-                // only initialize the array if we actually HAVE keys
-                for (byte key = 0; key < numKeys; key++)
-                {
-                    packet.ReadInt16();
-                    packet.ReadInt32();
-                    packet.ReadBytes(4);
-                    // SHA of { PublicA, PublicB, byte[20] unknown data }
-                    packet.ReadBytes(20);
-                }
-            }
-
             SRPServer srpData = client.UserData.SRP;
             string username = client.UserData.Username;
             BigInteger rand = client.UserData.ReconnectRand;
@@ -355,5 +254,6 @@ namespace Trinity.Encore.AuthenticationService.Handlers
                 client.Send(packet);
             }
         }
+        */
     }
 }

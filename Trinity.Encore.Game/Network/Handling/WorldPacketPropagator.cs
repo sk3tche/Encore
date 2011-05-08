@@ -8,7 +8,7 @@ using Trinity.Network.Transmission;
 
 namespace Trinity.Encore.Game.Network.Handling
 {
-    public sealed class WorldPacketPropagator : PacketPropagatorBase<WorldPacketHandlerAttribute, IncomingWorldPacket>
+    public sealed class WorldPacketPropagator : PacketPropagatorBase<WorldPacketHandlerAttribute, IncomingWorldPacket, WorldPacketHandler>
     {
         public const int IncomingHeaderSize = 2 + 4; // Length and opcode.
 

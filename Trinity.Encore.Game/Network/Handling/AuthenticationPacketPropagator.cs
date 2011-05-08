@@ -6,11 +6,12 @@ using Trinity.Network.Transmission;
 
 namespace Trinity.Encore.Game.Network.Handling
 {
-    public sealed class AuthPacketPropagator : PacketPropagatorBase<AuthPacketHandlerAttribute, IncomingAuthPacket>
+    public sealed class AuthenticationPacketPropagator : PacketPropagatorBase<AuthenticationPacketHandlerAttribute, IncomingAuthPacket,
+        AuthenticationPacketHandler>
     {
         public const int IncomingHeaderSize = 1; // Opcode only; length exists only in some packets.
 
-        public const int ChunkSize = 256;
+        public const int EstimatedBodySize = 256;
 
         public override int IncomingHeaderLength
         {
@@ -21,7 +22,7 @@ namespace Trinity.Encore.Game.Network.Handling
         {
             var opCode = header[0];
 
-            return new PacketHeader(ChunkSize, opCode);
+            return new PacketHeader(EstimatedBodySize, opCode);
         }
 
         protected override IncomingAuthPacket CreatePacket(int opCode, byte[] payload, int length)
