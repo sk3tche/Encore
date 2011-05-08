@@ -36,13 +36,8 @@ namespace Trinity.Persistence.Schema
         {
             Contract.Requires(!string.IsNullOrEmpty(file));
 
-            var oldOut = Console.Out;
-            Console.SetOut(TextWriter.Null); // HACK: How do we make NHibernate not throw the SQL to the console?
-
             _schema.SetOutputFile(file);
-            _schema.Create(true, false);
-
-            Console.SetOut(oldOut);
+            _schema.Create(false, false);
         }
     }
 }
