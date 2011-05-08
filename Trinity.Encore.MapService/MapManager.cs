@@ -15,8 +15,8 @@ namespace Trinity.Encore.MapService
         /// <param name="timeDiff">Time in ms since last call to this function.</param>
         public void Update(int timeDiff)
         {
-            /// Call Map::Update on all registered map.
-            foreach (KeyValuePair<long, Map> m in _maps)
+            // Call Map::Update on all registered map.
+            foreach (var m in _maps)
                 m.Value.Update(timeDiff);
         }
 
