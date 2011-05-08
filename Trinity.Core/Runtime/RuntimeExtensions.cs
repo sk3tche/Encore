@@ -64,6 +64,7 @@ namespace Trinity.Core.Runtime
             Contract.Requires(obj != null);
             Contract.Ensures(Contract.Result<string>() != null);
 
+            // TODO: Verify that UTF-8 is correct here...
             return Encoding.UTF8.GetString(obj.ToXml());
         }
     }
