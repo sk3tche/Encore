@@ -124,9 +124,11 @@
     <Compile Include="Database\Conventions\Relationships\RelationshipLazyLoadConvention.cs" />
     <Compile Include="Database\GameDatabaseContext.cs" />
     <Compile Include="Defines.cs" />
+    <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityGuid.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\IWorldEntity.cs" />
+    <Compile Include="Entities\WorldEntity.cs" />
     <Compile Include="Identification\IdGenerator.cs" />
     <Compile Include="IO\BinaryFileReader.cs" />
     <Compile Include="IO\BitPacker.cs" />

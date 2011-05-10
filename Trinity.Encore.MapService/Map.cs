@@ -33,6 +33,11 @@ namespace Trinity.Encore.MapService
         public void Update(int timeDiff)
         {
             // Execute scheduled update routines
+            foreach (var worldEntity in _entityQuadTree.FindEntities(x => !x.Node.IsEmpty).Cast<WorldEntity>())
+            {
+                Contract.Assume(worldEntity != null);
+                worldEntity.PostAsync(() => worldEntity.Update(timeDiff));
+            }
         }
 
         /// <summary>
@@ -57,6 +62,19 @@ namespace Trinity.Encore.MapService
 
             _entityQuadTree.RemoveEntity(entity);
             _entityLookup.Remove(entity.Guid);
+        }
+
+        /// <summary>
+        /// Gets an entity based on GUID in this map.
+        /// </summary>
+        /// <param name="guid">EntityGuid of unit to look for</param>
+        /// <returns>IWorldEntity object</returns>
+        public IWorldEntity GetEntityInMap(EntityGuid guid)
+        {
+            Contract.Requires(guid != EntityGuid.Zero);
+
+            IWorldEntity retVal;
+            return _entityLookup.TryGetValue(guid, out retVal) ? retVal : null;
         }
 
         /// <summary>

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
 using Trinity.Encore.Game.Identification;
 
 namespace Trinity.Encore.MapService
 {
-    public class MapManager
+    public sealed class MapManager
     {
         /// <summary>
         /// Update all maps registered to the service.
