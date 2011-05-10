@@ -4,7 +4,7 @@ using Trinity.Network.Transmission;
 
 namespace Trinity.Encore.Game.Network.Transmission
 {
-    public sealed class OutgoingWorldPacket : OutgoingPacket
+    public class OutgoingWorldPacket : OutgoingPacket
     {
         public OutgoingWorldPacket(WorldOpCode opCode, int capacity = 0)
             : base(opCode, Defines.Protocol.Encoding, capacity)

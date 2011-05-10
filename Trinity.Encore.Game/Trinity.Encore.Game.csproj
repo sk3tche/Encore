@@ -110,8 +110,8 @@
     <Compile Include="Commands\System\ExitCommand.cs" />
     <Compile Include="Commands\System\HelpCommand.cs" />
     <Compile Include="Cryptography\Password.cs" />
-    <Compile Include="Cryptography\WowAuthParameters.cs" />
-    <Compile Include="Cryptography\SC2AuthParameters.cs" />
+    <Compile Include="Cryptography\WowAuthenticationParameters.cs" />
+    <Compile Include="Cryptography\SC2AuthenticationParameters.cs" />
     <Compile Include="Database\Conventions\Properties\PropertyNullableConvention.cs" />
     <Compile Include="Database\Conventions\Properties\PropertyUpdateConvention.cs" />
     <Compile Include="Database\Conventions\Relationships\RelationshipCascadeConvention.cs" />
@@ -199,9 +199,9 @@
     <Compile Include="Network\Transmission\PacketField.cs" />
     <Compile Include="Network\Transmission\PacketFieldType.cs" />
     <Compile Include="Network\Transmission\TransmissionExtensions.cs" />
-    <Compile Include="Network\Transmission\IncomingAuthPacket.cs" />
+    <Compile Include="Network\Transmission\IncomingAuthenticationPacket.cs" />
     <Compile Include="Network\Transmission\IncomingWorldPacket.cs" />
-    <Compile Include="Network\Transmission\OutgoingAuthPacket.cs" />
+    <Compile Include="Network\Transmission\OutgoingAuthenticationPacket.cs" />
     <Compile Include="Network\Transmission\OutgoingWorldPacket.cs" />
     <Compile Include="Partitioning\QuadTree.cs" />
     <Compile Include="Partitioning\QuadTreeNode.cs" />

@@ -84,21 +84,22 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="AuthenticationApplication.cs" />
-    <Compile Include="Handlers\Authentication\AuthenticationLogOnChallengeHandler.cs" />
-    <Compile Include="Handlers\Authentication\AuthenticationLogOnProofHandler.cs" />
-    <Compile Include="Handlers\Authentication\AuthenticationReconnectChallengeHandler.cs" />
-    <Compile Include="Handlers\Authentication\AuthenticationReconnectProofHandler.cs" />
-    <Compile Include="Handlers\Patching\TransferCancelHandler.cs" />
-    <Compile Include="Handlers\Patching\TransferCompleteHandler.cs" />
-    <Compile Include="Handlers\Patching\TransferResumeHandler.cs" />
-    <Compile Include="Handlers\Realms\RealmListHandler.cs" />
+    <Compile Include="Network\Handlers\Authentication\AuthenticationLogOnChallengeHandler.cs" />
+    <Compile Include="Network\Handlers\Authentication\AuthenticationLogOnProofHandler.cs" />
+    <Compile Include="Network\Handlers\Authentication\AuthenticationReconnectChallengeHandler.cs" />
+    <Compile Include="Network\Handlers\Authentication\AuthenticationReconnectProofHandler.cs" />
+    <Compile Include="Network\Handlers\Patching\TransferCancelHandler.cs" />
+    <Compile Include="Network\Handlers\Patching\TransferCompleteHandler.cs" />
+    <Compile Include="Network\Packets\AuthenticationPackets.cs" />
+    <Compile Include="Network\Handlers\Patching\TransferResumeHandler.cs" />
+    <Compile Include="Network\Handlers\Realms\RealmListHandler.cs" />
+    <Compile Include="Network\Packets\RealmPackets.cs" />
+    <Compile Include="Network\Packets\TransferPackets.cs" />
     <Compile Include="Realms\RealmManager.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Authentication\AuthenticationResult.cs" />
     <Compile Include="Authentication\ExtraSecurityFlags.cs" />
-    <Compile Include="Handlers\AuthenticationHandler.cs" />
-    <Compile Include="Handlers\TransferHandler.cs" />
-    <Compile Include="Handlers\RealmHandler.cs" />
+    <Compile Include="Network\Handlers\AuthenticationHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Realms\Realm.cs" />
     <Compile Include="Sessions\SessionInfo.cs" />

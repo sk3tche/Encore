@@ -11,6 +11,8 @@ namespace Trinity.Encore.Game.Cryptography
     [Serializable]
     public sealed class Password
     {
+        public const int MD5Length = 16;
+
         public const int SHA1Length = 20;
 
         public const int SHA256Length = 32;

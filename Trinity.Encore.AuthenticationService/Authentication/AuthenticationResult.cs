@@ -16,6 +16,9 @@ namespace Trinity.Encore.AuthenticationService.Authentication
         FailedVersionInvalid = 0x09,
         FailedVersionUpdate = 0x0a,
         FailedSuspended = 0x0c,
+        /// <summary>
+        /// Cannot be used in most authentication packets.
+        /// </summary>
         SuccessSurvey = 0x0e,
         FailedParentalControls = 0x0f,
         FailedLockedEnforced = 0x10,

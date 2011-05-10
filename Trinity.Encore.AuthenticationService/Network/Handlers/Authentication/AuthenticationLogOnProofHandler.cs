@@ -1,19 +1,18 @@
 using Trinity.Encore.AuthenticationService.Authentication;
 using Trinity.Encore.Game.Cryptography;
-using Trinity.Encore.Game.IO;
 using Trinity.Encore.Game.Network;
 using Trinity.Encore.Game.Network.Handling;
 using Trinity.Encore.Game.Network.Transmission;
 using Trinity.Network.Connectivity;
 
-namespace Trinity.Encore.AuthenticationService.Handlers.Authentication
+namespace Trinity.Encore.AuthenticationService.Network.Handlers.Authentication
 {
     [AuthenticationPacketHandler(GruntOpCode.AuthenticationLogOnProof)]
     public sealed class AuthenticationLogOnProofHandler : AuthenticationPacketHandler
     {
-        public override bool Read(IClient client, IncomingAuthPacket packet)
+        public override bool Read(IClient client, IncomingAuthenticationPacket packet)
         {
-            packet.ReadBigIntegerField("SRP A", WowAuthParameters.KeySize);
+            packet.ReadBigIntegerField("SRP A", WowAuthenticationParameters.KeySize);
             packet.ReadBigIntegerField("SRP Proof", 20);
 
             // SHA-1 hash of the PublicA and HMAC SHA-1 of the contents of WoW.exe and unicows.dll. HMAC seed is

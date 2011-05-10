@@ -4,11 +4,13 @@ using Trinity.Core.Cryptography.SRP;
 
 namespace Trinity.Encore.Game.Cryptography
 {
-    public sealed class WowAuthParameters : SRPParameters
+    public sealed class WowAuthenticationParameters : SRPParameters
     {
         public const int KeySize = 32;
 
-        public WowAuthParameters(SRPVersion version = SRPVersion.SRP6, bool caseSensitive = false)
+        public const int GeneratorSize = 1;
+
+        public WowAuthenticationParameters(SRPVersion version = SRPVersion.SRP6, bool caseSensitive = false)
             : base(version, caseSensitive)
         {
         }

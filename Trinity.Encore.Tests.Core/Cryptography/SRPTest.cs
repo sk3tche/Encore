@@ -28,15 +28,15 @@ namespace Trinity.Encore.Tests.Core.Cryptography
         [TestMethod]
         public void TestVersion6()
         {
-            TestSRP(new WowAuthParameters(caseSensitive: true));
-            TestSRP(new WowAuthParameters());
+            TestSRP(new WowAuthenticationParameters(caseSensitive: true));
+            TestSRP(new WowAuthenticationParameters());
         }
 
         [TestMethod]
         public void TestVersion6A()
         {
-            TestSRP(new SC2AuthParameters(caseSensitive: true));
-            TestSRP(new SC2AuthParameters());
+            TestSRP(new SC2AuthenticationParameters(caseSensitive: true));
+            TestSRP(new SC2AuthenticationParameters());
         }
     }
 }

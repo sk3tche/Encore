@@ -4,11 +4,13 @@ using Trinity.Core.Cryptography.SRP;
 
 namespace Trinity.Encore.Game.Cryptography
 {
-    public sealed class SC2AuthParameters : SRPParameters
+    public sealed class SC2AuthenticationParameters : SRPParameters
     {
         public const int KeySize = 128;
 
-        public SC2AuthParameters(SRPVersion version = SRPVersion.SRP6A, bool caseSensitive = false)
+        public const int GeneratorSize = 1;
+
+        public SC2AuthenticationParameters(SRPVersion version = SRPVersion.SRP6A, bool caseSensitive = false)
             : base(version, caseSensitive)
         {
         }

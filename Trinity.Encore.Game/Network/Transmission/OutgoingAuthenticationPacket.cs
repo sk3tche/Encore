@@ -4,9 +4,9 @@ using Trinity.Network.Transmission;
 
 namespace Trinity.Encore.Game.Network.Transmission
 {
-    public sealed class OutgoingAuthPacket : OutgoingPacket
+    public class OutgoingAuthenticationPacket : OutgoingPacket
     {
-        public OutgoingAuthPacket(GruntOpCode opCode, int capacity = 0)
+        public OutgoingAuthenticationPacket(GruntOpCode opCode, int capacity = 0)
             : base(opCode, Defines.Protocol.Encoding, capacity)
         {
             Contract.Requires(capacity >= 0);

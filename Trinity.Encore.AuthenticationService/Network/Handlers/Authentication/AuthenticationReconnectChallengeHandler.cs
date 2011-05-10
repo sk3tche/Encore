@@ -3,12 +3,12 @@ using Trinity.Encore.Game.Network.Handling;
 using Trinity.Encore.Game.Network.Transmission;
 using Trinity.Network.Connectivity;
 
-namespace Trinity.Encore.AuthenticationService.Handlers.Authentication
+namespace Trinity.Encore.AuthenticationService.Network.Handlers.Authentication
 {
     [AuthenticationPacketHandler(GruntOpCode.AuthenticationReconnectChallenge)]
     public sealed class AuthenticationReconnectChallengeHandler : AuthenticationPacketHandler
     {
-        public override bool Read(IClient client, IncomingAuthPacket packet)
+        public override bool Read(IClient client, IncomingAuthenticationPacket packet)
         {
             packet.ReadByteField("Unknown");
             packet.ReadInt16Field("Packet Size");

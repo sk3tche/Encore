@@ -66,76 +66,6 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             return srpData;
         }
 
-
-        public static void SendAuthenticationChallengeFailure(IClient client, AuthenticationResult result)
-        {
-            Contract.Requires(client != null);
-            Contract.Requires(result != AuthenticationResult.Success);
-
-            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnChallenge, 2))
-            {
-                packet.Write((byte)0x00);
-                packet.Write((byte)result);
-                client.Send(packet);
-            }
-        }
-
-        public static void SendAuthenticationChallengeSuccess(IClient client, BigInteger publicEphemeral, BigInteger generator, BigInteger modulus, BigInteger salt, BigInteger rand)
-        {
-            Contract.Requires(client != null);
-            Contract.Requires(publicEphemeral != null);
-            Contract.Requires(publicEphemeral.ByteLength == 32);
-            Contract.Requires(modulus != null);
-            Contract.Requires(modulus.ByteLength == 32);
-            Contract.Requires(salt != null);
-            Contract.Requires(salt.ByteLength == 32);
-            Contract.Requires(rand != null);
-            Contract.Requires(rand.ByteLength == 16);
-            Contract.Requires(generator != null);
-            Contract.Requires(generator.ByteLength == 1);
-
-            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnChallenge, 118))
-            {
-                packet.Write((byte)0x00); // If this is > 0, the client fails immediately
-                packet.Write((byte)AuthenticationResult.Success);
-                packet.Write(publicEphemeral, 32);
-                packet.Write(generator, 1, true);
-                packet.Write(modulus, 32, true);
-                packet.Write(salt, 32);
-                packet.Write(rand, 16); // HMAC seed for the client exe verification (I think)
-
-                var extraSecurityFlags = ExtraSecurityFlags.None;
-                packet.Write((byte)extraSecurityFlags);
-                if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.Pin))
-                {
-                    packet.Write(0); // Used as the factor for determining PIN order
-
-                    // this is supposed to be an array of 16 bytes but there's no purpose in initializing it now
-                    packet.Write((long)0);
-                    packet.Write((long)0);
-                }
-
-                if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.Matrix))
-                {
-                    packet.Write((byte) 0); // height
-                    packet.Write((byte) 0); // width
-                    packet.Write((byte) 0); // minDigits
-                    packet.Write((byte) 0); // maxDigits
-                    packet.Write((long) 0); // seed for md5
-
-                    // Client MD5's the seed + sessionkey, and uses it as the seed to an HMAC-SHA1
-                    // Client then uses the MD5 as a seed to an RC4 context
-                    // On every keypress, the client processes the entered value with the RC4, then updates the HMAC with that value
-                    // The HMAC result is sent in the auth proof
-                }
-
-                if (extraSecurityFlags.HasFlag(ExtraSecurityFlags.Token))
-                    packet.Write((byte) 0);
-
-                client.Send(packet);
-            }
-        }
-
         public static void HandleAuthLogOnProof(IClient client, IncomingAuthPacket packet)
         {
             SRPServer srpData = client.UserData.SRP;
@@ -150,28 +80,6 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             }
             else
                 SendAuthenticationLogOnProofFailure(client, AuthenticationResult.FailedUnknownAccount);
-        }
-
-        public static void SendAuthenticationLogOnProofSuccess(IClient client, BigInteger serverResult)
-        {
-            Contract.Requires(client != null);
-            Contract.Requires(serverResult != null);
-
-            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationLogOnProof, 31))
-            {
-                packet.Write((byte)AuthenticationResult.Success);
-                packet.Write(serverResult, 20);
-                // Flags. Only These are checked
-                // 0x1 = ?
-                // 0x8 = Trial Account
-                // 0x800000 = ?
-                packet.Write(0x00800000);
-                // If 1, the client will do a hardware survey
-                packet.Write(0x00);
-                // If 1, client will fire EVENT_ACCOUNT_MESSAGES_AVAILABLE
-                packet.Write((short)0x00);
-                client.Send(packet);
-            }
         }
 
         public static void SendAuthenticationLogOnProofFailure(IClient client, AuthenticationResult result)
@@ -206,24 +114,6 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             //client.UserData.Username = username;
         }
 
-        private static void SendReconnectChallengeSuccess(IClient client, BigInteger reconnectProof)
-        {
-            Contract.Requires(client != null);
-            Contract.Requires(reconnectProof != null);
-            Contract.Requires(reconnectProof.ByteLength == 16);
-
-            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationReconnectChallenge, 34))
-            {
-                packet.Write((byte)AuthenticationResult.Success);
-                packet.Write(reconnectProof, 16); // ReconnectProof
-
-                // this should be a byte[16] but there's no point in initializing it as we always send 0s
-                // Seed for the HMAC for the client exe verification
-                packet.Write((ulong)0);
-                packet.Write((ulong)0);
-            }
-        }
-
         public static void HandleReconnectProof(IClient client, IncomingAuthPacket packet)
         {
             SRPServer srpData = client.UserData.SRP;
@@ -243,16 +133,6 @@ namespace Trinity.Encore.AuthenticationService.Handlers
             }
             else
                 client.Disconnect();
-        }
-
-        private static void SendReconnectProofSuccess(IClient client)
-        {
-            using (var packet = new OutgoingAuthPacket(GruntOpCode.AuthenticationReconnectProof, 3))
-            {
-                packet.Write((byte)AuthenticationResult.Success);
-                packet.Write((short)0); // two unknown bytes
-                client.Send(packet);
-            }
         }
         */
     }
