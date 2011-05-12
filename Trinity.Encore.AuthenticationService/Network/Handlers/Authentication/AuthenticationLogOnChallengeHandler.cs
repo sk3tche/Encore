@@ -10,7 +10,7 @@ namespace Trinity.Encore.AuthenticationService.Network.Handlers.Authentication
     {
         public override bool Read(IClient client, IncomingAuthenticationPacket packet)
         {
-            packet.ReadByteField("Unknown");
+            packet.ReadByteField("Unknown"); // Always 8
             packet.ReadInt16Field("Packet Size");
             packet.ReadFourCCField("Game Name");
             packet.ReadByteField("Major");

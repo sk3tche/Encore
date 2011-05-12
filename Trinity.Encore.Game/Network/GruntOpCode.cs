@@ -26,6 +26,12 @@ namespace Trinity.Encore.Game.Network
 
         #endregion
 
+        #region Survey
+
+        SurveyResult = 0x4,
+
+        #endregion
+
         #region Realms
 
         /// <summary>

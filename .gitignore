@@ -13,3 +13,4 @@ TestResults/*
 *.orig
 *.idc
 *.cache
+*.vs10x

@@ -88,6 +88,7 @@
     <Compile Include="Network\Handlers\Authentication\AuthenticationLogOnProofHandler.cs" />
     <Compile Include="Network\Handlers\Authentication\AuthenticationReconnectChallengeHandler.cs" />
     <Compile Include="Network\Handlers\Authentication\AuthenticationReconnectProofHandler.cs" />
+    <Compile Include="Network\Handlers\Survey\SurveyResultHandler.cs" />
     <Compile Include="Network\Handlers\Patching\TransferCancelHandler.cs" />
     <Compile Include="Network\Handlers\Patching\TransferCompleteHandler.cs" />
     <Compile Include="Network\Packets\AuthenticationPackets.cs" />
