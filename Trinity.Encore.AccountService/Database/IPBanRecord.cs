@@ -46,7 +46,7 @@ namespace Trinity.Encore.AccountService.Database
         public IPBanMapping()
         {
             Id(c => c.Id);
-            Map(c => c.Address).Length(IPAddress.Loopback.GetLength());
+            Map(c => c.Address).Length(IPAddress.IPv6Loopback.GetLength());
             Map(c => c.Notes).Nullable().Length(BanManager.MaxNotesLength);
             Map(c => c.Expiry).Nullable();
         }

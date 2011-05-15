@@ -51,8 +51,8 @@ namespace Trinity.Encore.AccountService.Database
         public IPRangeBanMapping()
         {
             Id(c => c.Id);
-            Map(c => c.LowerAddress).Length(IPAddress.Loopback.GetLength());
-            Map(c => c.UpperAddress).Length(IPAddress.Loopback.GetLength());
+            Map(c => c.LowerAddress).Length(IPAddress.IPv6Loopback.GetLength());
+            Map(c => c.UpperAddress).Length(IPAddress.IPv6Loopback.GetLength());
             Map(c => c.Notes).Nullable().Length(BanManager.MaxNotesLength);
             Map(c => c.Expiry).Nullable();
         }
