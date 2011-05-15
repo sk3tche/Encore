@@ -6,22 +6,29 @@ the development of the source base in one way or another:
  * click
  * Domi
  * KingPin
+ * leak
  * linencloth
  * Machiavelli
  * Malcrom
- * manuel
- * Nay
+ * _manuel_
+ * maximus
+ * Nayd
+ * NoFantasy
  * Phazerz
+ * raczman
  * Rat
  * runningnak3d
  * Shauren
  * Silinoron
+ * Socolin
  * Spp
  * Supabad
- * TOM_RUS
+ * [TOM_RUS]
+ * vladimir
  * WolfgangSt
  * Xanadu
  * Zor
+ * ZxBiohazardZx
 
 If you have contributed to the project and you are not on this list, please contact
 a developer in order to have your name added.

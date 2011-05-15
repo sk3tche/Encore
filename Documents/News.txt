@@ -1,11 +1,12 @@
 == Encore Version News File ==
 
-Version 1.0:
+Version 1.0 (Beyond Evolution):
 
  * Initial development
  * C# 4.0 and .NET 4.0/Mono 2.10.2 (master) support
- * Actor-based threading
+ * World of Warcraft 4.1.0.13850 (Cataclysm) support
+ * Actor threading model
  * IOCP-backed asynchronous networking
  * WCF-based interprocess communication
- * NHibernate-based SQL persistence layer
- * Quad tree-based world partitioning
+ * SQL persistence layer using NHibernate with migrations
+ * World partitioning based on quad trees

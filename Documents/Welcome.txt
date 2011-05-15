@@ -1,16 +1,25 @@
-== Encore Welcome File ==
+== Encore Introduction File ==
 
 Welcome to Encore.
 
 Encore is a scalable server architecture aiming at emulating the World of Warcraft
-game servers. It uses an actor-based threading model, and an abstract SQL layer for
-databasing (supporting most SQL servers).
+game servers. It uses an actor-based threading model, and focuses on separating
+logic into services that can be distributed and cooperate across machines. An
+abstract SQL layer is used for databasing (supporting most SQL servers) with support
+for migrations and automatic schema updates. Configurationis done via standard .NET
+XML configuration.
 
-The source base is written in pure C# code, using the Common Language Runtime and
-the .NET Framework. We focus on supporting both the Microsoft and Mono runtimes.
+Encore consists of two components: The abstract and fully reusable framework and the
+World of Warcraft game server implementation. The Encore framework has deliberately
+been designed to be reused for other server implementations, so that others can save
+great amounts of development time by not having to write the typical foundational
+code for a server application. Given Encore's licensing (see License.txt), this
+framework can even be used in commercial/proprietary applications.
+
+The source is written in pure C# code, using the Common Language Runtime and the
+.NET Framework. We put great effort into avoiding any unportable code, such as
+P/Invoke, and thus support both the Microsoft and Mono runtimes.
 
 The codebase focuses on design-by-contract (both with static analysis and runtime
 checking), as well as unit testing and related techniques, to ensure program
 correctness.
-
-Configuration is done via standard .NET XML configuration.

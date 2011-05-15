@@ -16,12 +16,19 @@ If you are on Linux, you need the following installed:
 
 To build and install on Windows, simply fire up Visual Studio, open the Encore
 solution file (Trinity.Encore.sln), and trigger a build (Build -> Build Solution).
-You may choose to build in either Debug or Release mode. Debug mode will include
-useful debugging information (such as logging), and will trigger the code analyzer,
-as well as the Code Contracts tools (if you have these installed). A Release build
-will simply build the source.
+Alternatively, you can run "MSBuild Trinity.Encore.sln" to build the solution
+without using Visual Studio. This can be useful if you don't have access to a
+commercial version.
 
 On Linux, simply run either MonoDebug.sh or MonoRelease.sh. These will trigger a
 build for the respective mode, using the system's installed XBuild and MCS.
+
+Debug mode will include useful debugging information (such as logging), and will
+trigger the code analyzer, as well as the Code Contracts tools (if you have these
+installed). A Release build will simply build the source, and does not include
+contract assertions.
+
+Note that Debug on Windows will only work if you have Code Contracts installed. This
+is not the case with Mono, as the methods on the Contract class don't throw there.
 
 The compiled files can be found in the /bin directory.

@@ -1,4 +1,4 @@
-== Encore License File ==
+== Encore License/Copyright File ==
 
 Encore is available under the terms of the MIT (Expat) License.
 
