@@ -19,7 +19,7 @@ namespace Trinity.Core.Threading.Actors
     }
 
     [ContractClassFor(typeof(IScheduler))]
-    public abstract class SchedulerContracts : IScheduler
+    internal abstract class SchedulerContracts : IScheduler
     {
         public abstract event EventHandler Disposed;
 

@@ -5,7 +5,7 @@ using Trinity.Network.Transmission;
 
 namespace Trinity.Network.Handling
 {
-    [ContractClass(typeof(PacketHandlerContracts))]
+    [ContractClass(typeof(PacketPropagatorContracts))]
     public interface IPacketPropagator
     {
         int IncomingHeaderLength { get; }
@@ -18,7 +18,7 @@ namespace Trinity.Network.Handling
     }
 
     [ContractClassFor(typeof(IPacketPropagator))]
-    public abstract class PacketHandlerContracts : IPacketPropagator
+    public abstract class PacketPropagatorContracts : IPacketPropagator
     {
         public int IncomingHeaderLength
         {
