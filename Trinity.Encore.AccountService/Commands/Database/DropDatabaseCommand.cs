@@ -24,7 +24,7 @@ namespace Trinity.Encore.AccountService.Commands.Database
         {
             Console.WriteLine("Executing this command will permanently drop the entire database. Continue? (Y/N)");
 
-            var answer = Console.ReadLine().ToUpper(CultureInfo.InvariantCulture).ToCharArray().SingleOrDefault();
+            var answer = Console.ReadLine().ToUpper(CultureInfo.InvariantCulture).ToCharArray().FirstOrDefault();
             if (answer == 'Y')
                 AccountApplication.Instance.AccountDbContext.PostAsync(x => x.Schema.Drop());
         }
