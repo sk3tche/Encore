@@ -72,7 +72,7 @@ namespace Trinity.Encore.AccountService.Services
             if (acc == null)
                 throw new ArgumentException("No account found.");
 
-            if (acc.Ban != null)
+            if (acc.ActiveBan != null)
                 throw new ArgumentException("Account ban already exists.");
 
             BanManager.Instance.PostAsync(mgr => mgr.CreateAccountBan(acc, notes, expiry));

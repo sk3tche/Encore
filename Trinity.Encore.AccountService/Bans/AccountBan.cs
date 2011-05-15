@@ -23,7 +23,6 @@ namespace Trinity.Encore.AccountService.Bans
         public void Delete()
         {
             Record.Delete();
-            Account.Ban = null;
         }
 
         public AccountBanData Serialize()

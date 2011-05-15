@@ -69,8 +69,6 @@ namespace Trinity.Encore.AccountService.Database
         public virtual byte[] LastIP { get; set; }
 
         public virtual AccountRecord Recruiter { get; set; }
-
-        public virtual AccountBanRecord Ban { get; set; }
     }
     
     public sealed class AccountMapping : MappableObject<AccountRecord>
@@ -87,7 +85,6 @@ namespace Trinity.Encore.AccountService.Database
             Map(c => c.LastLogin).Nullable();
             Map(c => c.LastIP).Nullable();
             References(x => x.Recruiter).Nullable();
-            HasOne(c => c.Ban).Cascade.All();
         }
     }
  }
