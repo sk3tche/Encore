@@ -10,9 +10,10 @@ namespace Trinity.Core
     {
         /// <summary>
         /// Casts one thing into another.
-        /// 
-        /// Note: This is a hack. It should only be used in rare cases.
         /// </summary>
+        /// <remarks>
+        /// This is a hack. It should only be used in rare cases.
+        /// </remarks>
         public static T CastType<T>(this object obj)
         {
             Contract.Requires(obj != null);
@@ -25,9 +26,10 @@ namespace Trinity.Core
 
         /// <summary>
         /// Casts one thing into another.
-        /// 
-        /// Note: This is a hack. It should only be used in rare cases.
         /// </summary>
+        /// <remarks>
+        /// This is a hack. It should only be used in rare cases.
+        /// </remarks>
         public static object Cast(this object obj, Type newType)
         {
             Contract.Requires(obj != null);
