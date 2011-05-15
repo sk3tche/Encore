@@ -7,7 +7,7 @@ namespace Trinity.Encore.Tests.Core.Cryptography
     [TestClass]
     public sealed class SRPTest
     {
-        private void TestSRP(SRPParameters srpParams)
+        private static void TestSRP(SRPParameters srpParams)
         {
             var password = Password.GenerateCredentialsHash(srpParams.Hash, "TEST", "TESTPW");
             var server = new SRPServer("TEST", password, srpParams);
