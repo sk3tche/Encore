@@ -3,6 +3,10 @@ using System.Diagnostics.Contracts;
 
 namespace Trinity.Encore.Game.IO
 {
+    /// <summary>
+    /// Instructs ClientDbReader to treat a property as a different type than the type
+    /// it is declared as.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = false)]
     public sealed class RealTypeAttribute : Attribute
     {

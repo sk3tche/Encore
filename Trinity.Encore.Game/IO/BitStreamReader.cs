@@ -4,7 +4,7 @@ using Trinity.Core.IO;
 
 namespace Trinity.Encore.Game.IO
 {
-    public sealed class BitStreamReader
+    internal sealed class BitStreamReader
     {
         public const int MaxBitCount = 16;
 

@@ -21,7 +21,7 @@ namespace Trinity.Encore.Game.IO
             _data = data;
         }
 
-        public long? Find(byte?[] pattern)
+        public int? Find(byte?[] pattern)
         {
             Contract.Requires(pattern != null);
 
