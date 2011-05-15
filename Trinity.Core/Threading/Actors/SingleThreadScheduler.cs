@@ -8,10 +8,7 @@ using Trinity.Core.Runtime;
 
 namespace Trinity.Core.Threading.Actors
 {
-    /// <summary>
-    /// Manages registration and execution of Actor instances.
-    /// </summary>
-    internal sealed class Scheduler : IDisposableResource
+    public sealed class SingleThreadScheduler : IScheduler
     {
         private readonly ConcurrentQueue<Actor> _newActors = new ConcurrentQueue<Actor>();
 
@@ -33,7 +30,7 @@ namespace Trinity.Core.Threading.Actors
         /// Gets the amount of actors in this Scheduler.
         /// </summary>
         /// <value>The amount of actors managed by this Scheduler.</value>
-        public int ActorCount
+        int IScheduler.ActorCount
         {
             get { return _actors.Count; }
         }
@@ -47,18 +44,19 @@ namespace Trinity.Core.Threading.Actors
             Contract.Invariant(_event != null);
         }
 
-        public Scheduler()
+        public SingleThreadScheduler()
         {
-            _thread = new Thread(ThreadBody);
-            _thread.Name = "Actor Thread {0}".Interpolate(_threadCount++);
-            _thread.IsBackground = true;
+            _thread = new Thread(ThreadBody)
+            {
+                Name = "Actor Thread {0}".Interpolate(_threadCount++),
+                IsBackground = true
+            };
+
             _thread.Start();
         }
 
-        public void AddActor(Actor actor)
+        void IScheduler.AddActor(Actor actor)
         {
-            Contract.Requires(actor != null);
-
             _newActors.Enqueue(actor);
             _event.Set();
         }
@@ -97,6 +95,7 @@ namespace Trinity.Core.Threading.Actors
                     // Process all actors; remove any that break execution/are disposed.
                     _actors.RemoveAll(x =>
                     {
+                        // The & here is NOT a typo. Scheduling will break if it is changed to &&.
                         if (x.IsDisposed || (!x.ProcessMain() & !x.ProcessMessages()))
                         {
                             x.IsActive = false;
@@ -113,7 +112,7 @@ namespace Trinity.Core.Threading.Actors
             }
         }
 
-        ~Scheduler()
+        ~SingleThreadScheduler()
         {
             InternalDispose();
         }

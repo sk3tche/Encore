@@ -156,8 +156,10 @@
     <Compile Include="Threading\Actors\ActorWaitHandle.cs" />
     <Compile Include="Threading\Actors\ChildActor.cs" />
     <Compile Include="Threading\Actors\IActor.cs" />
+    <Compile Include="Threading\Actors\IScheduler.cs" />
     <Compile Include="Threading\Actors\Operation.cs" />
-    <Compile Include="Threading\Actors\Scheduler.cs" />
+    <Compile Include="Threading\Actors\SchedulerType.cs" />
+    <Compile Include="Threading\Actors\SingleThreadScheduler.cs" />
     <Compile Include="Threading\IWaitable.cs" />
     <Compile Include="Threading\ReadScopeGuard.cs" />
     <Compile Include="Threading\ReadWriteLock.cs" />

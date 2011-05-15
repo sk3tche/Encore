@@ -23,7 +23,7 @@ namespace Trinity.Core.Threading.Actors
 
         internal bool IsActive { get; set; }
 
-        internal Scheduler Scheduler { get; set; }
+        internal IScheduler Scheduler { get; set; }
 
         public ActorContext Context { get; private set; }
 
@@ -33,6 +33,7 @@ namespace Trinity.Core.Threading.Actors
             Contract.Invariant(Context != null);
             Contract.Invariant(_msgQueue != null);
             Contract.Invariant(_disposeEvent != null);
+
             // Don't add IsDisposed here. It would cause major cancellation issues in an asynchronous environment.
         }
 
