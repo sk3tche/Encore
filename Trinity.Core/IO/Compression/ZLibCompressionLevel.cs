@@ -3,7 +3,7 @@ using System;
 namespace Trinity.Core.IO.Compression
 {
     [Serializable]
-    public enum ZLibCompressionLevel
+    public enum ZLibCompressionLevel : sbyte
     {
         Default = -1,
         NoCompression = 0,
