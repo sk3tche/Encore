@@ -34,8 +34,8 @@ namespace Trinity.Encore.AccountService.Database
             ClientLocale locale = ClientLocale.English)
         {
             Contract.Requires(!string.IsNullOrEmpty(name));
-            Contract.Requires(name.Length >= AccountManager.MinNameLength);
-            Contract.Requires(name.Length <= AccountManager.MaxNameLength);
+            Contract.Requires(name.Length >= Constants.Accounts.MinNameLength);
+            Contract.Requires(name.Length <= Constants.Accounts.MaxNameLength);
             Contract.Requires(!string.IsNullOrEmpty(email));
             Contract.Requires(sha1 != null);
             Contract.Requires(sha1.Length == Password.SHA1Length);
@@ -78,7 +78,7 @@ namespace Trinity.Encore.AccountService.Database
         public AccountMapping()
         {
             Id(c => c.Id);
-            Map(c => c.Name).Length(AccountManager.MaxNameLength);
+            Map(c => c.Name).Length(Constants.Accounts.MaxNameLength);
             Map(c => c.EmailAddress);
             Map(c => c.SHA1Password).Length(Password.SHA1Length);
             Map(c => c.SHA256Password).Length(Password.SHA256Length);

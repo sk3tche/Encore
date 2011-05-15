@@ -34,7 +34,7 @@ namespace Trinity.Encore.Game.IO.Formats.Databases.DBC
         public int GetCastTimeForLevel(int level)
         {
             Contract.Requires(level > 0);
-            Contract.Requires(level < Defines.Game.MaxLevelCap);
+            Contract.Requires(level < Constants.Game.MaxLevelCap);
 
             var castTime = (CastMin + ((CastMax - CastMin) / (CastDiv - 1)) * (level - 1));
             if (castTime > CastMax)

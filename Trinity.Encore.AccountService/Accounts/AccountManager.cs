@@ -14,14 +14,6 @@ namespace Trinity.Encore.AccountService.Accounts
 {
     public sealed class AccountManager : SingletonActor<AccountManager>
     {
-        public const int MinNameLength = 3;
-
-        public const int MaxNameLength = 20;
-
-        public const int MinPasswordLength = 3;
-
-        public const int MaxPasswordLength = 16;
-
         private static readonly LogProxy _log = new LogProxy("AccountManager");
 
         private readonly List<Account> _accounts = new List<Account>();
@@ -49,11 +41,11 @@ namespace Trinity.Encore.AccountService.Accounts
         public static Password CreatePassword(string userName, string password)
         {
             Contract.Requires(!string.IsNullOrEmpty(userName));
-            Contract.Requires(userName.Length >= MinNameLength);
-            Contract.Requires(userName.Length <= MaxNameLength);
+            Contract.Requires(userName.Length >= Constants.Accounts.MinNameLength);
+            Contract.Requires(userName.Length <= Constants.Accounts.MaxNameLength);
             Contract.Requires(!string.IsNullOrEmpty(password));
-            Contract.Requires(password.Length >= MinPasswordLength);
-            Contract.Requires(password.Length <= MaxPasswordLength);
+            Contract.Requires(password.Length >= Constants.Accounts.MinPasswordLength);
+            Contract.Requires(password.Length <= Constants.Accounts.MaxPasswordLength);
             Contract.Ensures(Contract.Result<Password>() != null);
 
             byte[] sha1;
@@ -88,11 +80,11 @@ namespace Trinity.Encore.AccountService.Accounts
             ClientLocale locale = ClientLocale.English)
         {
             Contract.Requires(!string.IsNullOrEmpty(userName));
-            Contract.Requires(userName.Length >= MinNameLength);
-            Contract.Requires(userName.Length <= MaxNameLength);
+            Contract.Requires(userName.Length >= Constants.Accounts.MinNameLength);
+            Contract.Requires(userName.Length <= Constants.Accounts.MaxNameLength);
             Contract.Requires(!string.IsNullOrEmpty(password));
-            Contract.Requires(password.Length >= MinPasswordLength);
-            Contract.Requires(password.Length <= MaxPasswordLength);
+            Contract.Requires(password.Length >= Constants.Accounts.MinPasswordLength);
+            Contract.Requires(password.Length <= Constants.Accounts.MaxPasswordLength);
             Contract.Requires(!string.IsNullOrEmpty(email));
             Contract.Ensures(Contract.Result<Account>() != null);
 

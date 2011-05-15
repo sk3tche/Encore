@@ -36,10 +36,10 @@ namespace Trinity.Encore.AccountService.Commands.Accounts
                 return;
             }
 
-            if (name.Length < AccountManager.MinNameLength || name.Length > AccountManager.MaxNameLength)
+            if (name.Length < Constants.Accounts.MinNameLength || name.Length > Constants.Accounts.MaxNameLength)
             {
-                sender.Respond("Name must be between {0} and {1} characters long.".Interpolate(AccountManager.MinNameLength,
-                    AccountManager.MaxNameLength));
+                sender.Respond("Name must be between {0} and {1} characters long.".Interpolate(Constants.Accounts.MinNameLength,
+                    Constants.Accounts.MaxNameLength));
                 return;
             }
 
@@ -49,10 +49,10 @@ namespace Trinity.Encore.AccountService.Commands.Accounts
                 return;
             }
 
-            if (password.Length < AccountManager.MinPasswordLength || password.Length > AccountManager.MaxPasswordLength)
+            if (password.Length < Constants.Accounts.MinPasswordLength || password.Length > Constants.Accounts.MaxPasswordLength)
             {
-                sender.Respond("Password must be between {0} and {1} characters long.".Interpolate(AccountManager.MinPasswordLength,
-                    AccountManager.MaxPasswordLength));
+                sender.Respond("Password must be between {0} and {1} characters long.".Interpolate(Constants.Accounts.MinPasswordLength,
+                    Constants.Accounts.MaxPasswordLength));
                 return;
             }
 

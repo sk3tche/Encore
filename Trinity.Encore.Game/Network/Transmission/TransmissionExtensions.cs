@@ -118,6 +118,7 @@ namespace Trinity.Encore.Game.Network.Transmission
         {
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
+            Contract.Ensures(Contract.Result<PacketField<string>>().Value != null);
 
             return new PacketField<string>(PacketFieldType.String, packet.ReadString(), name);
         }
@@ -135,6 +136,7 @@ namespace Trinity.Encore.Game.Network.Transmission
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
             Contract.Requires(count >= 0);
+            Contract.Ensures(Contract.Result<PacketField<char[]>>().Value != null);
 
             return new PacketField<char[]>(PacketFieldType.Chars, packet.ReadChars(count), name);
         }
@@ -144,6 +146,7 @@ namespace Trinity.Encore.Game.Network.Transmission
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
             Contract.Requires(count >= 0);
+            Contract.Ensures(Contract.Result<PacketField<byte[]>>().Value != null);
 
             return new PacketField<byte[]>(PacketFieldType.Bytes, packet.ReadBytes(count), name);
         }
@@ -156,6 +159,7 @@ namespace Trinity.Encore.Game.Network.Transmission
         {
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
+            Contract.Ensures(Contract.Result<PacketField<string>>().Value != null);
 
             return new PacketField<string>(PacketFieldType.CString, packet.ReadCString(encoding), name);
         }
@@ -164,6 +168,7 @@ namespace Trinity.Encore.Game.Network.Transmission
         {
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
+            Contract.Ensures(Contract.Result<PacketField<string>>().Value != null);
 
             return new PacketField<string>(PacketFieldType.P8String, packet.ReadP8String(encoding), name);
         }
@@ -172,6 +177,7 @@ namespace Trinity.Encore.Game.Network.Transmission
         {
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
+            Contract.Ensures(Contract.Result<PacketField<string>>().Value != null);
 
             return new PacketField<string>(PacketFieldType.P16String, packet.ReadP16String(encoding), name);
         }
@@ -180,6 +186,7 @@ namespace Trinity.Encore.Game.Network.Transmission
         {
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
+            Contract.Ensures(Contract.Result<PacketField<string>>().Value != null);
 
             return new PacketField<string>(PacketFieldType.P32String, packet.ReadP32String(encoding), name);
         }
@@ -188,6 +195,8 @@ namespace Trinity.Encore.Game.Network.Transmission
         {
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
+            Contract.Ensures(Contract.Result<PacketField<string>>().Value != null);
+            Contract.Ensures(Contract.Result<PacketField<string>>().Value.Length == 4);
 
             return new PacketField<string>(PacketFieldType.FourCC, packet.ReadFourCC(), name);
         }
@@ -196,6 +205,7 @@ namespace Trinity.Encore.Game.Network.Transmission
         {
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
+            Contract.Ensures(Contract.Result<PacketField<BigInteger>>().Value != null);
 
             return new PacketField<BigInteger>(PacketFieldType.BigInteger, packet.ReadBigInteger(), name);
         }
@@ -205,6 +215,7 @@ namespace Trinity.Encore.Game.Network.Transmission
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
             Contract.Requires(length >= 0);
+            Contract.Ensures(Contract.Result<PacketField<BigInteger>>().Value != null);
 
             return new PacketField<BigInteger>(PacketFieldType.FixedBigInteger, packet.ReadBigInteger(length), name);
         }
@@ -213,6 +224,7 @@ namespace Trinity.Encore.Game.Network.Transmission
         {
             Contract.Requires(packet != null);
             Contract.Requires(name != null);
+            Contract.Ensures(Contract.Result<PacketField<IPAddress>>().Value != null);
 
             return new PacketField<IPAddress>(PacketFieldType.IPAddress, packet.ReadIPAddress(ipv6), name);
         }

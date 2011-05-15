@@ -11,9 +11,16 @@ namespace Trinity.Encore.AuthenticationService.Network.Handlers.Patching
     {
         public override bool Read(IClient client, IncomingAuthenticationPacket packet)
         {
-            packet.ReadInt64Field("File Position");
+            var filePosition = packet.ReadInt64Field("File Position");
+            if (filePosition < 0)
+                return InvalidValueRange(client, filePosition, 0, long.MaxValue);
 
             return true;
+        }
+
+        public override void Handle(IClient client)
+        {
+            // TODO: Handle patching.
         }
     }
 }

@@ -32,18 +32,11 @@ namespace Trinity.Encore.Game.Network.Transmission
             Contract.Invariant(Name != null);
         }
 
-        [SuppressMessage("Microsoft.Performance", "CA1820", Justification = "We can't use IsNullOrEmpty here, as FxCop wants us to.")]
-        public PacketField(PacketFieldType type, T value)
-            : this(type, value, string.Empty)
-        {
-            Contract.Ensures(Contract.ValueAtReturn(out this).Type == type);
-            Contract.Ensures(Contract.ValueAtReturn(out this).Name == string.Empty);
-        }
-
         public PacketField(PacketFieldType type, T value, string name)
         {
             Contract.Requires(name != null);
             Contract.Ensures(Contract.ValueAtReturn(out this).Type == type);
+            Contract.Ensures(ReferenceEquals(Contract.ValueAtReturn(out this).Value, value));
             Contract.Ensures(Contract.ValueAtReturn(out this).Name == name);
 
             Type = type;
@@ -53,6 +46,8 @@ namespace Trinity.Encore.Game.Network.Transmission
 
         public static implicit operator T(PacketField<T> field)
         {
+            Contract.Ensures(ReferenceEquals(Contract.Result<T>(), field.Value));
+
             return field.Value;
         }
     }

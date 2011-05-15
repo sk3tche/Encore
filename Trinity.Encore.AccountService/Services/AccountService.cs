@@ -28,10 +28,10 @@ namespace Trinity.Encore.AccountService.Services
 
         public void CreateAccount(string accountName, string password, string emailAddress, ClientLocale locale, ClientBoxLevel boxLevel)
         {
-            if (accountName.Length < AccountManager.MinNameLength || accountName.Length > AccountManager.MaxNameLength)
+            if (accountName.Length < Constants.Accounts.MinNameLength || accountName.Length > Constants.Accounts.MaxNameLength)
                 throw new ArgumentException("Account name has an invalid length.");
 
-            if (password.Length < AccountManager.MinPasswordLength || password.Length > AccountManager.MaxPasswordLength)
+            if (password.Length < Constants.Accounts.MinPasswordLength || password.Length > Constants.Accounts.MaxPasswordLength)
                 throw new ArgumentException("Password has an invalid length.");
 
             AccountManager.Instance.PostAsync(x => x.CreateAccount(accountName, password, emailAddress, boxLevel, locale));

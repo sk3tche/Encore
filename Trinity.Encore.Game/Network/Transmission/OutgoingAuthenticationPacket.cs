@@ -7,7 +7,7 @@ namespace Trinity.Encore.Game.Network.Transmission
     public class OutgoingAuthenticationPacket : OutgoingPacket
     {
         public OutgoingAuthenticationPacket(GruntOpCode opCode, int capacity = 0)
-            : base(opCode, Defines.Protocol.Encoding, capacity)
+            : base(opCode, Constants.Protocol.Encoding, capacity)
         {
             Contract.Requires(capacity >= 0);
         }

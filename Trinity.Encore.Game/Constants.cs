@@ -1,11 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace Trinity.Encore.Game
 {
-    public static class Defines
+    public static class Constants
     {
+        public static class Accounts
+        {
+            public const int MinNameLength = 3;
+
+            public const int MaxNameLength = 20;
+
+            public const int MinPasswordLength = 3;
+
+            public const int MaxPasswordLength = 16;
+        }
+
         public static class Game
         {
             public static Version SupportedClientVersion

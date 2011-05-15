@@ -7,7 +7,7 @@ namespace Trinity.Encore.Game.Network.Transmission
     public class OutgoingWorldPacket : OutgoingPacket
     {
         public OutgoingWorldPacket(WorldOpCode opCode, int capacity = 0)
-            : base(opCode, Defines.Protocol.Encoding, capacity)
+            : base(opCode, Constants.Protocol.Encoding, capacity)
         {
             Contract.Requires(capacity >= 0);
         }
@@ -21,7 +21,7 @@ namespace Trinity.Encore.Game.Network.Transmission
 
         public override int HeaderLength
         {
-            get { return 2 + (Length > Defines.Protocol.LargePacketThreshold ? 1 : 0) + 2; }
+            get { return 2 + (Length > Constants.Protocol.LargePacketThreshold ? 1 : 0) + 2; }
         }
     }
 }

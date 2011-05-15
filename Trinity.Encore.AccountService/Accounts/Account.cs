@@ -71,13 +71,13 @@ namespace Trinity.Encore.AccountService.Accounts
             get
             {
                 Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-                Contract.Ensures(Contract.Result<string>().Length >= AccountManager.MinNameLength);
-                Contract.Ensures(Contract.Result<string>().Length <= AccountManager.MaxNameLength);
+                Contract.Ensures(Contract.Result<string>().Length >= Constants.Accounts.MinNameLength);
+                Contract.Ensures(Contract.Result<string>().Length <= Constants.Accounts.MaxNameLength);
 
                 var name = Record.Name;
                 Contract.Assume(!string.IsNullOrEmpty(name));
-                Contract.Assume(name.Length >= AccountManager.MinNameLength);
-                Contract.Assume(name.Length <= AccountManager.MaxNameLength);
+                Contract.Assume(name.Length >= Constants.Accounts.MinNameLength);
+                Contract.Assume(name.Length <= Constants.Accounts.MaxNameLength);
                 return name;
             }
         }
@@ -104,8 +104,8 @@ namespace Trinity.Encore.AccountService.Accounts
         public void ChangePassword(string password)
         {
             Contract.Requires(!string.IsNullOrEmpty(password));
-            Contract.Requires(password.Length >= AccountManager.MinPasswordLength);
-            Contract.Requires(password.Length <= AccountManager.MaxPasswordLength);
+            Contract.Requires(password.Length >= Constants.Accounts.MinPasswordLength);
+            Contract.Requires(password.Length <= Constants.Accounts.MaxPasswordLength);
 
             Password = AccountManager.CreatePassword(Name, password);
         }

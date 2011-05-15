@@ -29,6 +29,6 @@ namespace Trinity.Encore.AuthenticationService.Authentication
         FailedGameAccountLocked = 0x18,
         FailedInternetGameRoomWithoutBattleNet = 0x19,
         FailedUnlockableLock = 0x20,
-        FailedDisconnected = 0xff,
+        FailedOther = 0xff,
     }
 }

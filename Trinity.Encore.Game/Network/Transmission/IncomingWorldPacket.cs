@@ -6,7 +6,7 @@ namespace Trinity.Encore.Game.Network.Transmission
     public sealed class IncomingWorldPacket : IncomingPacket
     {
         public IncomingWorldPacket(WorldOpCode opCode, byte[] data, int length)
-            : base(opCode, data, length, Defines.Protocol.Encoding)
+            : base(opCode, data, length, Constants.Protocol.Encoding)
         {
             Contract.Requires(data != null);
             Contract.Requires(length >= 0);

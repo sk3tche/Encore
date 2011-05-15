@@ -99,6 +99,7 @@
     <Compile Include="Achievements\AchievementFlags.cs" />
     <Compile Include="ClientBoxLevel.cs" />
     <Compile Include="ClientLocale.cs" />
+    <Compile Include="ClientType.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandArgumentException.cs" />
     <Compile Include="Commands\CommandArguments.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Database\Conventions\Relationships\RelationshipLazyLoadConvention.cs" />
     <Compile Include="Database\GameDatabaseContext.cs" />
     <Compile Include="Defines.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityGuid.cs" />
     <Compile Include="Entities\IEntity.cs" />
@@ -219,6 +221,7 @@
     <Compile Include="Terrain\AreaFlags.cs" />
     <Compile Include="Threading\ActorApplication.cs" />
     <Compile Include="Threading\SingletonActor.cs" />
+    <Compile Include="GameUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trinity.Core\Trinity.Core.csproj">

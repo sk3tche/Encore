@@ -17,7 +17,7 @@ namespace Trinity.Encore.AuthenticationService.Network.Handlers.Authentication
             packet.ReadByteField("Minor");
             packet.ReadByteField("Revision");
             packet.ReadInt16Field("Build");
-            packet.ReadFourCCField("Platform");
+            packet.ReadFourCCField("Processor");
             packet.ReadFourCCField("Operating System");
             packet.ReadFourCCField("Locale");
             packet.ReadInt32Field("Time Zone");
