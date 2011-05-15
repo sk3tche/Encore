@@ -9,6 +9,10 @@ namespace Trinity.Core.Threading.Actors
     {
         event EventHandler Disposed;
 
+        /// <summary>
+        /// Gets the amount of actors in this scheduler.
+        /// </summary>
+        /// <value>The amount of actors managed by this scheduler.</value>
         int ActorCount { get; }
 
         void AddActor(Actor actor);

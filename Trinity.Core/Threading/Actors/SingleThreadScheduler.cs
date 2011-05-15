@@ -26,10 +26,6 @@ namespace Trinity.Core.Threading.Actors
 
         public event EventHandler Disposed;
 
-        /// <summary>
-        /// Gets the amount of actors in this Scheduler.
-        /// </summary>
-        /// <value>The amount of actors managed by this Scheduler.</value>
         int IScheduler.ActorCount
         {
             get { return _actors.Count; }
