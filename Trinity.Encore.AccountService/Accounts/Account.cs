@@ -7,6 +7,7 @@ using Trinity.Encore.AccountService.Database;
 using Trinity.Encore.Game;
 using Trinity.Encore.Game.Cryptography;
 using Trinity.Encore.Services.Account;
+using System.Collections.Generic;
 
 namespace Trinity.Encore.AccountService.Accounts
 {
@@ -27,9 +28,9 @@ namespace Trinity.Encore.AccountService.Accounts
         {
             Record.Delete();
 
-            var ban = Ban;
-            if (ban != null)
-                ban.Delete();
+            var bans = Bans;
+            foreach(var b in bans)
+                b.Delete();
         }
 
         public AccountData Serialize()
@@ -190,10 +191,15 @@ namespace Trinity.Encore.AccountService.Accounts
             }
         }
 
-        public AccountBan Ban
+        public AccountBan ActiveBan
         {
-            get { return BanManager.Instance.FindAccountBan(x => x.Account.Id == Id); }
-            set { Record.Ban = value != null ? value.Record : null; }
+            get { return BanManager.Instance.FindAccountBan(x => x.Expiry > DateTime.Now && x.Account.Id == Id); }
         }
+
+        public IEnumerable<AccountBan> Bans
+        {
+            get { return BanManager.Instance.FindAccountBans(x => x.Account.Id == Id); }
+        }
+
     }
 }
