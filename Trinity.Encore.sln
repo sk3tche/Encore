@@ -94,6 +94,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 		Dependencies\Mono.GameMath.dll = Dependencies\Mono.GameMath.dll
 		Dependencies\Mono.Linq.Expressions.dll = Dependencies\Mono.Linq.Expressions.dll
 		Dependencies\Mono.Security.dll = Dependencies\Mono.Security.dll
+		Dependencies\Mono.Simd.dll = Dependencies\Mono.Simd.dll
 		Dependencies\Mono.Tasklets.dll = Dependencies\Mono.Tasklets.dll
 		Dependencies\MySql.Data.dll = Dependencies\MySql.Data.dll
 		Dependencies\NHibernate.ByteCode.Castle.dll = Dependencies\NHibernate.ByteCode.Castle.dll
