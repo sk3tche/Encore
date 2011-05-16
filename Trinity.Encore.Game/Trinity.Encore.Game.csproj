@@ -124,7 +124,6 @@
     <Compile Include="Database\Conventions\Relationships\ReferenceConvention.cs" />
     <Compile Include="Database\Conventions\Relationships\RelationshipLazyLoadConvention.cs" />
     <Compile Include="Database\GameDatabaseContext.cs" />
-    <Compile Include="Defines.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityGuid.cs" />

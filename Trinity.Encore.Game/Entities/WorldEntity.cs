@@ -6,11 +6,6 @@ namespace Trinity.Encore.Game.Entities
 {
     public abstract class WorldEntity : Entity, IWorldEntity
     {
-        public void Update(int diff)
-        {
-            base.Update(diff);    
-        }
-
         public Vector3 Position
         {
             get { throw new NotImplementedException(); }

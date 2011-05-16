@@ -20,6 +20,7 @@ namespace Trinity.Encore.AuthenticationService.Network.Handlers.Survey
 
         public override void Handle(IClient client)
         {
+            // TODO: Handle surveys.
         }
     }
 }

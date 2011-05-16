@@ -14,9 +14,8 @@ namespace Trinity.Encore.Game.Entities
         /// Called from Map::Update, updates the unit.
         /// </summary>
         /// <param name="diff">The time in ms since the last call to this function</param>
-        public void Update(int diff)
+        public virtual void Update(int diff)
         {
-            
         }
 
         public EntityGuid Guid { get; private set; }
