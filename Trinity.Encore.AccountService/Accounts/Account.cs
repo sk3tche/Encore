@@ -29,7 +29,7 @@ namespace Trinity.Encore.AccountService.Accounts
             Record.Delete();
 
             var bans = Bans;
-            foreach(var b in bans)
+            foreach (var b in bans)
                 b.Delete();
         }
 
@@ -193,7 +193,7 @@ namespace Trinity.Encore.AccountService.Accounts
 
         public AccountBan ActiveBan
         {
-            get { return BanManager.Instance.FindAccountBan(x => x.Expiry > DateTime.Now && x.Account.Id == Id); }
+            get { return BanManager.Instance.FindAccountBan(x => x.Account.Id == Id && x.Expiry > DateTime.Now); }
         }
 
         public IEnumerable<AccountBan> Bans
