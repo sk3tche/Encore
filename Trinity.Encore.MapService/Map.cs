@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
+using Trinity.Core.Collections;
 using Trinity.Encore.Game.Partitioning;
 using Trinity.Encore.Game.Entities;
 using Mono.GameMath;
@@ -20,10 +19,9 @@ namespace Trinity.Encore.MapService
         /// Constructs a new instance of this map.
         /// TODO: Construct based on DBC template
         /// </summary>
-        public Map(int mapId, long instanceId)
+        public Map(int mapId)
         {
             MapId = mapId;
-            InstanceId = instanceId;
         }
 
         /// <summary>
@@ -73,8 +71,7 @@ namespace Trinity.Encore.MapService
         {
             Contract.Requires(guid != EntityGuid.Zero);
 
-            IWorldEntity retVal;
-            return _entityLookup.TryGetValue(guid, out retVal) ? retVal : null;
+            return _entityLookup.TryGet(guid);
         }
 
         /// <summary>
@@ -88,10 +85,21 @@ namespace Trinity.Encore.MapService
         public long InstanceId { get; private set; }
         
         /// <summary>
+        /// These coordinates represent the boundaries of the QuadTree.
+        /// TODO: Proper extraction of these coordinates based on client data.
+        /// </summary>
+        private const float MinX = -17066;
+        private const float MinY = -17066;
+        private const float MinZ = -17066;
+        private const float MaxX = 17066;
+        private const float MaxY = 17066;
+        private const float MaxZ = 17066;
+
+        /// <summary>
         /// QuadTree-based storage of Entities
         /// TODO: Proper bounds
         /// </summary>
-        private readonly QuadTree _entityQuadTree = new QuadTree(new BoundingBox(new Vector3(-17066, -17066, -17066), new Vector3(17066, 17066, 17066)));
+        private readonly QuadTree _entityQuadTree = new QuadTree(new BoundingBox(new Vector3(MinX, MinY, MinZ), new Vector3(MaxX, MaxY, MaxZ)));
 
         /// <summary>
         /// Dictionary-based storage of Entities, for fast guid-based lookup

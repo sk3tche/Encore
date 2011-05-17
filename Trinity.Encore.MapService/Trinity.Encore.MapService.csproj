@@ -86,6 +86,8 @@
     <Compile Include="..\Shared\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="BattleGroundMap.cs" />
+    <Compile Include="InstanceMap.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MapManager.cs" />
     <Compile Include="Program.cs" />
