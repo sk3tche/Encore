@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -7,6 +8,11 @@ namespace Trinity.Core
 {
     public static class Utility
     {
+        public static bool IsRunningMono()
+        {
+            return Type.GetType("Mono.Runtime") != null;
+        }
+
         public static string ToCamelCase(string input)
         {
             Contract.Requires(input != null);
